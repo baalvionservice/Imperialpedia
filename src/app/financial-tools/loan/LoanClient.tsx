@@ -231,7 +231,7 @@ export default function LoanClient() {
                   <Text variant="label" className="text-muted-foreground mb-1">Total Repayment</Text>
                   <div className="text-2xl font-bold">{formatCurrency(result.total)}</div>
                 </CardContent>
-              </Card>
+              </div>
             </div>
           )}
         </div>

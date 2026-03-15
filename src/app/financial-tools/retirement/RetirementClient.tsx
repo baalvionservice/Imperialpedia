@@ -128,7 +128,7 @@ export default function RetirementClient() {
                         <Label htmlFor="currentAge" className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Current Age</Label>
                         <Tooltip>
                           <TooltipTrigger asChild>
-                            <HelpCircle className="h-3 w-3 text-muted-foreground cursor-help" />
+                            <HelpCircle className="h-3.5 w-3.5 text-muted-foreground cursor-help" />
                           </TooltipTrigger>
                           <TooltipContent>
                             <p className="w-48 text-[10px]">Your current chronological age today.</p>
