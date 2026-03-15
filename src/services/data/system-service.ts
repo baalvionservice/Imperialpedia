@@ -1,10 +1,10 @@
 import * as mockApi from '@/services/mock-api/system';
 import { ApiResponse } from '@/types';
-import { SystemSettings } from '@/types/system';
+import { SystemSettings, SystemNotification } from '@/types/system';
 import { errorHandler } from '@/lib/errors/error-handler';
 
 /**
- * @fileOverview Abstraction layer for platform configuration data with error handling.
+ * @fileOverview Abstraction layer for platform configuration and system messaging.
  */
 
 export const systemService = {
@@ -28,6 +28,45 @@ export const systemService = {
       const appError = errorHandler.handleError(error);
       return {
         data: null,
+        status: appError.statusCode,
+        error: appError.message,
+      };
+    }
+  },
+
+  async getNotifications(): Promise<ApiResponse<SystemNotification[]>> {
+    try {
+      return await mockApi.getSystemNotifications();
+    } catch (error) {
+      const appError = errorHandler.handleError(error);
+      return {
+        data: [],
+        status: appError.statusCode,
+        error: appError.message,
+      };
+    }
+  },
+
+  async updateNotification(notification: SystemNotification): Promise<ApiResponse<SystemNotification | null>> {
+    try {
+      return await mockApi.updateSystemNotification(notification);
+    } catch (error) {
+      const appError = errorHandler.handleError(error);
+      return {
+        data: null,
+        status: appError.statusCode,
+        error: appError.message,
+      };
+    }
+  },
+
+  async deleteNotification(id: string): Promise<ApiResponse<void>> {
+    try {
+      return await mockApi.deleteSystemNotification(id);
+    } catch (error) {
+      const appError = errorHandler.handleError(error);
+      return {
+        data: undefined,
         status: appError.statusCode,
         error: appError.message,
       };

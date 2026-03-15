@@ -1,4 +1,3 @@
-
 'use client';
 
 import React from 'react';
@@ -31,7 +30,8 @@ import {
   PenTool,
   Calculator as CalcIcon,
   ShieldX,
-  Lock
+  Lock,
+  Megaphone
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 import { useAppStore } from '@/lib/state/app-store';
@@ -91,6 +91,7 @@ const Sidebar = ({ className }: { className?: string }) => {
     { icon: UsersIcon, label: 'User Management', href: '/admin/users' },
     { icon: Lock, label: 'Roles & Permissions', href: '/admin/roles' },
     { icon: ShieldX, label: 'Content Moderation', href: '/admin/moderation' },
+    { icon: Megaphone, label: 'System Notifications', href: '/admin/notifications' },
     { icon: ShieldCheck, label: 'Expert Verifications', href: '/admin/creators/verification' },
     { icon: Calendar, label: 'Publisher Scheduler', href: '/admin/scheduler' },
     { icon: ImageIcon, label: 'Media Library', href: '/admin/media' },

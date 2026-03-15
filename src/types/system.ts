@@ -27,3 +27,16 @@ export interface SystemSettings {
     autoModerateComments: boolean;
   };
 }
+
+export type SystemNotificationType = 'info' | 'success' | 'warning' | 'error';
+export type SystemNotificationTarget = 'all' | 'creators' | 'admins';
+
+export interface SystemNotification {
+  id: string;
+  title: string;
+  message: string;
+  active: boolean;
+  type: SystemNotificationType;
+  target: SystemNotificationTarget;
+  createdAt: string;
+}
