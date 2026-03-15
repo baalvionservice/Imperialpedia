@@ -200,3 +200,43 @@ export interface BacktestDashboardData {
   monthly_heatmap: { month: string; year: number; return: number }[];
   saved_backtests: { name: string; last_tested: string; asset: string }[];
 }
+
+/**
+ * Prompt 58: Market Heatmap Types
+ */
+export interface SectorHeatmapNode {
+  name: string;
+  change: string;
+  market_cap: string;
+  color: 'green' | 'light_green' | 'neutral' | 'light_red' | 'red';
+  weight: number; // 1-100 for visual sizing
+}
+
+export interface StockHeatmapNode {
+  symbol: string;
+  name: string;
+  change: string;
+  market_cap: string;
+  volume?: string;
+  weight: number;
+}
+
+export interface CapitalFlowItem {
+  sector: string;
+  flow: string;
+  status: 'inflow' | 'outflow';
+}
+
+export interface RegionPerformance {
+  region: string;
+  performance: string;
+  flow: string;
+  volume: string;
+}
+
+export interface MarketHeatmapData {
+  sectors: SectorHeatmapNode[];
+  stocks: StockHeatmapNode[];
+  capital_flows: CapitalFlowItem[];
+  regions: RegionPerformance[];
+}

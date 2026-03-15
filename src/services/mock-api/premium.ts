@@ -1,4 +1,4 @@
-import { ApiResponse, SubscriptionTier, PremiumState, PremiumReport, PremiumAnalytics, MockPaymentStatus, BacktestingTool, PremiumDashboardData, PortfolioDeepDiveData, ScreenerDashboardData, BacktestDashboardData } from '@/types/premium';
+import { ApiResponse, SubscriptionTier, PremiumState, PremiumReport, PremiumAnalytics, MockPaymentStatus, BacktestingTool, PremiumDashboardData, PortfolioDeepDiveData, ScreenerDashboardData, BacktestDashboardData, MarketHeatmapData } from '@/types/premium';
 
 /**
  * @fileOverview Mock service for managing subscription tiers, premium reports, and advanced analytics.
@@ -368,6 +368,46 @@ export const getBacktestData = async (): Promise<ApiResponse<BacktestDashboardDa
   await new Promise((resolve) => setTimeout(resolve, 800));
   return {
     data: mockBacktestData,
+    status: 200,
+  };
+};
+
+/**
+ * Prompt 58: Institutional Market Heatmap Mock API
+ */
+const mockHeatmapData: MarketHeatmapData = {
+  sectors: [
+    { name: "Technology", change: "+2.4%", market_cap: "12T", color: "green", weight: 45 },
+    { name: "Financials", change: "-0.8%", market_cap: "5T", color: "light_red", weight: 20 },
+    { name: "Healthcare", change: "+0.5%", market_cap: "4.2T", color: "light_green", weight: 15 },
+    { name: "Energy", change: "+1.1%", market_cap: "3T", color: "light_green", weight: 10 },
+    { name: "Consumer Disc.", change: "+1.8%", market_cap: "2.8T", color: "green", weight: 8 },
+    { name: "Real Estate", change: "-2.4%", market_cap: "1.2T", color: "red", weight: 5 }
+  ],
+  stocks: [
+    { symbol: "AAPL", name: "Apple Inc.", change: "+1.5%", market_cap: "2.8T", weight: 35 },
+    { symbol: "MSFT", name: "Microsoft", change: "+2.1%", market_cap: "2.6T", weight: 30 },
+    { symbol: "NVDA", name: "NVIDIA Corp", change: "+5.2%", market_cap: "2.1T", weight: 20 },
+    { symbol: "GOOGL", name: "Alphabet Inc", change: "+0.8%", market_cap: "1.9T", weight: 15 }
+  ],
+  capital_flows: [
+    { sector: "Technology", flow: "+4.2B", status: "inflow" },
+    { sector: "Energy", flow: "+2.1B", status: "inflow" },
+    { sector: "Financials", flow: "-1.5B", status: "outflow" },
+    { sector: "Healthcare", flow: "-0.8B", status: "outflow" }
+  ],
+  regions: [
+    { region: "North America", performance: "+1.8%", flow: "+12.4B", volume: "450B" },
+    { region: "Europe", performance: "-0.4%", flow: "-2.1B", volume: "120B" },
+    { region: "Asia-Pacific", performance: "+2.2%", flow: "+8.5B", volume: "310B" },
+    { region: "Latin America", performance: "+0.5%", flow: "+0.8B", volume: "45B" }
+  ]
+};
+
+export const getMarketHeatmapData = async (): Promise<ApiResponse<MarketHeatmapData>> => {
+  await new Promise((resolve) => setTimeout(resolve, 600));
+  return {
+    data: mockHeatmapData,
     status: 200,
   };
 };

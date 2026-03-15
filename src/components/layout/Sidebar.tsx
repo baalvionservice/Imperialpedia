@@ -136,6 +136,7 @@ const Sidebar = ({ className }: { className?: string }) => {
 
   const premiumItems = [
     { icon: CreditCard, label: 'Subscription Hub', href: '/premium/subscribe' },
+    { icon: PieIcon, label: 'Market Heatmap', href: '/premium/market-heatmap' },
     { icon: Filter, label: 'Asset Screener', href: '/premium/screener' },
     { icon: History, label: 'Backtesting Engine', href: '/premium/backtesting' },
     { icon: PieIcon, label: 'AI Portfolio Deep-Dive', href: '/premium/deep-dive' },
