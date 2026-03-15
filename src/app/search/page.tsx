@@ -11,6 +11,18 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { 
+  Select, 
+  SelectContent, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue 
+} from '@/components/ui/select';
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import { 
   Search as SearchIcon, 
   Loader2, 
   Sparkles, 
@@ -24,9 +36,12 @@ import {
   X,
   Layers,
   Filter,
-  Tag as TagIcon
+  Tag as TagIcon,
+  ChevronDown,
+  ChevronUp,
+  RotateCcw
 } from 'lucide-react';
-import { SearchResult, SearchResultType, SearchSuggestion } from '@/types';
+import { SearchResult, SearchResultType, SearchSuggestion, AdvancedSearchFilters } from '@/types';
 import { searchService } from '@/services/data/search-service';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
@@ -44,7 +59,12 @@ export default function SearchPage() {
   const [activeTab, setActiveTab] = useState<string>('all');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [isAdvancedOpen, setIsAdvancedOpen] = useState(false);
   
+  // Advanced Filter States
+  const [selectedAuthor, setSelectedAuthor] = useState('all');
+  const [selectedCategory, setSelectedCategory] = useState('all');
+
   const searchContainerRef = useRef<HTMLDivElement>(null);
 
   // Handle clicking outside to close suggestions
@@ -84,13 +104,19 @@ export default function SearchPage() {
   // Full Results Fetch Effect
   const handlePerformSearch = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
-    if (query.trim().length < 2) return;
+    if (query.trim().length < 2 && selectedAuthor === 'all' && selectedCategory === 'all') return;
 
     setIsLoading(true);
     setShowSuggestions(false);
     setSelectedTags([]); // Clear tag filters on new search
+    
+    const filters: AdvancedSearchFilters = {
+      author: selectedAuthor,
+      category: selectedCategory
+    };
+
     try {
-      const response = await searchService.performSearch(query);
+      const response = await searchService.performSearch(query, filters);
       setResults(response.data);
     } catch (error) {
       console.error('Search failed', error);
@@ -115,7 +141,7 @@ export default function SearchPage() {
   const filteredResults = useMemo(() => {
     let filtered = results;
     
-    // 1. Category Filter
+    // 1. Tab Filter (EntityType)
     if (activeTab !== 'all') {
       if (activeTab === 'topic') {
         filtered = filtered.filter(r => r.type === 'topic' || r.type === 'glossary');
@@ -124,7 +150,7 @@ export default function SearchPage() {
       }
     }
 
-    // 2. Tag Filter
+    // 2. Dynamic Tag Filter
     if (selectedTags.length > 0) {
       filtered = filtered.filter(r => 
         selectedTags.every(tag => r.tags?.includes(tag))
@@ -160,6 +186,14 @@ export default function SearchPage() {
     );
   };
 
+  const handleResetFilters = () => {
+    setSelectedAuthor('all');
+    setSelectedCategory('all');
+    setQuery('');
+    setResults([]);
+    setSelectedTags([]);
+  };
+
   return (
     <main className="min-h-screen bg-background pt-20 pb-32">
       <Section spacing="md">
@@ -175,99 +209,151 @@ export default function SearchPage() {
             </Text>
           </header>
 
-          <div className="max-w-2xl mx-auto mb-12 relative" ref={searchContainerRef}>
-            <form onSubmit={handlePerformSearch} className="relative group">
-              <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
-              <Input
-                type="text"
-                placeholder="Search by topic, expert, or tool..."
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                onFocus={() => query.length >= 2 && setShowSuggestions(true)}
-                className="h-14 pl-12 pr-12 text-lg rounded-2xl border-primary/20 bg-card/50 backdrop-blur-sm focus:ring-primary/40 focus:border-primary transition-all shadow-xl"
-                autoFocus
-              />
-              <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
-                {query && (
-                  <button 
-                    type="button" 
-                    onClick={() => { setQuery(''); setSuggestions([]); setResults([]); setSelectedTags([]); }}
-                    className="p-1 hover:bg-muted rounded-full text-muted-foreground transition-colors"
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
-                )}
-                {isLoading && (
-                  <Loader2 className="h-5 w-5 text-primary animate-spin" />
-                )}
-              </div>
-            </form>
-
-            {/* Suggestions Dropdown */}
-            {showSuggestions && (query.length >= 2) && (
-              <Card className="absolute top-full left-0 right-0 mt-2 z-50 glass-card border-primary/20 overflow-hidden shadow-2xl animate-in fade-in slide-in-from-top-2 duration-200">
-                <CardContent className="p-2">
-                  {isSuggestionsLoading ? (
-                    <div className="p-4 space-y-3">
-                      <Skeleton className="h-4 w-1/3" />
-                      <Skeleton className="h-10 w-full rounded-lg" />
-                      <Skeleton className="h-10 w-full rounded-lg" />
-                    </div>
-                  ) : suggestions.length > 0 ? (
-                    <div className="space-y-1">
-                      <div className="px-3 py-2">
-                        <Text variant="label" className="text-[9px] text-primary/60">Live Suggestions</Text>
-                      </div>
-                      {suggestions.map((suggestion) => (
-                        <Link 
-                          key={suggestion.id} 
-                          href={suggestion.route}
-                          onClick={() => setShowSuggestions(false)}
-                          className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-primary/10 transition-colors group"
-                        >
-                          <div className="p-2 rounded-lg bg-muted group-hover:bg-primary/20 text-muted-foreground group-hover:text-primary transition-colors">
-                            {getResultIcon(suggestion.type)}
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <Text variant="bodySmall" weight="bold" className="truncate block">
-                              {suggestion.title}
-                            </Text>
-                            <Text variant="caption" className="text-muted-foreground uppercase text-[8px] tracking-tighter">
-                              {suggestion.type}
-                            </Text>
-                          </div>
-                          <ArrowRight className="h-3 w-3 text-primary opacity-0 group-hover:opacity-100 transition-all -translate-x-2 group-hover:translate-x-0" />
-                        </Link>
-                      ))}
-                      <button 
-                        onClick={() => handlePerformSearch()}
-                        className="w-full text-center py-3 border-t border-white/5 hover:bg-muted transition-colors"
-                      >
-                        <Text variant="caption" className="font-bold text-primary">View all results for "{query}"</Text>
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="p-8 text-center opacity-50">
-                      <SearchX className="h-8 w-8 mx-auto mb-2" />
-                      <Text variant="caption">No instant matches for "{query}"</Text>
-                    </div>
+          <div className="max-w-2xl mx-auto mb-12 space-y-4" ref={searchContainerRef}>
+            <div className="relative">
+              <form onSubmit={handlePerformSearch} className="relative group">
+                <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                <Input
+                  type="text"
+                  placeholder="Search by topic, expert, or tool..."
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  onFocus={() => query.length >= 2 && setShowSuggestions(true)}
+                  className="h-14 pl-12 pr-12 text-lg rounded-2xl border-primary/20 bg-card/50 backdrop-blur-sm focus:ring-primary/40 focus:border-primary transition-all shadow-xl"
+                  autoFocus
+                />
+                <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
+                  {query && (
+                    <button 
+                      type="button" 
+                      onClick={() => { setQuery(''); setSuggestions([]); setResults([]); setSelectedTags([]); }}
+                      className="p-1 hover:bg-muted rounded-full text-muted-foreground transition-colors"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
                   )}
-                </CardContent>
-              </Card>
-            )}
+                  {isLoading && (
+                    <Loader2 className="h-5 w-5 text-primary animate-spin" />
+                  )}
+                </div>
+              </form>
 
-            <div className="mt-4 flex flex-wrap gap-2 justify-center">
-              <Text variant="caption" className="text-muted-foreground mr-2 font-bold uppercase tracking-tighter">Popular Queries:</Text>
-              {['Yield Curve', 'Compound Interest', 'Maven', 'Recession'].map(term => (
-                <button
-                  key={term}
-                  onClick={() => { setQuery(term); handlePerformSearch(); }}
-                  className="text-xs font-bold text-primary/70 hover:text-primary transition-colors hover:underline"
-                >
-                  #{term}
-                </button>
-              ))}
+              {/* Suggestions Dropdown */}
+              {showSuggestions && (query.length >= 2) && (
+                <Card className="absolute top-full left-0 right-0 mt-2 z-50 glass-card border-primary/20 overflow-hidden shadow-2xl animate-in fade-in slide-in-from-top-2 duration-200">
+                  <CardContent className="p-2">
+                    {isSuggestionsLoading ? (
+                      <div className="p-4 space-y-3">
+                        <Skeleton className="h-4 w-1/3" />
+                        <Skeleton className="h-10 w-full rounded-lg" />
+                        <Skeleton className="h-10 w-full rounded-lg" />
+                      </div>
+                    ) : suggestions.length > 0 ? (
+                      <div className="space-y-1">
+                        <div className="px-3 py-2">
+                          <Text variant="label" className="text-[9px] text-primary/60">Live Suggestions</Text>
+                        </div>
+                        {suggestions.map((suggestion) => (
+                          <Link 
+                            key={suggestion.id} 
+                            href={suggestion.route}
+                            onClick={() => setShowSuggestions(false)}
+                            className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-primary/10 transition-colors group"
+                          >
+                            <div className="p-2 rounded-lg bg-muted group-hover:bg-primary/20 text-muted-foreground group-hover:text-primary transition-colors">
+                              {getResultIcon(suggestion.type)}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <Text variant="bodySmall" weight="bold" className="truncate block">
+                                {suggestion.title}
+                              </Text>
+                              <Text variant="caption" className="text-muted-foreground uppercase text-[8px] tracking-tighter">
+                                {suggestion.type}
+                              </Text>
+                            </div>
+                            <ArrowRight className="h-3 w-3 text-primary opacity-0 group-hover:opacity-100 transition-all -translate-x-2 group-hover:translate-x-0" />
+                          </Link>
+                        ))}
+                        <button 
+                          onClick={() => handlePerformSearch()}
+                          className="w-full text-center py-3 border-t border-white/5 hover:bg-muted transition-colors"
+                        >
+                          <Text variant="caption" className="font-bold text-primary">View all results for "{query}"</Text>
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="p-8 text-center opacity-50">
+                        <SearchX className="h-8 w-8 mx-auto mb-2" />
+                        <Text variant="caption">No instant matches for "{query}"</Text>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              )}
             </div>
+
+            {/* Advanced Filters Panel */}
+            <Collapsible open={isAdvancedOpen} onOpenChange={setIsAdvancedOpen} className="w-full">
+              <div className="flex justify-center">
+                <CollapsibleTrigger asChild>
+                  <Button variant="ghost" size="sm" className="gap-2 text-[10px] font-bold uppercase tracking-widest text-muted-foreground hover:text-primary">
+                    <Filter className="h-3 w-3" />
+                    {isAdvancedOpen ? 'Hide Refinement' : 'Refine Discovery'}
+                    {isAdvancedOpen ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
+                  </Button>
+                </CollapsibleTrigger>
+              </div>
+              
+              <CollapsibleContent className="pt-4 animate-in fade-in slide-in-from-top-2 duration-300">
+                <Card className="glass-card border-white/5 bg-card/30">
+                  <CardContent className="p-6 space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="space-y-2">
+                        <Text variant="label" className="text-[10px] opacity-50 ml-1">Expert Author</Text>
+                        <Select value={selectedAuthor} onValueChange={setSelectedAuthor}>
+                          <SelectTrigger className="bg-background/50 border-white/10 rounded-xl h-11">
+                            <User className="h-3.5 w-3.5 mr-2 text-secondary" />
+                            <SelectValue placeholder="All Experts" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="all">All Experts</SelectItem>
+                            <SelectItem value="The Market Maven">The Market Maven</SelectItem>
+                            <SelectItem value="Julian Wealth">Julian Wealth</SelectItem>
+                            <SelectItem value="Eleanor Vance">Eleanor Vance</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Text variant="label" className="text-[10px] opacity-50 ml-1">Category Hub</Text>
+                        <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                          <SelectTrigger className="bg-background/50 border-white/10 rounded-xl h-11">
+                            <Layers className="h-3.5 w-3.5 mr-2 text-primary" />
+                            <SelectValue placeholder="All Taxonomies" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="all">All Taxonomies</SelectItem>
+                            <SelectItem value="Economics">Economics</SelectItem>
+                            <SelectItem value="Investing">Investing</SelectItem>
+                            <SelectItem value="Markets">Markets</SelectItem>
+                            <SelectItem value="Retirement">Retirement</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+
+                    <div className="flex gap-3 pt-2">
+                      <Button onClick={() => handlePerformSearch()} className="flex-1 rounded-xl h-11 font-bold shadow-lg shadow-primary/20">
+                        Apply Advanced Filters
+                      </Button>
+                      <Button variant="outline" size="icon" onClick={handleResetFilters} className="h-11 w-11 rounded-xl border-white/10" title="Reset All">
+                        <RotateCcw className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </CollapsibleContent>
+            </Collapsible>
           </div>
 
           <Tabs value={activeTab} onValueChange={(val) => { setActiveTab(val); setSelectedTags([]); }} className="w-full">
@@ -331,6 +417,9 @@ export default function SearchPage() {
               <div className="mb-6 flex items-center justify-between px-2">
                 <Text variant="bodySmall" className="text-muted-foreground font-bold italic">
                   Discovery Engine: <span className="text-foreground">{filteredResults.length} intelligence nodes</span> localized
+                  {(selectedAuthor !== 'all' || selectedCategory !== 'all') && (
+                    <span className="text-primary ml-2"> (Filtered)</span>
+                  )}
                 </Text>
               </div>
 
@@ -399,34 +488,17 @@ export default function SearchPage() {
                     </Link>
                   ))}
                 </div>
-              ) : query.trim().length >= 2 && results.length === 0 && !isLoading ? (
+              ) : (query.trim().length >= 2 || selectedAuthor !== 'all' || selectedCategory !== 'all') && results.length === 0 && !isLoading ? (
                 <div className="py-32 text-center bg-card/10 rounded-[3rem] border-2 border-dashed border-white/5">
                   <div className="w-20 h-20 bg-muted/20 rounded-full flex items-center justify-center mx-auto mb-6">
                     <SearchX className="h-10 w-10 text-muted-foreground opacity-50" />
                   </div>
                   <Text variant="h3" className="mb-2">No matching intelligence found</Text>
                   <Text variant="bodySmall" className="text-muted-foreground max-w-sm mx-auto">
-                    We couldn't find any nodes matching "{query}". Try broadening your search terms or browsing by category.
+                    We couldn't find any nodes matching these criteria. Try broadening your parameters or browsing by category.
                   </Text>
-                  <Button variant="link" className="mt-4 text-primary font-bold" onClick={() => { setQuery(''); setSuggestions([]); setSelectedTags([]); }}>
-                    Clear search query
-                  </Button>
-                </div>
-              ) : selectedTags.length > 0 && filteredResults.length === 0 ? (
-                <div className="py-24 text-center">
-                  <div className="w-16 h-16 bg-muted/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Filter className="h-8 w-8 text-muted-foreground opacity-30" />
-                  </div>
-                  <Text variant="h4">No nodes match these filters</Text>
-                  <Text variant="bodySmall" className="text-muted-foreground mt-2">
-                    Try removing some of the selected topic nodes.
-                  </Text>
-                  <Button 
-                    variant="outline" 
-                    className="mt-6 border-primary/20 text-primary" 
-                    onClick={() => setSelectedTags([])}
-                  >
-                    Reset Topic Filters
+                  <Button variant="link" className="mt-4 text-primary font-bold" onClick={handleResetFilters}>
+                    Reset all parameters
                   </Button>
                 </div>
               ) : (
@@ -435,7 +507,7 @@ export default function SearchPage() {
                     <SearchIcon className="h-10 w-10 text-muted-foreground" />
                   </div>
                   <Text variant="h4">Awaiting Discovery</Text>
-                  <Text variant="bodySmall">Enter a query above to scan the Intelligence Index.</Text>
+                  <Text variant="bodySmall">Enter a query or apply a filter above to scan the Intelligence Index.</Text>
                 </div>
               )}
             </TabsContent>

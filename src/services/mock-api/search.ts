@@ -1,4 +1,4 @@
-import { ApiResponse, SearchResult, SearchSuggestion } from '@/types';
+import { ApiResponse, SearchResult, SearchSuggestion, AdvancedSearchFilters } from '@/types';
 
 /**
  * @fileOverview Mock service for the Global Search System.
@@ -98,21 +98,32 @@ const mockSearchData: SearchResult[] = [
   }
 ];
 
-export const globalSearch = async (query: string): Promise<ApiResponse<SearchResult[]>> => {
+export const globalSearch = async (query: string, filters?: AdvancedSearchFilters): Promise<ApiResponse<SearchResult[]>> => {
   await new Promise((resolve) => setTimeout(resolve, 600));
   
   const normalizedQuery = query.toLowerCase().trim();
   
-  if (!normalizedQuery) {
-    return { data: [], status: 200 };
+  let results = mockSearchData;
+
+  // Apply Query Filter
+  if (normalizedQuery) {
+    results = results.filter(item => 
+      item.title.toLowerCase().includes(normalizedQuery) ||
+      item.snippet.toLowerCase().includes(normalizedQuery) ||
+      item.category?.toLowerCase().includes(normalizedQuery) ||
+      item.tags?.some(tag => tag.toLowerCase().includes(normalizedQuery))
+    );
   }
 
-  const results = mockSearchData.filter(item => 
-    item.title.toLowerCase().includes(normalizedQuery) ||
-    item.snippet.toLowerCase().includes(normalizedQuery) ||
-    item.category?.toLowerCase().includes(normalizedQuery) ||
-    item.tags?.some(tag => tag.toLowerCase().includes(normalizedQuery))
-  );
+  // Apply Advanced Filters
+  if (filters) {
+    if (filters.category && filters.category !== 'all') {
+      results = results.filter(item => item.category === filters.category);
+    }
+    if (filters.author && filters.author !== 'all') {
+      results = results.filter(item => item.author === filters.author);
+    }
+  }
 
   return {
     data: results,

@@ -1,5 +1,5 @@
 import * as mockApi from '@/services/mock-api/search';
-import { ApiResponse, SearchResult, SearchSuggestion } from '@/types';
+import { ApiResponse, SearchResult, SearchSuggestion, AdvancedSearchFilters } from '@/types';
 import { errorHandler } from '@/lib/errors/error-handler';
 
 /**
@@ -7,9 +7,9 @@ import { errorHandler } from '@/lib/errors/error-handler';
  */
 
 export const searchService = {
-  async performSearch(query: string): Promise<ApiResponse<SearchResult[]>> {
+  async performSearch(query: string, filters?: AdvancedSearchFilters): Promise<ApiResponse<SearchResult[]>> {
     try {
-      return await mockApi.globalSearch(query);
+      return await mockApi.globalSearch(query, filters);
     } catch (error) {
       const appError = errorHandler.handleError(error);
       return {

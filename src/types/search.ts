@@ -25,4 +25,10 @@ export interface SearchSuggestion {
 export interface SearchFilters {
   type?: SearchResultType | 'all';
   category?: string;
+  author?: string;
+  tags?: string[];
+}
+
+export interface AdvancedSearchFilters extends SearchFilters {
+  query?: string;
 }
