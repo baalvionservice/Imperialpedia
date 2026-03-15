@@ -3,21 +3,38 @@ import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { Container } from '@/design-system/layout/container';
 import { Text } from '@/design-system/typography/text';
-import { glossaryService } from '@/services/data';
+import { glossaryEngineService } from '@/modules/seo/services/glossary-service';
 import { seoService } from '@/modules/seo-engine/services/seo-service';
 import { JsonLd } from '@/modules/seo-engine/components/JsonLd';
+import { AlphabetNav } from '@/modules/seo/components/AlphabetNav';
+import Link from 'next/link';
+import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { ArrowRight, ChevronRight, Home } from 'lucide-react';
 
-interface GlossaryTermPageProps {
+interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
 /**
- * Programmatic SEO page for Glossary Terms.
- * Supports automated metadata and structured data generation.
+ * Intelligent pSEO Route: Handles both specific Terms and Alphabetical Browsing.
  */
-export async function generateMetadata({ params }: GlossaryTermPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const response = await glossaryService.getTermBySlug(slug);
+  
+  // Case 1: Browse by Letter (single char)
+  if (slug.length === 1) {
+    const letter = slug.toUpperCase();
+    return seoService.generateMetadata({
+      title: `Financial Terms Starting with ${letter} — Glossary Index`,
+      description: `Browse all financial terms and investment definitions starting with the letter ${letter}. Part of the Imperialpedia Intelligence Index.`,
+      slug: slug,
+      type: 'glossary',
+      keywords: [`Financial Terms ${letter}`, `Investment Glossary ${letter}`, 'pSEO'],
+    }, '/glossary');
+  }
+
+  // Case 2: Specific Term
+  const response = await glossaryEngineService.getTermBySlug(slug);
   const term = response.data;
 
   if (!term) {
@@ -25,7 +42,7 @@ export async function generateMetadata({ params }: GlossaryTermPageProps): Promi
   }
 
   return seoService.generateMetadata({
-    title: `${term.term} Definition & Meaning`,
+    title: `${term.term} Definition & Financial Meaning`,
     description: term.definition,
     slug: term.slug,
     type: 'glossary',
@@ -33,9 +50,16 @@ export async function generateMetadata({ params }: GlossaryTermPageProps): Promi
   }, '/glossary');
 }
 
-export default async function Page({ params }: GlossaryTermPageProps) {
+export default async function GlossaryRouterPage({ params }: PageProps) {
   const { slug } = await params;
-  const response = await glossaryService.getTermBySlug(slug);
+
+  // Handle Alphabetical Browse
+  if (slug.length === 1) {
+    return <AlphabetArchive letter={slug} />;
+  }
+
+  // Handle Specific Term
+  const response = await glossaryEngineService.getTermBySlug(slug);
   const term = response.data;
 
   if (!term) {
@@ -46,32 +70,48 @@ export default async function Page({ params }: GlossaryTermPageProps) {
     title: term.term,
     description: term.definition,
     slug: term.slug,
-  }, 'article'); // Using article schema for now as a fallback
+  }, 'article');
 
   return (
     <main className="min-h-screen bg-background pt-20">
       <JsonLd data={jsonLd} />
       <Container isNarrow>
+        <nav className="flex items-center gap-2 text-xs text-muted-foreground mb-12">
+          <Link href="/" className="hover:text-primary flex items-center gap-1"><Home className="w-3 h-3" /> Home</Link>
+          <ChevronRight className="w-3 h-3" />
+          <Link href="/glossary" className="hover:text-primary">Glossary</Link>
+          <ChevronRight className="w-3 h-3" />
+          <Link href={`/glossary/${term.term.charAt(0).toLowerCase()}`} className="hover:text-primary uppercase">{term.term.charAt(0)}</Link>
+          <ChevronRight className="w-3 h-3" />
+          <span className="text-foreground font-bold">{term.term}</span>
+        </nav>
+
         <header className="mb-12">
           <Text variant="label" className="text-primary mb-4">{term.category}</Text>
           <Text variant="h1" className="mb-6">{term.term}</Text>
-          <div className="h-1 w-20 bg-primary rounded-full mb-8" />
+          <div className="h-1.5 w-24 bg-primary rounded-full mb-8 shadow-sm shadow-primary/20" />
         </header>
 
         <section className="prose prose-invert max-w-none">
-          <Text variant="h3" className="mb-4">Definition</Text>
-          <Text variant="body" className="text-lg leading-relaxed mb-8">
+          <Text variant="h3" className="mb-6 text-foreground/90">Professional Definition</Text>
+          <Text variant="body" className="text-xl leading-relaxed mb-10 text-muted-foreground">
             {term.definition}
           </Text>
 
           {term.examples && term.examples.length > 0 && (
-            <div className="bg-muted/30 p-8 rounded-2xl border border-white/5 mb-8">
-              <Text variant="h4" className="mb-4">Examples & Context</Text>
+            <div className="bg-primary/5 p-8 rounded-3xl border border-primary/10 mb-12 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+              <Text variant="h4" className="mb-6 flex items-center gap-2">
+                <span className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center text-primary text-sm">?</span>
+                Real-World Examples & Context
+              </Text>
               <ul className="space-y-4">
                 {term.examples.map((example, i) => (
-                  <li key={i} className="flex gap-3">
-                    <span className="text-primary font-bold">•</span>
-                    <Text variant="bodySmall">{example}</Text>
+                  <li key={i} className="flex gap-4 group">
+                    <span className="text-primary font-bold shrink-0 mt-1">•</span>
+                    <Text variant="bodySmall" className="group-hover:text-foreground transition-colors leading-relaxed">
+                      {example}
+                    </Text>
                   </li>
                 ))}
               </ul>
@@ -79,20 +119,77 @@ export default async function Page({ params }: GlossaryTermPageProps) {
           )}
         </section>
 
-        <footer className="mt-16 pt-8 border-t">
-          <Text variant="label" className="mb-4">Related Intelligence</Text>
-          <div className="flex flex-wrap gap-3">
-            {term.relatedTerms.map((related) => (
-              <a 
-                key={related.slug} 
-                href={`/glossary/${related.slug}`}
-                className="px-4 py-2 rounded-full bg-card border hover:border-primary transition-colors text-sm"
-              >
-                {related.term}
-              </a>
+        <footer className="mt-20 pt-10 border-t">
+          <AlphabetNav activeLetter={term.term.charAt(0)} />
+          
+          <Text variant="h4" className="mb-8">Related Intelligence</Text>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {term.relatedTerms?.map((related) => (
+              <Link key={related.slug} href={`/glossary/${related.slug}`}>
+                <Card className="glass-card hover:border-primary/50 transition-all p-6 group">
+                  <div className="flex justify-between items-center">
+                    <div className="space-y-1">
+                      <Text variant="label" className="text-[10px] opacity-50 uppercase tracking-widest">Related Term</Text>
+                      <Text variant="body" className="font-bold group-hover:text-primary transition-colors">{related.term}</Text>
+                    </div>
+                    <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-all group-hover:translate-x-1" />
+                  </div>
+                </Card>
+              </Link>
             ))}
           </div>
         </footer>
+      </Container>
+    </main>
+  );
+}
+
+/**
+ * Archive Component for single-letter browse pages.
+ */
+async function AlphabetArchive({ letter }: { letter: string }) {
+  const response = await glossaryEngineService.getTermsByLetter(letter);
+  const terms = response.data;
+
+  return (
+    <main className="min-h-screen bg-background pt-20">
+      <Container>
+        <header className="mb-12 max-w-3xl">
+          <Text variant="label" className="text-primary mb-4">A–Z Browse</Text>
+          <Text variant="h1" className="mb-6">Terms starting with "{letter.toUpperCase()}"</Text>
+          <Text variant="body" className="text-muted-foreground text-lg">
+            Master the terminology of the global economy. Explore all expert definitions categorized under the letter "{letter.toUpperCase()}".
+          </Text>
+        </header>
+
+        <AlphabetNav activeLetter={letter} />
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
+          {terms.length > 0 ? (
+            terms.map((term) => (
+              <Link key={term.id} href={`/glossary/${term.slug}`} className="group">
+                <Card className="glass-card hover:border-primary/50 transition-all duration-300 h-full">
+                  <CardHeader>
+                    <Text variant="label" className="text-primary mb-2">{term.category}</Text>
+                    <CardTitle className="text-xl group-hover:text-primary transition-colors mb-2">
+                      {term.term}
+                    </CardTitle>
+                    <CardDescription className="line-clamp-2">
+                      {term.definition}
+                    </CardDescription>
+                  </CardHeader>
+                </Card>
+              </Link>
+            ))
+          ) : (
+            <div className="col-span-full py-20 text-center bg-muted/20 rounded-3xl border border-dashed">
+              <Text variant="h3" className="mb-4">No terms found</Text>
+              <Text variant="body" className="text-muted-foreground">
+                We are currently indexing definitions for this section. Check back soon.
+              </Text>
+            </div>
+          )}
+        </div>
       </Container>
     </main>
   );
