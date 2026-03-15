@@ -159,6 +159,7 @@ const Sidebar = ({ className }: { className?: string }) => {
 
   const publishingItems = [
     { icon: PenTool, label: 'Content Engine', href: '/articles' },
+    { icon: Sparkles, label: 'AI Bull Case', href: '/ai-analyst/bull-case' },
     { icon: Search, label: 'Internal Search', href: '/search' },
     { icon: UsersIcon, label: 'Creator Network', href: '/creators' },
     { icon: CalcIcon, label: 'Financial Tools', href: '/financial-tools' },
