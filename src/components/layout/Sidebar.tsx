@@ -197,6 +197,7 @@ const Sidebar = ({ className }: { className?: string }) => {
   const publishingItems = [
     { icon: PenTool, label: 'Content Engine', href: '/articles' },
     { icon: Layout, label: 'AI Asset Summary', href: '/ai-analyst/asset-summary' },
+    { icon: Zap, label: 'Event Intelligence', href: '/ai-analyst/event-intelligence' },
     { icon: Newspaper, label: 'Daily AI Briefing', href: '/ai-analyst/daily-briefing' },
     { icon: CalendarDays, label: 'Weekly AI Digest', href: '/ai-analyst/weekly-digest' },
     { icon: History, label: 'AI Automated Recap', href: '/ai-analyst/automated-recap' },

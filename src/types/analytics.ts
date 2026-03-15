@@ -271,7 +271,7 @@ export interface AssetSummary {
 }
 
 /**
- * AI Scenario Modeler Types (Prompt 31)
+ * AI Scenario Modeler Types
  */
 export interface CaseAnalysis {
   summary: string;
@@ -285,6 +285,33 @@ export interface AssetCase {
   symbol: string;
   bull_case: CaseAnalysis;
   bear_case: CaseAnalysis;
+}
+
+/**
+ * AI Event Intelligence Types (Prompt 32)
+ */
+export interface CatalystEvent {
+  asset_name: string;
+  symbol: string;
+  type: string;
+  date: string;
+  impact: 'High' | 'Medium' | 'Low';
+}
+
+export interface EarningsSummaryDetail {
+  asset_name: string;
+  symbol: string;
+  estimated_eps: number;
+  actual_eps: number;
+  estimated_revenue: string;
+  actual_revenue: string;
+  notes: string;
+  date: string;
+}
+
+export interface EventIntelligenceData {
+  catalysts: CatalystEvent[];
+  earnings_summaries: EarningsSummaryDetail[];
 }
 
 /**

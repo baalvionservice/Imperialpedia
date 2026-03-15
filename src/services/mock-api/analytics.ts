@@ -22,7 +22,8 @@ import {
   TopCreator,
   AdminAnalyticsData,
   AssetSummary,
-  AssetCase
+  AssetCase,
+  EventIntelligenceData
 } from '@/types/analytics';
 
 /**
@@ -574,6 +575,26 @@ export const getAssetCases = async (query?: string): Promise<ApiResponse<AssetCa
         }
       }
     ],
+    status: 200
+  };
+};
+
+export const getEventIntelligence = async (): Promise<ApiResponse<EventIntelligenceData>> => {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  return {
+    data: {
+      catalysts: [
+        { asset_name: "XYZ Corp", symbol: "XYZ", type: "Earnings", date: "2026-03-20", impact: "High" },
+        { asset_name: "ABC Inc", symbol: "ABC", type: "Product Launch", date: "2026-03-22", impact: "Medium" },
+        { asset_name: "NVIDIA", symbol: "NVDA", type: "Conference", date: "2026-03-25", impact: "High" },
+        { asset_name: "Tesla", symbol: "TSLA", type: "Regulatory News", date: "2026-03-28", impact: "Medium" },
+      ],
+      earnings_summaries: [
+        { asset_name: "XYZ Corp", symbol: "XYZ", estimated_eps: 1.25, actual_eps: 1.35, estimated_revenue: "500M", actual_revenue: "520M", notes: "Positive earnings surprise", date: "2026-03-14" },
+        { asset_name: "ABC Inc", symbol: "ABC", estimated_eps: 0.75, actual_eps: 0.70, estimated_revenue: "300M", actual_revenue: "295M", notes: "Slight miss on EPS", date: "2026-03-12" },
+        { asset_name: "Microsoft", symbol: "MSFT", estimated_eps: 2.80, actual_eps: 2.95, estimated_revenue: "62B", actual_revenue: "64.2B", notes: "Cloud acceleration continues", date: "2026-03-10" },
+      ]
+    },
     status: 200
   };
 };
