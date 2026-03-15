@@ -6,7 +6,7 @@ import { CreatorProfile, CreatorContentItem } from '@/types';
 import { Text } from '@/design-system/typography/text';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   ShieldCheck, 
@@ -15,13 +15,11 @@ import {
   UserMinus, 
   BookOpen, 
   TrendingUp, 
-  ExternalLink,
   Twitter,
   Linkedin,
   Globe,
   Github,
   Youtube,
-  Calendar,
   ArrowUpRight,
   ChevronRight,
   Info,
@@ -306,9 +304,16 @@ export function CreatorProfileClient({ creator }: CreatorProfileClientProps) {
         {/* FOLLOWERS TAB */}
         <TabsContent value="followers" className="animate-in fade-in duration-500">
           <div className="space-y-8">
-            <div className="border-b border-white/5 pb-6">
-              <Text variant="h3" className="font-bold">Expert Network</Text>
-              <Text variant="bodySmall" className="text-muted-foreground">Experts and analysts following {creator.displayName}'s research.</Text>
+            <div className="flex items-center justify-between border-b border-white/5 pb-6">
+              <div>
+                <Text variant="h3" className="font-bold">Expert Network</Text>
+                <Text variant="bodySmall" className="text-muted-foreground">Experts and analysts following {creator.displayName}'s research.</Text>
+              </div>
+              <Button variant="ghost" size="sm" className="font-bold text-primary gap-1 group" asChild>
+                <Link href={`/creator/${creator.id}/followers`}>
+                  View All Connections <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Link>
+              </Button>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

@@ -6,18 +6,12 @@ import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { 
   LayoutDashboard, 
-  BookOpen, 
-  PenTool, 
   Settings, 
   BarChart3, 
   Users as UsersIcon,
-  Database,
   Search,
   PlusSquare,
   FileEdit,
-  Send,
-  UserCircle,
-  FileSearch,
   CheckCircle,
   MessageSquare,
   Calendar,
@@ -29,11 +23,11 @@ import {
   Bell,
   ShieldCheck,
   History,
-  TrendingUp,
-  Briefcase,
   DollarSign,
   CalendarCheck,
-  UserCog
+  UserCog,
+  UserCircle,
+  PenTool
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 import { useAppStore } from '@/lib/state/app-store';
@@ -112,12 +106,13 @@ const Sidebar = ({ className }: { className?: string }) => {
 
   const creatorItems = [
     { icon: LayoutDashboard, label: 'Expert Dashboard', href: '/creator/dashboard' },
-    { icon: PlusSquare, label: 'Create Insight', href: '/creator/dashboard/create' },
+    { icon: PlusSquare, label: 'Create Insight', href: '/creator/dashboard/editor' },
     { icon: CalendarCheck, label: 'Publishing Schedule', href: '/creator/dashboard/schedule' },
     { icon: FileEdit, label: 'Intelligence Drafts', href: '/writer/drafts' },
     { icon: BarChart3, label: 'Insights Analytics', href: '/creator/dashboard/analytics' },
     { icon: DollarSign, label: 'Monetization', href: '/creator/dashboard/revenue' },
     { icon: Bell, label: 'Activity Feed', href: '/creator/dashboard/notifications', badge: unreadNotifications },
+    { icon: ShieldCheck, label: 'Expert Verification', href: '/creator/dashboard/verification' },
     { icon: UserCog, label: 'Studio Settings', href: '/creator/dashboard/settings' },
     { icon: UserCircle, label: 'Expert Profile', href: '/creators/profile' },
   ];

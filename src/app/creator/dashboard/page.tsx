@@ -88,10 +88,10 @@ export default function CreatorDashboardPage() {
     new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(val);
 
   const summaryMetrics = [
-    { title: 'Intelligence Nodes', value: stats?.totalArticles, icon: FileEdit, color: 'text-primary', description: '+4 this month' },
-    { title: 'Total Audience', value: `${((stats?.totalFollowers || 0) / 1000).toFixed(1)}k`, icon: Users, color: 'text-secondary', description: '+1.2k new experts' },
-    { title: 'Global Reach', value: `${((stats?.totalViews || 0) / 1000000).toFixed(1)}M`, icon: Eye, color: 'text-primary', description: 'Trending in Economics' },
-    { title: 'Total Revenue', value: formatCurrency(stats?.totalRevenue || 0), icon: DollarSign, color: 'text-secondary', description: 'Next payout: Mar 15' },
+    { title: 'Intelligence Nodes', value: stats?.totalArticles, icon: FileEdit, color: 'text-primary', description: '+4 this month', href: '/creator/dashboard/schedule' },
+    { title: 'Total Audience', value: `${((stats?.totalFollowers || 0) / 1000).toFixed(1)}k`, icon: Users, color: 'text-secondary', description: '+1.2k new experts', href: '/creator/dashboard/notifications' },
+    { title: 'Global Reach', value: `${((stats?.totalViews || 0) / 1000000).toFixed(1)}M`, icon: Eye, color: 'text-primary', description: 'Trending in Economics', href: '/creator/dashboard/analytics' },
+    { title: 'Total Revenue', value: formatCurrency(stats?.totalRevenue || 0), icon: DollarSign, color: 'text-secondary', description: 'Next payout: Mar 15', href: '/creator/dashboard/revenue' },
   ];
 
   return (
@@ -114,12 +114,14 @@ export default function CreatorDashboardPage() {
         </div>
         <div className="flex items-center gap-3">
           <Button asChild className="shadow-lg shadow-primary/20 bg-primary hover:bg-primary/90 rounded-xl h-11 px-6">
-            <Link href="/creator/dashboard/create">
+            <Link href="/creator/dashboard/editor">
               <Plus className="mr-2 h-4 w-4" /> Create Insight
             </Link>
           </Button>
-          <Button variant="outline" size="icon" className="rounded-xl h-11 w-11 border-white/10 bg-card/30">
-            <Settings className="h-4 w-4" />
+          <Button variant="outline" size="icon" className="rounded-xl h-11 w-11 border-white/10 bg-card/30" asChild>
+            <Link href="/creator/dashboard/settings">
+              <Settings className="h-4 w-4" />
+            </Link>
           </Button>
         </div>
       </header>
@@ -127,21 +129,23 @@ export default function CreatorDashboardPage() {
       {/* Summary Metrics Matrix */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {summaryMetrics.map((metric, idx) => (
-          <Card key={idx} className="glass-card border-none overflow-hidden relative group">
-            <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
-              <metric.icon className="h-16 w-16" />
-            </div>
-            <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0 relative z-10">
-              <CardTitle className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">{metric.title}</CardTitle>
-              <metric.icon className={`h-4 w-4 ${metric.color}`} />
-            </CardHeader>
-            <CardContent className="relative z-10">
-              <div className="text-2xl font-bold tracking-tight">{metric.value}</div>
-              <p className="text-[10px] text-emerald-500 font-bold mt-1 flex items-center gap-1">
-                <ArrowUpRight className="h-2.5 w-2.5" /> {metric.description}
-              </p>
-            </CardContent>
-          </Card>
+          <Link key={idx} href={metric.href}>
+            <Card className="glass-card border-none overflow-hidden relative group cursor-pointer hover:border-primary/30 transition-all">
+              <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                <metric.icon className="h-16 w-16" />
+              </div>
+              <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0 relative z-10">
+                <CardTitle className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">{metric.title}</CardTitle>
+                <metric.icon className={`h-4 w-4 ${metric.color}`} />
+              </CardHeader>
+              <CardContent className="relative z-10">
+                <div className="text-2xl font-bold tracking-tight">{metric.value}</div>
+                <p className="text-[10px] text-emerald-500 font-bold mt-1 flex items-center gap-1">
+                  <ArrowUpRight className="h-2.5 w-2.5" /> {metric.description}
+                </p>
+              </CardContent>
+            </Card>
+          </Link>
         ))}
       </div>
 
@@ -180,7 +184,7 @@ export default function CreatorDashboardPage() {
                     stroke="#888888" 
                     fontSize={10} 
                     tickLine={false} 
-                    axisLine={false}
+                    axisLine={false} 
                     tickFormatter={(val) => `${val / 1000}k`}
                   />
                   <Tooltip 
@@ -243,7 +247,7 @@ export default function CreatorDashboardPage() {
                 <Link href="/creator/dashboard/schedule">Content Calendar <Calendar className="h-3.5 w-3.5" /></Link>
               </Button>
               <Button variant="ghost" className="w-full justify-between h-9 text-xs rounded-lg hover:bg-white/5" asChild>
-                <Link href="/writer/drafts">Unpublished Research <FileEdit className="h-3.5 w-3.5" /></Link>
+                <Link href="/creator/dashboard/verification">Expert Verification <ShieldCheck className="h-3.5 w-3.5" /></Link>
               </Button>
               <Button variant="ghost" className="w-full justify-between h-9 text-xs rounded-lg hover:bg-white/5" asChild>
                 <Link href="/creator/dashboard/settings">Studio Preferences <Settings className="h-3.5 w-3.5" /></Link>
@@ -317,7 +321,7 @@ export default function CreatorDashboardPage() {
                     </TableCell>
                     <TableCell className="text-right pr-6">
                       <Button variant="ghost" size="sm" className="h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-all rounded-lg" asChild>
-                        <Link href={`/creator/dashboard/create?id=${item.id}`}>
+                        <Link href={`/creator/dashboard/editor?id=${item.id}`}>
                           <ChevronRight className="h-4 w-4" />
                         </Link>
                       </Button>
