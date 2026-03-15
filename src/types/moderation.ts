@@ -5,14 +5,29 @@ import { ID, Timestamp } from './common';
  */
 
 export type ModerationType = 'article' | 'comment' | 'submission';
-export type ModerationStatus = 'pending' | 'approved' | 'rejected' | 'flagged';
+export type ModerationStatus = 'Pending' | 'Reviewed' | 'Action Taken' | 'pending' | 'approved' | 'rejected' | 'flagged';
 
+/**
+ * Standard interface for administrative moderation tasks.
+ */
 export interface ModerationItem {
+  id: string;
+  content: string;
+  creator: string;
+  reportType: string;
+  status: 'Pending' | 'Reviewed' | 'Action Taken';
+  date: string;
+}
+
+/**
+ * Legacy/Alternative interface for content engine moderation.
+ */
+export interface ModerationEntry {
   id: ID;
   type: ModerationType;
   title: string;
   author: string;
   status: ModerationStatus;
   createdAt: Timestamp;
-  content?: string; // Optional preview for comments or snippets
+  content?: string;
 }

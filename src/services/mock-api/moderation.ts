@@ -4,18 +4,26 @@ import { ApiResponse, ModerationItem } from '@/types';
  * @fileOverview Mock service for content moderation data.
  */
 
-const mockModerationItems: ModerationItem[] = [
-  { id: 'mod-1', type: 'article', title: 'The Asymmetric Impact of Decentralized Fiscal Nodes', author: 'The Market Maven', status: 'pending', createdAt: '2024-03-12T10:00:00Z' },
-  { id: 'mod-2', type: 'comment', title: 'Re: Yield Curve Inversion', author: 'ReaderNode_42', status: 'pending', createdAt: '2024-03-12T11:15:00Z', content: 'This is a great analysis, but what about the inverted yield curve in 1978?' },
-  { id: 'mod-3', type: 'submission', title: 'Expert Profile Request: Ken Macro', author: 'Ken Macro', status: 'pending', createdAt: '2024-03-11T16:45:00Z' },
-  { id: 'mod-4', type: 'comment', title: 'Re: Passive Income', author: 'SpamBot_99', status: 'flagged', createdAt: '2024-03-12T08:30:00Z', content: 'Visit my site for free money fast!!!' },
-  { id: 'mod-5', type: 'article', title: 'DeFi Liquidity Cycles', author: 'Sarah Crypto', status: 'pending', createdAt: '2024-03-12T09:00:00Z' },
+const mockModerationQueue: ModerationItem[] = [
+  { id: 'm-1', content: 'Understanding Yield Curve Inversion', creator: 'marketmaven', reportType: 'Spam', status: 'Pending', date: '2024-03-12T10:30:00Z' },
+  { id: 'm-2', content: 'Macro Trends in 2026', creator: 'econvance', reportType: 'Fact Check', status: 'Reviewed', date: '2024-03-11T16:45:00Z' },
+  { id: 'm-3', content: 'DeFi Liquidity Pools', creator: 'defianalyst', reportType: 'Plagiarism', status: 'Action Taken', date: '2024-03-10T09:15:00Z' },
+  { id: 'm-4', content: 'Passive Income with Dividends', creator: 'dividenddan', reportType: 'Inaccurate Data', status: 'Pending', date: '2024-03-12T11:00:00Z' },
+  { id: 'm-5', content: 'Institutional Yield Strategies', creator: 'wealthbuilder', reportType: 'Copyright', status: 'Reviewed', date: '2024-03-11T14:20:00Z' },
 ];
 
-export const getPendingContent = async (): Promise<ApiResponse<ModerationItem[]>> => {
+export const getPendingContent = async (): Promise<ApiResponse<any[]>> => {
   await new Promise((resolve) => setTimeout(resolve, 400));
   return {
-    data: mockModerationItems,
+    data: mockModerationQueue,
+    status: 200,
+  };
+};
+
+export const getModerationQueue = async (): Promise<ApiResponse<ModerationItem[]>> => {
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  return {
+    data: mockModerationQueue,
     status: 200,
   };
 };
