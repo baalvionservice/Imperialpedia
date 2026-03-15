@@ -578,3 +578,34 @@ export interface LocalizationData {
   languages: LanguageNode[];
   localization_content: LocalizationItem[];
 }
+
+/**
+ * Prompt 53: Advanced Alerts & Notifications Types
+ */
+export interface AdvancedAlertNode {
+  alert_id: string;
+  type: string;
+  severity: 'High' | 'Medium' | 'Low';
+  source: string;
+  timestamp: string;
+  status: 'mock_active' | 'mock_resolved' | 'mock_snoozed';
+}
+
+export interface NotificationChannelNode {
+  channel: string;
+  status: 'mock_enabled' | 'mock_disabled';
+  last_sent: string;
+}
+
+export interface AlertRuleNode {
+  rule_name: string;
+  condition: string;
+  priority: 'mock_high' | 'mock_medium' | 'mock_low';
+  status: 'mock_active' | 'mock_inactive';
+}
+
+export interface AlertsSystemData {
+  alerts: AdvancedAlertNode[];
+  notification_channels: NotificationChannelNode[];
+  alert_rules: AlertRuleNode[];
+}

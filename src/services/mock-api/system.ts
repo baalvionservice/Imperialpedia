@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog, SecuritySettings, GlobalNotificationSettings, AuditTrailEntry, FeatureSettings, AdminSession, BrandingSettings, SystemAlert, AdminHomeOverview, SecurityDashboardData, AdminSystemHubData, SecurityMockData, InfrastructureMockData, EdgeComputingData, CdnManagementData, SeoManagementData, ExperimentManagementData, IncidentResponseData, AccessManagementData, LocalizationData } from '@/types/system';
+import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog, SecuritySettings, GlobalNotificationSettings, AuditTrailEntry, FeatureSettings, AdminSession, BrandingSettings, SystemAlert, AdminHomeOverview, SecurityDashboardData, AdminSystemHubData, SecurityMockData, InfrastructureMockData, EdgeComputingData, CdnManagementData, SeoManagementData, ExperimentManagementData, IncidentResponseData, AccessManagementData, LocalizationData, AlertsSystemData } from '@/types/system';
 
 /**
  * @fileOverview Mock service for managing global platform configuration and system notifications.
@@ -394,6 +394,27 @@ const mockLocalizationData: LocalizationData = {
   ]
 };
 
+const mockAlertsSystemData: AlertsSystemData = {
+  alerts: [
+    { alert_id: "ALRT101", type: "CPU Usage", severity: "High", source: "Server1", timestamp: "2026-03-15 09:00", status: "mock_active" },
+    { alert_id: "ALRT102", type: "Cache Miss", severity: "Medium", source: "RedisCache1", timestamp: "2026-03-14 14:00", status: "mock_resolved" },
+    { alert_id: "ALRT103", type: "Unauthorized Access", severity: "High", source: "AuthKernel", timestamp: "2026-03-15 10:30", status: "mock_active" },
+    { alert_id: "ALRT104", type: "API Latency", severity: "Low", source: "Gateway-Alpha", timestamp: "2026-03-15 11:45", status: "mock_snoozed" }
+  ],
+  notification_channels: [
+    { channel: "Email", status: "mock_enabled", last_sent: "2026-03-15 08:45" },
+    { channel: "Push", status: "mock_enabled", last_sent: "2026-03-15 08:50" },
+    { channel: "SMS", status: "mock_disabled", last_sent: "2026-03-14 13:30" },
+    { channel: "In-App", status: "mock_enabled", last_sent: "2026-03-15 11:00" }
+  ],
+  alert_rules: [
+    { rule_name: "High CPU Usage", condition: "CPU > 85%", priority: "mock_high", status: "mock_active" },
+    { rule_name: "Cache Miss Alert", condition: "Cache hit ratio < 80%", priority: "mock_medium", status: "mock_inactive" },
+    { rule_name: "Critical Latency", condition: "Response > 500ms", priority: "mock_high", status: "mock_active" },
+    { rule_name: "Low Memory Warning", condition: "MEM < 10%", priority: "mock_low", status: "mock_active" }
+  ]
+};
+
 export const getPlatformSettings = async (): Promise<ApiResponse<PlatformSettings>> => {
   await new Promise((resolve) => setTimeout(resolve, 400));
   return {
@@ -762,6 +783,14 @@ export const getLocalizationData = async (): Promise<ApiResponse<LocalizationDat
   await new Promise((resolve) => setTimeout(resolve, 500));
   return {
     data: mockLocalizationData,
+    status: 200,
+  };
+};
+
+export const getAlertsSystemData = async (): Promise<ApiResponse<AlertsSystemData>> => {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  return {
+    data: mockAlertsSystemData,
     status: 200,
   };
 };

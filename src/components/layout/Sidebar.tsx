@@ -148,6 +148,7 @@ const Sidebar = ({ className }: { className?: string }) => {
     { icon: LayoutDashboard, label: 'Admin Dashboard', href: '/admin/dashboard' },
     { icon: BarChart3, label: 'Analytics Overview', href: '/admin/analytics/full-overview' },
     { icon: ShieldAlert, label: 'Incident Response', href: '/admin/control/incidents' },
+    { icon: Bell, label: 'Alerts System', href: '/admin/control/alerts-system' },
     { icon: Key, label: 'Access Orchestration', href: '/admin/control/access' },
     { icon: UsersIcon, label: 'User Management', href: '/admin/control/users' },
     { icon: Lock, label: 'Roles & Permissions', href: '/admin/roles' },
