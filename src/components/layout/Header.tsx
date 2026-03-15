@@ -1,7 +1,8 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Search, UserCircle, Bell, LayoutDashboard } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { routes } from '@/config/routes';
@@ -21,11 +22,21 @@ import { Text } from '@/design-system/typography/text';
 
 /**
  * Global application header with logo, navigation, search, and user actions.
- * Integrated with AppStore for real-time user identity and notifications.
+ * Integrated with Search Engine for instant knowledge discovery.
  */
 const Header = () => {
+  const router = useRouter();
+  const [searchValue, setSearchValue] = useState('');
   const { currentUser, notifications } = useAppStore();
   const unreadCount = notifications.filter(n => !n.read).length;
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchValue.trim()) {
+      router.push(`/search?q=${encodeURIComponent(searchValue.trim())}`);
+      setSearchValue('');
+    }
+  };
 
   const dashboardRoute = currentUser?.role === 'admin' ? '/admin' : 
                         currentUser?.role === 'editor' ? '/editor' : 
@@ -49,15 +60,17 @@ const Header = () => {
         </div>
 
         <div className="flex items-center space-x-2 md:space-x-4">
-          <div className="hidden lg:flex items-center relative group">
+          <form onSubmit={handleSearchSubmit} className="hidden lg:flex items-center relative group">
             <Search className="absolute left-3 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
             <input 
               type="search" 
-              placeholder="Search platform..."
+              placeholder="Search knowledge..."
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
               aria-label="Search platform knowledge"
               className="bg-muted/50 border-none rounded-full py-1.5 pl-10 pr-4 text-sm w-64 focus:ring-2 focus:ring-primary outline-none transition-all duration-300 focus:w-80"
             />
-          </div>
+          </form>
 
           {currentUser ? (
             <div className="flex items-center gap-2">
