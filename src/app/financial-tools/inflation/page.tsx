@@ -8,9 +8,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { financialMath } from '@/modules/calculators/utils/calculations';
+import { calculatorsService } from '@/services/data';
 import { CalculatorResultModal } from '@/modules/calculators/components/CalculatorResultModal';
-import { ArrowUpRight, RefreshCcw, ArrowLeft, Info, Gauge, CheckCircle2 } from 'lucide-react';
+import { ArrowUpRight, RefreshCcw, ArrowLeft, Info, Gauge, CheckCircle2, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useCalculatorStore } from '@/lib/state/calculator-store';
 
@@ -19,6 +19,7 @@ export default function InflationCalculatorPage() {
   const { amount, rate, years, result, errors } = inflation;
   
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [calculating, setCalculating] = useState(false);
 
   const validate = () => {
     const newErrors: Record<string, string> = {};
@@ -34,17 +35,25 @@ export default function InflationCalculatorPage() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleCalculate = (e: React.FormEvent) => {
+  const handleCalculate = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
 
-    const final = financialMath.calculateInflationImpact(
-      Number(amount),
-      Number(rate),
-      Number(years)
-    );
-    updateInflation({ result: final });
-    setIsModalOpen(true);
+    setCalculating(true);
+    try {
+      const response = await calculatorsService.calculateInflation(
+        Number(amount),
+        Number(rate),
+        Number(years)
+      );
+      
+      if (response.data) {
+        updateInflation({ result: response.data });
+        setIsModalOpen(true);
+      }
+    } finally {
+      setCalculating(false);
+    }
   };
 
   const handleReset = () => {
@@ -141,7 +150,8 @@ export default function InflationCalculatorPage() {
                   <Button type="button" variant="outline" onClick={handleReset} className="h-14 flex-1 rounded-2xl font-bold border-white/10 hover:bg-white/5 transition-all">
                     <RefreshCcw className="mr-2 h-4 w-4" /> Reset Tool
                   </Button>
-                  <Button type="submit" className="h-14 flex-1 bg-primary hover:bg-primary/90 text-white rounded-2xl font-bold shadow-xl shadow-primary/20 transition-all scale-[1.02] active:scale-100">
+                  <Button type="submit" disabled={calculating} className="h-14 flex-1 bg-primary hover:bg-primary/90 text-white rounded-2xl font-bold shadow-xl shadow-primary/20 transition-all scale-[1.02] active:scale-100">
+                    {calculating ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
                     Analyze Impact
                   </Button>
                 </div>
@@ -149,7 +159,7 @@ export default function InflationCalculatorPage() {
             </CardContent>
           </Card>
 
-          {result && (
+          {result && !calculating && (
             <Card className="glass-card border-none shadow-2xl overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-500">
               <CardHeader className="bg-primary/10 border-b border-primary/20 py-4 px-8">
                 <CardTitle className="text-lg flex items-center gap-2 text-primary">

@@ -1,8 +1,9 @@
 import { ApiResponse } from '@/types';
 import { FinancialCalculator } from '@/types/financial-tools';
+import { financialMath } from '@/modules/calculators/utils/calculations';
 
 /**
- * @fileOverview Mock service for managing financial calculator metadata and tool discovery.
+ * @fileOverview Mock service for managing financial calculator metadata and logic.
  */
 
 export interface Calculator extends FinancialCalculator {}
@@ -70,4 +71,45 @@ export const getCalculatorList = async (): Promise<ApiResponse<Calculator[]>> =>
     data: mockCalculators,
     status: 200,
   };
+};
+
+/**
+ * MOCK CALCULATION ENGINE
+ * Centralized logic for all financial instruments.
+ */
+
+export const calculateCompoundInterest = async (principal: number, rate: number, years: number, monthly: number, frequency: number): Promise<ApiResponse<number>> => {
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  const result = financialMath.calculateCompoundInterest(principal, rate, years, monthly, frequency);
+  return { data: result, status: 200 };
+};
+
+export const calculateLoanSummary = async (principal: number, rate: number, years: number): Promise<ApiResponse<any>> => {
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  const result = financialMath.getLoanSummary(principal, rate, years);
+  return { data: result, status: 200 };
+};
+
+export const calculateInvestmentGrowth = async (principal: number, monthly: number, rate: number, years: number): Promise<ApiResponse<any>> => {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  const result = financialMath.calculateInvestmentGrowth(principal, monthly, rate, years);
+  return { data: result, status: 200 };
+};
+
+export const calculateRetirementCorpus = async (savings: number, monthly: number, rate: number, currentAge: number, retirementAge: number): Promise<ApiResponse<any>> => {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  const result = financialMath.calculateRetirementCorpus(savings, monthly, rate, currentAge, retirementAge);
+  return { data: result, status: 200 };
+};
+
+export const calculatePortfolioSummary = async (assets: any[]): Promise<ApiResponse<any>> => {
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  const result = financialMath.calculatePortfolioSummary(assets);
+  return { data: result, status: 200 };
+};
+
+export const calculateInflationImpact = async (amount: number, rate: number, years: number): Promise<ApiResponse<number>> => {
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  const result = financialMath.calculateInflationImpact(amount, rate, years);
+  return { data: result, status: 200 };
 };

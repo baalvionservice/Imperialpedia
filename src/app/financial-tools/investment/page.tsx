@@ -8,9 +8,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { financialMath } from '@/modules/calculators/utils/calculations';
+import { calculatorsService } from '@/services/data';
 import { CalculatorResultModal } from '@/modules/calculators/components/CalculatorResultModal';
-import { PieChart as PieIcon, RefreshCcw, ArrowLeft, Info, TrendingUp, CheckCircle2 } from 'lucide-react';
+import { PieChart as PieIcon, RefreshCcw, ArrowLeft, Info, TrendingUp, CheckCircle2, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useCalculatorStore } from '@/lib/state/calculator-store';
 import { 
@@ -28,6 +28,7 @@ export default function InvestmentReturnPage() {
   const { principal, monthly, rate, years, result, chartData, errors } = investment;
   
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [calculating, setCalculating] = useState(false);
 
   const validate = () => {
     const newErrors: Record<string, string> = {};
@@ -45,21 +46,29 @@ export default function InvestmentReturnPage() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleCalculate = (e: React.FormEvent) => {
+  const handleCalculate = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
 
-    const data = financialMath.calculateInvestmentGrowth(
-      Number(principal),
-      Number(monthly),
-      Number(rate),
-      Number(years)
-    );
-    updateInvestment({ 
-      result: data.finalValue,
-      chartData: data.chartData
-    });
-    setIsModalOpen(true);
+    setCalculating(true);
+    try {
+      const response = await calculatorsService.calculateInvestment(
+        Number(principal),
+        Number(monthly),
+        Number(rate),
+        Number(years)
+      );
+      
+      if (response.data) {
+        updateInvestment({ 
+          result: response.data.finalValue,
+          chartData: response.data.chartData
+        });
+        setIsModalOpen(true);
+      }
+    } finally {
+      setCalculating(false);
+    }
   };
 
   const handleReset = () => {
@@ -158,7 +167,8 @@ export default function InvestmentReturnPage() {
                   </div>
 
                   <div className="flex flex-col gap-3 pt-4">
-                    <Button type="submit" className="h-12 w-full bg-primary hover:bg-primary/90 text-white rounded-xl font-bold shadow-lg shadow-primary/20 transition-all">
+                    <Button type="submit" disabled={calculating} className="h-12 w-full bg-primary hover:bg-primary/90 text-white rounded-xl font-bold shadow-lg shadow-primary/20 transition-all">
+                      {calculating ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
                       Analyze Projections
                     </Button>
                     <Button type="button" variant="ghost" onClick={handleReset} className="h-10 w-full text-muted-foreground hover:text-foreground">
@@ -169,7 +179,7 @@ export default function InvestmentReturnPage() {
               </CardContent>
             </Card>
 
-            {result && (
+            {result && !calculating && (
               <Card className="glass-card border-none bg-primary/5 border-primary/20 animate-in fade-in slide-in-from-left-4 duration-500">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between mb-4">
@@ -192,7 +202,7 @@ export default function InvestmentReturnPage() {
                 <CardDescription>Visualizing the power of recurring contributions and compound market yields.</CardDescription>
               </CardHeader>
               <CardContent className="p-8 flex-grow flex flex-col justify-center min-h-[400px]">
-                {chartData.length > 0 ? (
+                {chartData.length > 0 && !calculating ? (
                   <div className="h-[350px] w-full pt-4">
                     <ResponsiveContainer width="100%" height="100%">
                       <AreaChart data={chartData}>
@@ -213,9 +223,11 @@ export default function InvestmentReturnPage() {
                 ) : (
                   <div className="text-center space-y-4 opacity-50">
                     <div className="w-20 h-20 bg-muted/20 rounded-full flex items-center justify-center mx-auto">
-                      <TrendingUp className="h-10 w-10 text-muted-foreground" />
+                      {calculating ? <Loader2 className="h-10 w-10 text-primary animate-spin" /> : <TrendingUp className="h-10 w-10 text-muted-foreground" />}
                     </div>
-                    <Text variant="bodySmall" className="italic">Define your investment goals to generate a visual performance chart.</Text>
+                    <Text variant="bodySmall" className="italic">
+                      {calculating ? "Modeling wealth trajectory..." : "Define your investment goals to generate a visual performance chart."}
+                    </Text>
                   </div>
                 )}
               </CardContent>

@@ -8,9 +8,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { financialMath } from '@/modules/calculators/utils/calculations';
+import { calculatorsService } from '@/services/data';
 import { CalculatorResultModal } from '@/modules/calculators/components/CalculatorResultModal';
-import { RefreshCcw, ArrowLeft, Info, Landmark, CheckCircle2 } from 'lucide-react';
+import { RefreshCcw, ArrowLeft, Info, Landmark, CheckCircle2, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useCalculatorStore } from '@/lib/state/calculator-store';
 
@@ -19,6 +19,7 @@ export default function LoanCalculatorPage() {
   const { principal, rate, years, result, errors } = loan;
   
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [calculating, setCalculating] = useState(false);
 
   const validate = () => {
     const newErrors: Record<string, string> = {};
@@ -34,24 +35,31 @@ export default function LoanCalculatorPage() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleCalculate = (e: React.FormEvent) => {
+  const handleCalculate = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
 
-    const summary = financialMath.getLoanSummary(
-      Number(principal),
-      Number(rate),
-      Number(years)
-    );
-    
-    updateLoan({
-      result: {
-        monthly: summary.monthlyPayment,
-        total: summary.totalRepayment,
-        interest: summary.totalInterest
+    setCalculating(true);
+    try {
+      const response = await calculatorsService.calculateLoan(
+        Number(principal),
+        Number(rate),
+        Number(years)
+      );
+      
+      if (response.data) {
+        updateLoan({
+          result: {
+            monthly: response.data.monthlyPayment,
+            total: response.data.totalRepayment,
+            interest: response.data.totalInterest
+          }
+        });
+        setIsModalOpen(true);
       }
-    });
-    setIsModalOpen(true);
+    } finally {
+      setCalculating(false);
+    }
   };
 
   const handleReset = () => {
@@ -148,7 +156,8 @@ export default function LoanCalculatorPage() {
                   <Button type="button" variant="outline" onClick={handleReset} className="h-14 flex-1 rounded-2xl font-bold border-white/10 hover:bg-white/5 transition-all">
                     <RefreshCcw className="mr-2 h-4 w-4" /> Reset Tool
                   </Button>
-                  <Button type="submit" className="h-14 flex-1 bg-secondary hover:bg-secondary/90 text-secondary-foreground rounded-2xl font-bold shadow-xl shadow-secondary/20 transition-all scale-[1.02] active:scale-100">
+                  <Button type="submit" disabled={calculating} className="h-14 flex-1 bg-secondary hover:bg-secondary/90 text-secondary-foreground rounded-2xl font-bold shadow-xl shadow-secondary/20 transition-all scale-[1.02] active:scale-100">
+                    {calculating ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
                     Analyze Repayment
                   </Button>
                 </div>
@@ -156,7 +165,7 @@ export default function LoanCalculatorPage() {
             </CardContent>
           </Card>
 
-          {result && (
+          {result && !calculating && (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
               <Card className="glass-card border-none bg-secondary/5 border-secondary/20">
                 <CardContent className="p-6">

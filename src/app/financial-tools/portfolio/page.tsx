@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { financialMath } from '@/modules/calculators/utils/calculations';
+import { calculatorsService } from '@/services/data';
 import { CalculatorResultModal } from '@/modules/calculators/components/CalculatorResultModal';
 import { 
   Layers, 
@@ -19,7 +19,8 @@ import {
   PieChart as PieChartIcon,
   TrendingUp,
   CheckCircle2,
-  Database
+  Database,
+  Loader2
 } from 'lucide-react';
 import Link from 'next/link';
 import { useCalculatorStore, PortfolioAsset } from '@/lib/state/calculator-store';
@@ -37,6 +38,7 @@ export default function PortfolioCalculatorPage() {
   const { assets, result: results, errors } = portfolio;
   
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [calculating, setCalculating] = useState(false);
 
   const addAsset = () => {
     updatePortfolio({ 
@@ -76,19 +78,27 @@ export default function PortfolioCalculatorPage() {
     return isValid;
   };
 
-  const handleCalculate = (e: React.FormEvent) => {
+  const handleCalculate = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
 
-    const formattedAssets = assets.map(a => ({
-      name: a.name || 'Unnamed Asset',
-      investment: Number(a.investment),
-      returnRate: Number(a.returnRate)
-    }));
+    setCalculating(true);
+    try {
+      const formattedAssets = assets.map(a => ({
+        name: a.name || 'Unnamed Asset',
+        investment: Number(a.investment),
+        returnRate: Number(a.returnRate)
+      }));
 
-    const summary = financialMath.calculatePortfolioSummary(formattedAssets);
-    updatePortfolio({ result: summary });
-    setIsModalOpen(true);
+      const response = await calculatorsService.calculatePortfolio(formattedAssets);
+      
+      if (response.data) {
+        updatePortfolio({ result: response.data });
+        setIsModalOpen(true);
+      }
+    } finally {
+      setCalculating(false);
+    }
   };
 
   const handleReset = () => {
@@ -196,7 +206,8 @@ export default function PortfolioCalculatorPage() {
                   </div>
 
                   <div className="flex gap-4 pt-6">
-                    <Button type="submit" className="flex-1 h-14 bg-primary hover:bg-primary/90 rounded-2xl font-bold shadow-xl shadow-primary/20 scale-[1.02] active:scale-100 transition-all">
+                    <Button type="submit" disabled={calculating} className="flex-1 h-14 bg-primary hover:bg-primary/90 rounded-2xl font-bold shadow-xl shadow-primary/20 scale-[1.02] active:scale-100 transition-all">
+                      {calculating ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
                       Analyze Performance
                     </Button>
                     <Button type="button" variant="outline" onClick={handleReset} className="h-14 px-8 rounded-2xl border-white/10">
@@ -207,7 +218,7 @@ export default function PortfolioCalculatorPage() {
               </CardContent>
             </Card>
 
-            {results && (
+            {results && !calculating && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
                 <Card className="glass-card border-none bg-emerald-500/5 border-emerald-500/20">
                   <CardContent className="p-6">
@@ -234,7 +245,7 @@ export default function PortfolioCalculatorPage() {
           </div>
 
           <div className="lg:col-span-5 space-y-8">
-            {results ? (
+            {results && !calculating ? (
               <Card className="glass-card border-none shadow-2xl overflow-hidden">
                 <CardHeader className="bg-primary/5 border-b border-primary/10">
                   <CardTitle className="text-sm font-bold flex items-center gap-2">
@@ -267,10 +278,10 @@ export default function PortfolioCalculatorPage() {
             ) : (
               <div className="h-full flex flex-col items-center justify-center p-12 border-2 border-dashed rounded-[3rem] opacity-30 text-center space-y-4">
                 <div className="p-6 rounded-full bg-muted/20">
-                  <Layers className="h-12 w-12 text-muted-foreground" />
+                  {calculating ? <Loader2 className="h-12 w-12 text-primary animate-spin" /> : <Layers className="h-12 w-12 text-muted-foreground" />}
                 </div>
                 <div>
-                  <Text variant="h4">Awaiting Node Logic</Text>
+                  <Text variant="h4">{calculating ? "Modeling portfolio performance..." : "Awaiting Node Logic"}</Text>
                   <Text variant="bodySmall">Define your asset allocation matrix to visualize your intelligence nodes.</Text>
                 </div>
               </div>

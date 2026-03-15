@@ -8,9 +8,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { financialMath } from '@/modules/calculators/utils/calculations';
+import { calculatorsService } from '@/services/data';
 import { CalculatorResultModal } from '@/modules/calculators/components/CalculatorResultModal';
-import { Sunrise, RefreshCcw, ArrowLeft, Info, TrendingUp, Wallet, CheckCircle2 } from 'lucide-react';
+import { Sunrise, RefreshCcw, ArrowLeft, Info, TrendingUp, Wallet, CheckCircle2, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useCalculatorStore } from '@/lib/state/calculator-store';
 import { 
@@ -28,6 +28,7 @@ export default function RetirementCalculatorPage() {
   const { currentAge, retirementAge, savings, monthly, rate, result, chartData, errors } = retirement;
   
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [calculating, setCalculating] = useState(false);
 
   const validate = () => {
     const newErrors: Record<string, string> = {};
@@ -47,22 +48,30 @@ export default function RetirementCalculatorPage() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleCalculate = (e: React.FormEvent) => {
+  const handleCalculate = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
 
-    const data = financialMath.calculateRetirementCorpus(
-      Number(savings),
-      Number(monthly),
-      Number(rate),
-      Number(currentAge),
-      Number(retirementAge)
-    );
-    updateRetirement({ 
-      result: data.finalValue,
-      chartData: data.chartData
-    });
-    setIsModalOpen(true);
+    setCalculating(true);
+    try {
+      const response = await calculatorsService.calculateRetirement(
+        Number(savings),
+        Number(monthly),
+        Number(rate),
+        Number(currentAge),
+        Number(retirementAge)
+      );
+      
+      if (response.data) {
+        updateRetirement({ 
+          result: response.data.finalValue,
+          chartData: response.data.chartData
+        });
+        setIsModalOpen(true);
+      }
+    } finally {
+      setCalculating(false);
+    }
   };
 
   const handleReset = () => {
@@ -173,7 +182,8 @@ export default function RetirementCalculatorPage() {
                   </div>
 
                   <div className="flex flex-col gap-3 pt-4">
-                    <Button type="submit" className="h-12 w-full bg-secondary hover:bg-secondary/90 text-secondary-foreground rounded-xl font-bold shadow-lg shadow-secondary/20 transition-all">
+                    <Button type="submit" disabled={calculating} className="h-12 w-full bg-secondary hover:bg-secondary/90 text-secondary-foreground rounded-xl font-bold shadow-lg shadow-secondary/20 transition-all">
+                      {calculating ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
                       Generate Projection
                     </Button>
                     <Button type="button" variant="ghost" onClick={handleReset} className="h-10 w-full text-muted-foreground hover:text-foreground">
@@ -184,7 +194,7 @@ export default function RetirementCalculatorPage() {
               </CardContent>
             </Card>
 
-            {result && (
+            {result && !calculating && (
               <Card className="glass-card border-none bg-secondary/5 border-secondary/20 animate-in fade-in slide-in-from-left-4 duration-500">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between mb-4">
@@ -207,7 +217,7 @@ export default function RetirementCalculatorPage() {
                 <CardDescription>Visualizing the accumulation phase from age {currentAge} to {retirementAge}.</CardDescription>
               </CardHeader>
               <CardContent className="p-8 flex-grow flex flex-col justify-center min-h-[400px]">
-                {chartData.length > 0 ? (
+                {chartData.length > 0 && !calculating ? (
                   <div className="h-[350px] w-full pt-4">
                     <ResponsiveContainer width="100%" height="100%">
                       <AreaChart data={chartData}>
@@ -228,9 +238,11 @@ export default function RetirementCalculatorPage() {
                 ) : (
                   <div className="text-center space-y-4 opacity-50">
                     <div className="w-20 h-20 bg-muted/20 rounded-full flex items-center justify-center mx-auto">
-                      <Sunrise className="h-10 w-10 text-muted-foreground" />
+                      {calculating ? <Loader2 className="h-10 w-10 text-secondary animate-spin" /> : <Sunrise className="h-10 w-10 text-muted-foreground" />}
                     </div>
-                    <Text variant="bodySmall" className="italic">Define your retirement parameters to generate a visual accumulation roadmap.</Text>
+                    <Text variant="bodySmall" className="italic">
+                      {calculating ? "Modeling retirement maturity..." : "Define your retirement parameters to generate a visual accumulation roadmap."}
+                    </Text>
                   </div>
                 )}
               </CardContent>

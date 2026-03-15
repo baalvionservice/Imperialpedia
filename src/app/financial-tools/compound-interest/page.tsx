@@ -15,9 +15,9 @@ import {
   SelectTrigger, 
   SelectValue 
 } from '@/components/ui/select';
-import { financialMath } from '@/modules/calculators/utils/calculations';
+import { calculatorsService } from '@/services/data';
 import { CalculatorResultModal } from '@/modules/calculators/components/CalculatorResultModal';
-import { TrendingUp, RefreshCcw, ArrowLeft, Info, CheckCircle2 } from 'lucide-react';
+import { TrendingUp, RefreshCcw, ArrowLeft, Info, CheckCircle2, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useCalculatorStore } from '@/lib/state/calculator-store';
 
@@ -26,6 +26,7 @@ export default function CompoundInterestPage() {
   const { principal, rate, years, frequency, result, errors } = compound;
   
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [calculating, setCalculating] = useState(false);
 
   const validate = () => {
     const newErrors: Record<string, string> = {};
@@ -41,19 +42,27 @@ export default function CompoundInterestPage() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleCalculate = (e: React.FormEvent) => {
+  const handleCalculate = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
 
-    const final = financialMath.calculateCompoundInterest(
-      Number(principal),
-      Number(rate),
-      Number(years),
-      0,
-      Number(frequency)
-    );
-    updateCompound({ result: final });
-    setIsModalOpen(true);
+    setCalculating(true);
+    try {
+      const response = await calculatorsService.calculateCompound(
+        Number(principal),
+        Number(rate),
+        Number(years),
+        0,
+        Number(frequency)
+      );
+      
+      if (response.data) {
+        updateCompound({ result: response.data });
+        setIsModalOpen(true);
+      }
+    } finally {
+      setCalculating(false);
+    }
   };
 
   const handleReset = () => {
@@ -156,7 +165,8 @@ export default function CompoundInterestPage() {
                   <Button type="button" variant="outline" onClick={handleReset} className="h-14 flex-1 rounded-2xl font-bold border-white/10 hover:bg-white/5 transition-all">
                     <RefreshCcw className="mr-2 h-4 w-4" /> Reset Tool
                   </Button>
-                  <Button type="submit" className="h-14 flex-1 bg-primary hover:bg-primary/90 text-white rounded-2xl font-bold shadow-xl shadow-primary/20 transition-all scale-[1.02] active:scale-100">
+                  <Button type="submit" disabled={calculating} className="h-14 flex-1 bg-primary hover:bg-primary/90 text-white rounded-2xl font-bold shadow-xl shadow-primary/20 transition-all scale-[1.02] active:scale-100">
+                    {calculating ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
                     Analyze Growth
                   </Button>
                 </div>
@@ -164,7 +174,7 @@ export default function CompoundInterestPage() {
             </CardContent>
           </Card>
 
-          {result && (
+          {result && !calculating && (
             <Card className="glass-card border-none shadow-2xl overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-500">
               <CardHeader className="bg-emerald-500/10 border-b border-emerald-500/20 py-4 px-8">
                 <div className="flex items-center justify-between">
