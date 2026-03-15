@@ -96,6 +96,18 @@ export interface ContentPerformance {
   category: string;
 }
 
+export interface TrendingContent {
+  id: string;
+  title: string;
+  views: number;
+  likes: number;
+  comments: number;
+  shares: number;
+  category: string;
+  velocity: number; // percentage growth
+  trendData: { date: string; views: number }[];
+}
+
 export interface ContentAnalyticsReport {
   totalViews: number;
   avgEngagement: number;

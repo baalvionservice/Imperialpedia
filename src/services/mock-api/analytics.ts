@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { TrafficAnalytics, SeoAnalytics, PlatformOverview, TrafficAnalyticsReport, ContentAnalytics, EngagementAnalytics, ModerationAnalytics, CreatorEngagement, TrafficSources } from '@/types/analytics';
+import { TrafficAnalytics, SeoAnalytics, PlatformOverview, TrafficAnalyticsReport, ContentAnalytics, EngagementAnalytics, ModerationAnalytics, CreatorEngagement, TrafficSources, TrendingContent } from '@/types/analytics';
 
 /**
  * @fileOverview Mock service for platform analytics and trending data.
@@ -68,6 +68,71 @@ export const getDashboardMetrics = async (): Promise<ApiResponse<DashboardMetric
     },
     status: 200
   };
+};
+
+export const getTrendingContent = async (): Promise<ApiResponse<TrendingContent[]>> => {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  const dates = ['2024-03-01', '2024-03-02', '2024-03-03', '2024-03-04', '2024-03-05', '2024-03-06', '2024-03-07'];
+  
+  const mockData: TrendingContent[] = [
+    { 
+      id: 'art-1', 
+      title: 'Understanding Yield Curve Inversion', 
+      views: 45200, 
+      likes: 1240, 
+      comments: 320, 
+      shares: 580, 
+      category: 'Economics', 
+      velocity: 24.5,
+      trendData: dates.map(d => ({ date: d, views: Math.floor(Math.random() * 5000) + 2000 }))
+    },
+    { 
+      id: 'art-4', 
+      title: 'DeFi Liquidity Pools Explained', 
+      views: 28400, 
+      likes: 850, 
+      comments: 140, 
+      shares: 210, 
+      category: 'Crypto', 
+      velocity: 18.2,
+      trendData: dates.map(d => ({ date: d, views: Math.floor(Math.random() * 3000) + 1000 }))
+    },
+    { 
+      id: 'art-5', 
+      title: 'Passive Income with Dividends', 
+      views: 42500, 
+      likes: 2100, 
+      comments: 450, 
+      shares: 920, 
+      category: 'Investing', 
+      velocity: 12.1,
+      trendData: dates.map(d => ({ date: d, views: Math.floor(Math.random() * 4000) + 1500 }))
+    },
+    { 
+      id: 'art-7', 
+      title: 'The Future of Central Banking', 
+      views: 52000, 
+      likes: 1540, 
+      comments: 210, 
+      shares: 430, 
+      category: 'Economics', 
+      velocity: 35.8,
+      trendData: dates.map(d => ({ date: d, views: Math.floor(Math.random() * 6000) + 3000 }))
+    },
+    { 
+      id: 'art-10', 
+      title: 'Real Estate Tokenization 101', 
+      views: 15600, 
+      likes: 420, 
+      comments: 85, 
+      shares: 120, 
+      category: 'Crypto', 
+      velocity: 45.2,
+      trendData: dates.map(d => ({ date: d, views: Math.floor(Math.random() * 2000) + 500 }))
+    }
+  ];
+
+  return { data: mockData, status: 200 };
 };
 
 export const getContentAnalytics = async (): Promise<ApiResponse<ContentAnalytics>> => {
