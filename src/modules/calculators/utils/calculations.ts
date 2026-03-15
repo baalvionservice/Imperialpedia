@@ -22,10 +22,31 @@ export const financialMath = {
     
     if (r === 0) return principal + (monthlyContribution * 12 * t);
     
-    const contributionsCompounded = monthlyContribution * 
-      ((Math.pow(1 + r / n, n * t) - 1) / (r / n));
+    const contributionsCompounded = monthlyContribution * 12 *
+      ((Math.pow(1 + r / n, n * t) - 1) / r);
       
     return principalCompounded + contributionsCompounded;
+  },
+
+  /**
+   * Calculates investment future value with monthly contributions and returns data for charting.
+   */
+  calculateInvestmentGrowth: (principal: number, monthly: number, rate: number, years: number) => {
+    let total = principal;
+    const chartData = [];
+    chartData.push({ year: 0, balance: Math.round(total) });
+
+    for (let y = 1; y <= years; y++) {
+      for (let m = 0; m < 12; m++) {
+        total = total * (1 + rate / 1200) + monthly;
+      }
+      chartData.push({ year: y, balance: Math.round(total) });
+    }
+
+    return {
+      finalValue: total,
+      chartData
+    };
   },
 
   /**
