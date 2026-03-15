@@ -9,12 +9,13 @@ import {
   ReputationEntry, 
   LeaderboardItem,
   CommunityRankingsData,
-  RankedUser
+  RankedUser,
+  ContestLeaderboardEntry,
+  UserPrediction
 } from '@/types/community';
 
 /**
  * @fileOverview Mock service for the Community and Engagement engine.
- * Refined for Prompt 61 requirements.
  */
 
 const mockComments: Comment[] = [
@@ -54,6 +55,75 @@ const mockComments: Comment[] = [
     ]
   }
 ];
+
+const mockContests: PredictionContest[] = [
+  {
+    id: 'con-1',
+    title: "Bitcoin Weekly Close Prediction",
+    asset: "BTC",
+    question: "Where will Bitcoin close this Sunday?",
+    description: "Forecast the exact closing price of BTC/USD on Coinbase. Precision is measured to 2 decimal places.",
+    participants: 842,
+    status: "Active",
+    startDate: "2026-03-10",
+    endDate: "2026-03-17",
+    prize: "500 Reputation Nodes"
+  },
+  {
+    id: 'con-2',
+    title: "S&P 500 Monthly Direction",
+    asset: "SPX",
+    question: "Will the S&P 500 close higher this month?",
+    description: "Predict the directional trajectory of the SPX index relative to the opening bell of the first trading day.",
+    participants: 1250,
+    status: "Upcoming",
+    startDate: "2026-04-01",
+    endDate: "2026-04-30",
+    prize: "Exclusive 'Oracle' Badge"
+  },
+  {
+    id: 'con-3',
+    title: "NVIDIA Earnings Target",
+    asset: "NVDA",
+    question: "What will be NVDA reported revenue for Q1?",
+    description: "Audit the fiscal reports. Predict the reported revenue beats/misses.",
+    participants: 2100,
+    status: "Completed",
+    startDate: "2026-02-15",
+    endDate: "2026-02-22",
+    outcome: "$26.4B (Beat)",
+    winnerList: ["MarketMaven", "AlphaTracker", "ValueHunter"]
+  }
+];
+
+const mockContestLeaderboard: ContestLeaderboardEntry[] = [
+  { rank: 1, user: "Alex Carter", prediction: "BTC $64,250", accuracy: "94%", points: 420, avatar: "https://picsum.photos/seed/alex/100/100" },
+  { rank: 2, user: "Emma Wilson", prediction: "BTC $63,800", accuracy: "91%", points: 395, avatar: "https://picsum.photos/seed/emma/100/100" },
+  { rank: 3, user: "Julian Wealth", prediction: "BTC $65,100", accuracy: "88%", points: 350, avatar: "https://picsum.photos/seed/julian/100/100" },
+  { rank: 4, user: "Sarah Crypto", prediction: "BTC $62,900", accuracy: "85%", points: 310, avatar: "https://picsum.photos/seed/sarah/100/100" },
+  { rank: 5, user: "NodeExplorer", prediction: "BTC $66,000", accuracy: "82%", points: 280, avatar: "https://picsum.photos/seed/node/100/100" },
+];
+
+const mockUserPredictions: UserPrediction[] = [
+  { id: 'p-1', contestName: "Bitcoin Weekly Close", asset: "BTC", prediction: "$64,200", result: "Pending", points: 0, date: "2026-03-12" },
+  { id: 'p-2', contestName: "NVIDIA Earnings Target", asset: "NVDA", prediction: "$25.8B", result: "Correct", points: 450, rank: 12, date: "2026-02-20" },
+  { id: 'p-3', contestName: "Fed Interest Rate Hike", asset: "FED", prediction: "25bps", result: "Incorrect", points: 10, date: "2026-01-15" },
+];
+
+export const getPredictionContests = async (): Promise<ApiResponse<PredictionContest[]>> => {
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  return { data: mockContests, status: 200 };
+};
+
+export const getContestLeaderboard = async (id: string): Promise<ApiResponse<ContestLeaderboardEntry[]>> => {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  return { data: mockContestLeaderboard, status: 200 };
+};
+
+export const getUserPredictions = async (): Promise<ApiResponse<UserPrediction[]>> => {
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  return { data: mockUserPredictions, status: 200 };
+};
 
 const mockReputationList: ReputationEntry[] = [
   { 
@@ -121,7 +191,7 @@ export const getCommunityData = async (): Promise<ApiResponse<CommunityData>> =>
         badges: []
       },
       leaderboard: [],
-      predictionContests: [],
+      predictionContests: mockContests as any[],
       reputation_list: mockReputationList,
       leaderboards_full: mockLeaderboardsFull
     },

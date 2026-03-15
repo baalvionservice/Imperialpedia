@@ -59,8 +59,57 @@ export interface UserReputation {
 }
 
 /**
- * Prompt 39 & 61: Reputation & Leaderboard Types
+ * Prompt 62: Prediction Contest Types
  */
+export interface UserPrediction {
+  id: string;
+  contestName: string;
+  asset: string;
+  prediction: string;
+  result: 'Correct' | 'Incorrect' | 'Pending';
+  points: number;
+  rank?: number;
+  date: string;
+  reasoning?: string;
+  direction?: 'Bull' | 'Bear';
+}
+
+export interface ContestLeaderboardEntry {
+  rank: number;
+  user: string;
+  avatar?: string;
+  prediction: string;
+  accuracy: string;
+  points: number;
+}
+
+export interface PredictionContest {
+  id: string;
+  title: string;
+  asset: string;
+  question: string;
+  description: string;
+  participants: number;
+  status: 'Active' | 'Upcoming' | 'Completed';
+  startDate: string;
+  endDate: string;
+  prize?: string;
+  outcome?: string;
+  winnerList?: string[];
+  assets?: string[]; // Legacy mapping
+}
+
+export interface CommunityData {
+  comments: Comment[];
+  trendingDiscussions: string[];
+  polls: Poll[];
+  userReputation: UserReputation;
+  leaderboard: LeaderboardEntry[];
+  predictionContests: PredictionContest[];
+  reputation_list: ReputationEntry[];
+  leaderboards_full: LeaderboardItem[];
+}
+
 export interface ReputationContribution {
   posts: number;
   comments: number;
@@ -112,38 +161,4 @@ export interface RankedUser {
 export interface CommunityRankingsData {
   leaderboard: RankedUser[];
   categories: string[];
-}
-
-export interface ContestParticipant {
-  username: string;
-  points: number;
-  rank?: number;
-  avatar?: string;
-}
-
-export interface PredictionContest {
-  id: string;
-  contest_id?: number | string;
-  name: string;
-  description: string;
-  assets: string[];
-  participants: ContestParticipant[];
-  topParticipants?: string[];
-  status: 'ongoing' | 'upcoming' | 'closed';
-  reward?: string;
-  prize?: string;
-  start_date?: string;
-  end_date?: string;
-  endsAt: string;
-}
-
-export interface CommunityData {
-  comments: Comment[];
-  trendingDiscussions: string[];
-  polls: Poll[];
-  userReputation: UserReputation;
-  leaderboard: LeaderboardEntry[];
-  predictionContests: PredictionContest[];
-  reputation_list: ReputationEntry[];
-  leaderboards_full: LeaderboardItem[];
 }
