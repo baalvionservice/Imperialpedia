@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { TrafficAnalytics, SeoAnalytics, PlatformOverview, TrafficAnalyticsReport, ContentAnalytics, EngagementAnalytics, ModerationAnalytics, CreatorEngagement, TrafficSources, TrendingContent, DailyActiveUsers } from '@/types/analytics';
+import { TrafficAnalytics, SeoAnalytics, PlatformOverview, TrafficAnalyticsReport, ContentAnalytics, EngagementAnalytics, ModerationAnalytics, CreatorEngagement, TrafficSources, TrendingContent, DailyActiveUsers, WeeklyActiveUsers } from '@/types/analytics';
 
 /**
  * @fileOverview Mock service for platform analytics and trending data.
@@ -90,6 +90,19 @@ export const getDAUData = async (): Promise<ApiResponse<DailyActiveUsers[]>> => 
     data,
     status: 200
   };
+};
+
+export const getWAUData = async (): Promise<ApiResponse<WeeklyActiveUsers[]>> => {
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  const data = [
+    { week: 'W1', activeUsers: 45000 },
+    { week: 'W2', activeUsers: 48500 },
+    { week: 'W3', activeUsers: 52100 },
+    { week: 'W4', activeUsers: 58400 },
+    { week: 'W5', activeUsers: 61200 },
+    { week: 'W6', activeUsers: 65800 },
+  ];
+  return { data, status: 200 };
 };
 
 export const getTrendingContent = async (): Promise<ApiResponse<TrendingContent[]>> => {

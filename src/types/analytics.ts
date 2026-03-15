@@ -7,6 +7,11 @@ export interface DailyActiveUsers {
   activeUsers: number;
 }
 
+export interface WeeklyActiveUsers {
+  week: string;
+  activeUsers: number;
+}
+
 export interface TrafficAnalytics {
   activeUsers: number;
   pageViews: number;
