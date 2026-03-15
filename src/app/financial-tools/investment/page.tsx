@@ -12,6 +12,7 @@ import { financialMath } from '@/modules/calculators/utils/calculations';
 import { CalculatorResultModal } from '@/modules/calculators/components/CalculatorResultModal';
 import { PieChart as PieIcon, RefreshCcw, ArrowLeft, Info, TrendingUp, CheckCircle2 } from 'lucide-react';
 import Link from 'next/link';
+import { useCalculatorStore } from '@/lib/state/calculator-store';
 import { 
   AreaChart, 
   Area, 
@@ -23,14 +24,9 @@ import {
 } from 'recharts';
 
 export default function InvestmentReturnPage() {
-  const [principal, setPrincipal] = useState<string>('5000');
-  const [monthly, setMonthly] = useState<string>('500');
-  const [rate, setRate] = useState<string>('8');
-  const [years, setYears] = useState<string>('20');
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const { investment, updateInvestment, resetCalculator } = useCalculatorStore();
+  const { principal, monthly, rate, years, result, chartData, errors } = investment;
   
-  const [result, setResult] = useState<number | null>(null);
-  const [chartData, setChartData] = useState<any[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const validate = () => {
@@ -45,7 +41,7 @@ export default function InvestmentReturnPage() {
     if (!rate || r < 0 || r > 100) newErrors.rate = "Required (0-100%)";
     if (!years || y <= 0) newErrors.years = "Required (> 0)";
     
-    setErrors(newErrors);
+    updateInvestment({ errors: newErrors });
     return Object.keys(newErrors).length === 0;
   };
 
@@ -59,19 +55,15 @@ export default function InvestmentReturnPage() {
       Number(rate),
       Number(years)
     );
-    setResult(data.finalValue);
-    setChartData(data.chartData);
+    updateInvestment({ 
+      result: data.finalValue,
+      chartData: data.chartData
+    });
     setIsModalOpen(true);
   };
 
   const handleReset = () => {
-    setPrincipal('5000');
-    setMonthly('500');
-    setRate('8');
-    setYears('20');
-    setErrors({});
-    setResult(null);
-    setChartData([]);
+    resetCalculator('investment');
     setIsModalOpen(false);
   };
 
@@ -118,7 +110,7 @@ export default function InvestmentReturnPage() {
                       id="principal" 
                       type="number" 
                       value={principal} 
-                      onChange={(e) => setPrincipal(e.target.value)}
+                      onChange={(e) => updateInvestment({ principal: e.target.value })}
                       error={errors.principal}
                       className="h-11 bg-background/50 border-white/10"
                       placeholder="5000"
@@ -131,7 +123,7 @@ export default function InvestmentReturnPage() {
                       id="monthly" 
                       type="number" 
                       value={monthly} 
-                      onChange={(e) => setMonthly(e.target.value)}
+                      onChange={(e) => updateInvestment({ monthly: e.target.value })}
                       error={errors.monthly}
                       className="h-11 bg-background/50 border-white/10"
                       placeholder="500"
@@ -145,7 +137,7 @@ export default function InvestmentReturnPage() {
                       type="number" 
                       step="0.1"
                       value={rate} 
-                      onChange={(e) => setRate(e.target.value)}
+                      onChange={(e) => updateInvestment({ rate: e.target.value })}
                       error={errors.rate}
                       className="h-11 bg-background/50 border-white/10"
                       placeholder="8"
@@ -158,7 +150,7 @@ export default function InvestmentReturnPage() {
                       id="years" 
                       type="number" 
                       value={years} 
-                      onChange={(e) => setYears(e.target.value)}
+                      onChange={(e) => updateInvestment({ years: e.target.value })}
                       error={errors.years}
                       className="h-11 bg-background/50 border-white/10"
                       placeholder="20"

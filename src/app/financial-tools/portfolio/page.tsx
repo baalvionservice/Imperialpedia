@@ -22,6 +22,7 @@ import {
   Database
 } from 'lucide-react';
 import Link from 'next/link';
+import { useCalculatorStore, PortfolioAsset } from '@/lib/state/calculator-store';
 import { 
   PieChart, 
   Pie, 
@@ -31,36 +32,30 @@ import {
   Tooltip,
 } from 'recharts';
 
-interface PortfolioAsset {
-  id: string;
-  name: string;
-  investment: string;
-  returnRate: string;
-  error?: string;
-}
-
 export default function PortfolioCalculatorPage() {
-  const [assets, setAssets] = useState<PortfolioAsset[]>([
-    { id: '1', name: 'Stocks', investment: '10000', returnRate: '10' },
-    { id: '2', name: 'Bonds', investment: '5000', returnRate: '4' },
-    { id: '3', name: 'Real Estate', investment: '20000', returnRate: '7' },
-  ]);
+  const { portfolio, updatePortfolio, resetCalculator } = useCalculatorStore();
+  const { assets, result: results, errors } = portfolio;
   
-  const [results, setResults] = useState<any | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const addAsset = () => {
-    setAssets([...assets, { id: Math.random().toString(), name: '', investment: '0', returnRate: '0' }]);
+    updatePortfolio({ 
+      assets: [...assets, { id: Math.random().toString(), name: '', investment: '0', returnRate: '0' }] 
+    });
   };
 
   const removeAsset = (id: string) => {
     if (assets.length > 1) {
-      setAssets(assets.filter(a => a.id !== id));
+      updatePortfolio({ 
+        assets: assets.filter(a => a.id !== id) 
+      });
     }
   };
 
   const updateAsset = (id: string, field: keyof PortfolioAsset, value: string) => {
-    setAssets(assets.map(a => a.id === id ? { ...a, [field]: value } : a));
+    updatePortfolio({ 
+      assets: assets.map(a => a.id === id ? { ...a, [field]: value } : a) 
+    });
   };
 
   const validate = () => {
@@ -77,7 +72,7 @@ export default function PortfolioCalculatorPage() {
       if (error) isValid = false;
       return { ...asset, error };
     });
-    setAssets(newAssets);
+    updatePortfolio({ assets: newAssets });
     return isValid;
   };
 
@@ -92,17 +87,12 @@ export default function PortfolioCalculatorPage() {
     }));
 
     const summary = financialMath.calculatePortfolioSummary(formattedAssets);
-    setResults(summary);
+    updatePortfolio({ result: summary });
     setIsModalOpen(true);
   };
 
   const handleReset = () => {
-    setAssets([
-      { id: '1', name: 'Stocks', investment: '10000', returnRate: '10' },
-      { id: '2', name: 'Bonds', investment: '5000', returnRate: '4' },
-      { id: '3', name: 'Real Estate', investment: '20000', returnRate: '7' },
-    ]);
-    setResults(null);
+    resetCalculator('portfolio');
     setIsModalOpen(false);
   };
 

@@ -10,20 +10,14 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { financialMath } from '@/modules/calculators/utils/calculations';
 import { CalculatorResultModal } from '@/modules/calculators/components/CalculatorResultModal';
-import { CreditCard, RefreshCcw, ArrowLeft, Info, Landmark, CheckCircle2 } from 'lucide-react';
+import { RefreshCcw, ArrowLeft, Info, Landmark, CheckCircle2 } from 'lucide-react';
 import Link from 'next/link';
+import { useCalculatorStore } from '@/lib/state/calculator-store';
 
 export default function LoanCalculatorPage() {
-  const [principal, setPrincipal] = useState<string>('250000');
-  const [rate, setRate] = useState<string>('6.5');
-  const [years, setYears] = useState<string>('30');
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const { loan, updateLoan, resetCalculator } = useCalculatorStore();
+  const { principal, rate, years, result, errors } = loan;
   
-  const [results, setResults] = useState<{
-    monthly: number;
-    total: number;
-    interest: number;
-  } | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const validate = () => {
@@ -36,7 +30,7 @@ export default function LoanCalculatorPage() {
     if (!rate || r < 0 || r > 100) newErrors.rate = "Required (0-100%)";
     if (!years || y <= 0) newErrors.years = "Required (> 0)";
     
-    setErrors(newErrors);
+    updateLoan({ errors: newErrors });
     return Object.keys(newErrors).length === 0;
   };
 
@@ -50,20 +44,18 @@ export default function LoanCalculatorPage() {
       Number(years)
     );
     
-    setResults({
-      monthly: summary.monthlyPayment,
-      total: summary.totalRepayment,
-      interest: summary.totalInterest
+    updateLoan({
+      result: {
+        monthly: summary.monthlyPayment,
+        total: summary.totalRepayment,
+        interest: summary.totalInterest
+      }
     });
     setIsModalOpen(true);
   };
 
   const handleReset = () => {
-    setPrincipal('250000');
-    setRate('6.5');
-    setYears('30');
-    setErrors({});
-    setResults(null);
+    resetCalculator('loan');
     setIsModalOpen(false);
   };
 
@@ -110,7 +102,7 @@ export default function LoanCalculatorPage() {
                       id="principal" 
                       type="number" 
                       value={principal} 
-                      onChange={(e) => setPrincipal(e.target.value)}
+                      onChange={(e) => updateLoan({ principal: e.target.value })}
                       error={errors.principal}
                       className="h-12 bg-background/50 rounded-xl border-white/10"
                       placeholder="e.g. 250000"
@@ -124,7 +116,7 @@ export default function LoanCalculatorPage() {
                       type="number" 
                       step="0.01"
                       value={rate} 
-                      onChange={(e) => setRate(e.target.value)}
+                      onChange={(e) => updateLoan({ rate: e.target.value })}
                       error={errors.rate}
                       className="h-12 bg-background/50 rounded-xl border-white/10"
                       placeholder="e.g. 6.5"
@@ -137,7 +129,7 @@ export default function LoanCalculatorPage() {
                       id="years" 
                       type="number" 
                       value={years} 
-                      onChange={(e) => setYears(e.target.value)}
+                      onChange={(e) => updateLoan({ years: e.target.value })}
                       error={errors.years}
                       className="h-12 bg-background/50 rounded-xl border-white/10"
                       placeholder="e.g. 30"
@@ -164,38 +156,38 @@ export default function LoanCalculatorPage() {
             </CardContent>
           </Card>
 
-          {results && (
+          {result && (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
               <Card className="glass-card border-none bg-secondary/5 border-secondary/20">
                 <CardContent className="p-6">
                   <Text variant="label" className="text-secondary mb-1">Monthly Payment</Text>
-                  <div className="text-2xl font-bold">{formatCurrency(results.monthly)}</div>
+                  <div className="text-2xl font-bold">{formatCurrency(result.monthly)}</div>
                 </CardContent>
               </Card>
               <Card className="glass-card border-none">
                 <CardContent className="p-6">
                   <Text variant="label" className="text-muted-foreground mb-1">Total Interest</Text>
-                  <div className="text-2xl font-bold text-amber-500">{formatCurrency(results.interest)}</div>
+                  <div className="text-2xl font-bold text-amber-500">{formatCurrency(result.interest)}</div>
                 </CardContent>
               </Card>
               <Card className="glass-card border-none">
                 <CardContent className="p-6">
                   <Text variant="label" className="text-muted-foreground mb-1">Total Repayment</Text>
-                  <div className="text-2xl font-bold">{formatCurrency(results.total)}</div>
+                  <div className="text-2xl font-bold">{formatCurrency(result.total)}</div>
                 </CardContent>
               </Card>
             </div>
           )}
         </div>
 
-        {results && (
+        {result && (
           <CalculatorResultModal 
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
             onReset={handleReset}
             title="Estimated Monthly Payment"
-            result={formatCurrency(results.monthly)}
-            description={`For a ${formatCurrency(Number(principal))} loan at ${rate}% over ${years} years, your fixed monthly commitment is ${formatCurrency(results.monthly)}.`}
+            result={formatCurrency(result.monthly)}
+            description={`For a ${formatCurrency(Number(principal))} loan at ${rate}% over ${years} years, your fixed monthly commitment is ${formatCurrency(result.monthly)}.`}
           />
         )}
       </Container>

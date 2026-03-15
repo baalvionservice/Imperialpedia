@@ -12,14 +12,12 @@ import { financialMath } from '@/modules/calculators/utils/calculations';
 import { CalculatorResultModal } from '@/modules/calculators/components/CalculatorResultModal';
 import { ArrowUpRight, RefreshCcw, ArrowLeft, Info, Gauge, CheckCircle2 } from 'lucide-react';
 import Link from 'next/link';
+import { useCalculatorStore } from '@/lib/state/calculator-store';
 
 export default function InflationCalculatorPage() {
-  const [amount, setAmount] = useState<string>('5000');
-  const [rate, setRate] = useState<string>('3');
-  const [years, setYears] = useState<string>('10');
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const { inflation, updateInflation, resetCalculator } = useCalculatorStore();
+  const { amount, rate, years, result, errors } = inflation;
   
-  const [result, setResult] = useState<number | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const validate = () => {
@@ -32,7 +30,7 @@ export default function InflationCalculatorPage() {
     if (!rate || r < 0 || r > 100) newErrors.rate = "Required (0-100%)";
     if (!years || y <= 0) newErrors.years = "Required (> 0)";
     
-    setErrors(newErrors);
+    updateInflation({ errors: newErrors });
     return Object.keys(newErrors).length === 0;
   };
 
@@ -45,16 +43,12 @@ export default function InflationCalculatorPage() {
       Number(rate),
       Number(years)
     );
-    setResult(final);
+    updateInflation({ result: final });
     setIsModalOpen(true);
   };
 
   const handleReset = () => {
-    setAmount('5000');
-    setRate('3');
-    setYears('10');
-    setErrors({});
-    setResult(null);
+    resetCalculator('inflation');
     setIsModalOpen(false);
   };
 
@@ -101,7 +95,7 @@ export default function InflationCalculatorPage() {
                       id="amount" 
                       type="number" 
                       value={amount} 
-                      onChange={(e) => setAmount(e.target.value)}
+                      onChange={(e) => updateInflation({ amount: e.target.value })}
                       error={errors.amount}
                       className="h-12 bg-background/50 rounded-xl border-white/10"
                       placeholder="e.g. 5000"
@@ -115,7 +109,7 @@ export default function InflationCalculatorPage() {
                       type="number" 
                       step="0.1"
                       value={rate} 
-                      onChange={(e) => setRate(e.target.value)}
+                      onChange={(e) => updateInflation({ rate: e.target.value })}
                       error={errors.rate}
                       className="h-12 bg-background/50 rounded-xl border-white/10"
                       placeholder="e.g. 3.2"
@@ -128,7 +122,7 @@ export default function InflationCalculatorPage() {
                       id="years" 
                       type="number" 
                       value={years} 
-                      onChange={(e) => setYears(e.target.value)}
+                      onChange={(e) => updateInflation({ years: e.target.value })}
                       error={errors.years}
                       className="h-12 bg-background/50 rounded-xl border-white/10"
                       placeholder="e.g. 10"

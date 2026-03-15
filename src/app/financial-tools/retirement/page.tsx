@@ -12,6 +12,7 @@ import { financialMath } from '@/modules/calculators/utils/calculations';
 import { CalculatorResultModal } from '@/modules/calculators/components/CalculatorResultModal';
 import { Sunrise, RefreshCcw, ArrowLeft, Info, TrendingUp, Wallet, CheckCircle2 } from 'lucide-react';
 import Link from 'next/link';
+import { useCalculatorStore } from '@/lib/state/calculator-store';
 import { 
   AreaChart, 
   Area, 
@@ -23,15 +24,9 @@ import {
 } from 'recharts';
 
 export default function RetirementCalculatorPage() {
-  const [currentAge, setCurrentAge] = useState<string>('30');
-  const [retirementAge, setRetirementAge] = useState<string>('65');
-  const [savings, setSavings] = useState<string>('50000');
-  const [monthly, setMonthly] = useState<string>('1000');
-  const [rate, setRate] = useState<string>('7');
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const { retirement, updateRetirement, resetCalculator } = useCalculatorStore();
+  const { currentAge, retirementAge, savings, monthly, rate, result, chartData, errors } = retirement;
   
-  const [result, setResult] = useState<number | null>(null);
-  const [chartData, setChartData] = useState<any[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const validate = () => {
@@ -48,7 +43,7 @@ export default function RetirementCalculatorPage() {
     if (!monthly || m < 0) newErrors.monthly = "Required (>= 0)";
     if (!rate || r < 0 || r > 100) newErrors.rate = "Required (0-100%)";
     
-    setErrors(newErrors);
+    updateRetirement({ errors: newErrors });
     return Object.keys(newErrors).length === 0;
   };
 
@@ -63,20 +58,15 @@ export default function RetirementCalculatorPage() {
       Number(currentAge),
       Number(retirementAge)
     );
-    setResult(data.finalValue);
-    setChartData(data.chartData);
+    updateRetirement({ 
+      result: data.finalValue,
+      chartData: data.chartData
+    });
     setIsModalOpen(true);
   };
 
   const handleReset = () => {
-    setCurrentAge('30');
-    setRetirementAge('65');
-    setSavings('50000');
-    setMonthly('1000');
-    setRate('7');
-    setErrors({});
-    setResult(null);
-    setChartData([]);
+    resetCalculator('retirement');
     setIsModalOpen(false);
   };
 
@@ -124,7 +114,7 @@ export default function RetirementCalculatorPage() {
                         id="currentAge" 
                         type="number" 
                         value={currentAge} 
-                        onChange={(e) => setCurrentAge(e.target.value)}
+                        onChange={(e) => updateRetirement({ currentAge: e.target.value })}
                         error={errors.currentAge}
                         className="h-11 bg-background/50 border-white/10"
                       />
@@ -135,7 +125,7 @@ export default function RetirementCalculatorPage() {
                         id="retirementAge" 
                         type="number" 
                         value={retirementAge} 
-                        onChange={(e) => setRetirementAge(e.target.value)}
+                        onChange={(e) => updateRetirement({ retirementAge: e.target.value })}
                         error={errors.retirementAge}
                         className="h-11 bg-background/50 border-white/10"
                       />
@@ -148,7 +138,7 @@ export default function RetirementCalculatorPage() {
                       id="savings" 
                       type="number" 
                       value={savings} 
-                      onChange={(e) => setSavings(e.target.value)}
+                      onChange={(e) => updateRetirement({ savings: e.target.value })}
                       error={errors.savings}
                       className="h-11 bg-background/50 border-white/10"
                       placeholder="50000"
@@ -161,7 +151,7 @@ export default function RetirementCalculatorPage() {
                       id="monthly" 
                       type="number" 
                       value={monthly} 
-                      onChange={(e) => setMonthly(e.target.value)}
+                      onChange={(e) => updateRetirement({ monthly: e.target.value })}
                       error={errors.monthly}
                       className="h-11 bg-background/50 border-white/10"
                       placeholder="1000"
@@ -175,7 +165,7 @@ export default function RetirementCalculatorPage() {
                       type="number" 
                       step="0.1"
                       value={rate} 
-                      onChange={(e) => setRate(e.target.value)}
+                      onChange={(e) => updateRetirement({ rate: e.target.value })}
                       error={errors.rate}
                       className="h-11 bg-background/50 border-white/10"
                       placeholder="7"

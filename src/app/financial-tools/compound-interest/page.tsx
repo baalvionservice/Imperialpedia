@@ -19,15 +19,12 @@ import { financialMath } from '@/modules/calculators/utils/calculations';
 import { CalculatorResultModal } from '@/modules/calculators/components/CalculatorResultModal';
 import { TrendingUp, RefreshCcw, ArrowLeft, Info, CheckCircle2 } from 'lucide-react';
 import Link from 'next/link';
+import { useCalculatorStore } from '@/lib/state/calculator-store';
 
 export default function CompoundInterestPage() {
-  const [principal, setPrincipal] = useState<string>('10000');
-  const [rate, setRate] = useState<string>('7');
-  const [years, setYears] = useState<string>('10');
-  const [frequency, setFrequency] = useState<string>('12');
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const { compound, updateCompound, resetCalculator } = useCalculatorStore();
+  const { principal, rate, years, frequency, result, errors } = compound;
   
-  const [result, setResult] = useState<number | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const validate = () => {
@@ -40,7 +37,7 @@ export default function CompoundInterestPage() {
     if (!rate || r < 0 || r > 100) newErrors.rate = "Required (0-100%)";
     if (!years || y <= 0) newErrors.years = "Required (> 0)";
     
-    setErrors(newErrors);
+    updateCompound({ errors: newErrors });
     return Object.keys(newErrors).length === 0;
   };
 
@@ -55,17 +52,12 @@ export default function CompoundInterestPage() {
       0,
       Number(frequency)
     );
-    setResult(final);
+    updateCompound({ result: final });
     setIsModalOpen(true);
   };
 
   const handleReset = () => {
-    setPrincipal('10000');
-    setRate('7');
-    setYears('10');
-    setFrequency('12');
-    setErrors({});
-    setResult(null);
+    resetCalculator('compound');
     setIsModalOpen(false);
   };
 
@@ -109,7 +101,7 @@ export default function CompoundInterestPage() {
                       id="principal" 
                       type="number" 
                       value={principal} 
-                      onChange={(e) => setPrincipal(e.target.value)}
+                      onChange={(e) => updateCompound({ principal: e.target.value })}
                       error={errors.principal}
                       className="h-12 bg-background/50 rounded-xl border-white/10"
                       placeholder="e.g. 10000"
@@ -123,7 +115,7 @@ export default function CompoundInterestPage() {
                       type="number" 
                       step="0.1"
                       value={rate} 
-                      onChange={(e) => setRate(e.target.value)}
+                      onChange={(e) => updateCompound({ rate: e.target.value })}
                       error={errors.rate}
                       className="h-12 bg-background/50 rounded-xl border-white/10"
                       placeholder="e.g. 7.5"
@@ -136,7 +128,7 @@ export default function CompoundInterestPage() {
                       id="years" 
                       type="number" 
                       value={years} 
-                      onChange={(e) => setYears(e.target.value)}
+                      onChange={(e) => updateCompound({ years: e.target.value })}
                       error={errors.years}
                       className="h-12 bg-background/50 rounded-xl border-white/10"
                       placeholder="e.g. 20"
@@ -145,7 +137,7 @@ export default function CompoundInterestPage() {
 
                   <div className="space-y-3">
                     <Label htmlFor="frequency" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Compounding Frequency</Label>
-                    <Select value={frequency} onValueChange={setFrequency}>
+                    <Select value={frequency} onValueChange={(val) => updateCompound({ frequency: val })}>
                       <SelectTrigger className="h-12 bg-background/50 rounded-xl border-white/10">
                         <SelectValue placeholder="Select frequency" />
                       </SelectTrigger>
