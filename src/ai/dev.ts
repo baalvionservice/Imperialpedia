@@ -13,3 +13,4 @@ import '@/ai/flows/social-sentiment-flow.ts';
 import '@/ai/flows/daily-briefing-flow.ts';
 import '@/ai/flows/weekly-digest-flow.ts';
 import '@/ai/flows/asset-comparison-flow.ts';
+import '@/ai/flows/multi-asset-comparison-flow.ts';
