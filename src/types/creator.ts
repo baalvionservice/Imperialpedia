@@ -89,6 +89,7 @@ export interface CreatorAnalytics {
   comments: number;
   shares: number;
   revenue: number;
+  createdAt: string;
 }
 
 export interface CreatorDashboardAnalytics {
@@ -102,6 +103,7 @@ export interface CreatorDashboardAnalytics {
     views: number;
     revenue: number;
     engagement: number;
+    followers: number;
   }>;
 }
 
