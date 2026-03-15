@@ -7,3 +7,6 @@ export * from './tokens/spacing';
 export * from './tokens/radius';
 export * from './tokens/shadows';
 export * from './typography/font-scale';
+export * from './typography/fonts';
+export * from './typography/typography';
+export * from './typography/text';

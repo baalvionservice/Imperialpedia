@@ -1,6 +1,6 @@
-// Redirecting to modular route group
-import { redirect } from 'next/navigation';
-
+/**
+ * Redundant outline page cleared to resolve parallel routing conflict with (public)/outline/page.tsx
+ */
 export default function OutlineRootPage() {
-  redirect('/(public)/outline');
+  return null;
 }
