@@ -162,6 +162,7 @@ const Sidebar = ({ className }: { className?: string }) => {
     { icon: PenTool, label: 'Content Engine', href: '/articles' },
     { icon: Sparkles, label: 'AI Bull Case', href: '/ai-analyst/bull-case' },
     { icon: TrendingDown, label: 'AI Bear Case', href: '/ai-analyst/bear-case' },
+    { icon: ShieldAlert, label: 'AI Risk Scanner', href: '/ai-analyst/risk-detection' },
     { icon: Search, label: 'Internal Search', href: '/search' },
     { icon: UsersIcon, label: 'Creator Network', href: '/creators' },
     { icon: CalcIcon, label: 'Financial Tools', href: '/financial-tools' },
