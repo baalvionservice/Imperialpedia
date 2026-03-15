@@ -121,6 +121,7 @@ const Sidebar = ({ className }: { className?: string }) => {
 
   const communityItems = [
     { icon: Trophy, label: 'Network Leaderboard', href: '/community/leaderboard' },
+    { icon: Target, label: 'Polls & Contests', href: '/community/contests' },
     { icon: Award, label: 'Authority & Badges', href: '/community/reputation' },
     { icon: MessageSquare, label: 'Discovery Forums', href: '/community/discussions' },
   ];

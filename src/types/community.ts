@@ -26,6 +26,7 @@ export interface Poll {
   votes: number[];
   totalVotes: number;
   expiresAt: string;
+  status?: 'ongoing' | 'closed';
 }
 
 export interface CommunityBadge {
@@ -54,10 +55,30 @@ export interface LeaderboardEntry {
   trend: 'up' | 'down' | 'stable';
 }
 
+export interface ContestParticipant {
+  username: string;
+  points: number;
+  rank: number;
+  avatar: string;
+}
+
+export interface PredictionContest {
+  id: string;
+  name: string;
+  description: string;
+  assets: string[];
+  participants: ContestParticipant[];
+  topParticipants: string[];
+  status: 'ongoing' | 'upcoming' | 'closed';
+  reward?: string;
+  endsAt: string;
+}
+
 export interface CommunityData {
   comments: Comment[];
   trendingDiscussions: string[];
   polls: Poll[];
   userReputation: UserReputation;
   leaderboard: LeaderboardEntry[];
+  predictionContests: PredictionContest[];
 }
