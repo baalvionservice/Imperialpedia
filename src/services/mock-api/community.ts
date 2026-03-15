@@ -1,9 +1,20 @@
 import { ApiResponse } from '@/types';
-import { CommunityData, Comment, Poll, UserReputation, LeaderboardEntry, CommunityBadge, PredictionContest, ReputationEntry, LeaderboardItem } from '@/types/community';
+import { 
+  CommunityData, 
+  Comment, 
+  Poll, 
+  UserReputation, 
+  LeaderboardEntry, 
+  PredictionContest, 
+  ReputationEntry, 
+  LeaderboardItem,
+  CommunityRankingsData,
+  RankedUser
+} from '@/types/community';
 
 /**
  * @fileOverview Mock service for the Community and Engagement engine.
- * Refined for Prompt 39 requirements.
+ * Refined for Prompt 61 requirements.
  */
 
 const mockComments: Comment[] = [
@@ -44,7 +55,6 @@ const mockComments: Comment[] = [
   }
 ];
 
-// Prompt 39: Reputation List
 const mockReputationList: ReputationEntry[] = [
   { 
     username: "User123", 
@@ -59,93 +69,59 @@ const mockReputationList: ReputationEntry[] = [
     reputation_points: 85, 
     badges: ["Contributor"], 
     contributions: { posts: 15, comments: 20, polls: 2 } 
-  },
-  { 
-    username: "AlphaHunter", 
-    avatar: "https://picsum.photos/seed/alpha/200/200", 
-    reputation_points: 110, 
-    badges: ["Oracle", "Vetted Analyst"], 
-    contributions: { posts: 12, comments: 150, polls: 18 } 
   }
 ];
 
-// Prompt 39: Leaderboards Full
 const mockLeaderboardsFull: LeaderboardItem[] = [
   { rank: 1, username: "User123", avatar: "https://picsum.photos/seed/u123/200/200", total_points: 120, badges: ["Expert", "Top Contributor"], trend: 'up' },
   { rank: 2, username: "AlphaHunter", avatar: "https://picsum.photos/seed/alpha/200/200", total_points: 110, badges: ["Oracle"], trend: 'stable' },
-  { rank: 3, username: "User456", avatar: "https://picsum.photos/seed/u456/200/200", total_points: 85, badges: ["Contributor"], trend: 'down' },
-  { rank: 4, username: "Julian Wealth", avatar: "https://picsum.photos/seed/wealth/200/200", total_points: 72, badges: ["Expert"], trend: 'up' },
-  { rank: 5, username: "Sarah Crypto", avatar: "https://picsum.photos/seed/defi/200/200", total_points: 65, badges: ["Early Adopter"], trend: 'up' },
 ];
 
-const mockLeaderboard: LeaderboardEntry[] = mockLeaderboardsFull.map(item => ({
-  rank: item.rank,
-  username: item.username,
-  avatar: item.avatar,
-  reputation: item.total_points,
-  badges: item.badges,
-  trend: item.trend
-}));
-
-const mockPolls: Poll[] = [
-  {
-    id: 'p-1',
-    poll_id: 1,
-    question: 'Will XYZ Corp beat earnings this quarter?',
-    options: [
-      { option: 'Yes', votes: 120 },
-      { option: 'No', votes: 45 }
-    ],
-    votes: [120, 45],
-    totalVotes: 165,
-    expiresAt: '2026-03-20T00:00:00Z',
-    closing_date: '2026-03-20',
-    status: 'active'
-  }
+const mockRankedUsers: RankedUser[] = [
+  { rank: 1, id: 'u-1', name: "Daniel Foster", username: "dfoster", avatar: "https://picsum.photos/seed/daniel/200/200", role: "Analyst", articles: 54, followers: 18200, engagement_score: 96, badge: "Top Contributor", reputation: 12450, trend: 'up' },
+  { rank: 2, id: 'u-2', name: "Sophia Lee", username: "slee_invest", avatar: "https://picsum.photos/seed/sophia/200/200", role: "Author", articles: 38, followers: 14100, engagement_score: 91, badge: "Rising Star", reputation: 8200, trend: 'up' },
+  { rank: 3, id: 'u-3', name: "Marcus Wealth", username: "mwealth", avatar: "https://picsum.photos/seed/marcus/200/200", role: "Analyst", articles: 24, followers: 12500, engagement_score: 88, badge: "Expert Analyst", reputation: 7500, trend: 'stable' },
+  { rank: 4, id: 'u-4', name: "Elena Garcia", username: "egarcia", avatar: "https://picsum.photos/seed/elena/200/200", role: "Author", articles: 45, followers: 9800, engagement_score: 85, badge: "Community Mentor", reputation: 6800, trend: 'up' },
+  { rank: 5, id: 'u-5', name: "Julian P.", username: "j_wealth", avatar: "https://picsum.photos/seed/julian/200/200", role: "Member", articles: 12, followers: 5400, engagement_score: 78, badge: "Most Helpful", reputation: 4200, trend: 'down' },
 ];
 
-const mockUserReputation: UserReputation = {
-  username: 'User123', // Active User Simulation
-  reputationScore: 120,
-  level: 14,
-  nextLevelProgress: 65,
-  activityPoints: 120,
-  badges: [
-    { id: 'b-1', name: 'Expert Contributor', description: 'Published 10+ research nodes.', icon: 'Award', rarity: 'Expert' },
-    { id: 'b-2', name: 'Top Contributor', description: 'Consistently high engagement.', icon: 'Star', rarity: 'Rare' }
+const mockCommunityRankings: CommunityRankingsData = {
+  leaderboard: mockRankedUsers,
+  categories: [
+    "Global Rankings",
+    "Top Authors",
+    "Most Accurate Analysts",
+    "Most Active Commenters",
+    "Top Community Helpers",
+    "Rising Contributors"
   ]
 };
 
-const mockPredictionContests: PredictionContest[] = [
-  {
-    id: 'cont-1',
-    contest_id: 1,
-    name: 'Weekly Stock Picks',
-    description: 'Predict the top 3 performers this week across the S&P 500 taxonomy.',
-    assets: ['AAPL', 'NVDA', 'TSLA'],
-    status: 'ongoing',
-    start_date: '2026-03-15',
-    end_date: '2026-03-21',
-    endsAt: '2026-03-21T23:59:59Z',
-    reward: 'Grand Oracle Badge',
-    prize: 'Mock Badge',
-    participants: [
-      { username: 'User123', points: 50, avatar: 'https://picsum.photos/seed/u1/100/100' },
-      { username: 'User456', points: 40, avatar: 'https://picsum.photos/seed/u2/100/100' }
-    ]
-  }
-];
+export const getCommunityRankings = async (): Promise<ApiResponse<CommunityRankingsData>> => {
+  await new Promise((resolve) => setTimeout(resolve, 600));
+  return {
+    data: mockCommunityRankings,
+    status: 200,
+  };
+};
 
 export const getCommunityData = async (): Promise<ApiResponse<CommunityData>> => {
   await new Promise((resolve) => setTimeout(resolve, 400));
   return {
     data: {
       comments: mockComments,
-      polls: mockPolls,
-      trendingDiscussions: ['Yield Curve 2026', 'Fed Liquidity', 'AI Chip Wars', 'CBDC Rollout'],
-      userReputation: mockUserReputation,
-      leaderboard: mockLeaderboard,
-      predictionContests: mockPredictionContests,
+      polls: [],
+      trendingDiscussions: ['Yield Curve 2026', 'Fed Liquidity', 'AI Chip Wars'],
+      userReputation: {
+        username: 'User123',
+        reputationScore: 120,
+        level: 14,
+        nextLevelProgress: 65,
+        activityPoints: 120,
+        badges: []
+      },
+      leaderboard: [],
+      predictionContests: [],
       reputation_list: mockReputationList,
       leaderboards_full: mockLeaderboardsFull
     },

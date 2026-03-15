@@ -59,7 +59,7 @@ export interface UserReputation {
 }
 
 /**
- * Prompt 39: Reputation & Leaderboard Types
+ * Prompt 39 & 61: Reputation & Leaderboard Types
  */
 export interface ReputationContribution {
   posts: number;
@@ -94,6 +94,26 @@ export interface LeaderboardEntry {
   trend?: 'up' | 'down' | 'stable';
 }
 
+export interface RankedUser {
+  rank: number;
+  id: string;
+  name: string;
+  username: string;
+  avatar: string;
+  role: 'Author' | 'Analyst' | 'Member';
+  articles: number;
+  followers: number;
+  engagement_score: number;
+  badge: string;
+  reputation: number;
+  trend?: 'up' | 'down' | 'stable';
+}
+
+export interface CommunityRankingsData {
+  leaderboard: RankedUser[];
+  categories: string[];
+}
+
 export interface ContestParticipant {
   username: string;
   points: number;
@@ -124,7 +144,6 @@ export interface CommunityData {
   userReputation: UserReputation;
   leaderboard: LeaderboardEntry[];
   predictionContests: PredictionContest[];
-  // Prompt 39 specific fields
   reputation_list: ReputationEntry[];
   leaderboards_full: LeaderboardItem[];
 }
