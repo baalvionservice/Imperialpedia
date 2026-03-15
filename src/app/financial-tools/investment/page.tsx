@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { Container } from '@/design-system/layout/container';
 import { Text } from '@/design-system/typography/text';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { financialMath } from '@/modules/calculators/utils/calculations';
 import { CalculatorResultModal } from '@/modules/calculators/components/CalculatorResultModal';
-import { PieChart, RefreshCcw, ArrowLeft, Info, TrendingUp, DollarSign } from 'lucide-react';
+import { PieChart, RefreshCcw, ArrowLeft, Info, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
 import { 
   AreaChart, 
@@ -21,22 +21,31 @@ import {
   ResponsiveContainer 
 } from 'recharts';
 
-/**
- * High-fidelity Investment Return Calculator.
- * Models portfolio growth with recurring contributions and dynamic market rates.
- */
 export default function InvestmentReturnPage() {
   const [principal, setPrincipal] = useState<string>('5000');
   const [monthly, setMonthly] = useState<string>('500');
   const [rate, setRate] = useState<string>('8');
   const [years, setYears] = useState<string>('20');
+  const [errors, setErrors] = useState<Record<string, string>>({});
   
   const [result, setResult] = useState<number | null>(null);
   const [chartData, setChartData] = useState<any[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const validate = () => {
+    const newErrors: Record<string, string> = {};
+    if (!principal || Number(principal) < 0) newErrors.principal = "Must be 0 or greater";
+    if (!monthly || Number(monthly) < 0) newErrors.monthly = "Must be 0 or greater";
+    if (!rate || Number(rate) < 0 || Number(rate) > 100) newErrors.rate = "Rate must be 0-100%";
+    if (!years || Number(years) <= 0) newErrors.years = "Horizon must be greater than 0";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleCalculate = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validate()) return;
+
     const data = financialMath.calculateInvestmentGrowth(
       Number(principal),
       Number(monthly),
@@ -53,6 +62,7 @@ export default function InvestmentReturnPage() {
     setMonthly('500');
     setRate('8');
     setYears('20');
+    setErrors({});
     setResult(null);
     setChartData([]);
     setIsModalOpen(false);
@@ -83,7 +93,6 @@ export default function InvestmentReturnPage() {
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* Input Form */}
           <div className="lg:col-span-4">
             <Card className="glass-card border-none shadow-2xl h-full">
               <div className="bg-primary/5 px-6 py-4 border-b border-white/5 flex items-center gap-2">
@@ -99,9 +108,9 @@ export default function InvestmentReturnPage() {
                       type="number" 
                       value={principal} 
                       onChange={(e) => setPrincipal(e.target.value)}
+                      error={errors.principal}
                       className="h-11 bg-background/50 border-white/10"
                       placeholder="5000"
-                      required
                     />
                   </div>
                   
@@ -112,9 +121,9 @@ export default function InvestmentReturnPage() {
                       type="number" 
                       value={monthly} 
                       onChange={(e) => setMonthly(e.target.value)}
+                      error={errors.monthly}
                       className="h-11 bg-background/50 border-white/10"
                       placeholder="500"
-                      required
                     />
                   </div>
 
@@ -126,9 +135,9 @@ export default function InvestmentReturnPage() {
                       step="0.1"
                       value={rate} 
                       onChange={(e) => setRate(e.target.value)}
+                      error={errors.rate}
                       className="h-11 bg-background/50 border-white/10"
                       placeholder="8"
-                      required
                     />
                   </div>
 
@@ -139,9 +148,9 @@ export default function InvestmentReturnPage() {
                       type="number" 
                       value={years} 
                       onChange={(e) => setYears(e.target.value)}
+                      error={errors.years}
                       className="h-11 bg-background/50 border-white/10"
                       placeholder="20"
-                      required
                     />
                   </div>
 
@@ -158,7 +167,6 @@ export default function InvestmentReturnPage() {
             </Card>
           </div>
 
-          {/* Visualization Area */}
           <div className="lg:col-span-8">
             <Card className="glass-card border-none shadow-2xl h-full overflow-hidden flex flex-col">
               <CardHeader className="bg-card/30 border-b border-white/5">
@@ -179,34 +187,10 @@ export default function InvestmentReturnPage() {
                           </linearGradient>
                         </defs>
                         <CartesianGrid strokeDasharray="3 3" stroke="#ffffff05" vertical={false} />
-                        <XAxis 
-                          dataKey="year" 
-                          stroke="#888888" 
-                          fontSize={10} 
-                          tickLine={false} 
-                          axisLine={false} 
-                          label={{ value: 'Years', position: 'insideBottom', offset: -5, fontSize: 10, fill: '#888888' }}
-                        />
-                        <YAxis 
-                          stroke="#888888" 
-                          fontSize={10} 
-                          tickLine={false} 
-                          axisLine={false} 
-                          tickFormatter={(val) => `$${val / 1000}k`}
-                        />
-                        <Tooltip 
-                          contentStyle={{ backgroundColor: '#1C1822', border: '1px solid #ffffff10', borderRadius: '12px' }}
-                          formatter={(value: number) => [formatCurrency(value), 'Portfolio Balance']}
-                          labelFormatter={(label) => `Year ${label}`}
-                        />
-                        <Area 
-                          type="monotone" 
-                          dataKey="balance" 
-                          stroke="#8272F2" 
-                          fillOpacity={1} 
-                          fill="url(#colorBalance)" 
-                          strokeWidth={3}
-                        />
+                        <XAxis dataKey="year" stroke="#888888" fontSize={10} tickLine={false} axisLine={false} />
+                        <YAxis stroke="#888888" fontSize={10} tickLine={false} axisLine={false} tickFormatter={(val) => `$${val / 1000}k`} />
+                        <Tooltip contentStyle={{ backgroundColor: '#1C1822', border: '1px solid #ffffff10', borderRadius: '12px' }} formatter={(value: number) => [formatCurrency(value), 'Portfolio Balance']} />
+                        <Area type="monotone" dataKey="balance" stroke="#8272F2" fillOpacity={1} fill="url(#colorBalance)" strokeWidth={3} />
                       </AreaChart>
                     </ResponsiveContainer>
                   </div>
@@ -219,27 +203,8 @@ export default function InvestmentReturnPage() {
                   </div>
                 )}
               </CardContent>
-              {result && (
-                <div className="bg-primary/5 p-6 border-t border-white/5 flex items-center justify-between">
-                  <div className="space-y-1">
-                    <Text variant="caption" className="text-muted-foreground font-bold uppercase tracking-widest">End Balance</Text>
-                    <div className="text-3xl font-bold text-primary">{formatCurrency(result)}</div>
-                  </div>
-                  <div className="text-right">
-                    <Text variant="caption" className="text-muted-foreground block mb-1">Total Principal: {formatCurrency(Number(principal) + (Number(monthly) * Number(years) * 12))}</Text>
-                    <Text variant="caption" className="text-emerald-500 font-bold">Market Gains: {formatCurrency(result - (Number(principal) + (Number(monthly) * Number(years) * 12)))}</Text>
-                  </div>
-                </div>
-              )}
             </Card>
           </div>
-        </div>
-
-        <div className="mt-12 p-8 rounded-[2.5rem] bg-secondary/5 border border-secondary/20 relative overflow-hidden">
-          <div className="absolute -top-4 -right-4 w-24 h-24 bg-secondary/10 rounded-full blur-2xl" />
-          <Text variant="bodySmall" className="text-muted-foreground leading-relaxed italic relative z-10">
-            "The greatest advantage an investor has is time. By combining initial capital with consistent monthly discipline, you create a compounding engine that works even while you sleep." — Imperialpedia Research
-          </Text>
         </div>
 
         {result && (
@@ -249,7 +214,7 @@ export default function InvestmentReturnPage() {
             onReset={handleReset}
             title="Estimated Future Value"
             result={formatCurrency(result)}
-            description={`Starting with ${formatCurrency(Number(principal))} and contributing ${formatCurrency(Number(monthly))} monthly, your portfolio is projected to reach ${formatCurrency(result)} in ${years} years at an ${rate}% average annual return.`}
+            description={`Starting with ${formatCurrency(Number(principal))} and contributing ${formatCurrency(Number(monthly))} monthly, your portfolio is projected to reach ${formatCurrency(result)}.`}
           />
         )}
       </Container>

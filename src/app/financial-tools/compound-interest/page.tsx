@@ -19,27 +19,34 @@ import { CalculatorResultModal } from '@/modules/calculators/components/Calculat
 import { TrendingUp, RefreshCcw, ArrowLeft, Info } from 'lucide-react';
 import Link from 'next/link';
 
-/**
- * High-fidelity Compound Interest Calculator.
- * Supports principal, rates, time periods, and compounding frequency.
- */
 export default function CompoundInterestPage() {
   const [principal, setPrincipal] = useState<string>('10000');
   const [rate, setRate] = useState<string>('7');
   const [years, setYears] = useState<string>('10');
-  const [frequency, setFrequency] = useState<string>('12'); // Default to Monthly
+  const [frequency, setFrequency] = useState<string>('12');
+  const [errors, setErrors] = useState<Record<string, string>>({});
   
   const [result, setResult] = useState<number | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const validate = () => {
+    const newErrors: Record<string, string> = {};
+    if (!principal || Number(principal) < 0) newErrors.principal = "Must be 0 or greater";
+    if (!rate || Number(rate) < 0 || Number(rate) > 100) newErrors.rate = "Rate must be 0-100%";
+    if (!years || Number(years) <= 0) newErrors.years = "Horizon must be greater than 0";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleCalculate = (e: React.FormEvent) => {
     e.preventDefault();
-    // Using the refined calculation logic with frequency
+    if (!validate()) return;
+
     const final = financialMath.calculateCompoundInterest(
       Number(principal),
       Number(rate),
       Number(years),
-      0, // Monthly contribution set to 0 for this simplified prompt request
+      0,
       Number(frequency)
     );
     setResult(final);
@@ -51,22 +58,12 @@ export default function CompoundInterestPage() {
     setRate('7');
     setYears('10');
     setFrequency('12');
+    setErrors({});
     setResult(null);
     setIsModalOpen(false);
   };
 
   const formattedResult = result ? new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(result) : '';
-
-  const getFrequencyLabel = (val: string) => {
-    switch (val) {
-      case '1': return 'Annually';
-      case '2': return 'Semi-Annually';
-      case '4': return 'Quarterly';
-      case '12': return 'Monthly';
-      case '365': return 'Daily';
-      default: return 'Monthly';
-    }
-  };
 
   return (
     <main className="min-h-screen bg-background pt-20 pb-32">
@@ -101,9 +98,9 @@ export default function CompoundInterestPage() {
                     type="number" 
                     value={principal} 
                     onChange={(e) => setPrincipal(e.target.value)}
-                    className="h-12 bg-background/50 rounded-xl border-white/10 focus:ring-primary"
+                    error={errors.principal}
+                    className="h-12 bg-background/50 rounded-xl border-white/10"
                     placeholder="e.g. 10000"
-                    required
                   />
                 </div>
                 
@@ -115,9 +112,9 @@ export default function CompoundInterestPage() {
                     step="0.1"
                     value={rate} 
                     onChange={(e) => setRate(e.target.value)}
-                    className="h-12 bg-background/50 rounded-xl border-white/10 focus:ring-primary"
+                    error={errors.rate}
+                    className="h-12 bg-background/50 rounded-xl border-white/10"
                     placeholder="e.g. 7.5"
-                    required
                   />
                 </div>
 
@@ -128,9 +125,9 @@ export default function CompoundInterestPage() {
                     type="number" 
                     value={years} 
                     onChange={(e) => setYears(e.target.value)}
-                    className="h-12 bg-background/50 rounded-xl border-white/10 focus:ring-primary"
+                    error={errors.years}
+                    className="h-12 bg-background/50 rounded-xl border-white/10"
                     placeholder="e.g. 20"
-                    required
                   />
                 </div>
 
@@ -176,7 +173,7 @@ export default function CompoundInterestPage() {
           onReset={handleReset}
           title="Projected Growth"
           result={formattedResult}
-          description={`With an initial investment of ${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(Number(principal))}, your portfolio is projected to grow to ${formattedResult} over ${years} years at a ${rate}% annual rate, compounding ${getFrequencyLabel(frequency).toLowerCase()}.`}
+          description={`With an initial investment of ${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(Number(principal))}, your portfolio is projected to grow to ${formattedResult} over ${years} years at a ${rate}% annual rate.`}
         />
       </Container>
     </main>

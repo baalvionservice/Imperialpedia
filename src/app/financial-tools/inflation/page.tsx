@@ -12,20 +12,28 @@ import { CalculatorResultModal } from '@/modules/calculators/components/Calculat
 import { ArrowUpRight, RefreshCcw, ArrowLeft, Info, Gauge } from 'lucide-react';
 import Link from 'next/link';
 
-/**
- * High-fidelity Inflation Impact Calculator.
- * Helps users understand the future cost of living and purchasing power erosion.
- */
 export default function InflationCalculatorPage() {
   const [amount, setAmount] = useState<string>('5000');
   const [rate, setRate] = useState<string>('3');
   const [years, setYears] = useState<string>('10');
+  const [errors, setErrors] = useState<Record<string, string>>({});
   
   const [result, setResult] = useState<number | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const validate = () => {
+    const newErrors: Record<string, string> = {};
+    if (!amount || Number(amount) <= 0) newErrors.amount = "Amount must be greater than 0";
+    if (!rate || Number(rate) < 0 || Number(rate) > 100) newErrors.rate = "Rate must be 0-100%";
+    if (!years || Number(years) <= 0) newErrors.years = "Horizon must be greater than 0";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleCalculate = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validate()) return;
+
     const final = financialMath.calculateInflationImpact(
       Number(amount),
       Number(rate),
@@ -39,6 +47,7 @@ export default function InflationCalculatorPage() {
     setAmount('5000');
     setRate('3');
     setYears('10');
+    setErrors({});
     setResult(null);
     setIsModalOpen(false);
   };
@@ -63,7 +72,7 @@ export default function InflationCalculatorPage() {
           </div>
           <Text variant="h1" className="text-4xl lg:text-6xl font-bold mb-4 tracking-tight">Inflation Impact Engine</Text>
           <Text variant="body" className="text-muted-foreground text-lg leading-relaxed">
-            Visualize how inflation erodes the value of your capital over time and determine the future cost of today's goods and services.
+            Visualize how inflation erodes the value of your capital over time and determine the future cost of today's goods.
           </Text>
         </header>
 
@@ -82,9 +91,9 @@ export default function InflationCalculatorPage() {
                     type="number" 
                     value={amount} 
                     onChange={(e) => setAmount(e.target.value)}
-                    className="h-12 bg-background/50 rounded-xl border-white/10 focus:ring-primary"
+                    error={errors.amount}
+                    className="h-12 bg-background/50 rounded-xl border-white/10"
                     placeholder="e.g. 5000"
-                    required
                   />
                 </div>
                 
@@ -96,9 +105,9 @@ export default function InflationCalculatorPage() {
                     step="0.1"
                     value={rate} 
                     onChange={(e) => setRate(e.target.value)}
-                    className="h-12 bg-background/50 rounded-xl border-white/10 focus:ring-primary"
+                    error={errors.rate}
+                    className="h-12 bg-background/50 rounded-xl border-white/10"
                     placeholder="e.g. 3.2"
-                    required
                   />
                 </div>
 
@@ -109,9 +118,9 @@ export default function InflationCalculatorPage() {
                     type="number" 
                     value={years} 
                     onChange={(e) => setYears(e.target.value)}
-                    className="h-12 bg-background/50 rounded-xl border-white/10 focus:ring-primary"
+                    error={errors.years}
+                    className="h-12 bg-background/50 rounded-xl border-white/10"
                     placeholder="e.g. 10"
-                    required
                   />
                 </div>
 
@@ -135,13 +144,6 @@ export default function InflationCalculatorPage() {
           </CardContent>
         </Card>
 
-        <div className="mt-12 p-8 rounded-[2.5rem] bg-secondary/5 border border-secondary/20 relative overflow-hidden">
-          <div className="absolute -top-4 -right-4 w-24 h-24 bg-secondary/10 rounded-full blur-2xl" />
-          <Text variant="bodySmall" className="text-muted-foreground leading-relaxed italic relative z-10">
-            "Inflation is the silent thief of wealth. Understanding its impact is the first step in constructing a portfolio that doesn't just grow in nominal terms, but preserves real purchasing power for decades." — Imperialpedia Intelligence
-          </Text>
-        </div>
-
         {result && (
           <CalculatorResultModal 
             isOpen={isModalOpen}
@@ -149,7 +151,7 @@ export default function InflationCalculatorPage() {
             onReset={handleReset}
             title="Future Equivalent Value"
             result={formatCurrency(result)}
-            description={`With an average annual inflation rate of ${rate}%, you will need ${formatCurrency(result)} in ${years} years to have the same purchasing power as today's ${formatCurrency(Number(amount))}.`}
+            description={`With an average annual inflation rate of ${rate}%, you will need ${formatCurrency(result)} in ${years} years to match today's ${formatCurrency(Number(amount))}.`}
           />
         )}
       </Container>

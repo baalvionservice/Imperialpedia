@@ -16,8 +16,6 @@ import {
   Plus, 
   Trash2, 
   PieChart as PieChartIcon, 
-  TrendingUp,
-  DollarSign
 } from 'lucide-react';
 import Link from 'next/link';
 import { 
@@ -27,11 +25,6 @@ import {
   ResponsiveContainer, 
   Legend, 
   Tooltip,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid
 } from 'recharts';
 
 interface PortfolioAsset {
@@ -39,12 +32,9 @@ interface PortfolioAsset {
   name: string;
   investment: string;
   returnRate: string;
+  error?: string;
 }
 
-/**
- * High-fidelity Portfolio Return Calculator.
- * Models aggregate returns across multiple asset classes with visual allocation tracking.
- */
 export default function PortfolioCalculatorPage() {
   const [assets, setAssets] = useState<PortfolioAsset[]>([
     { id: '1', name: 'Stocks', investment: '10000', returnRate: '10' },
@@ -69,8 +59,25 @@ export default function PortfolioCalculatorPage() {
     setAssets(assets.map(a => a.id === id ? { ...a, [field]: value } : a));
   };
 
+  const validate = () => {
+    let isValid = true;
+    const newAssets = assets.map(asset => {
+      let error = "";
+      if (!asset.name) error = "Name required";
+      if (Number(asset.investment) < 0) error = "Invalid investment";
+      if (Number(asset.returnRate) < 0 || Number(asset.returnRate) > 100) error = "Invalid return (0-100%)";
+      
+      if (error) isValid = false;
+      return { ...asset, error };
+    });
+    setAssets(newAssets);
+    return isValid;
+  };
+
   const handleCalculate = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validate()) return;
+
     const formattedAssets = assets.map(a => ({
       name: a.name || 'Unnamed Asset',
       investment: Number(a.investment),
@@ -114,12 +121,11 @@ export default function PortfolioCalculatorPage() {
           </div>
           <Text variant="h1" className="text-4xl lg:text-6xl font-bold mb-4 tracking-tight">Portfolio ROI Architect</Text>
           <Text variant="body" className="text-muted-foreground text-lg leading-relaxed">
-            Architect a diversified portfolio by assigning capital and return expectations to various asset classes. Visualize aggregate growth and individual contributions.
+            Architect a diversified portfolio by assigning capital and return expectations to various asset classes.
           </Text>
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* Asset Configuration */}
           <div className="lg:col-span-7">
             <Card className="glass-card border-none shadow-2xl">
               <CardHeader className="bg-card/30 border-b border-white/5 flex flex-row items-center justify-between">
@@ -134,48 +140,51 @@ export default function PortfolioCalculatorPage() {
               <CardContent className="p-6">
                 <form onSubmit={handleCalculate} className="space-y-6">
                   <div className="space-y-4">
-                    {assets.map((asset, idx) => (
-                      <div key={asset.id} className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-end p-4 rounded-xl bg-background/40 border border-white/5 relative group">
-                        <div className="sm:col-span-4 space-y-2">
-                          <Label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Asset Name</Label>
-                          <Input 
-                            value={asset.name} 
-                            onChange={(e) => updateAsset(asset.id, 'name', e.target.value)}
-                            placeholder="e.g. Equities"
-                            className="bg-background/50 h-10"
-                          />
+                    {assets.map((asset) => (
+                      <div key={asset.id} className="p-4 rounded-xl bg-background/40 border border-white/5 space-y-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-end">
+                          <div className="sm:col-span-4 space-y-2">
+                            <Label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Asset Name</Label>
+                            <Input 
+                              value={asset.name} 
+                              onChange={(e) => updateAsset(asset.id, 'name', e.target.value)}
+                              placeholder="e.g. Equities"
+                              className="bg-background/50 h-10"
+                            />
+                          </div>
+                          <div className="sm:col-span-4 space-y-2">
+                            <Label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Investment ($)</Label>
+                            <Input 
+                              type="number"
+                              value={asset.investment} 
+                              onChange={(e) => updateAsset(asset.id, 'investment', e.target.value)}
+                              className="bg-background/50 h-10"
+                            />
+                          </div>
+                          <div className="sm:col-span-3 space-y-2">
+                            <Label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Exp. Return (%)</Label>
+                            <Input 
+                              type="number"
+                              step="0.1"
+                              value={asset.returnRate} 
+                              onChange={(e) => updateAsset(asset.id, 'returnRate', e.target.value)}
+                              className="bg-background/50 h-10"
+                            />
+                          </div>
+                          <div className="sm:col-span-1 flex justify-center">
+                            <Button 
+                              type="button" 
+                              variant="ghost" 
+                              size="icon" 
+                              className="text-muted-foreground hover:text-destructive h-10 w-10"
+                              onClick={() => removeAsset(asset.id)}
+                              disabled={assets.length === 1}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
                         </div>
-                        <div className="sm:col-span-4 space-y-2">
-                          <Label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Investment ($)</Label>
-                          <Input 
-                            type="number"
-                            value={asset.investment} 
-                            onChange={(e) => updateAsset(asset.id, 'investment', e.target.value)}
-                            className="bg-background/50 h-10"
-                          />
-                        </div>
-                        <div className="sm:col-span-3 space-y-2">
-                          <Label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Exp. Return (%)</Label>
-                          <Input 
-                            type="number"
-                            step="0.1"
-                            value={asset.returnRate} 
-                            onChange={(e) => updateAsset(asset.id, 'returnRate', e.target.value)}
-                            className="bg-background/50 h-10"
-                          />
-                        </div>
-                        <div className="sm:col-span-1 flex justify-center">
-                          <Button 
-                            type="button" 
-                            variant="ghost" 
-                            size="icon" 
-                            className="text-muted-foreground hover:text-destructive h-10 w-10"
-                            onClick={() => removeAsset(asset.id)}
-                            disabled={assets.length === 1}
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </div>
+                        {asset.error && <p className="text-[10px] font-bold text-destructive uppercase">{asset.error}</p>}
                       </div>
                     ))}
                   </div>
@@ -193,54 +202,37 @@ export default function PortfolioCalculatorPage() {
             </Card>
           </div>
 
-          {/* Performance Visualization */}
           <div className="lg:col-span-5 space-y-8">
             {results ? (
-              <>
-                <Card className="glass-card border-none shadow-2xl overflow-hidden">
-                  <CardHeader className="bg-primary/5 border-b border-primary/10">
-                    <CardTitle className="text-sm font-bold flex items-center gap-2">
-                      <PieChartIcon className="h-4 w-4 text-primary" /> Allocation Distribution
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="p-6 h-[300px]">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
-                        <Pie
-                          data={results.breakdown}
-                          cx="50%"
-                          cy="50%"
-                          innerRadius={60}
-                          outerRadius={80}
-                          paddingAngle={5}
-                          dataKey="investment"
-                          nameKey="name"
-                        >
-                          {results.breakdown.map((entry: any, index: number) => (
-                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                          ))}
-                        </Pie>
-                        <Tooltip 
-                          contentStyle={{ backgroundColor: '#1C1822', border: '1px solid #ffffff10', borderRadius: '12px' }}
-                          formatter={(value: number) => formatCurrency(value)}
-                        />
-                        <Legend />
-                      </PieChart>
-                    </ResponsiveContainer>
-                  </CardContent>
-                </Card>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <Card className="glass-card border-none p-6 text-center">
-                    <Text variant="label" className="text-[10px] text-muted-foreground block mb-1">Total Value</Text>
-                    <Text variant="h3" className="text-primary font-bold">{formatCurrency(results.totalValue)}</Text>
-                  </Card>
-                  <Card className="glass-card border-none p-6 text-center">
-                    <Text variant="label" className="text-[10px] text-muted-foreground block mb-1">Aggregate Return</Text>
-                    <Text variant="h3" className="text-emerald-500 font-bold">+{results.weightedReturn.toFixed(1)}%</Text>
-                  </Card>
-                </div>
-              </>
+              <Card className="glass-card border-none shadow-2xl overflow-hidden">
+                <CardHeader className="bg-primary/5 border-b border-primary/10">
+                  <CardTitle className="text-sm font-bold flex items-center gap-2">
+                    <PieChartIcon className="h-4 w-4 text-primary" /> Allocation Distribution
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-6 h-[300px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={results.breakdown}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={60}
+                        outerRadius={80}
+                        paddingAngle={5}
+                        dataKey="investment"
+                        nameKey="name"
+                      >
+                        {results.breakdown.map((entry: any, index: number) => (
+                          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                        ))}
+                      </Pie>
+                      <Tooltip contentStyle={{ backgroundColor: '#1C1822', border: '1px solid #ffffff10', borderRadius: '12px' }} formatter={(value: number) => formatCurrency(value)} />
+                      <Legend />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </CardContent>
+              </Card>
             ) : (
               <div className="h-full flex flex-col items-center justify-center p-12 border-2 border-dashed rounded-[3rem] opacity-30 text-center space-y-4">
                 <Layers className="h-16 w-16 text-muted-foreground" />
@@ -253,13 +245,6 @@ export default function PortfolioCalculatorPage() {
           </div>
         </div>
 
-        <div className="mt-12 p-8 rounded-[2.5rem] bg-secondary/5 border border-secondary/20 relative overflow-hidden">
-          <div className="absolute -top-4 -right-4 w-24 h-24 bg-secondary/10 rounded-full blur-2xl" />
-          <Text variant="bodySmall" className="text-muted-foreground leading-relaxed italic relative z-10">
-            "Diversification is the only free lunch in finance. By intelligently spreading your capital across uncorrelated assets, you can optimize for higher expected returns while managing systemic risk." — Imperialpedia Intelligence
-          </Text>
-        </div>
-
         {results && (
           <CalculatorResultModal 
             isOpen={isModalOpen}
@@ -267,7 +252,7 @@ export default function PortfolioCalculatorPage() {
             onReset={handleReset}
             title="Projected Portfolio Value"
             result={formatCurrency(results.totalValue)}
-            description={`Your diversified portfolio, with a total investment of ${formatCurrency(results.totalInvestment)}, is projected to grow by ${formatCurrency(results.totalProfit)} (+${results.weightedReturn.toFixed(2)}%) based on your asset-level return expectations.`}
+            description={`Your diversified portfolio is projected to grow by ${formatCurrency(results.totalProfit)} (+${results.weightedReturn.toFixed(2)}%) based on your asset allocation.`}
           />
         )}
       </Container>

@@ -21,23 +21,33 @@ import {
   ResponsiveContainer 
 } from 'recharts';
 
-/**
- * High-fidelity Retirement Corpus Calculator.
- * Estimates total wealth at retirement age based on current savings and ongoing contributions.
- */
 export default function RetirementCalculatorPage() {
   const [currentAge, setCurrentAge] = useState<string>('30');
   const [retirementAge, setRetirementAge] = useState<string>('65');
   const [savings, setSavings] = useState<string>('50000');
   const [monthly, setMonthly] = useState<string>('1000');
   const [rate, setRate] = useState<string>('7');
+  const [errors, setErrors] = useState<Record<string, string>>({});
   
   const [result, setResult] = useState<number | null>(null);
   const [chartData, setChartData] = useState<any[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const validate = () => {
+    const newErrors: Record<string, string> = {};
+    if (!currentAge || Number(currentAge) <= 0) newErrors.currentAge = "Age must be > 0";
+    if (!retirementAge || Number(retirementAge) <= Number(currentAge)) newErrors.retirementAge = "Must be older than current age";
+    if (!savings || Number(savings) < 0) newErrors.savings = "Must be 0 or greater";
+    if (!monthly || Number(monthly) < 0) newErrors.monthly = "Must be 0 or greater";
+    if (!rate || Number(rate) < 0 || Number(rate) > 100) newErrors.rate = "Rate must be 0-100%";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleCalculate = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validate()) return;
+
     const data = financialMath.calculateRetirementCorpus(
       Number(savings),
       Number(monthly),
@@ -56,6 +66,7 @@ export default function RetirementCalculatorPage() {
     setSavings('50000');
     setMonthly('1000');
     setRate('7');
+    setErrors({});
     setResult(null);
     setChartData([]);
     setIsModalOpen(false);
@@ -86,7 +97,6 @@ export default function RetirementCalculatorPage() {
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* Input Parameters */}
           <div className="lg:col-span-4">
             <Card className="glass-card border-none shadow-2xl h-full">
               <div className="bg-secondary/5 px-6 py-4 border-b border-white/5 flex items-center gap-2">
@@ -103,8 +113,8 @@ export default function RetirementCalculatorPage() {
                         type="number" 
                         value={currentAge} 
                         onChange={(e) => setCurrentAge(e.target.value)}
+                        error={errors.currentAge}
                         className="h-11 bg-background/50 border-white/10"
-                        required
                       />
                     </div>
                     <div className="space-y-2">
@@ -114,8 +124,8 @@ export default function RetirementCalculatorPage() {
                         type="number" 
                         value={retirementAge} 
                         onChange={(e) => setRetirementAge(e.target.value)}
+                        error={errors.retirementAge}
                         className="h-11 bg-background/50 border-white/10"
-                        required
                       />
                     </div>
                   </div>
@@ -127,9 +137,9 @@ export default function RetirementCalculatorPage() {
                       type="number" 
                       value={savings} 
                       onChange={(e) => setSavings(e.target.value)}
+                      error={errors.savings}
                       className="h-11 bg-background/50 border-white/10"
                       placeholder="50000"
-                      required
                     />
                   </div>
 
@@ -140,9 +150,9 @@ export default function RetirementCalculatorPage() {
                       type="number" 
                       value={monthly} 
                       onChange={(e) => setMonthly(e.target.value)}
+                      error={errors.monthly}
                       className="h-11 bg-background/50 border-white/10"
                       placeholder="1000"
-                      required
                     />
                   </div>
 
@@ -154,9 +164,9 @@ export default function RetirementCalculatorPage() {
                       step="0.1"
                       value={rate} 
                       onChange={(e) => setRate(e.target.value)}
+                      error={errors.rate}
                       className="h-11 bg-background/50 border-white/10"
                       placeholder="7"
-                      required
                     />
                   </div>
 
@@ -173,7 +183,6 @@ export default function RetirementCalculatorPage() {
             </Card>
           </div>
 
-          {/* Visualization Area */}
           <div className="lg:col-span-8">
             <Card className="glass-card border-none shadow-2xl h-full overflow-hidden flex flex-col">
               <CardHeader className="bg-card/30 border-b border-white/5">
@@ -194,34 +203,10 @@ export default function RetirementCalculatorPage() {
                           </linearGradient>
                         </defs>
                         <CartesianGrid strokeDasharray="3 3" stroke="#ffffff05" vertical={false} />
-                        <XAxis 
-                          dataKey="age" 
-                          stroke="#888888" 
-                          fontSize={10} 
-                          tickLine={false} 
-                          axisLine={false} 
-                          label={{ value: 'Age', position: 'insideBottom', offset: -5, fontSize: 10, fill: '#888888' }}
-                        />
-                        <YAxis 
-                          stroke="#888888" 
-                          fontSize={10} 
-                          tickLine={false} 
-                          axisLine={false} 
-                          tickFormatter={(val) => `$${val / 1000}k`}
-                        />
-                        <Tooltip 
-                          contentStyle={{ backgroundColor: '#1C1822', border: '1px solid #ffffff10', borderRadius: '12px' }}
-                          formatter={(value: number) => [formatCurrency(value), 'Projected Corpus']}
-                          labelFormatter={(label) => `Age ${label}`}
-                        />
-                        <Area 
-                          type="monotone" 
-                          dataKey="balance" 
-                          stroke="#69B9FF" 
-                          fillOpacity={1} 
-                          fill="url(#colorCorpus)" 
-                          strokeWidth={3}
-                        />
+                        <XAxis dataKey="age" stroke="#888888" fontSize={10} tickLine={false} axisLine={false} />
+                        <YAxis stroke="#888888" fontSize={10} tickLine={false} axisLine={false} tickFormatter={(val) => `$${val / 1000}k`} />
+                        <Tooltip contentStyle={{ backgroundColor: '#1C1822', border: '1px solid #ffffff10', borderRadius: '12px' }} formatter={(value: number) => [formatCurrency(value), 'Projected Corpus']} />
+                        <Area type="monotone" dataKey="balance" stroke="#69B9FF" fillOpacity={1} fill="url(#colorCorpus)" strokeWidth={3} />
                       </AreaChart>
                     </ResponsiveContainer>
                   </div>
@@ -234,27 +219,8 @@ export default function RetirementCalculatorPage() {
                   </div>
                 )}
               </CardContent>
-              {result && (
-                <div className="bg-secondary/5 p-6 border-t border-white/5 flex items-center justify-between">
-                  <div className="space-y-1">
-                    <Text variant="caption" className="text-muted-foreground font-bold uppercase tracking-widest">Est. Retirement Corpus</Text>
-                    <div className="text-3xl font-bold text-secondary">{formatCurrency(result)}</div>
-                  </div>
-                  <div className="text-right">
-                    <Text variant="caption" className="text-muted-foreground block mb-1">Time to Retire: {Number(retirementAge) - Number(currentAge)} Years</Text>
-                    <Text variant="caption" className="text-emerald-500 font-bold">Accumulated Growth: {formatCurrency(result - (Number(savings) + (Number(monthly) * (Number(retirementAge) - Number(currentAge)) * 12)))}</Text>
-                  </div>
-                </div>
-              )}
             </Card>
           </div>
-        </div>
-
-        <div className="mt-12 p-8 rounded-[2.5rem] bg-primary/5 border border-primary/20 relative overflow-hidden">
-          <div className="absolute -top-4 -right-4 w-24 h-24 bg-primary/10 rounded-full blur-2xl" />
-          <Text variant="bodySmall" className="text-muted-foreground leading-relaxed italic relative z-10">
-            "Retirement planning is a marathon of compound growth. The earlier you architect your nest egg, the more effectively time works as your primary asset in building long-term financial freedom." — Imperialpedia Intelligence
-          </Text>
         </div>
 
         {result && (
@@ -264,7 +230,7 @@ export default function RetirementCalculatorPage() {
             onReset={handleReset}
             title="Projected Retirement Corpus"
             result={formatCurrency(result)}
-            description={`Based on your current savings of ${formatCurrency(Number(savings))} and a monthly contribution of ${formatCurrency(Number(monthly))}, you are on track to have a total nest egg of ${formatCurrency(result)} by age ${retirementAge}.`}
+            description={`Based on your inputs, you are on track to have a total nest egg of ${formatCurrency(result)} by age ${retirementAge}.`}
           />
         )}
       </Container>

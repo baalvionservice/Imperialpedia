@@ -12,14 +12,11 @@ import { CalculatorResultModal } from '@/modules/calculators/components/Calculat
 import { CreditCard, RefreshCcw, ArrowLeft, Info, Landmark } from 'lucide-react';
 import Link from 'next/link';
 
-/**
- * High-fidelity Loan Repayment Calculator.
- * Calculates EMI, total interest, and total repayment for various loan types.
- */
 export default function LoanCalculatorPage() {
   const [principal, setPrincipal] = useState<string>('250000');
   const [rate, setRate] = useState<string>('6.5');
   const [years, setYears] = useState<string>('30');
+  const [errors, setErrors] = useState<Record<string, string>>({});
   
   const [results, setResults] = useState<{
     monthly: number;
@@ -28,8 +25,19 @@ export default function LoanCalculatorPage() {
   } | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const validate = () => {
+    const newErrors: Record<string, string> = {};
+    if (!principal || Number(principal) <= 0) newErrors.principal = "Loan amount must be greater than 0";
+    if (!rate || Number(rate) < 0 || Number(rate) > 100) newErrors.rate = "Rate must be 0-100%";
+    if (!years || Number(years) <= 0) newErrors.years = "Tenure must be greater than 0";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleCalculate = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validate()) return;
+
     const summary = financialMath.getLoanSummary(
       Number(principal),
       Number(rate),
@@ -48,6 +56,7 @@ export default function LoanCalculatorPage() {
     setPrincipal('250000');
     setRate('6.5');
     setYears('30');
+    setErrors({});
     setResults(null);
     setIsModalOpen(false);
   };
@@ -68,7 +77,7 @@ export default function LoanCalculatorPage() {
         <header className="mb-12">
           <div className="flex items-center gap-3 text-secondary mb-4">
             <CreditCard className="h-6 w-6" />
-            <Text variant="label" className="font-bold tracking-widest">Debt Management</Text>
+            <Text variant="label" className="font-bold tracking-widest uppercase">Debt Management</Text>
           </div>
           <Text variant="h1" className="text-4xl lg:text-6xl font-bold mb-4 tracking-tight">Loan Repayment Engine</Text>
           <Text variant="body" className="text-muted-foreground text-lg leading-relaxed">
@@ -91,9 +100,9 @@ export default function LoanCalculatorPage() {
                     type="number" 
                     value={principal} 
                     onChange={(e) => setPrincipal(e.target.value)}
-                    className="h-12 bg-background/50 rounded-xl border-white/10 focus:ring-secondary"
+                    error={errors.principal}
+                    className="h-12 bg-background/50 rounded-xl border-white/10"
                     placeholder="e.g. 250000"
-                    required
                   />
                 </div>
                 
@@ -105,9 +114,9 @@ export default function LoanCalculatorPage() {
                     step="0.01"
                     value={rate} 
                     onChange={(e) => setRate(e.target.value)}
-                    className="h-12 bg-background/50 rounded-xl border-white/10 focus:ring-secondary"
+                    error={errors.rate}
+                    className="h-12 bg-background/50 rounded-xl border-white/10"
                     placeholder="e.g. 6.5"
-                    required
                   />
                 </div>
 
@@ -118,16 +127,16 @@ export default function LoanCalculatorPage() {
                     type="number" 
                     value={years} 
                     onChange={(e) => setYears(e.target.value)}
-                    className="h-12 bg-background/50 rounded-xl border-white/10 focus:ring-secondary"
+                    error={errors.years}
+                    className="h-12 bg-background/50 rounded-xl border-white/10"
                     placeholder="e.g. 30"
-                    required
                   />
                 </div>
 
                 <div className="flex items-center p-4 rounded-xl bg-secondary/5 border border-secondary/10 mt-6">
                   <Info className="h-5 w-5 text-secondary mr-3 shrink-0" />
                   <Text variant="caption" className="text-muted-foreground italic">
-                    Calculates a standard amortized monthly payment (EMI) based on the inputs provided.
+                    Calculates a standard amortized monthly payment based on current market rates.
                   </Text>
                 </div>
               </div>
@@ -158,7 +167,7 @@ export default function LoanCalculatorPage() {
             onReset={handleReset}
             title="Estimated Monthly Payment"
             result={formatCurrency(results.monthly)}
-            description={`For a ${formatCurrency(Number(principal))} loan at ${rate}% over ${years} years, your monthly payment is ${formatCurrency(results.monthly)}. The total interest cost will be ${formatCurrency(results.interest)}, resulting in a total repayment of ${formatCurrency(results.total)}.`}
+            description={`For a ${formatCurrency(Number(principal))} loan at ${rate}% over ${years} years, your monthly payment is ${formatCurrency(results.monthly)}.`}
           />
         )}
       </Container>
