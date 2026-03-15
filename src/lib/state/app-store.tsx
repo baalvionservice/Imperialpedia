@@ -18,10 +18,18 @@ interface AppContextType extends AppState {
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
+// Initialize with a mock admin for CMS prototyping
+const DEFAULT_MOCK_USER: User = {
+  id: 'u-1',
+  name: 'Eleanor Vance',
+  email: 'eleanor@imperialpedia.com',
+  role: 'admin'
+};
+
 export function AppProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<AppState>({
     appLoading: false,
-    currentUser: null,
+    currentUser: DEFAULT_MOCK_USER,
     platformReady: true,
     environment: process.env.NODE_ENV || 'development',
   });

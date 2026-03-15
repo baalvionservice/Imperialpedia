@@ -10,7 +10,7 @@ import {
   PenTool, 
   Settings, 
   BarChart3, 
-  Users,
+  Users as UsersIcon,
   Database,
   Search,
   PlusSquare,
@@ -23,9 +23,11 @@ import {
   Calendar,
   Image as ImageIcon,
   Layers,
-  Tags
+  Tags,
+  ShieldAlert
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
+import { useAppStore } from '@/lib/state/app-store';
 
 interface SidebarItemProps {
   icon: React.ElementType;
@@ -53,19 +55,26 @@ const SidebarItem = ({ icon: Icon, label, href, isActive }: SidebarItemProps) =>
 
 /**
  * Scalable Sidebar component for platform dashboards and specialized sections.
+ * Optimized with Role-Based Access Control logic.
  */
 const Sidebar = ({ className }: { className?: string }) => {
   const pathname = usePathname();
+  const { currentUser } = useAppStore();
+  const role = currentUser?.role || 'guest';
+
+  const isAdmin = role === 'admin';
+  const isEditor = role === 'editor' || role === 'admin';
+  const isWriter = role === 'writer' || role === 'admin';
 
   const adminItems = [
     { icon: LayoutDashboard, label: 'Admin Home', href: '/admin' },
+    { icon: UsersIcon, label: 'User Management', href: '/admin/users' },
     { icon: Calendar, label: 'Publisher Scheduler', href: '/admin/scheduler' },
     { icon: ImageIcon, label: 'Media Library', href: '/admin/media' },
     { icon: Layers, label: 'Categories', href: '/admin/categories' },
     { icon: Tags, label: 'Topics & Tags', href: '/admin/tags' },
     { icon: BarChart3, label: 'Analytics', href: '/admin/analytics' },
-    { icon: BookOpen, label: 'Glossary Index', href: '/admin/glossary' },
-    { icon: Database, label: 'pSEO Health', href: '/admin/seo-audit' },
+    { icon: ShieldAlert, label: 'pSEO Health', href: '/admin/seo-audit' },
   ];
 
   const editorItems = [
@@ -86,7 +95,7 @@ const Sidebar = ({ className }: { className?: string }) => {
   const publishingItems = [
     { icon: PenTool, label: 'Content Engine', href: '/articles' },
     { icon: Search, label: 'Internal Search', href: '/search' },
-    { icon: Users, label: 'Creator Network', href: '/creators' },
+    { icon: UsersIcon, label: 'Creator Network', href: '/creators' },
   ];
 
   return (
@@ -99,7 +108,7 @@ const Sidebar = ({ className }: { className?: string }) => {
 
       <div className="space-y-6 flex-grow overflow-y-auto">
         {/* Admin Section */}
-        {pathname.startsWith('/admin') && (
+        {isAdmin && (pathname.startsWith('/admin') || pathname === '/admin') && (
           <div>
             <Text variant="label" className="px-4 mb-3 text-[10px] text-muted-foreground/50 font-bold uppercase tracking-widest">
               Administration
@@ -117,7 +126,7 @@ const Sidebar = ({ className }: { className?: string }) => {
         )}
 
         {/* Editor Section */}
-        {pathname.startsWith('/editor') && (
+        {isEditor && (pathname.startsWith('/editor') || pathname === '/editor') && (
           <div>
             <Text variant="label" className="px-4 mb-3 text-[10px] text-muted-foreground/50 font-bold uppercase tracking-widest">
               Editorial Intelligence
@@ -135,7 +144,7 @@ const Sidebar = ({ className }: { className?: string }) => {
         )}
 
         {/* Writer Section */}
-        {(pathname.startsWith('/writer') || pathname === '/writer') && (
+        {isWriter && (pathname.startsWith('/writer') || pathname === '/writer') && (
           <div>
             <Text variant="label" className="px-4 mb-3 text-[10px] text-muted-foreground/50 font-bold uppercase tracking-widest">
               Creator Studio
@@ -172,6 +181,13 @@ const Sidebar = ({ className }: { className?: string }) => {
       </div>
 
       <div className="pt-4 border-t space-y-1">
+        <div className="px-4 py-3 mb-2 bg-primary/5 rounded-xl border border-primary/10">
+          <Text variant="caption" className="text-primary font-bold block">Logged in as:</Text>
+          <Text variant="bodySmall" className="truncate">{currentUser?.name}</Text>
+          <span className="inline-block px-1.5 py-0.5 rounded bg-primary/20 text-primary text-[10px] font-bold uppercase mt-1">
+            {role}
+          </span>
+        </div>
         <SidebarItem
           icon={Settings}
           label="Settings"
