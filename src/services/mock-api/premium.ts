@@ -1,8 +1,8 @@
-import { ApiResponse, SubscriptionTier, PremiumState, PremiumReport, PremiumAnalytics, MockPaymentStatus, BacktestingTool } from '@/types/premium';
+import { ApiResponse, SubscriptionTier, PremiumState, PremiumReport, PremiumAnalytics, MockPaymentStatus, BacktestingTool, PremiumDashboardData } from '@/types/premium';
 
 /**
  * @fileOverview Mock service for managing subscription tiers, premium reports, and advanced analytics.
- * Aligned with Prompt 41 requirements.
+ * Aligned with Prompt 41 and 54 requirements.
  */
 
 const mockSubscriptionPlans = [
@@ -167,5 +167,41 @@ export const getPremiumAnalytics = async (): Promise<ApiResponse<PremiumAnalytic
       }
     ],
     status: 200
+  };
+};
+
+/**
+ * Prompt 54: Premium Dashboard Mock API
+ */
+const mockPremiumDashboardData: PremiumDashboardData = {
+  analytics_kpis: [
+    { metric: "Active Users", value: 1250, trend: "mock_up" },
+    { metric: "New Subscriptions", value: 320, trend: "mock_down" },
+    { metric: "Revenue", value: "$12,500", trend: "mock_up" },
+    { metric: "Conversion Rate", value: "4.8%", trend: "mock_stable" }
+  ],
+  reports: [
+    { report_name: "Weekly Revenue", type: "PDF", status: "mock_ready", last_generated: "2026-03-15 08:00" },
+    { report_name: "Monthly Subscription Trends", type: "CSV", status: "mock_ready", last_generated: "2026-03-14 18:00" },
+    { report_name: "Feature Usage Audit", type: "PDF", status: "mock_generating", last_generated: "Processing..." }
+  ],
+  advanced_metrics: [
+    { metric: "Churn Rate", value: "3%", segment: "All Plans" },
+    { metric: "Retention Rate", value: "92%", segment: "Premium Plan" },
+    { metric: "LTV", value: "$450", segment: "New Users" },
+    { metric: "Avg. Session Depth", value: "12.4m", segment: "Pro Tier" }
+  ],
+  growth_chart_data: Array.from({ length: 12 }, (_, i) => ({
+    date: `Month ${i + 1}`,
+    revenue: 8000 + Math.random() * 5000,
+    users: 800 + Math.random() * 600
+  }))
+};
+
+export const getPremiumDashboardData = async (): Promise<ApiResponse<PremiumDashboardData>> => {
+  await new Promise((resolve) => setTimeout(resolve, 600));
+  return {
+    data: mockPremiumDashboardData,
+    status: 200,
   };
 };

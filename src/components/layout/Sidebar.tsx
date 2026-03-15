@@ -68,7 +68,8 @@ import {
   FlaskConical,
   ShieldWarning,
   Key,
-  Languages
+  Languages,
+  PieChart as PieIcon
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 import { useAppStore } from '@/lib/state/app-store';
@@ -133,6 +134,7 @@ const Sidebar = ({ className }: { className?: string }) => {
 
   const premiumItems = [
     { icon: CreditCard, label: 'Subscription Hub', href: '/premium/subscribe' },
+    { icon: PieIcon, label: 'Business Insights', href: '/premium/dashboard' },
     { icon: FileSearch, label: 'Intelligence Reports', href: '/premium/reports' },
     { icon: LineChart, label: 'Advanced Analytics', href: '/premium/analytics' },
   ];

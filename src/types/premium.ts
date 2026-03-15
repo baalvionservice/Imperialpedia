@@ -63,3 +63,32 @@ export interface MockPaymentStatus {
   status: 'success' | 'failed';
   message: string;
 }
+
+/**
+ * Prompt 54: Premium Analytics & Reporting Dashboard Types
+ */
+export interface PremiumAnalyticsKPI {
+  metric: string;
+  value: string | number;
+  trend: 'mock_up' | 'mock_down' | 'mock_stable';
+}
+
+export interface PremiumReportNode {
+  report_name: string;
+  type: 'PDF' | 'CSV';
+  status: 'mock_ready' | 'mock_generating';
+  last_generated: string;
+}
+
+export interface AdvancedMetricNode {
+  metric: string;
+  value: string;
+  segment: string;
+}
+
+export interface PremiumDashboardData {
+  analytics_kpis: PremiumAnalyticsKPI[];
+  reports: PremiumReportNode[];
+  advanced_metrics: AdvancedMetricNode[];
+  growth_chart_data: { date: string; revenue: number; users: number }[];
+}
