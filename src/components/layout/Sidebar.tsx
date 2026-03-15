@@ -13,7 +13,10 @@ import {
   Users,
   Database,
   Search,
-  PlusSquare
+  PlusSquare,
+  FileEdit,
+  Send,
+  UserCircle
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 
@@ -54,9 +57,16 @@ const Sidebar = ({ className }: { className?: string }) => {
     { icon: Database, label: 'pSEO Health', href: '/admin/seo-audit' },
   ];
 
-  const contentItems = [
-    { icon: PlusSquare, label: 'Create New', href: '/outline' },
-    { icon: PenTool, label: 'Content Engine', href: '/creator/publishing' },
+  const writerItems = [
+    { icon: LayoutDashboard, label: 'Writer Home', href: '/writer' },
+    { icon: PlusSquare, label: 'New Article', href: '/writer/new' },
+    { icon: FileEdit, label: 'My Drafts', href: '/writer/drafts' },
+    { icon: Send, label: 'Submissions', href: '/writer/submissions' },
+    { icon: UserCircle, label: 'Creator Profile', href: '/creators/profile' },
+  ];
+
+  const publishingItems = [
+    { icon: PenTool, label: 'Content Engine', href: '/articles' },
     { icon: Search, label: 'Internal Search', href: '/search' },
     { icon: Users, label: 'Creator Network', href: '/creators' },
   ];
@@ -70,35 +80,59 @@ const Sidebar = ({ className }: { className?: string }) => {
       </div>
 
       <div className="space-y-6 flex-grow overflow-y-auto">
-        <div>
-          <Text variant="label" className="px-4 mb-3 text-[10px] text-muted-foreground/50 font-bold uppercase tracking-widest">
-            Administration
-          </Text>
-          <div className="space-y-1">
-            {adminItems.map((item) => (
-              <SidebarItem
-                key={item.href}
-                {...item}
-                isActive={pathname === item.href}
-              />
-            ))}
+        {/* Admin Section - Only shown if on /admin paths */}
+        {pathname.startsWith('/admin') && (
+          <div>
+            <Text variant="label" className="px-4 mb-3 text-[10px] text-muted-foreground/50 font-bold uppercase tracking-widest">
+              Administration
+            </Text>
+            <div className="space-y-1">
+              {adminItems.map((item) => (
+                <SidebarItem
+                  key={item.href}
+                  {...item}
+                  isActive={pathname === item.href}
+                />
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
-        <div>
-          <Text variant="label" className="px-4 mb-3 text-[10px] text-muted-foreground/50 font-bold uppercase tracking-widest">
-            Publishing
-          </Text>
-          <div className="space-y-1">
-            {contentItems.map((item) => (
-              <SidebarItem
-                key={item.href}
-                {...item}
-                isActive={pathname === item.href}
-              />
-            ))}
+        {/* Writer Section - Shown if on /writer paths or general publishing */}
+        {(pathname.startsWith('/writer') || pathname === '/writer') && (
+          <div>
+            <Text variant="label" className="px-4 mb-3 text-[10px] text-muted-foreground/50 font-bold uppercase tracking-widest">
+              Creator Studio
+            </Text>
+            <div className="space-y-1">
+              {writerItems.map((item) => (
+                <SidebarItem
+                  key={item.href}
+                  {...item}
+                  isActive={pathname === item.href}
+                />
+              ))}
+            </div>
           </div>
-        </div>
+        )}
+
+        {/* General Publishing Links */}
+        {!pathname.startsWith('/admin') && !pathname.startsWith('/writer') && (
+          <div>
+            <Text variant="label" className="px-4 mb-3 text-[10px] text-muted-foreground/50 font-bold uppercase tracking-widest">
+              Knowledge Hub
+            </Text>
+            <div className="space-y-1">
+              {publishingItems.map((item) => (
+                <SidebarItem
+                  key={item.href}
+                  {...item}
+                  isActive={pathname === item.href}
+                />
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="pt-4 border-t space-y-1">

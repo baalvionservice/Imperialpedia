@@ -17,6 +17,9 @@ const mockArticles: Article[] = [
     tags: ['macro', 'interest-rates', 'recession'],
     featuredImage: 'https://picsum.photos/seed/yield/800/600',
     publishedAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    status: 'published',
+    readingTime: 8,
     meta: {
       readingTime: 8,
       viewCount: 1250,
@@ -35,12 +38,30 @@ const mockArticles: Article[] = [
     tags: ['wealth-building', 'basics', 'savings'],
     featuredImage: 'https://picsum.photos/seed/compound/800/600',
     publishedAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    status: 'published',
+    readingTime: 5,
     meta: {
       readingTime: 5,
       viewCount: 3400,
       isFeatured: false,
     },
   },
+  {
+    id: 'art-draft-1',
+    slug: 'macro-trends-2026',
+    title: 'Macro Trends in 2026',
+    description: 'Predicting the shift in global trade and monetary policy.',
+    excerpt: 'As we approach the mid-decade, several structural changes are emerging...',
+    content: '',
+    category: 'Economics',
+    authorId: 'creator-1',
+    tags: ['macro', 'future'],
+    featuredImage: '',
+    updatedAt: new Date().toISOString(),
+    status: 'draft',
+    readingTime: 0,
+  }
 ];
 
 export const getArticles = async (page = 1, limit = 10): Promise<PaginatedResponse<Article>> => {
@@ -76,4 +97,9 @@ export const getFeaturedArticles = async (): Promise<ApiResponse<Article[]>> => 
     data: featured,
     status: 200,
   };
+};
+
+export const getWriterDrafts = async (writerId: string): Promise<Article[]> => {
+  await new Promise((resolve) => setTimeout(resolve, 300));
+  return mockArticles.filter((a) => a.authorId === writerId && a.status === 'draft');
 };

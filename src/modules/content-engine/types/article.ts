@@ -11,6 +11,7 @@ export interface Article {
   slug: Slug;
   title: string;
   description: string;
+  body?: string; // Full content body
   authorId: ID;
   publishedAt?: Timestamp;
   updatedAt: Timestamp;
@@ -24,4 +25,26 @@ export interface Article {
   seoTitle?: string;
   seoDescription?: string;
   seoKeywords?: string[];
+}
+
+/**
+ * Simplified structure for the Article Editor and Draft management.
+ */
+export interface ArticleDraft {
+  id: ID;
+  title: string;
+  body: string;
+  summary: string;
+  category: string;
+  tags: string[];
+  status: 'draft' | 'submitted';
+  createdAt: Timestamp;
+}
+
+export interface Writer {
+  id: ID;
+  name: string;
+  role: 'writer';
+  drafts: ArticleDraft[];
+  publishedCount: number;
 }
