@@ -1,7 +1,6 @@
 /**
- * This file is deprecated to resolve routing conflicts.
- * Content has been moved to src/app/page.tsx.
+ * Conflict resolution: this page is now managed at src/app/page.tsx
  */
-export default function DeprecatedPage() {
+export default function ConflictResolutionPage() {
   return null;
 }

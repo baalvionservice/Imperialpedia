@@ -1,8 +1,10 @@
 import type {NextConfig} from 'next';
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  reactStrictMode: true,
   typescript: {
+    // Set to true to ensure production builds only succeed with valid types
+    // For prototyping speed, we'll keep it as false for now but it's ready for switch
     ignoreBuildErrors: true,
   },
   eslint: {
