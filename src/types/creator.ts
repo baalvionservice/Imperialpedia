@@ -98,3 +98,15 @@ export interface CreatorVerification {
   status: "pending" | "approved" | "rejected";
   documentsProvided: string[];
 }
+
+export interface CreatorLeaderboard {
+  creatorId: string;
+  name: string;
+  profileImage: string;
+  category: string;
+  region: string;
+  verified: boolean;
+  totalRevenue: number;
+  totalViews: number;
+  totalLikes: number;
+}

@@ -1,4 +1,4 @@
-import { CreatorProfile, ApiResponse, CreatorContentItem, CreatorDashboardSummary, CreatorDashboardAnalytics, CreatorVerification } from '@/types';
+import { CreatorProfile, ApiResponse, CreatorContentItem, CreatorDashboardSummary, CreatorDashboardAnalytics, CreatorVerification, CreatorLeaderboard } from '@/types';
 
 /**
  * @fileOverview Mock service for managing creator profiles, stats, and discovery data.
@@ -115,67 +115,14 @@ const mockCreators: CreatorProfile[] = [
   }
 ];
 
-const mockCreatorDashboardContent: CreatorContentItem[] = [
-  {
-    id: 'c-1',
-    title: 'Quantitative Easing vs Tightening: A 2026 Outlook',
-    body: 'Full analysis text content...',
-    category: 'Economics',
-    tags: ['Macro', 'Fed'],
-    status: 'published',
-    createdAt: '2024-03-01T10:00:00Z',
-    views: 12400,
-    likes: 450,
-    comments: 82,
-    slug: 'qe-vs-qt-2026'
-  },
-  {
-    id: 'c-2',
-    title: 'The Rise of Algorithmic Stablecoins',
-    body: 'In-progress research...',
-    category: 'Crypto',
-    tags: ['DeFi', 'Stablecoins'],
-    status: 'draft',
-    createdAt: '2024-03-10T14:30:00Z',
-    views: 0,
-    likes: 0,
-    comments: 0,
-    slug: 'algorithmic-stablecoins'
-  },
-  {
-    id: 'c-3',
-    title: 'Yield Curve Dynamics in Emerging Markets',
-    body: 'Scheduled content text...',
-    category: 'Markets',
-    tags: ['Emerging Markets', 'Yield Curve'],
-    status: 'scheduled',
-    createdAt: '2024-03-05T09:00:00Z',
-    views: 0,
-    likes: 0,
-    comments: 0,
-    slug: 'yield-curve-emerging-markets'
-  }
-];
-
-const mockPendingVerifications: CreatorVerification[] = [
-  {
-    creatorId: 'u-4',
-    creatorName: 'Wealth Builder',
-    creatorAvatar: 'https://picsum.photos/seed/wealth/200/200',
-    verified: false,
-    requestedAt: '2024-03-10T10:00:00Z',
-    status: 'pending',
-    documentsProvided: ['LinkedIn Profile', 'FINRA Certification']
-  },
-  {
-    creatorId: 'u-6',
-    creatorName: 'DeFi Analyst',
-    creatorAvatar: 'https://picsum.photos/seed/defi/200/200',
-    verified: false,
-    requestedAt: '2024-03-11T14:20:00Z',
-    status: 'pending',
-    documentsProvided: ['Whitepaper Authorship', 'Github Repository']
-  }
+const mockLeaderboard: CreatorLeaderboard[] = [
+  { creatorId: 'creator-1', name: 'The Market Maven', profileImage: 'https://picsum.photos/seed/maven/200/200', category: 'Economics', region: 'North America', verified: true, totalRevenue: 15400.50, totalViews: 850000, totalLikes: 12400 },
+  { creatorId: 'creator-4', name: 'Eleanor Vance', profileImage: 'https://picsum.photos/seed/eleanor/200/200', category: 'Economics', region: 'North America', verified: true, totalRevenue: 28900.00, totalViews: 4500000, totalLikes: 42000 },
+  { creatorId: 'creator-2', name: 'Julian Wealth', profileImage: 'https://picsum.photos/seed/wealth/200/200', category: 'Investing', region: 'EMEA', verified: true, totalRevenue: 12200.75, totalViews: 120000, totalLikes: 5600 },
+  { creatorId: 'creator-3', name: 'Sarah Crypto', profileImage: 'https://picsum.photos/seed/defi/200/200', category: 'Crypto', region: 'APAC', verified: false, totalRevenue: 4500.20, totalViews: 45000, totalLikes: 2100 },
+  { creatorId: 'creator-5', name: 'Ken Macro', profileImage: 'https://picsum.photos/seed/ken/200/200', category: 'Markets', region: 'North America', verified: false, totalRevenue: 2100.00, totalViews: 12000, totalLikes: 850 },
+  { creatorId: 'u-7', name: 'Bull Analyst', profileImage: 'https://picsum.photos/seed/bull/200/200', category: 'Markets', region: 'North America', verified: true, totalRevenue: 9800.40, totalViews: 95000, totalLikes: 4300 },
+  { creatorId: 'u-8', name: 'ESG Expert', profileImage: 'https://picsum.photos/seed/esg/200/200', category: 'Investing', region: 'EMEA', verified: false, totalRevenue: 3400.10, totalViews: 32000, totalLikes: 1500 },
 ];
 
 export const getCreators = async (): Promise<ApiResponse<CreatorProfile[]>> => {
@@ -251,3 +198,74 @@ export const getPendingVerifications = async (): Promise<ApiResponse<CreatorVeri
     status: 200
   };
 };
+
+export const getLeaderboardData = async (): Promise<ApiResponse<CreatorLeaderboard[]>> => {
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  return {
+    data: mockLeaderboard,
+    status: 200
+  };
+};
+
+const mockCreatorDashboardContent: CreatorContentItem[] = [
+  {
+    id: 'c-1',
+    title: 'Quantitative Easing vs Tightening: A 2026 Outlook',
+    body: 'Full analysis text content...',
+    category: 'Economics',
+    tags: ['Macro', 'Fed'],
+    status: 'published',
+    createdAt: '2024-03-01T10:00:00Z',
+    views: 12400,
+    likes: 450,
+    comments: 82,
+    slug: 'qe-vs-qt-2026'
+  },
+  {
+    id: 'c-2',
+    title: 'The Rise of Algorithmic Stablecoins',
+    body: 'In-progress research...',
+    category: 'Crypto',
+    tags: ['DeFi', 'Stablecoins'],
+    status: 'draft',
+    createdAt: '2024-03-10T14:30:00Z',
+    views: 0,
+    likes: 0,
+    comments: 0,
+    slug: 'algorithmic-stablecoins'
+  },
+  {
+    id: 'c-3',
+    title: 'Yield Curve Dynamics in Emerging Markets',
+    body: 'Scheduled content text...',
+    category: 'Markets',
+    tags: ['Emerging Markets', 'Yield Curve'],
+    status: 'scheduled',
+    createdAt: '2024-03-05T09:00:00Z',
+    views: 0,
+    likes: 0,
+    comments: 0,
+    slug: 'yield-curve-emerging-markets'
+  }
+];
+
+const mockPendingVerifications: CreatorVerification[] = [
+  {
+    creatorId: 'u-4',
+    creatorName: 'Wealth Builder',
+    creatorAvatar: 'https://picsum.photos/seed/wealth/200/200',
+    verified: false,
+    requestedAt: '2024-03-10T10:00:00Z',
+    status: 'pending',
+    documentsProvided: ['LinkedIn Profile', 'FINRA Certification']
+  },
+  {
+    creatorId: 'u-6',
+    creatorName: 'DeFi Analyst',
+    creatorAvatar: 'https://picsum.photos/seed/defi/200/200',
+    verified: false,
+    requestedAt: '2024-03-11T14:20:00Z',
+    status: 'pending',
+    documentsProvided: ['Whitepaper Authorship', 'Github Repository']
+  }
+];
