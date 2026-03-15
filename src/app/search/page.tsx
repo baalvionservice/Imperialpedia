@@ -6,71 +6,111 @@ import { Section } from '@/design-system/layout/section';
 import { Text } from '@/design-system/typography/text';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Search, Loader2, Sparkles } from 'lucide-react';
-import { Article } from '@/modules/content-engine/types';
-import { getArticles, searchArticles } from '@/modules/content-engine/services';
-import { SearchResults } from '@/modules/content-engine/components';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Badge } from '@/components/ui/badge';
+import { Skeleton } from '@/components/ui/skeleton';
+import { 
+  Search as SearchIcon, 
+  Loader2, 
+  Sparkles, 
+  BookOpen, 
+  User, 
+  Calculator as CalcIcon, 
+  Database,
+  ArrowRight,
+  SearchX,
+  TrendingUp
+} from 'lucide-react';
+import { SearchResult, SearchResultType } from '@/types';
+import { searchService } from '@/services/data/search-service';
+import Link from 'next/link';
 
 /**
  * Global search page for the Imperialpedia platform.
- * Allows users to query the entire financial intelligence index.
+ * Supports cross-entity discovery across articles, experts, tools, and glossary.
  */
 export default function SearchPage() {
   const [query, setQuery] = useState('');
-  const [articles, setArticles] = useState<Article[]>([]);
-  const [results, setResults] = useState<Article[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [results, setResults] = useState<SearchResult[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState<string>('all');
 
-  // Load initial dataset for in-memory searching
   useEffect(() => {
-    async function loadDataset() {
-      try {
+    const delayDebounceFn = setTimeout(async () => {
+      if (query.trim().length >= 2) {
         setIsLoading(true);
-        const response = await getArticles(1, 100);
-        setArticles(response.data);
-      } catch (error) {
-        console.error('Failed to load search index', error);
-      } finally {
-        setIsLoading(false);
+        try {
+          const response = await searchService.performSearch(query);
+          setResults(response.data);
+        } catch (error) {
+          console.error('Search failed', error);
+        } finally {
+          setIsLoading(false);
+        }
+      } else {
+        setResults([]);
       }
-    }
-    loadDataset();
-  }, []);
+    }, 300);
 
-  // Real-time search handling
-  useEffect(() => {
-    if (query.length >= 2) {
-      const filtered = searchArticles(articles, query);
-      setResults(filtered);
-    } else {
-      setResults([]);
+    return () => clearTimeout(delayDebounceFn);
+  }, [query]);
+
+  const filteredResults = useMemo(() => {
+    if (activeTab === 'all') return results;
+    return results.filter(r => r.type === activeTab);
+  }, [results, activeTab]);
+
+  const getResultIcon = (type: SearchResultType) => {
+    switch (type) {
+      case 'article': return <BookOpen className="h-4 w-4 text-primary" />;
+      case 'author': return <User className="h-4 w-4 text-secondary" />;
+      case 'calculator': return <CalcIcon className="h-4 w-4 text-primary" />;
+      case 'glossary': return <Database className="h-4 w-4 text-secondary" />;
+      case 'topic': return <TrendingUp className="h-4 w-4 text-primary" />;
+      default: return <SearchIcon className="h-4 w-4" />;
     }
-  }, [query, articles]);
+  };
+
+  const getResultBadge = (type: SearchResultType) => {
+    const labels = {
+      article: 'Intelligence',
+      author: 'Expert',
+      calculator: 'Engine',
+      glossary: 'Definition',
+      topic: 'Taxonomy'
+    };
+    return (
+      <Badge variant="outline" className="text-[10px] font-bold uppercase tracking-widest border-primary/20 bg-primary/5 text-primary">
+        {labels[type] || type}
+      </Badge>
+    );
+  };
 
   return (
-    <main className="min-h-screen bg-background pt-20">
+    <main className="min-h-screen bg-background pt-20 pb-32">
       <Section spacing="md">
         <Container>
           <header className="mb-12 max-w-3xl mx-auto text-center">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary mb-6">
               <Sparkles className="h-4 w-4" />
-              <Text variant="label" className="text-[10px] font-bold">Knowledge Discovery</Text>
+              <Text variant="label" className="text-[10px] font-bold">Intelligence Discovery</Text>
             </div>
-            <Text variant="h1" className="mb-6">Financial Intelligence Search</Text>
-            <Text variant="body" className="text-muted-foreground text-lg">
-              Explore over 1,000,000 pages of deep financial insights, creator analyses, and market definitions.
+            <Text variant="h1" className="text-4xl lg:text-6xl font-bold mb-6 tracking-tight">Global Search</Text>
+            <Text variant="body" className="text-muted-foreground text-lg leading-relaxed">
+              Explore the Imperialpedia Index. Instantly find expert analysis, planning tools, and market terminology.
             </Text>
           </header>
 
-          <div className="max-w-2xl mx-auto mb-16 relative">
+          <div className="max-w-2xl mx-auto mb-12">
             <div className="relative group">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
+              <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
               <Input
                 type="text"
-                placeholder="Search by topic, term, or category..."
+                placeholder="Search by topic, expert, or tool..."
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                className="h-14 pl-12 pr-4 text-lg rounded-2xl border-primary/20 bg-card/50 backdrop-blur-sm focus:ring-primary/40 focus:border-primary transition-all shadow-lg"
+                className="h-14 pl-12 pr-12 text-lg rounded-2xl border-primary/20 bg-card/50 backdrop-blur-sm focus:ring-primary/40 focus:border-primary transition-all shadow-xl"
                 autoFocus
               />
               {isLoading && (
@@ -80,12 +120,12 @@ export default function SearchPage() {
               )}
             </div>
             <div className="mt-4 flex flex-wrap gap-2 justify-center">
-              <Text variant="caption" className="text-muted-foreground mr-2">Popular:</Text>
-              {['Recession', 'Yield Curve', 'Compound Interest', 'Bull Market'].map(term => (
+              <Text variant="caption" className="text-muted-foreground mr-2 font-bold uppercase tracking-tighter">Popular Queries:</Text>
+              {['Yield Curve', 'Compound Interest', 'Maven', 'Recession'].map(term => (
                 <button
                   key={term}
                   onClick={() => setQuery(term)}
-                  className="text-xs font-bold text-primary/70 hover:text-primary transition-colors"
+                  className="text-xs font-bold text-primary/70 hover:text-primary transition-colors hover:underline"
                 >
                   #{term}
                 </button>
@@ -93,7 +133,102 @@ export default function SearchPage() {
             </div>
           </div>
 
-          <SearchResults results={results} query={query} />
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <div className="flex justify-center mb-12">
+              <TabsList className="bg-card/30 border border-white/5 p-1 h-12 rounded-xl">
+                <TabsTrigger value="all" className="px-6 rounded-lg font-bold text-xs">All Results</TabsTrigger>
+                <TabsTrigger value="article" className="px-6 rounded-lg font-bold text-xs gap-2">
+                  <BookOpen className="h-3.5 w-3.5" /> Articles
+                </TabsTrigger>
+                <TabsTrigger value="author" className="px-6 rounded-lg font-bold text-xs gap-2">
+                  <User className="h-3.5 w-3.5" /> Experts
+                </TabsTrigger>
+                <TabsTrigger value="calculator" className="px-6 rounded-lg font-bold text-xs gap-2">
+                  <CalcIcon className="h-3.5 w-3.5" /> Tools
+                </TabsTrigger>
+              </TabsList>
+            </div>
+
+            <TabsContent value={activeTab} className="animate-in fade-in duration-500">
+              {isLoading ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {[1, 2, 3, 4].map(i => (
+                    <Card key={i} className="glass-card">
+                      <div className="p-6 space-y-4">
+                        <Skeleton className="h-4 w-24" />
+                        <Skeleton className="h-8 w-3/4" />
+                        <Skeleton className="h-4 w-full" />
+                        <Skeleton className="h-4 w-5/6" />
+                      </div>
+                    </Card>
+                  ))}
+                </div>
+              ) : filteredResults.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {filteredResults.map((result) => (
+                    <Link key={result.id} href={result.route}>
+                      <Card className="glass-card h-full transition-all duration-300 hover:translate-y-[-4px] hover:border-primary/40 hover:shadow-2xl group">
+                        <CardHeader className="p-6 pb-2">
+                          <div className="flex justify-between items-start mb-4">
+                            <div className="flex items-center gap-2">
+                              {getResultIcon(result.type)}
+                              {getResultBadge(result.type)}
+                            </div>
+                            {result.category && (
+                              <Text variant="label" className="text-[10px] text-muted-foreground opacity-50">
+                                {result.category}
+                              </Text>
+                            )}
+                          </div>
+                          <CardTitle className="text-xl group-hover:text-primary transition-colors leading-tight">
+                            {result.title}
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent className="p-6 pt-2">
+                          <CardDescription className="text-sm line-clamp-2 leading-relaxed text-muted-foreground mb-6">
+                            {result.snippet}
+                          </CardDescription>
+                          
+                          <div className="flex items-center justify-between mt-auto">
+                            {result.author ? (
+                              <div className="flex items-center gap-2 text-xs text-muted-foreground font-medium">
+                                <User className="h-3 w-3" /> {result.author}
+                              </div>
+                            ) : <div></div>}
+                            
+                            <div className="flex items-center gap-1 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                              Explore <ArrowRight className="h-3 w-3" />
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </Link>
+                  ))}
+                </div>
+              ) : query.trim().length >= 2 ? (
+                <div className="py-32 text-center bg-card/10 rounded-[3rem] border-2 border-dashed border-white/5">
+                  <div className="w-20 h-20 bg-muted/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <SearchX className="h-10 w-10 text-muted-foreground opacity-50" />
+                  </div>
+                  <Text variant="h3" className="mb-2">No matching intelligence found</Text>
+                  <Text variant="bodySmall" className="text-muted-foreground max-w-sm mx-auto">
+                    We couldn't find any nodes matching "{query}". Try broadening your search terms or browsing by category.
+                  </Text>
+                  <Button variant="link" className="mt-4 text-primary font-bold" onClick={() => setQuery('')}>
+                    Clear search query
+                  </Button>
+                </div>
+              ) : (
+                <div className="py-32 text-center opacity-30">
+                  <div className="w-20 h-20 bg-muted/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <SearchIcon className="h-10 w-10 text-muted-foreground" />
+                  </div>
+                  <Text variant="h4">Awaiting Discovery</Text>
+                  <Text variant="bodySmall">Enter a query above to scan the Intelligence Index.</Text>
+                </div>
+              )}
+            </TabsContent>
+          </Tabs>
         </Container>
       </Section>
     </main>
