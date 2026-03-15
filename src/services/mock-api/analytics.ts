@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { TrafficAnalytics, SeoAnalytics, PlatformOverview, TrafficAnalyticsReport, ContentAnalytics, EngagementAnalytics, ModerationAnalytics, CreatorEngagement, TrafficSources, TrendingContent, DailyActiveUsers, WeeklyActiveUsers, TopContent, TopKeyword, GrowthMetrics, EngagementByCategory, TrafficTrends } from '@/types/analytics';
+import { TrafficAnalytics, SeoAnalytics, PlatformOverview, TrafficAnalyticsReport, ContentAnalytics, EngagementAnalytics, ModerationAnalytics, CreatorEngagement, TrafficSources, TrendingContent, DailyActiveUsers, WeeklyActiveUsers, TopContent, TopKeyword, GrowthMetrics, EngagementByCategory, TrafficTrends, EngagementTrends } from '@/types/analytics';
 
 /**
  * @fileOverview Mock service for platform analytics and trending data.
@@ -260,6 +260,32 @@ export const getTrafficTrends = async (): Promise<ApiResponse<TrafficTrends>> =>
         { country: 'India', visits: 18500, change: 24.8 },
         { country: 'Singapore', visits: 12400, change: 11.2 },
       ]
+    },
+    status: 200
+  };
+};
+
+export const getEngagementTrends = async (): Promise<ApiResponse<EngagementTrends>> => {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  const dates = Array.from({ length: 30 }, (_, i) => {
+    const d = new Date();
+    d.setDate(d.getDate() - (29 - i));
+    return d.toISOString().split('T')[0];
+  });
+
+  const combined = dates.map(date => {
+    const likes = Math.floor(Math.random() * 500) + 200;
+    const comments = Math.floor(Math.random() * 150) + 50;
+    const shares = Math.floor(Math.random() * 100) + 20;
+    return { date, likes, comments, shares, count: likes + comments + shares };
+  });
+
+  return {
+    data: {
+      likes: combined.map(c => ({ date: c.date, count: c.likes })),
+      comments: combined.map(c => ({ date: c.date, count: c.comments })),
+      shares: combined.map(c => ({ date: c.date, count: c.shares })),
+      combined
     },
     status: 200
   };

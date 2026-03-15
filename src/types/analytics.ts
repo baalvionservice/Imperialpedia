@@ -102,11 +102,9 @@ export interface SeoAnalytics {
   avgPosition: number;
   backlinks: number;
   topKeywords: SeoPerformanceItem[];
-  trends: { 
-    date: string; 
-    clicks: number; 
-    impressions: number;
-  }[];
+  trends: [
+    { date: string; clicks: number; impressions: number }
+  ];
 }
 
 export interface PlatformOverview {
@@ -225,4 +223,16 @@ export interface CreatorEngagement {
   shares: number;
   engagementRate: number;
   verified: boolean;
+}
+
+export interface TrendNode {
+  date: string;
+  count: number;
+}
+
+export interface EngagementTrends {
+  likes: TrendNode[];
+  comments: TrendNode[];
+  shares: TrendNode[];
+  combined: (TrendNode & { likes: number; comments: number; shares: number })[];
 }
