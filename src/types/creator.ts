@@ -119,6 +119,7 @@ export interface AdminCreatorAnalytics {
   followers: number;
   engagementRate: number;
   totalViews: number;
+  totalRevenue: number;
   lastActive: string;
   verified: boolean;
   category: string;

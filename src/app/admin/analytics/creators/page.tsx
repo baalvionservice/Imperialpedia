@@ -21,7 +21,8 @@ import {
   BarChart3,
   Calendar,
   Download,
-  ChevronRight
+  ChevronRight,
+  DollarSign
 } from 'lucide-react';
 import Link from 'next/link';
 import { getAdminCreatorAnalytics } from '@/services/mock-api/creators';
@@ -41,6 +42,10 @@ import {
 } from 'recharts';
 import { format } from 'date-fns';
 
+/**
+ * Creator Performance Dashboard.
+ * Monitors engagement, audience growth, and monetization for the expert network.
+ */
 export default function CreatorPerformanceAnalyticsPage() {
   const [data, setData] = useState<AdminCreatorAnalytics[]>([]);
   const [loading, setLoading] = useState(true);
@@ -52,7 +57,7 @@ export default function CreatorPerformanceAnalyticsPage() {
         const response = await getAdminCreatorAnalytics();
         setData(response.data);
       } catch (e) {
-        console.error(e);
+        console.error('Creator intelligence sync failure', e);
       } finally {
         setLoading(false);
       }
@@ -80,8 +85,12 @@ export default function CreatorPerformanceAnalyticsPage() {
   const formatCompact = (val: number) => 
     new Intl.NumberFormat('en-US', { notation: 'compact' }).format(val);
 
+  const formatCurrency = (val: number) => 
+    new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(val);
+
   const totalExpertReach = data.reduce((acc, curr) => acc + curr.totalViews, 0);
   const avgEngagement = (data.reduce((acc, curr) => acc + curr.engagementRate, 0) / data.length).toFixed(1);
+  const totalRevenue = data.reduce((acc, curr) => acc + curr.totalRevenue, 0);
 
   // Mock trend data for network growth
   const growthTrends = [
@@ -113,7 +122,7 @@ export default function CreatorPerformanceAnalyticsPage() {
           <Button variant="outline" size="sm" className="rounded-xl border-white/10 bg-card/30">
             <Calendar className="mr-2 h-4 w-4" /> Monthly Audit
           </Button>
-          <Button size="sm" className="rounded-xl shadow-lg shadow-primary/20 font-bold">
+          <Button size="sm" className="rounded-xl shadow-lg shadow-primary/20 font-bold bg-primary">
             <Download className="mr-2 h-4 w-4" /> Export Report
           </Button>
         </div>
@@ -129,7 +138,7 @@ export default function CreatorPerformanceAnalyticsPage() {
           <CardContent>
             <div className="text-2xl font-bold">{formatCompact(totalExpertReach)}</div>
             <div className="flex items-center text-[10px] text-emerald-500 font-bold mt-1">
-              <ArrowUpRight className="h-3 w-3 mr-1" /> +8.4% network velocity
+              <ArrowUpRight className="h-3 w-3 mr-1" /> +8.4% velocity
             </div>
           </CardContent>
         </Card>
@@ -149,13 +158,13 @@ export default function CreatorPerformanceAnalyticsPage() {
 
         <Card className="glass-card border-none shadow-xl">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Intelligence Output</CardTitle>
-            <FileText className="h-4 w-4 text-primary" />
+            <CardTitle className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Expert Revenue</CardTitle>
+            <DollarSign className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{data.reduce((acc, curr) => acc + curr.contentCount, 0)}</div>
-            <div className="flex items-center text-[10px] text-muted-foreground font-bold mt-1">
-              Expert nodes published
+            <div className="text-2xl font-bold">{formatCurrency(totalRevenue)}</div>
+            <div className="flex items-center text-[10px] text-emerald-500 font-bold mt-1">
+              Platform-wide accrual
             </div>
           </CardContent>
         </Card>
@@ -249,7 +258,7 @@ export default function CreatorPerformanceAnalyticsPage() {
               <TrendingUp className="h-4 w-4" /> Strategy Insight
             </div>
             <Text variant="caption" className="text-muted-foreground leading-relaxed">
-              Recruitment priority for March: **Fixed Income Specialists**. We have identified a 240% increase in user search volume for 'Bond Yields' with only 4 verified experts currently covering this node.
+              Recruitment priority for March: **Fixed Income Specialists**. We have identified a 240% increase in user search volume for 'Bond Yields'.
             </Text>
           </div>
         </div>
@@ -277,10 +286,10 @@ export default function CreatorPerformanceAnalyticsPage() {
             <TableHeader>
               <TableRow className="bg-muted/20 hover:bg-muted/20 border-b border-white/5">
                 <TableHead className="pl-6 font-bold text-[10px] uppercase tracking-widest">Expert Identity</TableHead>
-                <TableHead className="font-bold text-[10px] uppercase tracking-widest">Taxonomy Hub</TableHead>
-                <TableHead className="text-right font-bold text-[10px] uppercase tracking-widest">Intelligence Nodes</TableHead>
+                <TableHead className="font-bold text-[10px] uppercase tracking-widest text-center">Nodes</TableHead>
                 <TableHead className="text-right font-bold text-[10px] uppercase tracking-widest">Followers</TableHead>
                 <TableHead className="text-right font-bold text-[10px] uppercase tracking-widest">Engagement</TableHead>
+                <TableHead className="text-right font-bold text-[10px] uppercase tracking-widest">Revenue</TableHead>
                 <TableHead className="text-right pr-6 font-bold text-[10px] uppercase tracking-widest">Global Reach</TableHead>
               </TableRow>
             </TableHeader>
@@ -298,16 +307,11 @@ export default function CreatorPerformanceAnalyticsPage() {
                           {creator.name}
                           {creator.verified && <ShieldCheck className="h-3 w-3 text-secondary" />}
                         </span>
-                        <span className="text-[10px] text-muted-foreground">@{creator.username}</span>
+                        <span className="text-[10px] text-muted-foreground uppercase">{creator.category}</span>
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell>
-                    <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20 text-[9px] font-bold uppercase">
-                      {creator.category}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="text-right">
+                  <TableCell className="text-center">
                     <span className="text-xs font-bold">{creator.contentCount}</span>
                   </TableCell>
                   <TableCell className="text-right">
@@ -317,6 +321,9 @@ export default function CreatorPerformanceAnalyticsPage() {
                     <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-500 border-none font-mono font-bold text-xs px-2">
                       {creator.engagementRate}%
                     </Badge>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <span className="text-xs font-mono font-bold">{formatCurrency(creator.totalRevenue)}</span>
                   </TableCell>
                   <TableCell className="text-right pr-6">
                     <div className="flex flex-col items-end">

@@ -114,11 +114,11 @@ const mockCreators: CreatorProfile[] = [
 ];
 
 const mockAdminCreatorAnalytics: AdminCreatorAnalytics[] = [
-  { id: 'creator-1', name: 'The Market Maven', username: 'marketmaven', avatar: 'https://picsum.photos/seed/maven/200/200', contentCount: 42, followers: 15400, engagementRate: 5.8, totalViews: 850000, lastActive: '2024-03-12T10:30:00Z', verified: true, category: 'Economics' },
-  { id: 'creator-4', name: 'Eleanor Vance', username: 'econvance', avatar: 'https://picsum.photos/seed/eleanor/200/200', contentCount: 120, followers: 25000, engagementRate: 4.2, totalViews: 4500000, lastActive: '2024-03-12T11:45:00Z', verified: true, category: 'Economics' },
-  { id: 'creator-2', name: 'Julian Wealth', username: 'wealthbuilder', avatar: 'https://picsum.photos/seed/wealth/200/200', contentCount: 15, followers: 8200, engagementRate: 6.4, totalViews: 120000, lastActive: '2024-03-11T16:20:00Z', verified: true, category: 'Investing' },
-  { id: 'creator-3', name: 'Sarah Crypto', username: 'defianalyst', avatar: 'https://picsum.photos/seed/defi/200/200', contentCount: 8, followers: 3500, engagementRate: 3.9, totalViews: 45000, lastActive: '2024-03-10T09:15:00Z', verified: false, category: 'Crypto' },
-  { id: 'creator-8', name: 'Dan Income', username: 'dividenddan', avatar: 'https://picsum.photos/seed/dan/200/200', contentCount: 35, followers: 12500, engagementRate: 7.1, totalViews: 420000, lastActive: '2024-03-12T08:00:00Z', verified: true, category: 'Investing' },
+  { id: 'creator-1', name: 'The Market Maven', username: 'marketmaven', avatar: 'https://picsum.photos/seed/maven/200/200', contentCount: 42, followers: 15400, engagementRate: 5.8, totalViews: 850000, totalRevenue: 12450.00, lastActive: '2024-03-12T10:30:00Z', verified: true, category: 'Economics' },
+  { id: 'creator-4', name: 'Eleanor Vance', username: 'econvance', avatar: 'https://picsum.photos/seed/eleanor/200/200', contentCount: 120, followers: 25000, engagementRate: 4.2, totalViews: 4500000, totalRevenue: 28900.00, lastActive: '2024-03-12T11:45:00Z', verified: true, category: 'Economics' },
+  { id: 'creator-2', name: 'Julian Wealth', username: 'wealthbuilder', avatar: 'https://picsum.photos/seed/wealth/200/200', contentCount: 15, followers: 8200, engagementRate: 6.4, totalViews: 120000, totalRevenue: 8500.50, lastActive: '2024-03-11T16:20:00Z', verified: true, category: 'Investing' },
+  { id: 'creator-3', name: 'Sarah Crypto', username: 'defianalyst', avatar: 'https://picsum.photos/seed/defi/200/200', contentCount: 8, followers: 3500, engagementRate: 3.9, totalViews: 45000, totalRevenue: 1200.00, lastActive: '2024-03-10T09:15:00Z', verified: false, category: 'Crypto' },
+  { id: 'creator-8', name: 'Dan Income', username: 'dividenddan', avatar: 'https://picsum.photos/seed/dan/200/200', contentCount: 35, followers: 12500, engagementRate: 7.1, totalViews: 420000, totalRevenue: 15600.00, lastActive: '2024-03-12T08:00:00Z', verified: true, category: 'Investing' },
 ];
 
 export const getAdminCreatorAnalytics = async (): Promise<ApiResponse<AdminCreatorAnalytics[]>> => {
@@ -163,8 +163,8 @@ export const getCreatorDashboardStats = async (creatorId: string): Promise<ApiRe
   return {
     data: {
       creatorId,
-      totalArticles: 120,
       totalFollowers: 25000,
+      totalContent: 120,
       totalViews: 4500000,
       totalLikes: 42000,
       totalComments: 8400,
