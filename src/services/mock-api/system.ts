@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog, SecuritySettings, GlobalNotificationSettings, AuditTrailEntry, FeatureSettings, AdminSession, BrandingSettings, SystemAlert, AdminHomeOverview, SecurityDashboardData, AdminSystemHubData, SecurityMockData, InfrastructureMockData } from '@/types/system';
+import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog, SecuritySettings, GlobalNotificationSettings, AuditTrailEntry, FeatureSettings, AdminSession, BrandingSettings, SystemAlert, AdminHomeOverview, SecurityDashboardData, AdminSystemHubData, SecurityMockData, InfrastructureMockData, EdgeComputingData } from '@/types/system';
 
 /**
  * @fileOverview Mock service for managing global platform configuration and system notifications.
@@ -216,6 +216,26 @@ const mockInfrastructureData: InfrastructureMockData = {
   caching_queues: [
     { name: "RedisCache1", queue_length: 25, processed_jobs: 120, error_rate: "mock_low" },
     { name: "MessageQueue1", queue_length: 10, processed_jobs: 90, error_rate: "mock_none" }
+  ]
+};
+
+const mockEdgeComputingData: EdgeComputingData = {
+  regions: [
+    { region_name: "US-East", nodes: 5, latency: "45ms", status: "mock_active" },
+    { region_name: "EU-West", nodes: 3, latency: "60ms", status: "mock_warning" },
+    { region_name: "AP-South", nodes: 4, latency: "120ms", status: "mock_active" },
+    { region_name: "SA-East", nodes: 2, latency: "250ms", status: "mock_offline" }
+  ],
+  edge_nodes: [
+    { node_name: "EdgeNode1", region: "US-East", cpu_usage: "50%", memory_usage: "65%", network_traffic: "100Mbps" },
+    { node_name: "EdgeNode2", region: "EU-West", cpu_usage: "70%", memory_usage: "75%", network_traffic: "80Mbps" },
+    { node_name: "EdgeNode3", region: "AP-South", cpu_usage: "42%", memory_usage: "50%", network_traffic: "150Mbps" },
+    { node_name: "EdgeNode4", region: "US-East", cpu_usage: "85%", memory_usage: "90%", network_traffic: "250Mbps" }
+  ],
+  alerts: [
+    { alert_type: "High Latency", region: "EU-West", current: "60ms", status: "mock_triggered" },
+    { alert_type: "Node Offline", node: "EdgeNode3", status: "mock_triggered" },
+    { alert_type: "Memory Spike", node: "EdgeNode4", current: "90%", status: "mock_triggered" }
   ]
 };
 
@@ -531,6 +551,14 @@ export const getInfrastructureMockData = async (): Promise<ApiResponse<Infrastru
   await new Promise((resolve) => setTimeout(resolve, 600));
   return {
     data: mockInfrastructureData,
+    status: 200,
+  };
+};
+
+export const getEdgeComputingData = async (): Promise<ApiResponse<EdgeComputingData>> => {
+  await new Promise((resolve) => setTimeout(resolve, 600));
+  return {
+    data: mockEdgeComputingData,
     status: 200,
   };
 };

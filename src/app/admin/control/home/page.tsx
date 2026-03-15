@@ -24,7 +24,9 @@ import {
   Megaphone,
   Loader2,
   FileCode,
-  ShieldX
+  ShieldX,
+  Network,
+  Cpu
 } from 'lucide-react';
 import Link from 'next/link';
 import { systemService } from '@/services/data/system-service';
@@ -76,9 +78,9 @@ export default function AdminControlCenterHomePage() {
     { label: 'Identity Studio', desc: 'Manage brand & visual tokens.', href: '/admin/control/branding', icon: Palette, color: 'text-primary', badge: 0 },
     { label: 'Broadcast Hub', desc: 'Manage system alerts.', href: '/admin/control/alerts', icon: Megaphone, color: 'text-secondary', badge: overview.alertsActive },
     { label: 'Session Command', desc: 'Monitor active connections.', href: '/admin/control/sessions', icon: Activity, color: 'text-primary', badge: overview.activeSessions },
-    { label: 'Resilience Hub', desc: 'Backups & disaster recovery.', href: '/admin/control/backups', icon: RotateCcw, color: 'text-secondary', badge: 0 },
+    { label: 'Scaling Hub', desc: 'Cluster & deployment telemetry.', href: '/admin/control/infrastructure', icon: Cpu, color: 'text-secondary', badge: 0 },
+    { label: 'Distribution Hub', desc: 'Edge & Multi-Region monitoring.', href: '/admin/control/edge', icon: Network, color: 'text-primary', badge: 0 },
     { label: 'Audit Kernel', desc: 'Immutable platform logs.', href: '/admin/control/audit-trail', icon: History, color: 'text-primary', badge: 0 },
-    { label: 'Activity Trail', desc: 'Admin action tracking.', href: '/admin/control/activity-log', icon: FileCode, color: 'text-secondary', badge: 0 },
   ];
 
   return (

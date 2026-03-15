@@ -360,3 +360,35 @@ export interface InfrastructureMockData {
   ci_cd: PipelineNode[];
   caching_queues: QueueNode[];
 }
+
+/**
+ * Prompt 46: Edge Computing & Multi-Region Types
+ */
+export interface RegionNode {
+  region_name: string;
+  nodes: number;
+  latency: string;
+  status: 'mock_active' | 'mock_warning' | 'mock_offline';
+}
+
+export interface EdgeNode {
+  node_name: string;
+  region: string;
+  cpu_usage: string;
+  memory_usage: string;
+  network_traffic: string;
+}
+
+export interface EdgeAlert {
+  alert_type: string;
+  region?: string;
+  node?: string;
+  current?: string;
+  status: 'mock_triggered' | 'resolved';
+}
+
+export interface EdgeComputingData {
+  regions: RegionNode[];
+  edge_nodes: EdgeNode[];
+  alerts: EdgeAlert[];
+}

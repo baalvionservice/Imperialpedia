@@ -64,7 +64,8 @@ import {
   Layout,
   Spline,
   Fingerprint,
-  Cpu
+  Cpu,
+  Network
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 import { useAppStore } from '@/lib/state/app-store';
@@ -148,6 +149,7 @@ const Sidebar = ({ className }: { className?: string }) => {
     { icon: Shield, label: 'Security Protocols', href: '/admin/control/security' },
     { icon: Fingerprint, label: 'Security Showcase', href: '/admin/control/security-showcase' },
     { icon: Cpu, label: 'Infrastructure & Scale', href: '/admin/control/infrastructure' },
+    { icon: Network, label: 'Edge & Multi-Region', href: '/admin/control/edge' },
     { icon: Monitor, label: 'Active Sessions', href: '/admin/control/sessions' },
     { icon: Bell, label: 'Notification Settings', href: '/admin/control/notifications' },
     { icon: Zap, label: 'Feature Toggles', href: '/admin/control/features' },
