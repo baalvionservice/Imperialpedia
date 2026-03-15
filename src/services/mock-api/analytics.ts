@@ -1,4 +1,5 @@
 import { ApiResponse } from '@/types';
+import { TrafficAnalytics } from '@/types/analytics';
 
 /**
  * @fileOverview Mock service for platform analytics and trending data.
@@ -171,6 +172,36 @@ export const getContentAnalytics = async (): Promise<ApiResponse<ContentAnalytic
         { date: '2024-03-06', views: 58000 },
         { date: '2024-03-07', views: 65000 }
       ]
+    },
+    status: 200
+  };
+};
+
+export const getTrafficAnalytics = async (): Promise<ApiResponse<TrafficAnalytics>> => {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  return {
+    data: {
+      activeUsers: 1420,
+      pageViews: 425000,
+      sessionDuration: 402, // 6m 42s
+      bounceRate: 32.4,
+      deviceBreakdown: {
+        desktop: 58,
+        mobile: 35,
+        tablet: 7
+      },
+      geoBreakdown: [
+        { country: 'United States', users: 125000, percentage: 42 },
+        { country: 'United Kingdom', users: 45000, percentage: 15 },
+        { country: 'Germany', users: 32000, percentage: 11 },
+        { country: 'Singapore', users: 24000, percentage: 8 },
+        { country: 'Canada', users: 18000, percentage: 6 }
+      ],
+      hourlyTraffic: Array.from({ length: 24 }, (_, i) => ({
+        hour: `${i}:00`,
+        sessions: Math.floor(Math.random() * 500) + 200,
+        views: Math.floor(Math.random() * 2000) + 1000
+      }))
     },
     status: 200
   };
