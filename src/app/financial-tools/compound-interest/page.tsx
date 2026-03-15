@@ -36,9 +36,9 @@ export default function CompoundInterestPage() {
     const r = Number(rate);
     const y = Number(years);
 
-    if (!principal || p < 0) newErrors.principal = "Must be 0 or greater";
-    if (!rate || r < 0 || r > 100) newErrors.rate = "Rate must be 0-100%";
-    if (!years || y <= 0) newErrors.years = "Horizon must be greater than 0";
+    if (!principal || p < 0) newErrors.principal = "Required (>= 0)";
+    if (!rate || r < 0 || r > 100) newErrors.rate = "Required (0-100%)";
+    if (!years || y <= 0) newErrors.years = "Required (> 0)";
     
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -80,13 +80,17 @@ export default function CompoundInterestPage() {
         </Button>
 
         <header className="mb-12">
-          <div className="flex items-center gap-3 text-primary mb-4">
-            <TrendingUp className="h-6 w-6" />
-            <Text variant="label" className="font-bold tracking-widest">Financial Intelligence</Text>
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-3 rounded-2xl bg-primary/10 border border-primary/20 text-primary shadow-sm">
+              <TrendingUp className="h-7 w-7" />
+            </div>
+            <Badge variant="outline" className="text-primary border-primary/30 uppercase tracking-widest text-[10px] font-bold px-3 py-1">
+              Wealth Building
+            </Badge>
           </div>
           <Text variant="h1" className="text-4xl lg:text-6xl font-bold mb-4 tracking-tight">Compound Interest Engine</Text>
           <Text variant="body" className="text-muted-foreground text-lg leading-relaxed">
-            Determine the future value of your investments by analyzing the power of time and compounding frequency.
+            Determine the future value of your capital by analyzing the impact of time and compounding frequency on your principal.
           </Text>
         </header>
 
@@ -161,7 +165,7 @@ export default function CompoundInterestPage() {
                     <RefreshCcw className="mr-2 h-4 w-4" /> Reset Tool
                   </Button>
                   <Button type="submit" className="h-14 flex-1 bg-primary hover:bg-primary/90 text-white rounded-2xl font-bold shadow-xl shadow-primary/20 transition-all scale-[1.02] active:scale-100">
-                    Calculate Projections
+                    Analyze Growth
                   </Button>
                 </div>
               </form>
@@ -175,7 +179,7 @@ export default function CompoundInterestPage() {
                   <CardTitle className="text-lg flex items-center gap-2 text-emerald-500">
                     <CheckCircle2 className="h-5 w-5" /> Summary Result
                   </CardTitle>
-                  <Badge variant="outline" className="border-emerald-500/30 text-emerald-500 font-bold uppercase tracking-tighter">
+                  <Badge variant="secondary" className="bg-emerald-500/20 text-emerald-500 border-none font-bold uppercase tracking-tighter">
                     Calculation Stable
                   </Badge>
                 </div>
@@ -187,12 +191,12 @@ export default function CompoundInterestPage() {
                     <div className="text-5xl font-bold tracking-tighter text-foreground">
                       {formatCurrency(result)}
                     </div>
-                    <Text variant="caption" className="text-emerald-500 font-bold">
-                      +{formatCurrency(result - Number(principal))} in total earnings
+                    <Text variant="caption" className="text-emerald-500 font-bold block mt-2">
+                      +{formatCurrency(result - Number(principal))} in projected earnings
                     </Text>
                   </div>
                   <div className="p-6 rounded-2xl bg-emerald-500/5 border border-emerald-500/10 italic text-sm text-muted-foreground leading-relaxed">
-                    "Based on a {rate}% annual rate, your initial capital of {formatCurrency(Number(principal))} is projected to grow significantly over the next {years} years."
+                    "Based on a {rate}% annual rate, your initial capital of {formatCurrency(Number(principal))} is projected to yield high returns over {years} years."
                   </div>
                 </div>
               </CardContent>
@@ -200,21 +204,14 @@ export default function CompoundInterestPage() {
           )}
         </div>
 
-        <div className="mt-12 p-8 rounded-[2.5rem] bg-secondary/5 border border-secondary/20 relative overflow-hidden">
-          <div className="absolute -top-4 -right-4 w-24 h-24 bg-secondary/10 rounded-full blur-2xl" />
-          <Text variant="bodySmall" className="text-muted-foreground leading-relaxed italic relative z-10">
-            "Compound interest is the engine of wealth. By reinvesting your returns, you allow your capital to grow at an accelerating rate over time." — Financial Intelligence Index
-          </Text>
-        </div>
-
         {result && (
           <CalculatorResultModal 
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
             onReset={handleReset}
-            title="Projected Growth"
+            title="Projected Future Value"
             result={formatCurrency(result)}
-            description={`With an initial investment of ${formatCurrency(Number(principal))}, your portfolio is projected to grow to ${formatCurrency(result)} over ${years} years at a ${rate}% annual rate.`}
+            description={`Starting with ${formatCurrency(Number(principal))}, your portfolio is projected to grow to ${formatCurrency(result)} over ${years} years at an annual interest rate of ${rate}%.`}
           />
         )}
       </Container>

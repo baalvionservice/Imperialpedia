@@ -18,7 +18,8 @@ import {
   Trash2, 
   PieChart as PieChartIcon,
   TrendingUp,
-  CheckCircle2
+  CheckCircle2,
+  Database
 } from 'lucide-react';
 import Link from 'next/link';
 import { 
@@ -69,9 +70,9 @@ export default function PortfolioCalculatorPage() {
       const inv = Number(asset.investment);
       const ret = Number(asset.returnRate);
 
-      if (!asset.name) error = "Name required";
-      if (isNaN(inv) || inv < 0) error = "Invalid investment";
-      if (isNaN(ret) || ret < 0 || ret > 100) error = "Invalid return (0-100%)";
+      if (!asset.name) error = "Required";
+      if (isNaN(inv) || inv < 0) error = "Invalid Amt";
+      if (isNaN(ret) || ret < 0 || ret > 100) error = "Invalid (0-100%)";
       
       if (error) isValid = false;
       return { ...asset, error };
@@ -121,13 +122,17 @@ export default function PortfolioCalculatorPage() {
         </Button>
 
         <header className="mb-12 max-w-3xl">
-          <div className="flex items-center gap-3 text-primary mb-4">
-            <Layers className="h-6 w-6" />
-            <Text variant="label" className="font-bold tracking-widest uppercase">Multi-Asset Modeling</Text>
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-3 rounded-2xl bg-primary/10 border border-primary/20 text-primary shadow-sm">
+              <Layers className="h-7 w-7" />
+            </div>
+            <Badge variant="outline" className="text-primary border-primary/30 uppercase tracking-widest text-[10px] font-bold px-3 py-1">
+              Multi-Asset Modeling
+            </Badge>
           </div>
           <Text variant="h1" className="text-4xl lg:text-6xl font-bold mb-4 tracking-tight">Portfolio ROI Architect</Text>
           <Text variant="body" className="text-muted-foreground text-lg leading-relaxed">
-            Architect a diversified portfolio by assigning capital and return expectations to various asset classes.
+            Architect a diversified investment matrix by assigning capital and yield expectations to individual asset nodes.
           </Text>
         </header>
 
@@ -135,27 +140,32 @@ export default function PortfolioCalculatorPage() {
           <div className="lg:col-span-7 space-y-8">
             <Card className="glass-card border-none shadow-2xl">
               <CardHeader className="bg-card/30 border-b border-white/5 flex flex-row items-center justify-between">
-                <div>
-                  <CardTitle className="text-lg">Asset Matrix</CardTitle>
-                  <CardDescription>Define your allocation nodes.</CardDescription>
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-primary/5 text-primary">
+                    <Database className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-lg">Asset Matrix</CardTitle>
+                    <CardDescription>Define your allocation nodes.</CardDescription>
+                  </div>
                 </div>
-                <Button variant="outline" size="sm" onClick={addAsset} className="h-9 rounded-xl border-primary/20 text-primary hover:bg-primary/5">
-                  <Plus className="mr-2 h-4 w-4" /> Add Asset
+                <Button variant="outline" size="sm" onClick={addAsset} className="h-9 rounded-xl border-primary/20 text-primary hover:bg-primary/5 font-bold">
+                  <Plus className="mr-1.5 h-3.5 w-3.5" /> Node
                 </Button>
               </CardHeader>
               <CardContent className="p-6">
                 <form onSubmit={handleCalculate} className="space-y-6">
                   <div className="space-y-4">
                     {assets.map((asset) => (
-                      <div key={asset.id} className="p-4 rounded-xl bg-background/40 border border-white/5 space-y-4">
+                      <div key={asset.id} className="p-4 rounded-xl bg-background/40 border border-white/5 space-y-4 hover:border-primary/20 transition-colors group/node">
                         <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-end">
                           <div className="sm:col-span-4 space-y-2">
-                            <Label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Asset Name</Label>
+                            <Label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Node Label</Label>
                             <Input 
                               value={asset.name} 
                               onChange={(e) => updateAsset(asset.id, 'name', e.target.value)}
                               placeholder="e.g. Equities"
-                              className="bg-background/50 h-10"
+                              className="bg-background/50 h-10 border-white/5"
                             />
                           </div>
                           <div className="sm:col-span-4 space-y-2">
@@ -164,17 +174,17 @@ export default function PortfolioCalculatorPage() {
                               type="number"
                               value={asset.investment} 
                               onChange={(e) => updateAsset(asset.id, 'investment', e.target.value)}
-                              className="bg-background/50 h-10"
+                              className="bg-background/50 h-10 border-white/5"
                             />
                           </div>
                           <div className="sm:col-span-3 space-y-2">
-                            <Label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Exp. Return (%)</Label>
+                            <Label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Yield (%)</Label>
                             <Input 
                               type="number"
                               step="0.1"
                               value={asset.returnRate} 
                               onChange={(e) => updateAsset(asset.id, 'returnRate', e.target.value)}
-                              className="bg-background/50 h-10"
+                              className="bg-background/50 h-10 border-white/5"
                             />
                           </div>
                           <div className="sm:col-span-1 flex justify-center">
@@ -182,7 +192,7 @@ export default function PortfolioCalculatorPage() {
                               type="button" 
                               variant="ghost" 
                               size="icon" 
-                              className="text-muted-foreground hover:text-destructive h-10 w-10"
+                              className="text-muted-foreground hover:text-destructive h-10 w-10 opacity-40 group-hover/node:opacity-100 transition-opacity"
                               onClick={() => removeAsset(asset.id)}
                               disabled={assets.length === 1}
                             >
@@ -190,17 +200,17 @@ export default function PortfolioCalculatorPage() {
                             </Button>
                           </div>
                         </div>
-                        {asset.error && <p className="text-[10px] font-bold text-destructive uppercase">{asset.error}</p>}
+                        {asset.error && <p className="text-[10px] font-bold text-destructive uppercase tracking-tighter">{asset.error}</p>}
                       </div>
                     ))}
                   </div>
 
                   <div className="flex gap-4 pt-6">
-                    <Button type="submit" className="flex-1 h-12 bg-primary hover:bg-primary/90 rounded-xl font-bold shadow-lg shadow-primary/20">
-                      Calculate Performance
+                    <Button type="submit" className="flex-1 h-14 bg-primary hover:bg-primary/90 rounded-2xl font-bold shadow-xl shadow-primary/20 scale-[1.02] active:scale-100 transition-all">
+                      Analyze Performance
                     </Button>
-                    <Button type="button" variant="outline" onClick={handleReset} className="h-12 px-6 rounded-xl">
-                      <RefreshCcw className="mr-2 h-4 w-4" />
+                    <Button type="button" variant="outline" onClick={handleReset} className="h-14 px-8 rounded-2xl border-white/10">
+                      <RefreshCcw className="h-5 w-5" />
                     </Button>
                   </div>
                 </form>
@@ -216,17 +226,17 @@ export default function PortfolioCalculatorPage() {
                       <CheckCircle2 className="h-4 w-4 text-emerald-500" />
                     </div>
                     <div className="text-3xl font-bold">{formatCurrency(results.totalValue)}</div>
-                    <Text variant="caption" className="text-muted-foreground">Combined asset maturity.</Text>
+                    <Text variant="caption" className="text-muted-foreground">Portfolio maturity target.</Text>
                   </CardContent>
                 </Card>
                 <Card className="glass-card border-none">
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between mb-2">
-                      <Text variant="label" className="text-primary">Weighted Return</Text>
+                      <Text variant="label" className="text-primary">Weighted ROI</Text>
                       <TrendingUp className="h-4 w-4 text-primary" />
                     </div>
                     <div className="text-3xl font-bold">{results.weightedReturn.toFixed(2)}%</div>
-                    <Text variant="caption" className="text-muted-foreground">Portfolio-wide ROI velocity.</Text>
+                    <Text variant="caption" className="text-muted-foreground">Overall return velocity.</Text>
                   </CardContent>
                 </Card>
               </div>
@@ -238,7 +248,7 @@ export default function PortfolioCalculatorPage() {
               <Card className="glass-card border-none shadow-2xl overflow-hidden">
                 <CardHeader className="bg-primary/5 border-b border-primary/10">
                   <CardTitle className="text-sm font-bold flex items-center gap-2">
-                    <PieChartIcon className="h-4 w-4 text-primary" /> Allocation Distribution
+                    <PieChartIcon className="h-4 w-4 text-primary" /> Allocation Intelligence
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-6 h-[350px]">
@@ -259,17 +269,19 @@ export default function PortfolioCalculatorPage() {
                         ))}
                       </Pie>
                       <Tooltip contentStyle={{ backgroundColor: '#1C1822', border: '1px solid #ffffff10', borderRadius: '12px' }} formatter={(value: number) => formatCurrency(value)} />
-                      <Legend />
+                      <Legend verticalAlign="bottom" />
                     </PieChart>
                   </ResponsiveContainer>
                 </CardContent>
               </Card>
             ) : (
               <div className="h-full flex flex-col items-center justify-center p-12 border-2 border-dashed rounded-[3rem] opacity-30 text-center space-y-4">
-                <Layers className="h-16 w-16 text-muted-foreground" />
+                <div className="p-6 rounded-full bg-muted/20">
+                  <Layers className="h-12 w-12 text-muted-foreground" />
+                </div>
                 <div>
-                  <Text variant="h4">Awaiting Parameters</Text>
-                  <Text variant="bodySmall">Configure your assets to see the visual intelligence breakdown.</Text>
+                  <Text variant="h4">Awaiting Node Logic</Text>
+                  <Text variant="bodySmall">Define your asset allocation matrix to visualize your intelligence nodes.</Text>
                 </div>
               </div>
             )}
@@ -281,9 +293,9 @@ export default function PortfolioCalculatorPage() {
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
             onReset={handleReset}
-            title="Projected Portfolio Value"
+            title="Projected Capital Growth"
             result={formatCurrency(results.totalValue)}
-            description={`Your diversified portfolio is projected to grow by ${formatCurrency(results.totalProfit)} (+${results.weightedReturn.toFixed(2)}%) based on your asset allocation. The Stocks and Real Estate nodes are providing the primary growth momentum.`}
+            description={`Your diversified strategy is projected to grow by ${formatCurrency(results.totalProfit)} (+${results.weightedReturn.toFixed(2)}%) across all nodes.`}
           />
         )}
       </Container>

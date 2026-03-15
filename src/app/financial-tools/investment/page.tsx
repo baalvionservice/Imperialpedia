@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { financialMath } from '@/modules/calculators/utils/calculations';
 import { CalculatorResultModal } from '@/modules/calculators/components/CalculatorResultModal';
-import { PieChart, RefreshCcw, ArrowLeft, Info, TrendingUp, CheckCircle2 } from 'lucide-react';
+import { PieChart as PieIcon, RefreshCcw, ArrowLeft, Info, TrendingUp, CheckCircle2 } from 'lucide-react';
 import Link from 'next/link';
 import { 
   AreaChart, 
@@ -40,10 +40,10 @@ export default function InvestmentReturnPage() {
     const r = Number(rate);
     const y = Number(years);
 
-    if (!principal || p < 0) newErrors.principal = "Must be 0 or greater";
-    if (!monthly || m < 0) newErrors.monthly = "Must be 0 or greater";
-    if (!rate || r < 0 || r > 100) newErrors.rate = "Rate must be 0-100%";
-    if (!years || y <= 0) newErrors.years = "Horizon must be greater than 0";
+    if (!principal || p < 0) newErrors.principal = "Required (>= 0)";
+    if (!monthly || m < 0) newErrors.monthly = "Required (>= 0)";
+    if (!rate || r < 0 || r > 100) newErrors.rate = "Required (0-100%)";
+    if (!years || y <= 0) newErrors.years = "Required (> 0)";
     
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -89,13 +89,17 @@ export default function InvestmentReturnPage() {
         </Button>
 
         <header className="mb-12 max-w-3xl">
-          <div className="flex items-center gap-3 text-primary mb-4">
-            <PieChart className="h-6 w-6" />
-            <Text variant="label" className="font-bold tracking-widest">Wealth Accumulation</Text>
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-3 rounded-2xl bg-primary/10 border border-primary/20 text-primary shadow-sm">
+              <PieIcon className="h-7 w-7" />
+            </div>
+            <Badge variant="outline" className="text-primary border-primary/30 uppercase tracking-widest text-[10px] font-bold px-3 py-1">
+              Investment ROI
+            </Badge>
           </div>
           <Text variant="h1" className="text-4xl lg:text-6xl font-bold mb-4 tracking-tight">Investment ROI Engine</Text>
           <Text variant="body" className="text-muted-foreground text-lg leading-relaxed">
-            Project the long-term potential of your portfolio by modeling initial capital, consistent contributions, and expected market returns.
+            Project your long-term wealth accumulation by modeling recurring contributions against historical market benchmarks.
           </Text>
         </header>
 
@@ -109,7 +113,7 @@ export default function InvestmentReturnPage() {
               <CardContent className="p-6">
                 <form onSubmit={handleCalculate} className="space-y-6">
                   <div className="space-y-2">
-                    <Label htmlFor="principal" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Initial Principal ($)</Label>
+                    <Label htmlFor="principal" className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Initial Principal ($)</Label>
                     <Input 
                       id="principal" 
                       type="number" 
@@ -122,7 +126,7 @@ export default function InvestmentReturnPage() {
                   </div>
                   
                   <div className="space-y-2">
-                    <Label htmlFor="monthly" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Monthly Contribution ($)</Label>
+                    <Label htmlFor="monthly" className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Monthly Contribution ($)</Label>
                     <Input 
                       id="monthly" 
                       type="number" 
@@ -135,7 +139,7 @@ export default function InvestmentReturnPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="rate" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Expected Annual Return (%)</Label>
+                    <Label htmlFor="rate" className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Expected Annual Return (%)</Label>
                     <Input 
                       id="rate" 
                       type="number" 
@@ -149,7 +153,7 @@ export default function InvestmentReturnPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="years" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Time Horizon (Years)</Label>
+                    <Label htmlFor="years" className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Time Horizon (Years)</Label>
                     <Input 
                       id="years" 
                       type="number" 
@@ -177,11 +181,11 @@ export default function InvestmentReturnPage() {
               <Card className="glass-card border-none bg-primary/5 border-primary/20 animate-in fade-in slide-in-from-left-4 duration-500">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between mb-4">
-                    <Text variant="label" className="text-primary">Summary Growth</Text>
+                    <Text variant="label" className="text-primary">Summary Value</Text>
                     <CheckCircle2 className="h-4 w-4 text-emerald-500" />
                   </div>
                   <div className="text-3xl font-bold mb-1">{formatCurrency(result)}</div>
-                  <Text variant="caption" className="text-muted-foreground">Total estimated value in {years} years.</Text>
+                  <Text variant="caption" className="text-muted-foreground">Projected capital in {years} years.</Text>
                 </CardContent>
               </Card>
             )}
@@ -193,7 +197,7 @@ export default function InvestmentReturnPage() {
                 <CardTitle className="text-lg flex items-center gap-2">
                   <TrendingUp className="h-5 w-5 text-primary" /> Growth Trajectory
                 </CardTitle>
-                <CardDescription>Visualizing the power of compound returns over your selected horizon.</CardDescription>
+                <CardDescription>Visualizing the power of recurring contributions and compound market yields.</CardDescription>
               </CardHeader>
               <CardContent className="p-8 flex-grow flex flex-col justify-center min-h-[400px]">
                 {chartData.length > 0 ? (
@@ -209,7 +213,7 @@ export default function InvestmentReturnPage() {
                         <CartesianGrid strokeDasharray="3 3" stroke="#ffffff05" vertical={false} />
                         <XAxis dataKey="year" stroke="#888888" fontSize={10} tickLine={false} axisLine={false} label={{ value: 'Years', position: 'insideBottom', offset: -5, fontSize: 10 }} />
                         <YAxis stroke="#888888" fontSize={10} tickLine={false} axisLine={false} tickFormatter={(val) => `$${val / 1000}k`} />
-                        <Tooltip contentStyle={{ backgroundColor: '#1C1822', border: '1px solid #ffffff10', borderRadius: '12px' }} formatter={(value: number) => [formatCurrency(value), 'Portfolio Balance']} />
+                        <Tooltip contentStyle={{ backgroundColor: '#1C1822', border: '1px solid #ffffff10', borderRadius: '12px' }} formatter={(value: number) => [formatCurrency(value), 'Capital Maturity']} />
                         <Area type="monotone" dataKey="balance" stroke="#8272F2" fillOpacity={1} fill="url(#colorBalance)" strokeWidth={3} />
                       </AreaChart>
                     </ResponsiveContainer>
@@ -219,7 +223,7 @@ export default function InvestmentReturnPage() {
                     <div className="w-20 h-20 bg-muted/20 rounded-full flex items-center justify-center mx-auto">
                       <TrendingUp className="h-10 w-10 text-muted-foreground" />
                     </div>
-                    <Text variant="bodySmall" className="italic">Adjust parameters and click calculate to visualize your wealth momentum.</Text>
+                    <Text variant="bodySmall" className="italic">Define your investment goals to generate a visual performance chart.</Text>
                   </div>
                 )}
               </CardContent>
@@ -232,9 +236,9 @@ export default function InvestmentReturnPage() {
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
             onReset={handleReset}
-            title="Estimated Future Value"
+            title="Projected Asset Maturity"
             result={formatCurrency(result)}
-            description={`Starting with ${formatCurrency(Number(principal))} and contributing ${formatCurrency(Number(monthly))} monthly, your portfolio is projected to reach ${formatCurrency(result)} in ${years} years.`}
+            description={`Starting with ${formatCurrency(Number(principal))} and adding ${formatCurrency(Number(monthly))} monthly, your capital is projected to reach ${formatCurrency(result)} over ${years} years.`}
           />
         )}
       </Container>

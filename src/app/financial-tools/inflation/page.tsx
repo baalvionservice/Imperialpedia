@@ -28,9 +28,9 @@ export default function InflationCalculatorPage() {
     const r = Number(rate);
     const y = Number(years);
 
-    if (!amount || a <= 0) newErrors.amount = "Amount must be greater than 0";
-    if (!rate || r < 0 || r > 100) newErrors.rate = "Rate must be 0-100%";
-    if (!years || y <= 0) newErrors.years = "Horizon must be greater than 0";
+    if (!amount || a <= 0) newErrors.amount = "Required (> 0)";
+    if (!rate || r < 0 || r > 100) newErrors.rate = "Required (0-100%)";
+    if (!years || y <= 0) newErrors.years = "Required (> 0)";
     
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -72,13 +72,17 @@ export default function InflationCalculatorPage() {
         </Button>
 
         <header className="mb-12">
-          <div className="flex items-center gap-3 text-primary mb-4">
-            <ArrowUpRight className="h-6 w-6" />
-            <Text variant="label" className="font-bold tracking-widest uppercase">Purchasing Power Analysis</Text>
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-3 rounded-2xl bg-primary/10 border border-primary/20 text-primary shadow-sm">
+              <ArrowUpRight className="h-7 w-7" />
+            </div>
+            <Badge variant="outline" className="text-primary border-primary/30 uppercase tracking-widest text-[10px] font-bold px-3 py-1">
+              Economic Analysis
+            </Badge>
           </div>
           <Text variant="h1" className="text-4xl lg:text-6xl font-bold mb-4 tracking-tight">Inflation Impact Engine</Text>
           <Text variant="body" className="text-muted-foreground text-lg leading-relaxed">
-            Visualize how inflation erodes the value of your capital over time and determine the future cost of today's goods.
+            Visualize the eroding effects of inflation on your purchasing power and calculate the future equivalent value of today's currency.
           </Text>
         </header>
 
@@ -92,7 +96,7 @@ export default function InflationCalculatorPage() {
               <form onSubmit={handleCalculate} className="space-y-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div className="space-y-3">
-                    <Label htmlFor="amount" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Current Amount ($)</Label>
+                    <Label htmlFor="amount" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Present Value ($)</Label>
                     <Input 
                       id="amount" 
                       type="number" 
@@ -105,7 +109,7 @@ export default function InflationCalculatorPage() {
                   </div>
                   
                   <div className="space-y-3">
-                    <Label htmlFor="rate" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Expected Inflation Rate (%)</Label>
+                    <Label htmlFor="rate" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Inflation Benchmark (%)</Label>
                     <Input 
                       id="rate" 
                       type="number" 
@@ -133,8 +137,8 @@ export default function InflationCalculatorPage() {
 
                   <div className="flex items-center p-4 rounded-xl bg-primary/5 border border-primary/10 mt-6">
                     <Info className="h-5 w-5 text-primary mr-3 shrink-0" />
-                    <Text variant="caption" className="text-muted-foreground italic">
-                      Calculates the future value required to maintain current purchasing power.
+                    <Text variant="caption" className="text-muted-foreground italic leading-relaxed">
+                      Models the necessary future capital required to maintain equivalent purchasing power.
                     </Text>
                   </div>
                 </div>
@@ -165,12 +169,12 @@ export default function InflationCalculatorPage() {
                     <div className="text-5xl font-bold tracking-tighter">
                       {formatCurrency(result)}
                     </div>
-                    <Badge variant="secondary" className="bg-primary/10 text-primary border-none font-bold">
-                      Impact Factor: {((result / Number(amount)) * 100 - 100).toFixed(1)}% Cost Increase
+                    <Badge variant="secondary" className="bg-primary/10 text-primary border-none font-bold mt-2">
+                      {((result / Number(amount)) * 100 - 100).toFixed(1)}% Relative Cost Increase
                     </Badge>
                   </div>
                   <div className="p-6 rounded-2xl bg-primary/5 border border-primary/10 italic text-sm text-muted-foreground leading-relaxed">
-                    "At a {rate}% annual inflation rate, you will need {formatCurrency(result)} in {years} years to possess the same buying capacity as {formatCurrency(Number(amount))} today."
+                    "At a {rate}% annual benchmark, you will require {formatCurrency(result)} in {years} years to match the current value of {formatCurrency(Number(amount))}."
                   </div>
                 </div>
               </CardContent>
@@ -183,9 +187,9 @@ export default function InflationCalculatorPage() {
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
             onReset={handleReset}
-            title="Future Equivalent Value"
+            title="Future Equivalent Power"
             result={formatCurrency(result)}
-            description={`With an average annual inflation rate of ${rate}%, you will need ${formatCurrency(result)} in ${years} years to match today's ${formatCurrency(Number(amount))}.`}
+            description={`With a ${rate}% average annual inflation rate, you will need ${formatCurrency(result)} in ${years} years to possess today's ${formatCurrency(Number(amount))} in buying capacity.`}
           />
         )}
       </Container>

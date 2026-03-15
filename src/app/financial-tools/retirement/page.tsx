@@ -42,11 +42,11 @@ export default function RetirementCalculatorPage() {
     const m = Number(monthly);
     const r = Number(rate);
 
-    if (!currentAge || ca <= 0) newErrors.currentAge = "Age must be > 0";
-    if (!retirementAge || ra <= ca) newErrors.retirementAge = "Must be older than current age";
-    if (!savings || s < 0) newErrors.savings = "Must be 0 or greater";
-    if (!monthly || m < 0) newErrors.monthly = "Must be 0 or greater";
-    if (!rate || r < 0 || r > 100) newErrors.rate = "Rate must be 0-100%";
+    if (!currentAge || ca <= 0) newErrors.currentAge = "Required (> 0)";
+    if (!retirementAge || ra <= ca) newErrors.retirementAge = "Must exceed current age";
+    if (!savings || s < 0) newErrors.savings = "Required (>= 0)";
+    if (!monthly || m < 0) newErrors.monthly = "Required (>= 0)";
+    if (!rate || r < 0 || r > 100) newErrors.rate = "Required (0-100%)";
     
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -94,13 +94,17 @@ export default function RetirementCalculatorPage() {
         </Button>
 
         <header className="mb-12 max-w-3xl">
-          <div className="flex items-center gap-3 text-secondary mb-4">
-            <Sunrise className="h-6 w-6" />
-            <Text variant="label" className="font-bold tracking-widest uppercase">Retirement Intelligence</Text>
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-3 rounded-2xl bg-secondary/10 border border-secondary/20 text-secondary shadow-sm">
+              <Sunrise className="h-7 w-7" />
+            </div>
+            <Badge variant="outline" className="text-secondary border-secondary/30 uppercase tracking-widest text-[10px] font-bold px-3 py-1">
+              Retirement Planning
+            </Badge>
           </div>
           <Text variant="h1" className="text-4xl lg:text-6xl font-bold mb-4 tracking-tight">Nest Egg Architect</Text>
           <Text variant="body" className="text-muted-foreground text-lg leading-relaxed">
-            Project your total wealth at retirement by modeling current capital, future contributions, and long-term market growth.
+            Project your cumulative wealth at retirement by modeling current capital reserves against future contribution velocity.
           </Text>
         </header>
 
@@ -126,7 +130,7 @@ export default function RetirementCalculatorPage() {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="retirementAge" className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Retirement Age</Label>
+                      <Label htmlFor="retirementAge" className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Target Age</Label>
                       <Input 
                         id="retirementAge" 
                         type="number" 
@@ -139,7 +143,7 @@ export default function RetirementCalculatorPage() {
                   </div>
                   
                   <div className="space-y-2">
-                    <Label htmlFor="savings" className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Current Retirement Savings ($)</Label>
+                    <Label htmlFor="savings" className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Current Savings ($)</Label>
                     <Input 
                       id="savings" 
                       type="number" 
@@ -165,7 +169,7 @@ export default function RetirementCalculatorPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="rate" className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Expected Annual Return (%)</Label>
+                    <Label htmlFor="rate" className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Exp. Market Return (%)</Label>
                     <Input 
                       id="rate" 
                       type="number" 
@@ -195,10 +199,10 @@ export default function RetirementCalculatorPage() {
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between mb-4">
                     <Text variant="label" className="text-secondary">Corpus Analysis</Text>
-                    <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-500 border-none">Ready</Badge>
+                    <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-500 border-none px-3 font-bold">READY</Badge>
                   </div>
                   <div className="text-3xl font-bold mb-1">{formatCurrency(result)}</div>
-                  <Text variant="caption" className="text-muted-foreground">Wealth at age {retirementAge}.</Text>
+                  <Text variant="caption" className="text-muted-foreground">Estimated wealth at age {retirementAge}.</Text>
                 </CardContent>
               </Card>
             )}
@@ -208,7 +212,7 @@ export default function RetirementCalculatorPage() {
             <Card className="glass-card border-none shadow-2xl h-full overflow-hidden flex flex-col">
               <CardHeader className="bg-card/30 border-b border-white/5">
                 <CardTitle className="text-lg flex items-center gap-2">
-                  <TrendingUp className="h-5 w-5 text-secondary" /> Corpus Growth Chart
+                  <TrendingUp className="h-5 w-5 text-secondary" /> Corpus Growth Trajectory
                 </CardTitle>
                 <CardDescription>Visualizing the accumulation phase from age {currentAge} to {retirementAge}.</CardDescription>
               </CardHeader>
@@ -224,7 +228,7 @@ export default function RetirementCalculatorPage() {
                           </linearGradient>
                         </defs>
                         <CartesianGrid strokeDasharray="3 3" stroke="#ffffff05" vertical={false} />
-                        <XAxis dataKey="age" stroke="#888888" fontSize={10} tickLine={false} axisLine={false} label={{ value: 'Age', position: 'insideBottom', offset: -5, fontSize: 10 }} />
+                        <XAxis dataKey="age" stroke="#888888" fontSize={10} tickLine={false} axisLine={false} label={{ value: 'Target Age', position: 'insideBottom', offset: -5, fontSize: 10 }} />
                         <YAxis stroke="#888888" fontSize={10} tickLine={false} axisLine={false} tickFormatter={(val) => `$${val / 1000}k`} />
                         <Tooltip contentStyle={{ backgroundColor: '#1C1822', border: '1px solid #ffffff10', borderRadius: '12px' }} formatter={(value: number) => [formatCurrency(value), 'Projected Corpus']} />
                         <Area type="monotone" dataKey="balance" stroke="#69B9FF" fillOpacity={1} fill="url(#colorCorpus)" strokeWidth={3} />
@@ -236,7 +240,7 @@ export default function RetirementCalculatorPage() {
                     <div className="w-20 h-20 bg-muted/20 rounded-full flex items-center justify-center mx-auto">
                       <Sunrise className="h-10 w-10 text-muted-foreground" />
                     </div>
-                    <Text variant="bodySmall" className="italic">Define your retirement targets to see your personalized growth trajectory.</Text>
+                    <Text variant="bodySmall" className="italic">Define your retirement parameters to generate a visual accumulation roadmap.</Text>
                   </div>
                 )}
               </CardContent>
@@ -251,7 +255,7 @@ export default function RetirementCalculatorPage() {
             onReset={handleReset}
             title="Projected Retirement Corpus"
             result={formatCurrency(result)}
-            description={`Based on your inputs, you are on track to have a total nest egg of ${formatCurrency(result)} by age ${retirementAge}. This accounts for your current ${formatCurrency(Number(savings))} and monthly ${formatCurrency(Number(monthly))} contributions.`}
+            description={`Based on your current trajectory, you are on track to have an estimated nest egg of ${formatCurrency(result)} by age ${retirementAge}.`}
           />
         )}
       </Container>

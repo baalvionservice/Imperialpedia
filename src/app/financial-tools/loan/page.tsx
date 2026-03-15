@@ -32,9 +32,9 @@ export default function LoanCalculatorPage() {
     const r = Number(rate);
     const y = Number(years);
 
-    if (!principal || p <= 0) newErrors.principal = "Loan amount must be greater than 0";
-    if (!rate || r < 0 || r > 100) newErrors.rate = "Rate must be 0-100%";
-    if (!years || y <= 0) newErrors.years = "Tenure must be greater than 0";
+    if (!principal || p <= 0) newErrors.principal = "Required (> 0)";
+    if (!rate || r < 0 || r > 100) newErrors.rate = "Required (0-100%)";
+    if (!years || y <= 0) newErrors.years = "Required (> 0)";
     
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -81,13 +81,17 @@ export default function LoanCalculatorPage() {
         </Button>
 
         <header className="mb-12">
-          <div className="flex items-center gap-3 text-secondary mb-4">
-            <CreditCard className="h-6 w-6" />
-            <Text variant="label" className="font-bold tracking-widest uppercase">Debt Management</Text>
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-3 rounded-2xl bg-secondary/10 border border-secondary/20 text-secondary shadow-sm">
+              <Landmark className="h-7 w-7" />
+            </div>
+            <Badge variant="outline" className="text-secondary border-secondary/30 uppercase tracking-widest text-[10px] font-bold px-3 py-1">
+              Debt Management
+            </Badge>
           </div>
           <Text variant="h1" className="text-4xl lg:text-6xl font-bold mb-4 tracking-tight">Loan Repayment Engine</Text>
           <Text variant="body" className="text-muted-foreground text-lg leading-relaxed">
-            Calculate your monthly obligation and total cost of borrowing for mortgages, auto loans, or personal financing.
+            Analyze your monthly obligations and the total cost of capital for mortgages, personal financing, or auto loans.
           </Text>
         </header>
 
@@ -143,7 +147,7 @@ export default function LoanCalculatorPage() {
                   <div className="flex items-center p-4 rounded-xl bg-secondary/5 border border-secondary/10 mt-6">
                     <Info className="h-5 w-5 text-secondary mr-3 shrink-0" />
                     <Text variant="caption" className="text-muted-foreground italic">
-                      Calculates a standard amortized monthly payment based on current market rates.
+                      Models a standard amortized repayment schedule based on target market rates.
                     </Text>
                   </div>
                 </div>
@@ -179,15 +183,9 @@ export default function LoanCalculatorPage() {
                   <Text variant="label" className="text-muted-foreground mb-1">Total Repayment</Text>
                   <div className="text-2xl font-bold">{formatCurrency(results.total)}</div>
                 </CardContent>
-              </div>
+              </Card>
+            </div>
           )}
-        </div>
-
-        <div className="mt-12 p-8 rounded-[2.5rem] bg-primary/5 border border-primary/20 relative overflow-hidden">
-          <div className="absolute -top-4 -right-4 w-24 h-24 bg-primary/10 rounded-full blur-2xl" />
-          <Text variant="bodySmall" className="text-muted-foreground leading-relaxed italic relative z-10">
-            "Understanding the total cost of debt is critical for long-term fiscal stability. Interest rates are the primary lever in determining the actual price of your capital over time." — Financial Intelligence Index
-          </Text>
         </div>
 
         {results && (
@@ -197,7 +195,7 @@ export default function LoanCalculatorPage() {
             onReset={handleReset}
             title="Estimated Monthly Payment"
             result={formatCurrency(results.monthly)}
-            description={`For a ${formatCurrency(Number(principal))} loan at ${rate}% over ${years} years, your monthly payment is ${formatCurrency(results.monthly)}. Total repayment will be ${formatCurrency(results.total)}.`}
+            description={`For a ${formatCurrency(Number(principal))} loan at ${rate}% over ${years} years, your fixed monthly commitment is ${formatCurrency(results.monthly)}.`}
           />
         )}
       </Container>
