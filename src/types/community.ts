@@ -58,6 +58,32 @@ export interface UserReputation {
   badges: CommunityBadge[];
 }
 
+/**
+ * Prompt 39: Reputation & Leaderboard Types
+ */
+export interface ReputationContribution {
+  posts: number;
+  comments: number;
+  polls: number;
+}
+
+export interface ReputationEntry {
+  username: string;
+  avatar: string;
+  reputation_points: number;
+  badges: string[];
+  contributions: ReputationContribution;
+}
+
+export interface LeaderboardItem {
+  rank: number;
+  username: string;
+  avatar: string;
+  total_points: number;
+  badges?: string[];
+  trend?: 'up' | 'down' | 'stable';
+}
+
 export interface LeaderboardEntry {
   rank?: number;
   username: string;
@@ -98,4 +124,7 @@ export interface CommunityData {
   userReputation: UserReputation;
   leaderboard: LeaderboardEntry[];
   predictionContests: PredictionContest[];
+  // Prompt 39 specific fields
+  reputation_list: ReputationEntry[];
+  leaderboards_full: LeaderboardItem[];
 }

@@ -1,9 +1,9 @@
 import { ApiResponse } from '@/types';
-import { CommunityData, Comment, Poll, UserReputation, LeaderboardEntry, CommunityBadge, PredictionContest } from '@/types/community';
+import { CommunityData, Comment, Poll, UserReputation, LeaderboardEntry, CommunityBadge, PredictionContest, ReputationEntry, LeaderboardItem } from '@/types/community';
 
 /**
  * @fileOverview Mock service for the Community and Engagement engine.
- * Refined for Prompt 38 requirements.
+ * Refined for Prompt 39 requirements.
  */
 
 const mockComments: Comment[] = [
@@ -44,11 +44,48 @@ const mockComments: Comment[] = [
   }
 ];
 
-const mockLeaderboard: LeaderboardEntry[] = [
-  { username: 'MarketMaven', reputation: 1240, avatar: 'https://picsum.photos/seed/maven/200/200', badges: ['Verified Analyst'] },
-  { username: 'WealthBuilder', reputation: 1100, avatar: 'https://picsum.photos/seed/wealth/200/200', badges: ['Expert Contributor'] },
-  { username: 'AlphaHunter', reputation: 850, avatar: 'https://picsum.photos/seed/alpha/200/200', badges: ['Top Forecaster'] },
+// Prompt 39: Reputation List
+const mockReputationList: ReputationEntry[] = [
+  { 
+    username: "User123", 
+    avatar: "https://picsum.photos/seed/u123/200/200", 
+    reputation_points: 120, 
+    badges: ["Expert", "Top Contributor"], 
+    contributions: { posts: 25, comments: 40, polls: 5 } 
+  },
+  { 
+    username: "User456", 
+    avatar: "https://picsum.photos/seed/u456/200/200", 
+    reputation_points: 85, 
+    badges: ["Contributor"], 
+    contributions: { posts: 15, comments: 20, polls: 2 } 
+  },
+  { 
+    username: "AlphaHunter", 
+    avatar: "https://picsum.photos/seed/alpha/200/200", 
+    reputation_points: 110, 
+    badges: ["Oracle", "Vetted Analyst"], 
+    contributions: { posts: 12, comments: 150, polls: 18 } 
+  }
 ];
+
+// Prompt 39: Leaderboards Full
+const mockLeaderboardsFull: LeaderboardItem[] = [
+  { rank: 1, username: "User123", avatar: "https://picsum.photos/seed/u123/200/200", total_points: 120, badges: ["Expert", "Top Contributor"], trend: 'up' },
+  { rank: 2, username: "AlphaHunter", avatar: "https://picsum.photos/seed/alpha/200/200", total_points: 110, badges: ["Oracle"], trend: 'stable' },
+  { rank: 3, username: "User456", avatar: "https://picsum.photos/seed/u456/200/200", total_points: 85, badges: ["Contributor"], trend: 'down' },
+  { rank: 4, username: "Julian Wealth", avatar: "https://picsum.photos/seed/wealth/200/200", total_points: 72, badges: ["Expert"], trend: 'up' },
+  { rank: 5, username: "Sarah Crypto", avatar: "https://picsum.photos/seed/defi/200/200", total_points: 65, badges: ["Early Adopter"], trend: 'up' },
+];
+
+const mockLeaderboard: LeaderboardEntry[] = mockLeaderboardsFull.map(item => ({
+  rank: item.rank,
+  username: item.username,
+  avatar: item.avatar,
+  reputation: item.total_points,
+  badges: item.badges,
+  trend: item.trend
+}));
 
 const mockPolls: Poll[] = [
   {
@@ -64,34 +101,19 @@ const mockPolls: Poll[] = [
     expiresAt: '2026-03-20T00:00:00Z',
     closing_date: '2026-03-20',
     status: 'active'
-  },
-  {
-    id: 'p-2',
-    poll_id: 2,
-    question: 'Is ABC Inc a buy at current valuations?',
-    options: [
-      { option: 'Yes', votes: 80 },
-      { option: 'No', votes: 60 }
-    ],
-    votes: [80, 60],
-    totalVotes: 140,
-    expiresAt: '2026-03-10T00:00:00Z',
-    closing_date: '2026-03-10',
-    status: 'closed'
   }
 ];
 
-const mockBadges: CommunityBadge[] = [
-  { id: 'b-1', name: 'Expert Contributor', description: 'Published 10+ research nodes.', icon: 'Award', rarity: 'Expert' },
-];
-
 const mockUserReputation: UserReputation = {
-  username: 'Deepak Kumar',
-  reputationScore: 1200,
+  username: 'User123', // Active User Simulation
+  reputationScore: 120,
   level: 14,
   nextLevelProgress: 65,
-  activityPoints: 450,
-  badges: []
+  activityPoints: 120,
+  badges: [
+    { id: 'b-1', name: 'Expert Contributor', description: 'Published 10+ research nodes.', icon: 'Award', rarity: 'Expert' },
+    { id: 'b-2', name: 'Top Contributor', description: 'Consistently high engagement.', icon: 'Star', rarity: 'Rare' }
+  ]
 };
 
 const mockPredictionContests: PredictionContest[] = [
@@ -111,22 +133,6 @@ const mockPredictionContests: PredictionContest[] = [
       { username: 'User123', points: 50, avatar: 'https://picsum.photos/seed/u1/100/100' },
       { username: 'User456', points: 40, avatar: 'https://picsum.photos/seed/u2/100/100' }
     ]
-  },
-  {
-    id: 'cont-2',
-    contest_id: 2,
-    name: 'Quarterly Earnings Surprises',
-    description: 'Identify which large-cap tech companies will post a 5%+ EPS beat.',
-    assets: ['MSFT', 'GOOGL', 'AMZN'],
-    status: 'upcoming',
-    start_date: '2026-04-01',
-    end_date: '2026-04-30',
-    endsAt: '2026-04-30T23:59:59Z',
-    reward: '500 Reputation Nodes',
-    prize: 'Mock Points',
-    participants: [
-      { username: 'User789', points: 70, avatar: 'https://picsum.photos/seed/u3/100/100' }
-    ]
   }
 ];
 
@@ -139,7 +145,9 @@ export const getCommunityData = async (): Promise<ApiResponse<CommunityData>> =>
       trendingDiscussions: ['Yield Curve 2026', 'Fed Liquidity', 'AI Chip Wars', 'CBDC Rollout'],
       userReputation: mockUserReputation,
       leaderboard: mockLeaderboard,
-      predictionContests: mockPredictionContests
+      predictionContests: mockPredictionContests,
+      reputation_list: mockReputationList,
+      leaderboards_full: mockLeaderboardsFull
     },
     status: 200,
   };
