@@ -112,11 +112,12 @@ export interface CreatorVerification {
   creatorName: string;
   creatorAvatar: string;
   verified: boolean;
-  requestedAt: string;
+  requestedAt?: string;
   approvedAt?: string;
   approverId?: string;
-  status: "pending" | "approved" | "rejected";
+  status: "unverified" | "pending" | "verified" | "rejected";
   documentsProvided: string[];
+  rejectionReason?: string;
 }
 
 export interface CreatorLeaderboard {

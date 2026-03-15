@@ -374,6 +374,40 @@ export const getFollowing = async (creatorId: string): Promise<ApiResponse<Follo
   };
 };
 
+export const getCreatorVerificationStatus = async (creatorId: string): Promise<ApiResponse<CreatorVerification>> => {
+  await new Promise((resolve) => setTimeout(resolve, 300));
+  
+  // Eleanor Vance is already verified
+  if (creatorId === 'u-1' || creatorId === 'creator-4') {
+    return {
+      data: {
+        creatorId,
+        creatorName: 'Eleanor Vance',
+        creatorAvatar: 'https://picsum.photos/seed/eleanor/200/200',
+        verified: true,
+        status: 'verified',
+        requestedAt: '2023-12-01T10:00:00Z',
+        approvedAt: '2023-12-05T14:30:00Z',
+        documentsProvided: ['LinkedIn Profile', 'FINRA Certification']
+      },
+      status: 200
+    };
+  }
+
+  // Default to unverified for others in this mock
+  return {
+    data: {
+      creatorId,
+      creatorName: 'Standard User',
+      creatorAvatar: '',
+      verified: false,
+      status: 'unverified',
+      documentsProvided: []
+    },
+    status: 200
+  };
+};
+
 const mockCreatorSettings: CreatorSettings = {
   creatorId: 'u-1',
   name: 'Eleanor Vance',
