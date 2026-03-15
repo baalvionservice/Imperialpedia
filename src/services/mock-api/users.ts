@@ -1,4 +1,4 @@
-import { User, ApiResponse } from '@/types';
+import { User, ApiResponse, UserStatus } from '@/types';
 
 /**
  * @fileOverview Mock service for managing CMS user accounts and roles.
@@ -19,5 +19,15 @@ export const getUsers = async (): Promise<ApiResponse<User[]>> => {
   return {
     data: mockUsers,
     status: 200,
+  };
+};
+
+export const updateUserStatuses = async (userIds: string[], status: UserStatus): Promise<ApiResponse<User[]>> => {
+  await new Promise((resolve) => setTimeout(resolve, 800));
+  const updated = mockUsers.map(u => userIds.includes(u.id) ? { ...u, status } : u);
+  return {
+    data: updated,
+    status: 200,
+    message: `Successfully updated ${userIds.length} users to ${status}.`
   };
 };
