@@ -19,7 +19,9 @@ import {
   UserCircle,
   FileSearch,
   CheckCircle,
-  MessageSquare
+  MessageSquare,
+  Calendar,
+  Image as ImageIcon
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 
@@ -55,8 +57,10 @@ const Sidebar = ({ className }: { className?: string }) => {
 
   const adminItems = [
     { icon: LayoutDashboard, label: 'Admin Home', href: '/admin' },
+    { icon: Calendar, label: 'Publisher Scheduler', href: '/admin/scheduler' },
+    { icon: ImageIcon, label: 'Media Library', href: '/admin/media' },
     { icon: BarChart3, label: 'Analytics', href: '/admin/analytics' },
-    { icon: BookOpen, label: 'Glossary Management', href: '/admin/glossary' },
+    { icon: BookOpen, label: 'Glossary Index', href: '/admin/glossary' },
     { icon: Database, label: 'pSEO Health', href: '/admin/seo-audit' },
   ];
 
