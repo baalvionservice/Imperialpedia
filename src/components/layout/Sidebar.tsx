@@ -119,6 +119,7 @@ const Sidebar = ({ className }: { className?: string }) => {
 
   const personalItems = [
     { icon: User, label: 'My Dashboard', href: '/dashboard' },
+    { icon: Sparkles, label: 'For You (Intel)', href: '/dashboard/recommendations' },
     { icon: Briefcase, label: 'Portfolio & Holdings', href: '/dashboard/portfolio' },
     { icon: Bell, label: 'Alerts & Activity', href: '/dashboard/alerts' },
     { icon: Search, label: 'Market Search', href: '/search' },

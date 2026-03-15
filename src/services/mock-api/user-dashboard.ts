@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { UserDashboardData, UserPortfolioData, UserAlertsAndNotificationsData } from '@/types/user-system';
+import { UserDashboardData, UserPortfolioData, UserAlertsAndNotificationsData, UserPersonalizedData } from '@/types/user-system';
 
 /**
  * @fileOverview Mock service for retrieving personalized user dashboard data.
@@ -131,6 +131,82 @@ export const getMockUserAlertsAndNotifications = async (): Promise<ApiResponse<U
         { id: 'nt-1', type: "alert_triggered", asset: "XYZ Corp", message: "Price crossed $60 threshold", datetime: "2026-03-15 10:30" },
         { id: 'nt-2', type: "news_update", asset: "ABC Inc", message: "New earnings report released for Q1", datetime: "2026-03-14 09:00" },
         { id: 'nt-3', type: "system", asset: "Portfolio", message: "Your weekly performance summary is ready", datetime: "2026-03-13 08:00" }
+      ]
+    },
+    status: 200
+  };
+};
+
+export const getPersonalizedData = async (): Promise<ApiResponse<UserPersonalizedData>> => {
+  await new Promise((resolve) => setTimeout(resolve, 700));
+  return {
+    data: {
+      feed: [
+        { 
+          id: 'f-1', 
+          type: "article", 
+          title: "The Macro Case for Digital Scarcity", 
+          preview: "Evaluating the transition from institutional gold to Bitcoin as the primary store of value in inflationary environments.", 
+          date: "2026-03-15", 
+          author: "The Market Maven",
+          category: "Economics"
+        },
+        { 
+          id: 'f-2', 
+          type: "guide", 
+          title: "Mastering the 2-10 Yield Spread", 
+          preview: "A tactical guide to interpreting curve inversions and positioning your portfolio for structural recessionary signals.", 
+          date: "2026-03-14", 
+          author: "Eleanor Vance",
+          category: "Strategy"
+        },
+        { 
+          id: 'f-3', 
+          type: "glossary_term", 
+          title: "Stagflation", 
+          preview: "A condition of slow economic growth and relatively high unemployment accompanied by rising prices.", 
+          date: "2026-03-13", 
+          author: "Imperialpedia Index",
+          category: "Definitions"
+        },
+        { 
+          id: 'f-4', 
+          type: "article", 
+          title: "DeFi Yield Benchmarking Q1", 
+          preview: "Comparing institutional-grade lending protocols across Ethereum and Solana ecosystems.", 
+          date: "2026-03-12", 
+          author: "Sarah Crypto",
+          category: "Crypto"
+        }
+      ],
+      asset_recommendations: [
+        { 
+          id: 'r-1', 
+          asset_name: "NVIDIA Corp", 
+          symbol: "NVDA", 
+          price: 875.25, 
+          trend: "Uptrend", 
+          risk_level: "Moderate", 
+          confidence_score: 0.85 
+        },
+        { 
+          id: 'r-2', 
+          asset_name: "Alphabet Inc", 
+          symbol: "GOOGL", 
+          price: 120.50, 
+          trend: "Downtrend", 
+          risk_level: "Low", 
+          confidence_score: 0.70 
+        },
+        { 
+          id: 'r-3', 
+          asset_name: "Ethereum", 
+          symbol: "ETH", 
+          price: 3450.00, 
+          trend: "Sideways", 
+          risk_level: "High", 
+          confidence_score: 0.92 
+        }
       ]
     },
     status: 200

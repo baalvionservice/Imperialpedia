@@ -49,6 +49,35 @@ export interface UserNotification {
   read?: boolean;
 }
 
+/**
+ * Prompt 36: Personalized Feed & Recommendations
+ */
+export interface FeedItem {
+  id: string;
+  type: 'article' | 'guide' | 'glossary_term';
+  title: string;
+  preview: string;
+  date: string;
+  author: string;
+  category?: string;
+  isSaved?: boolean;
+}
+
+export interface AssetRecommendation {
+  id: string;
+  asset_name: string;
+  symbol: string;
+  price: number;
+  trend: 'Uptrend' | 'Downtrend' | 'Sideways';
+  risk_level: 'Low' | 'Moderate' | 'High' | 'Critical';
+  confidence_score: number;
+}
+
+export interface UserPersonalizedData {
+  feed: FeedItem[];
+  asset_recommendations: AssetRecommendation[];
+}
+
 export interface UserDashboardData {
   user_details: {
     name: string;
