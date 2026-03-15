@@ -21,7 +21,9 @@ import {
   CheckCircle,
   MessageSquare,
   Calendar,
-  Image as ImageIcon
+  Image as ImageIcon,
+  Layers,
+  Tags
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 
@@ -59,6 +61,8 @@ const Sidebar = ({ className }: { className?: string }) => {
     { icon: LayoutDashboard, label: 'Admin Home', href: '/admin' },
     { icon: Calendar, label: 'Publisher Scheduler', href: '/admin/scheduler' },
     { icon: ImageIcon, label: 'Media Library', href: '/admin/media' },
+    { icon: Layers, label: 'Categories', href: '/admin/categories' },
+    { icon: Tags, label: 'Topics & Tags', href: '/admin/tags' },
     { icon: BarChart3, label: 'Analytics', href: '/admin/analytics' },
     { icon: BookOpen, label: 'Glossary Index', href: '/admin/glossary' },
     { icon: Database, label: 'pSEO Health', href: '/admin/seo-audit' },

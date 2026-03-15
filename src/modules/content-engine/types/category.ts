@@ -12,4 +12,9 @@ export interface Category {
   icon?: string;
   parentCategory?: ID;
   articleCount: number;
+  
+  // SEO Metadata
+  seoTitle?: string;
+  seoDescription?: string;
+  seoKeywords?: string[];
 }

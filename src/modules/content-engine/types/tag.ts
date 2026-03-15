@@ -10,4 +10,9 @@ export interface Tag {
   name: string;
   description?: string;
   articleCount: number;
+
+  // SEO Metadata
+  seoTitle?: string;
+  seoDescription?: string;
+  seoKeywords?: string[];
 }
