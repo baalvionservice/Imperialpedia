@@ -14,3 +14,4 @@ export * from './CategoryHeader';
 export * from './RelatedArticles';
 export * from './TableOfContents';
 export * from './TagList';
+export * from './SearchResults';
