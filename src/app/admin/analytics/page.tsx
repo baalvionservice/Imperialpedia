@@ -17,8 +17,12 @@ import {
   Loader2,
   ArrowUpRight,
   ShieldCheck,
-  Zap
+  Zap,
+  Globe,
+  Activity,
+  ArrowRight
 } from 'lucide-react';
+import Link from 'next/link';
 import { getDashboardMetrics, DashboardMetrics } from '@/services/mock-api/analytics';
 import { 
   AreaChart, 
@@ -34,7 +38,7 @@ import {
 
 /**
  * Main Platform Analytics Dashboard for administrators.
- * Aggregates core system metrics and visualizes platform-wide trends.
+ * Aggregates core system metrics and provides deep-dive links to specialized modules.
  */
 export default function AnalyticsDashboardPage() {
   const [metrics, setMetrics] = useState<DashboardMetrics | null>(null);
@@ -73,23 +77,50 @@ export default function AnalyticsDashboardPage() {
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 text-primary mb-1">
-            <ShieldCheck className="h-4 w-4" />
-            <Text variant="label" className="text-[10px] font-bold tracking-widest">System Control</Text>
+            <BarChart3 className="h-4 w-4" />
+            <Text variant="label" className="text-[10px] font-bold tracking-widest uppercase">Intelligence Engine</Text>
           </div>
-          <Text variant="h1" className="text-3xl font-bold">Platform Analytics</Text>
+          <Text variant="h1" className="text-3xl font-bold">Global Analytics Hub</Text>
           <Text variant="bodySmall" className="text-muted-foreground mt-1">
-            Monitoring the performance and scaling of the Imperialpedia Index.
+            Orchestrating growth across the Imperialpedia programmatic index.
           </Text>
         </div>
         <div className="flex gap-2">
           <Button variant="outline" size="sm" className="rounded-xl border-white/10 bg-card/30">
-            <Calendar className="mr-2 h-4 w-4" /> Last 7 Days
+            <Calendar className="mr-2 h-4 w-4" /> Monthly Review
           </Button>
           <Button size="sm" className="rounded-xl shadow-lg shadow-primary/20 font-bold">
-            <Download className="mr-2 h-4 w-4" /> Export Report
+            <Download className="mr-2 h-4 w-4" /> Export Datasets
           </Button>
         </div>
       </header>
+
+      {/* Specialty Intelligence Links */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        {[
+          { label: 'SEO Authority', href: '/admin/analytics/seo', icon: Globe, color: 'text-primary', desc: 'Indexing & Rankings' },
+          { label: 'Traffic Pulse', href: '/admin/analytics/traffic', icon: Activity, color: 'text-secondary', desc: 'Real-time Requests' },
+          { label: 'Content Depth', href: '/admin/analytics/content', icon: FileText, color: 'text-primary', desc: 'Node Engagement' },
+          { label: 'Expert Network', href: '/admin/analytics/creators', icon: Users, color: 'text-secondary', desc: 'Creator Velocity' },
+        ].map((node) => (
+          <Link key={node.href} href={node.href}>
+            <Card className="glass-card p-4 hover:border-primary/40 transition-all group">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className={`p-2 rounded-lg bg-background/50 border border-white/5 ${node.color}`}>
+                    <node.icon className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <Text variant="bodySmall" weight="bold">{node.label}</Text>
+                    <Text variant="caption" className="text-muted-foreground text-[10px]">{node.desc}</Text>
+                  </div>
+                </div>
+                <ArrowRight className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-all -translate-x-2 group-hover:translate-x-0 text-primary" />
+              </div>
+            </Card>
+          </Link>
+        ))}
+      </div>
 
       {/* Primary Metrics Matrix */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
@@ -271,7 +302,9 @@ export default function AnalyticsDashboardPage() {
               The platform is currently operating at <span className="text-emerald-500 font-bold">102% efficiency</span> compared to last month's ingestion benchmarks. All pSEO taxonomies are synchronized and sitemaps are verified.
             </Text>
             <div className="pt-2">
-              <Button variant="link" className="p-0 text-secondary h-auto text-xs font-bold">View full scaling report <ArrowUpRight className="ml-1 h-3 w-3" /></Button>
+              <Button variant="link" className="p-0 text-secondary h-auto text-xs font-bold" asChild>
+                <Link href="/admin/health">View infrastructure telemetry <ArrowUpRight className="ml-1 h-3 w-3" /></Link>
+              </Button>
             </div>
           </div>
         </Card>

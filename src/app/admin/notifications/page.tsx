@@ -25,8 +25,8 @@ import {
   XCircle,
   Megaphone,
   Filter,
-  MoreVertical,
-  Users
+  Users,
+  Save
 } from 'lucide-react';
 import { 
   Dialog, 
@@ -34,8 +34,7 @@ import {
   DialogDescription, 
   DialogFooter, 
   DialogHeader, 
-  DialogTitle, 
-  DialogTrigger 
+  DialogTitle 
 } from '@/components/ui/dialog';
 import { 
   Select, 
@@ -403,5 +402,3 @@ export default function AdminNotificationManagementPage() {
     </div>
   );
 }
-
-import { Save } from 'lucide-react';

@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { systemService } from '@/services/data/system-service';
 import { SystemHealth } from '@/types/system';
+import { cn } from '@/lib/utils';
 import { 
   AreaChart, 
   Area, 
