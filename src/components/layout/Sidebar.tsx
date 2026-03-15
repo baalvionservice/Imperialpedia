@@ -49,7 +49,8 @@ import {
   TrendingDown,
   PieChart,
   Globe,
-  Newspaper
+  Newspaper,
+  CalendarDays
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 import { useAppStore } from '@/lib/state/app-store';
@@ -164,6 +165,7 @@ const Sidebar = ({ className }: { className?: string }) => {
   const publishingItems = [
     { icon: PenTool, label: 'Content Engine', href: '/articles' },
     { icon: Newspaper, label: 'Daily AI Briefing', href: '/ai-analyst/daily-briefing' },
+    { icon: CalendarDays, label: 'Weekly AI Digest', href: '/ai-analyst/weekly-digest' },
     { icon: Sparkles, label: 'AI Bull Case', href: '/ai-analyst/bull-case' },
     { icon: TrendingDown, label: 'AI Bear Case', href: '/ai-analyst/bear-case' },
     { icon: ShieldAlert, label: 'AI Risk Scanner', href: '/ai-analyst/risk-detection' },
