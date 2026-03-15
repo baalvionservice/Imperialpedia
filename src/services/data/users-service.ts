@@ -71,5 +71,18 @@ export const usersService = {
         error: appError.message,
       };
     }
+  },
+
+  async createOrUpdateRole(role: Partial<RoleControl>): Promise<ApiResponse<RoleControl[]>> {
+    try {
+      return await roleApi.createOrUpdateRole(role);
+    } catch (error) {
+      const appError = errorHandler.handleError(error);
+      return {
+        data: [],
+        status: appError.statusCode,
+        error: appError.message,
+      };
+    }
   }
 };

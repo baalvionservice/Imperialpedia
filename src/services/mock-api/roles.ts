@@ -4,56 +4,7 @@ import { ApiResponse, RoleDefinition, RoleControl, RolePermissionSet } from '@/t
  * @fileOverview Mock service for managing platform roles and permissions.
  */
 
-export const mockRoles: RoleDefinition[] = [
-  {
-    id: 'role-1',
-    name: 'admin',
-    description: 'Full platform governance, security control, and staff management.',
-    permissions: [
-      'user_manage',
-      'role_manage',
-      'content_moderate',
-      'content_publish',
-      'analytics_view_global',
-      'system_config',
-      'vetted_experts'
-    ]
-  },
-  {
-    id: 'role-2',
-    name: 'editor',
-    description: 'Management of publishing workflows and content integrity.',
-    permissions: [
-      'content_moderate',
-      'content_publish',
-      'analytics_view_global',
-      'media_manage'
-    ]
-  },
-  {
-    id: 'role-3',
-    name: 'creator',
-    description: 'Expert analysis drafting and audience interaction.',
-    permissions: [
-      'content_create',
-      'content_edit_own',
-      'analytics_view_own',
-      'monetization_access'
-    ]
-  },
-  {
-    id: 'role-4',
-    name: 'viewer',
-    description: 'Standard reader access to intelligence nodes and tools.',
-    permissions: [
-      'content_read',
-      'tools_use',
-      'comment_create'
-    ]
-  }
-];
-
-export const mockControlRoles: RoleControl[] = [
+export let mockControlRoles: RoleControl[] = [
   { id: 'role-1', roleName: 'Administrator', usersAssigned: 5, description: 'Full system oversight and security governance.', permissions: ['user_manage', 'role_manage', 'content_moderate', 'content_publish', 'analytics_view_global', 'system_config', 'vetted_experts', 'media_manage'] },
   { id: 'role-2', roleName: 'Editor', usersAssigned: 12, description: 'Editorial workflow management and fact-checking.', permissions: ['content_moderate', 'content_publish', 'analytics_view_global', 'media_manage'] },
   { id: 'role-3', roleName: 'Creator', usersAssigned: 156, description: 'Expert analysis publication and audience engagement.', permissions: ['content_create', 'content_edit_own', 'analytics_view_own', 'monetization_access'] },
@@ -81,7 +32,12 @@ export const ALL_PERMISSIONS = [
 export const getRoles = async (): Promise<ApiResponse<RoleDefinition[]>> => {
   await new Promise((resolve) => setTimeout(resolve, 400));
   return {
-    data: mockRoles,
+    data: mockControlRoles.map(r => ({
+      id: r.id,
+      name: r.roleName.toLowerCase() as any,
+      description: r.description || '',
+      permissions: r.permissions
+    })),
     status: 200,
   };
 };
@@ -110,5 +66,28 @@ export const getRolePermissions = async (): Promise<ApiResponse<RolePermissionSe
   return {
     data,
     status: 200
+  };
+};
+
+export const createOrUpdateRole = async (role: Partial<RoleControl>): Promise<ApiResponse<RoleControl[]>> => {
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  
+  if (role.id) {
+    mockControlRoles = mockControlRoles.map(r => r.id === role.id ? { ...r, ...role } : r);
+  } else {
+    const newRole: RoleControl = {
+      id: `role-${Math.random().toString(36).substr(2, 5)}`,
+      roleName: role.roleName || 'New Role',
+      usersAssigned: 0,
+      description: role.description || '',
+      permissions: role.permissions || []
+    };
+    mockControlRoles.push(newRole);
+  }
+
+  return {
+    data: mockControlRoles,
+    status: 200,
+    message: 'Role matrix synchronized successfully.'
   };
 };
