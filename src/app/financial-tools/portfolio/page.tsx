@@ -200,7 +200,7 @@ export default function PortfolioCalculatorPage() {
                       Calculate Performance
                     </Button>
                     <Button type="button" variant="outline" onClick={handleReset} className="h-12 px-6 rounded-xl">
-                      <RefreshCcw className="h-4 w-4" />
+                      <RefreshCcw className="mr-2 h-4 w-4" />
                     </Button>
                   </div>
                 </form>

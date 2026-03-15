@@ -179,8 +179,7 @@ export default function LoanCalculatorPage() {
                   <Text variant="label" className="text-muted-foreground mb-1">Total Repayment</Text>
                   <div className="text-2xl font-bold">{formatCurrency(results.total)}</div>
                 </CardContent>
-              </Card>
-            </div>
+              </div>
           )}
         </div>
 
