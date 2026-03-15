@@ -2,6 +2,17 @@
  * @fileOverview Type definitions for global system configuration and administrative rules.
  */
 
+export interface PlatformSettings {
+  name: string;
+  logoUrl: string;
+  description: string;
+  features: {
+    seo: boolean;
+    analytics: boolean;
+    payments: boolean;
+  };
+}
+
 export interface SystemSettings {
   platform: {
     siteName: string;

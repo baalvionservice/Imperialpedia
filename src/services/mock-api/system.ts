@@ -1,9 +1,20 @@
 import { ApiResponse } from '@/types';
-import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog } from '@/types/system';
+import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings } from '@/types/system';
 
 /**
  * @fileOverview Mock service for managing global platform configuration and system notifications.
  */
+
+const mockPlatformSettings: PlatformSettings = {
+  name: 'Imperialpedia',
+  logoUrl: 'https://imperialpedia.com/logo.png',
+  description: 'The world\'s most scalable financial intelligence engine. Explore over 1,000,000 pages of deep financial insights.',
+  features: {
+    seo: true,
+    analytics: true,
+    payments: false
+  }
+};
 
 const mockSettings: SystemSettings = {
   platform: {
@@ -77,6 +88,23 @@ const mockErrorLogs: ErrorLog[] = [
   { id: 'err-1', timestamp: '2024-03-12T11:45:00Z', module: 'API Gateway', type: 'critical', message: 'Connection timeout reached while attempting to synchronize search cluster indices.' },
   { id: 'err-2', timestamp: '2024-03-12T10:20:00Z', module: 'Content Engine', type: 'warning', message: 'Failed to generate automated summary for intelligence node art-452. Falling back to default excerpt.' },
 ];
+
+export const getPlatformSettings = async (): Promise<ApiResponse<PlatformSettings>> => {
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  return {
+    data: mockPlatformSettings,
+    status: 200,
+  };
+};
+
+export const updatePlatformSettings = async (settings: PlatformSettings): Promise<ApiResponse<PlatformSettings>> => {
+  await new Promise((resolve) => setTimeout(resolve, 800));
+  return {
+    data: settings,
+    status: 200,
+    message: 'Global configuration synchronized.'
+  };
+};
 
 export const getSystemSettings = async (): Promise<ApiResponse<SystemSettings>> => {
   await new Promise((resolve) => setTimeout(resolve, 400));
