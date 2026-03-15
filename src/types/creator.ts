@@ -38,3 +38,25 @@ export interface CreatorProfile {
     website?: string;
   };
 }
+
+export interface CreatorContentItem {
+  id: string;
+  title: string;
+  body: string;
+  category: string;
+  tags: string[];
+  status: "draft" | "published" | "scheduled";
+  createdAt: string;
+  updatedAt?: string;
+  views: number;
+  likes: number;
+  comments: number;
+  slug: string;
+}
+
+export interface CreatorDashboardSummary {
+  totalArticles: number;
+  totalFollowers: number;
+  totalViews: number;
+  engagementRate: number;
+}

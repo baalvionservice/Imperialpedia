@@ -1,7 +1,7 @@
-import { CreatorProfile, ApiResponse } from '@/types';
+import { CreatorProfile, ApiResponse, CreatorContentItem, CreatorDashboardSummary } from '@/types';
 
 /**
- * @fileOverview Mock service for managing creator profiles and stats.
+ * @fileOverview Mock service for managing creator profiles, stats, and dashboard content.
  */
 
 const mockCreators: CreatorProfile[] = [
@@ -28,46 +28,6 @@ const mockCreators: CreatorProfile[] = [
     },
   },
   {
-    id: 'creator-2',
-    username: 'wealthbuilder',
-    displayName: 'Wealth Builder',
-    bio: 'Specializing in long-term wealth accumulation and compound interest strategies for retail investors.',
-    avatar: 'https://picsum.photos/seed/wealth/200/200',
-    joinedDate: '2023-05-20T00:00:00Z',
-    specialties: ['Investing', 'Personal Finance', 'Retirement'],
-    verified: true,
-    stats: {
-      followersCount: 8200,
-      followingCount: 89,
-      articlesCount: 15,
-      totalViews: 320000,
-    },
-    content: {
-      recentArticles: [
-        { id: 'art-2', title: 'The Power of Compound Interest', slug: 'the-power-of-compound-interest', category: 'Investing', publishedAt: '2024-02-15T00:00:00Z' },
-      ],
-    },
-  },
-  {
-    id: 'creator-3',
-    username: 'cryptovisor',
-    displayName: 'Crypto Visor',
-    bio: 'Deep-dive analysis into DeFi protocols, Web3 infrastructure, and algorithmic stablecoins.',
-    avatar: 'https://picsum.photos/seed/crypto/200/200',
-    joinedDate: '2023-11-10T00:00:00Z',
-    specialties: ['Crypto', 'Web3', 'DeFi'],
-    verified: false,
-    stats: {
-      followersCount: 3500,
-      followingCount: 210,
-      articlesCount: 8,
-      totalViews: 120000,
-    },
-    content: {
-      recentArticles: [],
-    },
-  },
-  {
     id: 'creator-4',
     username: 'econvance',
     displayName: 'Eleanor Vance',
@@ -88,6 +48,48 @@ const mockCreators: CreatorProfile[] = [
   }
 ];
 
+const mockCreatorDashboardContent: CreatorContentItem[] = [
+  {
+    id: 'c-1',
+    title: 'Quantitative Easing vs Tightening: A 2026 Outlook',
+    body: 'Full analysis text content...',
+    category: 'Economics',
+    tags: ['Macro', 'Fed'],
+    status: 'published',
+    createdAt: '2024-03-01T10:00:00Z',
+    views: 12400,
+    likes: 450,
+    comments: 82,
+    slug: 'qe-vs-qt-2026'
+  },
+  {
+    id: 'c-2',
+    title: 'The Rise of Algorithmic Stablecoins',
+    body: 'In-progress research...',
+    category: 'Crypto',
+    tags: ['DeFi', 'Stablecoins'],
+    status: 'draft',
+    createdAt: '2024-03-10T14:30:00Z',
+    views: 0,
+    likes: 0,
+    comments: 0,
+    slug: 'algorithmic-stablecoins'
+  },
+  {
+    id: 'c-3',
+    title: 'Yield Curve Dynamics in Emerging Markets',
+    body: 'Scheduled content text...',
+    category: 'Markets',
+    tags: ['Emerging Markets', 'Yield Curve'],
+    status: 'scheduled',
+    createdAt: '2024-03-05T09:00:00Z',
+    views: 0,
+    likes: 0,
+    comments: 0,
+    slug: 'yield-curve-emerging-markets'
+  }
+];
+
 export const getCreators = async (): Promise<ApiResponse<CreatorProfile[]>> => {
   await new Promise((resolve) => setTimeout(resolve, 300));
   return {
@@ -96,15 +98,32 @@ export const getCreators = async (): Promise<ApiResponse<CreatorProfile[]>> => {
   };
 };
 
-export const getCreatorByUsername = async (username: string): Promise<ApiResponse<CreatorProfile | null>> => {
+export const getCreatorById = async (id: string): Promise<ApiResponse<CreatorProfile | null>> => {
   await new Promise((resolve) => setTimeout(resolve, 300));
-  const creator = mockCreators.find((c) => c.username === username || c.id === username) || null;
+  const creator = mockCreators.find((c) => c.id === id || c.username === id) || null;
   return {
     data: creator,
     status: creator ? 200 : 404,
   };
 };
 
-export const getCreatorById = async (id: string): Promise<ApiResponse<CreatorProfile | null>> => {
-  return getCreatorByUsername(id);
+export const getCreatorDashboardStats = async (creatorId: string): Promise<ApiResponse<CreatorDashboardSummary>> => {
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  return {
+    data: {
+      totalArticles: 120,
+      totalFollowers: 25000,
+      totalViews: 4500000,
+      engagementRate: 4.8
+    },
+    status: 200
+  };
+};
+
+export const getCreatorContent = async (creatorId: string): Promise<ApiResponse<CreatorContentItem[]>> => {
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  return {
+    data: mockCreatorDashboardContent,
+    status: 200
+  };
 };

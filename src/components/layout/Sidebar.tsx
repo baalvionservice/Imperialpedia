@@ -28,7 +28,9 @@ import {
   GitPullRequest,
   Bell,
   ShieldCheck,
-  History
+  History,
+  TrendingUp,
+  Briefcase
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 import { useAppStore } from '@/lib/state/app-store';
@@ -104,13 +106,13 @@ const Sidebar = ({ className }: { className?: string }) => {
     { icon: MessageSquare, label: 'Editorial Chat', href: '/editor/messages' },
   ];
 
-  const writerItems = [
-    { icon: LayoutDashboard, label: 'Writer Home', href: '/writer' },
-    { icon: PlusSquare, label: 'New Article', href: '/writer/new' },
-    { icon: FileEdit, label: 'My Drafts', href: '/writer/drafts' },
+  const creatorItems = [
+    { icon: LayoutDashboard, label: 'Expert Dashboard', href: '/creator/dashboard' },
+    { icon: PlusSquare, label: 'Create Insight', href: '/creator/dashboard/create' },
+    { icon: FileEdit, label: 'Intelligence Drafts', href: '/writer/drafts' },
     { icon: Bell, label: 'Notifications', href: '/writer/notifications', badge: unreadNotifications },
-    { icon: Send, label: 'Submissions', href: '/writer/submissions' },
-    { icon: UserCircle, label: 'Creator Profile', href: '/creators/profile' },
+    { icon: TrendingUp, label: 'Reach Analytics', href: '/admin/analytics' },
+    { icon: UserCircle, label: 'Expert Profile', href: '/creators/profile' },
   ];
 
   const publishingItems = [
@@ -164,14 +166,14 @@ const Sidebar = ({ className }: { className?: string }) => {
           </div>
         )}
 
-        {/* Writer Section */}
-        {isWriter && (pathname.startsWith('/writer') || pathname === '/writer') && (
+        {/* Creator Section */}
+        {(isWriter || isAdmin) && (pathname.startsWith('/creator') || pathname.startsWith('/writer') || pathname === '/creator/dashboard') && (
           <div>
             <Text variant="label" className="px-4 mb-3 text-[10px] text-muted-foreground/50 font-bold uppercase tracking-widest">
               Creator Studio
             </Text>
             <div className="space-y-1">
-              {writerItems.map((item) => (
+              {creatorItems.map((item) => (
                 <SidebarItem
                   key={item.href}
                   {...item}
@@ -183,7 +185,7 @@ const Sidebar = ({ className }: { className?: string }) => {
         )}
 
         {/* General Knowledge Context */}
-        {(!pathname.startsWith('/admin') && !pathname.startsWith('/writer') && !pathname.startsWith('/editor')) && (
+        {(!pathname.startsWith('/admin') && !pathname.startsWith('/writer') && !pathname.startsWith('/editor') && !pathname.startsWith('/creator')) && (
           <div>
             <Text variant="label" className="px-4 mb-3 text-[10px] text-muted-foreground/50 font-bold uppercase tracking-widest">
               Knowledge Hub
