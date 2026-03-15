@@ -31,8 +31,10 @@ export interface ContentMetrics {
   category: string;
   tags: string[];
   views: number;
-  clicks: number;
+  likes: number;
+  comments: number;
   shares: number;
+  avgReadTime: number; // in seconds
   seoScore: number;
 }
 
@@ -41,7 +43,7 @@ export interface ContentAnalytics {
   totalArticles: number;
   avgEngagement: number;
   topArticles: ContentMetrics[];
-  topCategories: { category: string; views: number }[];
+  topCategories: { category: string; views: number; articleCount: number }[];
   topTags: { tag: string; views: number }[];
   dailyViews: { date: string; views: number }[];
 }
@@ -96,7 +98,7 @@ export const getContentAnalytics = async (): Promise<ApiResponse<ContentAnalytic
     data: {
       totalViews: 1254000,
       totalArticles: 1248,
-      avgEngagement: 4.2,
+      avgEngagement: 4.8,
       topArticles: [
         {
           articleId: 'art-1',
@@ -104,8 +106,10 @@ export const getContentAnalytics = async (): Promise<ApiResponse<ContentAnalytic
           category: 'Economics',
           tags: ['Macro', 'Recession'],
           views: 45200,
-          clicks: 12400,
-          shares: 1200,
+          likes: 1240,
+          comments: 320,
+          shares: 580,
+          avgReadTime: 485,
           seoScore: 98
         },
         {
@@ -114,8 +118,10 @@ export const getContentAnalytics = async (): Promise<ApiResponse<ContentAnalytic
           category: 'Investing',
           tags: ['Basics', 'Wealth'],
           views: 38900,
-          clicks: 9800,
-          shares: 2400,
+          likes: 2400,
+          comments: 110,
+          shares: 920,
+          avgReadTime: 320,
           seoScore: 95
         },
         {
@@ -124,8 +130,10 @@ export const getContentAnalytics = async (): Promise<ApiResponse<ContentAnalytic
           category: 'Economics',
           tags: ['Macro', 'Future'],
           views: 31200,
-          clicks: 8500,
-          shares: 900,
+          likes: 850,
+          comments: 95,
+          shares: 210,
+          avgReadTime: 640,
           seoScore: 92
         },
         {
@@ -134,17 +142,19 @@ export const getContentAnalytics = async (): Promise<ApiResponse<ContentAnalytic
           category: 'Crypto',
           tags: ['DeFi', 'Liquidity'],
           views: 28400,
-          clicks: 7200,
-          shares: 400,
+          likes: 720,
+          comments: 145,
+          shares: 85,
+          avgReadTime: 510,
           seoScore: 88
         }
       ],
       topCategories: [
-        { category: 'Economics', views: 450000 },
-        { category: 'Investing', views: 380000 },
-        { category: 'Markets', views: 220000 },
-        { category: 'Crypto', views: 150000 },
-        { category: 'Personal Finance', views: 54000 }
+        { category: 'Economics', views: 450000, articleCount: 320 },
+        { category: 'Investing', views: 380000, articleCount: 450 },
+        { category: 'Markets', views: 220000, articleCount: 280 },
+        { category: 'Crypto', views: 150000, articleCount: 120 },
+        { category: 'Personal Finance', views: 54000, articleCount: 78 }
       ],
       topTags: [
         { tag: 'Macro', views: 120000 },
@@ -158,10 +168,10 @@ export const getContentAnalytics = async (): Promise<ApiResponse<ContentAnalytic
         { date: '2024-03-03', views: 38000 },
         { date: '2024-03-04', views: 52000 },
         { date: '2024-03-05', views: 61000 },
-        { date: '2024-03-06', traffic: 58000 }, // matching legacy keys for compatibility if needed
+        { date: '2024-03-06', views: 58000 },
         { date: '2024-03-07', views: 65000 }
       ]
-    } as any,
+    },
     status: 200
   };
 };
