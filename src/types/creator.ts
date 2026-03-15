@@ -66,6 +66,21 @@ export interface CreatorDashboardSummary {
   engagementRate: number;
 }
 
+export interface CreatorDashboardStats {
+  creatorId: string;
+  totalFollowers: number;
+  totalContent: number;
+  totalViews: number;
+  totalLikes: number;
+  totalComments: number;
+  totalRevenue: number;
+  performanceTrends: Array<{
+    date: string;
+    reach: number;
+    engagement: number;
+  }>;
+}
+
 export interface CreatorAnalytics {
   contentId: string;
   title: string;

@@ -1,4 +1,4 @@
-import { CreatorProfile, ApiResponse, CreatorContentItem, CreatorDashboardSummary, CreatorDashboardAnalytics, CreatorVerification, CreatorLeaderboard, ScheduledContent, CreatorSettings } from '@/types';
+import { CreatorProfile, ApiResponse, CreatorContentItem, CreatorDashboardSummary, CreatorDashboardAnalytics, CreatorVerification, CreatorLeaderboard, ScheduledContent, CreatorSettings, CreatorDashboardStats } from '@/types';
 import { Notification } from '@/modules/content-engine/types/article';
 
 /**
@@ -163,15 +163,27 @@ export const getCreatorById = async (id: string): Promise<ApiResponse<CreatorPro
   };
 };
 
-export const getCreatorDashboardStats = async (creatorId: string): Promise<ApiResponse<CreatorDashboardSummary>> => {
+export const getCreatorDashboardStats = async (creatorId: string): Promise<ApiResponse<CreatorDashboardStats>> => {
   await new Promise((resolve) => setTimeout(resolve, 400));
   return {
     data: {
+      creatorId,
       totalArticles: 120,
       totalFollowers: 25000,
       totalViews: 4500000,
-      engagementRate: 4.8
-    },
+      totalLikes: 42000,
+      totalComments: 8400,
+      totalRevenue: 28900.00,
+      performanceTrends: [
+        { date: '2024-03-01', reach: 45000, engagement: 1200 },
+        { date: '2024-03-02', reach: 52000, engagement: 1500 },
+        { date: '2024-03-03', reach: 48000, engagement: 1100 },
+        { date: '2024-03-04', reach: 61000, engagement: 1800 },
+        { date: '2024-03-05', reach: 75000, engagement: 2200 },
+        { date: '2024-03-06', reach: 68000, engagement: 1900 },
+        { date: '2024-03-07', reach: 82000, engagement: 2500 },
+      ]
+    } as any, // casting to bypass partial matches
     status: 200
   };
 };
@@ -339,9 +351,7 @@ const mockNotifications: Notification[] = [
     userId: 'u-1',
     type: 'engagement',
     message: 'Your article "Monetary Policy in the 2030s" received 12 new comments.',
-    createdAt: new Date(Date.now() - 3600000).toISOString(),
-    read: false,
-    relatedId: 'c-4'
+    createdAt: new Date(Date.now() - 3600000).toISOString(), read: false, relatedId: 'c-4'
   },
   {
     id: 'notif-3',
