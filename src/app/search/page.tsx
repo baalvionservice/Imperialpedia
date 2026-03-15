@@ -22,15 +22,18 @@ import {
   SearchX,
   TrendingUp,
   X,
-  Layers
+  Layers,
+  Filter,
+  Tag as TagIcon
 } from 'lucide-react';
 import { SearchResult, SearchResultType, SearchSuggestion } from '@/types';
 import { searchService } from '@/services/data/search-service';
 import Link from 'next/link';
+import { cn } from '@/lib/utils';
 
 /**
  * Global search page for the Imperialpedia platform.
- * Supports cross-entity discovery with real-time auto-suggestions and category filtering.
+ * Supports cross-entity discovery with real-time auto-suggestions, category filtering, and tag chips.
  */
 export default function SearchPage() {
   const [query, setQuery] = useState('');
@@ -39,6 +42,7 @@ export default function SearchPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuggestionsLoading, setIsSuggestionsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<string>('all');
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   
   const searchContainerRef = useRef<HTMLDivElement>(null);
@@ -84,6 +88,7 @@ export default function SearchPage() {
 
     setIsLoading(true);
     setShowSuggestions(false);
+    setSelectedTags([]); // Clear tag filters on new search
     try {
       const response = await searchService.performSearch(query);
       setResults(response.data);
@@ -94,14 +99,40 @@ export default function SearchPage() {
     }
   };
 
+  // Extract unique tags from current results
+  const availableTags = useMemo(() => {
+    const tags = new Set<string>();
+    results.forEach(r => r.tags?.forEach(tag => tags.add(tag)));
+    return Array.from(tags).sort();
+  }, [results]);
+
+  const toggleTag = (tag: string) => {
+    setSelectedTags(prev => 
+      prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]
+    );
+  };
+
   const filteredResults = useMemo(() => {
-    if (activeTab === 'all') return results;
-    // Map tab values to entity types
-    if (activeTab === 'topic') {
-      return results.filter(r => r.type === 'topic' || r.type === 'glossary');
+    let filtered = results;
+    
+    // 1. Category Filter
+    if (activeTab !== 'all') {
+      if (activeTab === 'topic') {
+        filtered = filtered.filter(r => r.type === 'topic' || r.type === 'glossary');
+      } else {
+        filtered = filtered.filter(r => r.type === activeTab);
+      }
     }
-    return results.filter(r => r.type === activeTab);
-  }, [results, activeTab]);
+
+    // 2. Tag Filter
+    if (selectedTags.length > 0) {
+      filtered = filtered.filter(r => 
+        selectedTags.every(tag => r.tags?.includes(tag))
+      );
+    }
+
+    return filtered;
+  }, [results, activeTab, selectedTags]);
 
   const getResultIcon = (type: SearchResultType) => {
     switch (type) {
@@ -160,7 +191,7 @@ export default function SearchPage() {
                 {query && (
                   <button 
                     type="button" 
-                    onClick={() => { setQuery(''); setSuggestions([]); setResults([]); }}
+                    onClick={() => { setQuery(''); setSuggestions([]); setResults([]); setSelectedTags([]); }}
                     className="p-1 hover:bg-muted rounded-full text-muted-foreground transition-colors"
                   >
                     <X className="h-4 w-4" />
@@ -230,7 +261,7 @@ export default function SearchPage() {
               {['Yield Curve', 'Compound Interest', 'Maven', 'Recession'].map(term => (
                 <button
                   key={term}
-                  onClick={() => { setQuery(term); }}
+                  onClick={() => { setQuery(term); handlePerformSearch(); }}
                   className="text-xs font-bold text-primary/70 hover:text-primary transition-colors hover:underline"
                 >
                   #{term}
@@ -239,8 +270,8 @@ export default function SearchPage() {
             </div>
           </div>
 
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <div className="flex justify-center mb-12">
+          <Tabs value={activeTab} onValueChange={(val) => { setActiveTab(val); setSelectedTags([]); }} className="w-full">
+            <div className="flex justify-center mb-8">
               <TabsList className="bg-card/30 border border-white/5 p-1 h-12 rounded-xl overflow-x-auto no-scrollbar justify-start sm:justify-center w-full sm:w-auto">
                 <TabsTrigger value="all" className="px-6 rounded-lg font-bold text-xs">All Results</TabsTrigger>
                 <TabsTrigger value="article" className="px-6 rounded-lg font-bold text-xs gap-2">
@@ -258,7 +289,51 @@ export default function SearchPage() {
               </TabsList>
             </div>
 
+            {/* Tag Filtering Section */}
+            {results.length > 0 && availableTags.length > 0 && (
+              <div className="max-w-4xl mx-auto mb-12 space-y-4 animate-in fade-in duration-500">
+                <div className="flex items-center justify-between px-2">
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <Filter className="h-3.5 w-3.5" />
+                    <Text variant="label" className="text-[10px]">Filter by Topic Node</Text>
+                  </div>
+                  {selectedTags.length > 0 && (
+                    <button 
+                      onClick={() => setSelectedTags([])}
+                      className="text-[10px] font-bold text-primary hover:underline"
+                    >
+                      Clear Topics
+                    </button>
+                  )}
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {availableTags.map(tag => (
+                    <Badge
+                      key={tag}
+                      variant={selectedTags.includes(tag) ? "default" : "outline"}
+                      className={cn(
+                        "cursor-pointer transition-all px-3 py-1 rounded-lg text-[10px] font-bold border-white/10",
+                        selectedTags.includes(tag) 
+                          ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20 scale-105" 
+                          : "bg-card/30 hover:bg-primary/10 hover:border-primary/30"
+                      )}
+                      onClick={() => toggleTag(tag)}
+                    >
+                      <TagIcon className="h-2.5 w-2.5 mr-1.5" />
+                      {tag}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            )}
+
             <TabsContent value={activeTab} className="animate-in fade-in duration-500">
+              <div className="mb-6 flex items-center justify-between px-2">
+                <Text variant="bodySmall" className="text-muted-foreground font-bold italic">
+                  Discovery Engine: <span className="text-foreground">{filteredResults.length} intelligence nodes</span> localized
+                </Text>
+              </div>
+
               {isLoading ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {[1, 2, 3, 4].map(i => (
@@ -298,7 +373,17 @@ export default function SearchPage() {
                             {result.snippet}
                           </CardDescription>
                           
-                          <div className="flex items-center justify-between mt-auto">
+                          {result.tags && result.tags.length > 0 && (
+                            <div className="flex flex-wrap gap-1.5 mb-6">
+                              {result.tags.slice(0, 3).map(tag => (
+                                <span key={tag} className="text-[9px] font-bold text-primary/60 bg-primary/5 px-1.5 py-0.5 rounded border border-primary/10">
+                                  #{tag}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                          
+                          <div className="flex items-center justify-between mt-auto pt-4 border-t border-white/5">
                             {result.author ? (
                               <div className="flex items-center gap-2 text-xs text-muted-foreground font-medium">
                                 <User className="h-3 w-3" /> {result.author}
@@ -323,8 +408,25 @@ export default function SearchPage() {
                   <Text variant="bodySmall" className="text-muted-foreground max-w-sm mx-auto">
                     We couldn't find any nodes matching "{query}". Try broadening your search terms or browsing by category.
                   </Text>
-                  <Button variant="link" className="mt-4 text-primary font-bold" onClick={() => { setQuery(''); setSuggestions([]); }}>
+                  <Button variant="link" className="mt-4 text-primary font-bold" onClick={() => { setQuery(''); setSuggestions([]); setSelectedTags([]); }}>
                     Clear search query
+                  </Button>
+                </div>
+              ) : selectedTags.length > 0 && filteredResults.length === 0 ? (
+                <div className="py-24 text-center">
+                  <div className="w-16 h-16 bg-muted/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Filter className="h-8 w-8 text-muted-foreground opacity-30" />
+                  </div>
+                  <Text variant="h4">No nodes match these filters</Text>
+                  <Text variant="bodySmall" className="text-muted-foreground mt-2">
+                    Try removing some of the selected topic nodes.
+                  </Text>
+                  <Button 
+                    variant="outline" 
+                    className="mt-6 border-primary/20 text-primary" 
+                    onClick={() => setSelectedTags([])}
+                  >
+                    Reset Topic Filters
                   </Button>
                 </div>
               ) : (

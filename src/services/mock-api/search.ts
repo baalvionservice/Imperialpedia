@@ -2,7 +2,7 @@ import { ApiResponse, SearchResult, SearchSuggestion } from '@/types';
 
 /**
  * @fileOverview Mock service for the Global Search System.
- * Expanded with diverse entity types for filtering verification.
+ * Expanded with diverse entity types and rich tagging for filtering verification.
  */
 
 const mockSearchData: SearchResult[] = [
@@ -13,7 +13,8 @@ const mockSearchData: SearchResult[] = [
     snippet: 'A deep dive into what the yield curve tells us about future recessions and market signals.',
     route: '/articles/understanding-yield-curve-inversion',
     category: 'Economics',
-    author: 'The Market Maven'
+    author: 'The Market Maven',
+    tags: ['Macro', 'Yield Curve', 'Recession']
   },
   {
     id: 'art-2',
@@ -22,21 +23,24 @@ const mockSearchData: SearchResult[] = [
     snippet: 'Why starting early is the most important factor in wealth building and long-term capital growth.',
     route: '/articles/the-power-of-compound-interest',
     category: 'Investing',
-    author: 'Julian Wealth'
+    author: 'Julian Wealth',
+    tags: ['Wealth', 'Basics', 'Savings']
   },
   {
     id: 'creator-1',
     type: 'author',
     title: 'The Market Maven',
     snippet: 'Expert in macro-economic trends and fixed income markets. Former hedge fund analyst.',
-    route: '/creator/marketmaven'
+    route: '/creator/marketmaven',
+    tags: ['Macro', 'Bonds', 'Economics']
   },
   {
     id: 'creator-4',
     type: 'author',
     title: 'Eleanor Vance',
     snippet: 'Lead Administrator and Content Strategist at Imperialpedia. Expert in programmatic SEO.',
-    route: '/creator/creator-4'
+    route: '/creator/creator-4',
+    tags: ['pSEO', 'Strategy', 'Growth']
   },
   {
     id: 'calc-compound',
@@ -44,7 +48,8 @@ const mockSearchData: SearchResult[] = [
     title: 'Compound Interest Engine',
     snippet: 'Precision instrument for modeling exponential growth and periodic contributions.',
     route: '/financial-tools/compound-interest',
-    category: 'Wealth Building'
+    category: 'Wealth Building',
+    tags: ['Savings', 'Growth', 'Wealth']
   },
   {
     id: 'calc-retirement',
@@ -52,7 +57,8 @@ const mockSearchData: SearchResult[] = [
     title: 'Nest Egg Architect',
     snippet: 'Project your retirement corpus based on savings, rates, and time horizons.',
     route: '/financial-tools/retirement',
-    category: 'Retirement'
+    category: 'Retirement',
+    tags: ['Retirement', 'Strategy', 'Future']
   },
   {
     id: 'term-1',
@@ -60,7 +66,8 @@ const mockSearchData: SearchResult[] = [
     title: 'Bull Market',
     snippet: 'A financial market where prices are rising or are expected to rise with widespread optimism.',
     route: '/glossary/bull-market',
-    category: 'Markets'
+    category: 'Markets',
+    tags: ['Markets', 'Optimism', 'Growth']
   },
   {
     id: 'term-2',
@@ -68,7 +75,8 @@ const mockSearchData: SearchResult[] = [
     title: 'Quantitative Easing',
     snippet: 'A form of monetary policy where a central bank purchases at-scale government bonds.',
     route: '/glossary/quantitative-easing',
-    category: 'Economics'
+    category: 'Economics',
+    tags: ['Macro', 'Fed', 'Policy']
   },
   {
     id: 'topic-1',
@@ -76,7 +84,8 @@ const mockSearchData: SearchResult[] = [
     title: 'Macroeconomics Matrix',
     snippet: 'Primary taxonomy node for global economic trends, fiscal policy, and monetary indicators.',
     route: '/tags/macro',
-    category: 'Economics'
+    category: 'Economics',
+    tags: ['Macro', 'Taxonomy', 'Economics']
   },
   {
     id: 'topic-2',
@@ -84,7 +93,8 @@ const mockSearchData: SearchResult[] = [
     title: 'Fixed Income Intelligence',
     snippet: 'Knowledge hub covering bonds, yields, and interest rate strategies.',
     route: '/tags/interest-rates',
-    category: 'Markets'
+    category: 'Markets',
+    tags: ['Yield Curve', 'Bonds', 'Markets']
   }
 ];
 
@@ -100,7 +110,8 @@ export const globalSearch = async (query: string): Promise<ApiResponse<SearchRes
   const results = mockSearchData.filter(item => 
     item.title.toLowerCase().includes(normalizedQuery) ||
     item.snippet.toLowerCase().includes(normalizedQuery) ||
-    item.category?.toLowerCase().includes(normalizedQuery)
+    item.category?.toLowerCase().includes(normalizedQuery) ||
+    item.tags?.some(tag => tag.toLowerCase().includes(normalizedQuery))
   );
 
   return {
