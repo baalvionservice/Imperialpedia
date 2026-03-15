@@ -19,6 +19,7 @@ export interface User {
   role: Role;
   status?: UserStatus;
   avatar?: string;
+  dateJoined?: string;
 }
 
 export interface RoleDefinition {
