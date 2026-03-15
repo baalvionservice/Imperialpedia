@@ -41,6 +41,15 @@ export interface SystemNotification {
   createdAt: string;
 }
 
+export interface NotificationLog {
+  id: string;
+  timestamp: string;
+  recipient: string;
+  type: string;
+  status: 'sent' | 'pending' | 'failed';
+  title: string;
+}
+
 export type AdminAlertType = 'content' | 'user' | 'system';
 
 export interface AdminAlert {

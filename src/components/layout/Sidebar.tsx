@@ -98,6 +98,7 @@ const Sidebar = ({ className }: { className?: string }) => {
     { icon: Lock, label: 'Roles & Permissions', href: '/admin/roles' },
     { icon: ShieldX, label: 'Content Moderation', href: '/admin/moderation' },
     { icon: Megaphone, label: 'System Notifications', href: '/admin/notifications' },
+    { icon: History, label: 'Broadcast Logs', href: '/admin/notification-logs' },
     { icon: Zap, label: 'Feature Gateways', href: '/admin/feature-flags' },
     { icon: ShieldCheck, label: 'Expert Verifications', href: '/admin/creators/verification' },
     { icon: Calendar, label: 'Publisher Scheduler', href: '/admin/scheduler' },

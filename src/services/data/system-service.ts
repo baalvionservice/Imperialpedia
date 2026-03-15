@@ -1,6 +1,6 @@
 import * as mockApi from '@/services/mock-api/system';
 import { ApiResponse } from '@/types';
-import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag } from '@/types/system';
+import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog } from '@/types/system';
 import { errorHandler } from '@/lib/errors/error-handler';
 
 /**
@@ -67,6 +67,19 @@ export const systemService = {
       const appError = errorHandler.handleError(error);
       return {
         data: undefined,
+        status: appError.statusCode,
+        error: appError.message,
+      };
+    }
+  },
+
+  async getNotificationLogs(): Promise<ApiResponse<NotificationLog[]>> {
+    try {
+      return await mockApi.getNotificationLogs();
+    } catch (error) {
+      const appError = errorHandler.handleError(error);
+      return {
+        data: [],
         status: appError.statusCode,
         error: appError.message,
       };

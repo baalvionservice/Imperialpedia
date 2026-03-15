@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag } from '@/types/system';
+import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog } from '@/types/system';
 
 /**
  * @fileOverview Mock service for managing global platform configuration and system notifications.
@@ -35,6 +35,14 @@ const mockNotifications: SystemNotification[] = [
   { id: 'sn-1', title: 'Q1 Performance Grants', message: 'Applications for the Q1 Intelligence Research grants are now open for verified experts.', active: true, type: 'success', target: 'creators', createdAt: '2024-03-10T10:00:00Z' },
   { id: 'sn-2', title: 'System Maintenance', message: 'The pSEO indexing engine will undergo scheduled optimization on Sunday at 02:00 UTC.', active: true, type: 'warning', target: 'all', createdAt: '2024-03-12T08:30:00Z' },
   { id: 'sn-3', title: 'Policy Update', message: 'Expert revenue share benchmarks have been updated in the System Configuration panel.', active: false, type: 'info', target: 'admins', createdAt: '2024-03-05T14:20:00Z' },
+];
+
+const mockNotificationLogs: NotificationLog[] = [
+  { id: 'nl-1', timestamp: '2024-03-12T10:00:00Z', recipient: 'All Experts', type: 'Grant Announcement', status: 'sent', title: 'Q1 Research Grants Active' },
+  { id: 'nl-2', timestamp: '2024-03-12T09:30:00Z', recipient: 'Eleanor Vance', type: 'Security Alert', status: 'sent', title: 'Unusual Login Attempt Detected' },
+  { id: 'nl-3', timestamp: '2024-03-11T16:45:00Z', recipient: 'The Market Maven', type: 'Editorial Feedback', status: 'sent', title: 'Revision Requested: QE Analysis' },
+  { id: 'nl-4', timestamp: '2024-03-11T14:20:00Z', recipient: 'All Users', type: 'Platform Update', status: 'failed', title: 'New pSEO Engine Launch' },
+  { id: 'nl-5', timestamp: '2024-03-11T11:00:00Z', recipient: 'Sarah Crypto', type: 'Engagement Update', status: 'pending', title: 'Your article is trending!' },
 ];
 
 const mockAdminAlerts: AdminAlert[] = [
@@ -110,6 +118,14 @@ export const deleteSystemNotification = async (id: string): Promise<ApiResponse<
     data: undefined,
     status: 200,
     message: 'Notification purged from index.'
+  };
+};
+
+export const getNotificationLogs = async (): Promise<ApiResponse<NotificationLog[]>> => {
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  return {
+    data: mockNotificationLogs,
+    status: 200,
   };
 };
 
