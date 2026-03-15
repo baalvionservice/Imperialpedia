@@ -47,3 +47,17 @@ export interface StructuredData {
   '@type': string;
   [key: string]: any;
 }
+
+/**
+ * Result of an SEO audit for a single page.
+ */
+export interface SEOAuditResult {
+  slug: string;
+  type: string;
+  hasCanonical: boolean;
+  hasBreadcrumbSchema: boolean;
+  hasFAQSchema: boolean;
+  hasMetadata: boolean;
+  includedInSitemap: boolean;
+  issues: string[];
+}
