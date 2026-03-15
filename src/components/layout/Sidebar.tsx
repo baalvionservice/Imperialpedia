@@ -168,6 +168,7 @@ const Sidebar = ({ className }: { className?: string }) => {
     { icon: Zap, label: 'AI Catalyst Scanner', href: '/ai-analyst/catalyst-detection' },
     { icon: PieChart, label: 'AI Earnings Summary', href: '/ai-analyst/earnings-summary' },
     { icon: Globe, label: 'AI Macro Summary', href: '/ai-analyst/macro-summary' },
+    { icon: Layers, label: 'AI Sector Overview', href: '/ai-analyst/sector-overview' },
     { icon: Search, label: 'Internal Search', href: '/search' },
     { icon: UsersIcon, label: 'Creator Network', href: '/creators' },
     { icon: CalcIcon, label: 'Financial Tools', href: '/financial-tools' },
