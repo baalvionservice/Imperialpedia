@@ -6,32 +6,39 @@ export type VoteType = 'Bull' | 'Bear' | 'Neutral';
 
 export interface Comment {
   id: string;
-  comment_id: string | number; // Aligned with Prompt 37 JSON
+  comment_id: string | number;
   username: string;
   avatar?: string;
-  reputation: number; // Aligned with Prompt 37 JSON
-  reputationScore: number; // Legacy support
+  reputation: number;
+  reputationScore: number;
   badge?: string;
   timestamp: string;
   content: string;
-  text?: string; // Aligned with Prompt 37 JSON
+  text?: string;
   upvotes: number;
   downvotes: number;
   bullBearVote: VoteType;
-  bull_bear?: VoteType; // Aligned with Prompt 37 JSON
+  bull_bear?: VoteType;
   replies?: Comment[];
-  parent_id?: string | number; // Aligned with Prompt 37 JSON
+  parent_id?: string | number;
   isFlagged?: boolean;
+}
+
+export interface PollOption {
+  option: string;
+  votes: number;
 }
 
 export interface Poll {
   id: string;
+  poll_id?: number | string;
   question: string;
-  options: string[];
-  votes: number[];
+  options: string[] | PollOption[];
+  votes: number[]; // For legacy compatibility
   totalVotes: number;
   expiresAt: string;
-  status?: 'ongoing' | 'closed';
+  closing_date?: string;
+  status: 'active' | 'closed' | 'ongoing';
 }
 
 export interface CommunityBadge {
@@ -55,8 +62,8 @@ export interface LeaderboardEntry {
   rank?: number;
   username: string;
   avatar?: string;
-  reputation: number; // Aligned with Prompt 37 JSON
-  reputationScore?: number; // Legacy
+  reputation: number;
+  reputationScore?: number;
   badges?: string[];
   trend?: 'up' | 'down' | 'stable';
 }
@@ -64,19 +71,23 @@ export interface LeaderboardEntry {
 export interface ContestParticipant {
   username: string;
   points: number;
-  rank: number;
-  avatar: string;
+  rank?: number;
+  avatar?: string;
 }
 
 export interface PredictionContest {
   id: string;
+  contest_id?: number | string;
   name: string;
   description: string;
   assets: string[];
   participants: ContestParticipant[];
-  topParticipants: string[];
+  topParticipants?: string[];
   status: 'ongoing' | 'upcoming' | 'closed';
   reward?: string;
+  prize?: string;
+  start_date?: string;
+  end_date?: string;
   endsAt: string;
 }
 

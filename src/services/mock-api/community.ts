@@ -3,7 +3,7 @@ import { CommunityData, Comment, Poll, UserReputation, LeaderboardEntry, Communi
 
 /**
  * @fileOverview Mock service for the Community and Engagement engine.
- * Refined for Prompt 37 requirements.
+ * Refined for Prompt 38 requirements.
  */
 
 const mockComments: Comment[] = [
@@ -16,8 +16,8 @@ const mockComments: Comment[] = [
     badge: 'Elite Analyst',
     avatar: 'https://picsum.photos/seed/user1/200/200',
     timestamp: '2026-03-15 10:00',
-    content: 'The 2-10 spread inversion is widening. Historical data suggests a 12-18 month lead time to a full fiscal contraction. This analysis perfectly captures the liquidity risk.',
-    text: 'The 2-10 spread inversion is widening. Historical data suggests a 12-18 month lead time to a full fiscal contraction. This analysis perfectly captures the liquidity risk.',
+    content: 'The 2-10 spread inversion is widening. Historical data suggests a 12-18 month lead time to a full fiscal contraction.',
+    text: 'The 2-10 spread inversion is widening. Historical data suggests a 12-18 month lead time to a full fiscal contraction.',
     upvotes: 42,
     downvotes: 3,
     bullBearVote: 'Bear',
@@ -33,29 +33,14 @@ const mockComments: Comment[] = [
         badge: 'Verified Expert',
         avatar: 'https://picsum.photos/seed/wealth/200/200',
         timestamp: '2026-03-15 10:05',
-        content: 'Correct, but we should also consider the high consumer cash reserves which might act as a buffer this cycle.',
-        text: 'Correct, but we should also consider the high consumer cash reserves which might act as a buffer this cycle.',
+        content: 'Correct, but we should also consider the high consumer cash reserves.',
+        text: 'Correct, but we should also consider the high consumer cash reserves.',
         upvotes: 12,
         downvotes: 1,
         bullBearVote: 'Neutral',
         bull_bear: 'Neutral',
       }
     ]
-  },
-  {
-    id: 'c-2',
-    comment_id: 3,
-    username: 'AlphaHunter',
-    reputation: 420,
-    reputationScore: 420,
-    avatar: 'https://picsum.photos/seed/alpha/200/200',
-    timestamp: '2026-03-15 11:20',
-    content: 'Buying the dip here. Sentiment is too pessimistic.',
-    text: 'Buying the dip here. Sentiment is too pessimistic.',
-    upvotes: 15,
-    downvotes: 8,
-    bullBearVote: 'Bull',
-    bull_bear: 'Bull',
   }
 ];
 
@@ -68,12 +53,31 @@ const mockLeaderboard: LeaderboardEntry[] = [
 const mockPolls: Poll[] = [
   {
     id: 'p-1',
-    question: 'Will the Fed cut rates in Q2?',
-    options: ['Yes, 25bps+', 'No, status quo', 'Higher rates expected'],
-    votes: [45, 30, 25],
-    totalVotes: 1240,
-    expiresAt: '2024-03-20T00:00:00Z',
-    status: 'ongoing'
+    poll_id: 1,
+    question: 'Will XYZ Corp beat earnings this quarter?',
+    options: [
+      { option: 'Yes', votes: 120 },
+      { option: 'No', votes: 45 }
+    ],
+    votes: [120, 45],
+    totalVotes: 165,
+    expiresAt: '2026-03-20T00:00:00Z',
+    closing_date: '2026-03-20',
+    status: 'active'
+  },
+  {
+    id: 'p-2',
+    poll_id: 2,
+    question: 'Is ABC Inc a buy at current valuations?',
+    options: [
+      { option: 'Yes', votes: 80 },
+      { option: 'No', votes: 60 }
+    ],
+    votes: [80, 60],
+    totalVotes: 140,
+    expiresAt: '2026-03-10T00:00:00Z',
+    closing_date: '2026-03-10',
+    status: 'closed'
   }
 ];
 
@@ -93,13 +97,36 @@ const mockUserReputation: UserReputation = {
 const mockPredictionContests: PredictionContest[] = [
   {
     id: 'cont-1',
-    name: 'March Market Movers',
-    description: 'Predict top performers.',
-    assets: ['AAPL', 'NVDA'],
+    contest_id: 1,
+    name: 'Weekly Stock Picks',
+    description: 'Predict the top 3 performers this week across the S&P 500 taxonomy.',
+    assets: ['AAPL', 'NVDA', 'TSLA'],
     status: 'ongoing',
-    endsAt: '2024-03-22T00:00:00Z',
-    participants: [],
-    topParticipants: []
+    start_date: '2026-03-15',
+    end_date: '2026-03-21',
+    endsAt: '2026-03-21T23:59:59Z',
+    reward: 'Grand Oracle Badge',
+    prize: 'Mock Badge',
+    participants: [
+      { username: 'User123', points: 50, avatar: 'https://picsum.photos/seed/u1/100/100' },
+      { username: 'User456', points: 40, avatar: 'https://picsum.photos/seed/u2/100/100' }
+    ]
+  },
+  {
+    id: 'cont-2',
+    contest_id: 2,
+    name: 'Quarterly Earnings Surprises',
+    description: 'Identify which large-cap tech companies will post a 5%+ EPS beat.',
+    assets: ['MSFT', 'GOOGL', 'AMZN'],
+    status: 'upcoming',
+    start_date: '2026-04-01',
+    end_date: '2026-04-30',
+    endsAt: '2026-04-30T23:59:59Z',
+    reward: '500 Reputation Nodes',
+    prize: 'Mock Points',
+    participants: [
+      { username: 'User789', points: 70, avatar: 'https://picsum.photos/seed/u3/100/100' }
+    ]
   }
 ];
 
@@ -109,7 +136,7 @@ export const getCommunityData = async (): Promise<ApiResponse<CommunityData>> =>
     data: {
       comments: mockComments,
       polls: mockPolls,
-      trendingDiscussions: ['Yield Curve 2026', 'Fed Liquidity'],
+      trendingDiscussions: ['Yield Curve 2026', 'Fed Liquidity', 'AI Chip Wars', 'CBDC Rollout'],
       userReputation: mockUserReputation,
       leaderboard: mockLeaderboard,
       predictionContests: mockPredictionContests
