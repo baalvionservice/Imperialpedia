@@ -116,3 +116,15 @@ export interface ModerationAnalytics {
   status: 'Pending' | 'Reviewed' | 'Action Taken';
   date: string;
 }
+
+export interface CreatorEngagement {
+  id: string;
+  name: string;
+  avatar: string;
+  totalContent: number;
+  likes: number;
+  comments: number;
+  shares: number;
+  engagementRate: number;
+  verified: boolean;
+}

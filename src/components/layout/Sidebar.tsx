@@ -37,7 +37,9 @@ import {
   RotateCcw,
   ShieldEllipsis,
   Bug,
-  Zap
+  Zap,
+  Sparkles,
+  Target
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 import { useAppStore } from '@/lib/state/app-store';
@@ -106,6 +108,7 @@ const Sidebar = ({ className }: { className?: string }) => {
     { icon: Layers, label: 'Categories', href: '/admin/categories' },
     { icon: Tags, label: 'Topics & Tags', href: '/admin/tags' },
     { icon: BarChart3, label: 'System Analytics', href: '/admin/analytics' },
+    { icon: Sparkles, label: 'Network Engagement', href: '/admin/analytics/creator-engagement' },
     { icon: ShieldAlert, label: 'Moderation Audit', href: '/admin/analytics/moderation' },
     { icon: Activity, label: 'System Health', href: '/admin/health' },
     { icon: Bug, label: 'Error Logs', href: '/admin/errors' },

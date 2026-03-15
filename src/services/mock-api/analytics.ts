@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { TrafficAnalytics, SeoAnalytics, PlatformOverview, TrafficAnalyticsReport, ContentAnalytics, EngagementAnalytics, ModerationAnalytics } from '@/types/analytics';
+import { TrafficAnalytics, SeoAnalytics, PlatformOverview, TrafficAnalyticsReport, ContentAnalytics, EngagementAnalytics, ModerationAnalytics, CreatorEngagement } from '@/types/analytics';
 
 /**
  * @fileOverview Mock service for platform analytics and trending data.
@@ -275,6 +275,20 @@ export const getModerationAnalytics = async (): Promise<ApiResponse<ModerationAn
       { id: 'm-3', content: 'DeFi Liquidity Pools', creator: 'defianalyst', reportType: 'Plagiarism', status: 'Action Taken', date: '2024-03-10T09:15:00Z' },
       { id: 'm-4', content: 'Re: Passive Income', creator: 'ReaderNode_42', reportType: 'Harassment', status: 'Pending', date: '2024-03-12T11:00:00Z' },
       { id: 'm-5', content: 'Expert Profile: Ken Macro', creator: 'kenmacro', reportType: 'Impersonation', status: 'Reviewed', date: '2024-03-11T14:20:00Z' },
+    ],
+    status: 200
+  };
+};
+
+export const getCreatorEngagement = async (): Promise<ApiResponse<CreatorEngagement[]>> => {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  return {
+    data: [
+      { id: 'creator-1', name: 'The Market Maven', avatar: 'https://picsum.photos/seed/maven/200/200', totalContent: 42, likes: 12400, comments: 2840, shares: 1560, engagementRate: 8.4, verified: true },
+      { id: 'creator-4', name: 'Eleanor Vance', avatar: 'https://picsum.photos/seed/eleanor/200/200', totalContent: 120, likes: 45200, comments: 8400, shares: 5200, engagementRate: 12.1, verified: true },
+      { id: 'creator-2', name: 'Julian Wealth', avatar: 'https://picsum.photos/seed/wealth/200/200', totalContent: 15, likes: 5600, comments: 1100, shares: 820, engagementRate: 6.8, verified: true },
+      { id: 'creator-3', name: 'Sarah Crypto', avatar: 'https://picsum.photos/seed/defi/200/200', totalContent: 8, likes: 2100, comments: 450, shares: 310, engagementRate: 4.2, verified: false },
+      { id: 'creator-8', name: 'Dan Income', avatar: 'https://picsum.photos/seed/dan/200/200', totalContent: 35, likes: 8200, comments: 1540, shares: 920, engagementRate: 7.1, verified: true },
     ],
     status: 200
   };

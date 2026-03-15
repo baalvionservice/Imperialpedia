@@ -22,7 +22,8 @@ import {
   Activity,
   ArrowRight,
   Target,
-  ShieldAlert
+  ShieldAlert,
+  Sparkles
 } from 'lucide-react';
 import Link from 'next/link';
 import { getDashboardMetrics, DashboardMetrics } from '@/services/mock-api/analytics';
@@ -98,13 +99,14 @@ export default function AnalyticsDashboardPage() {
       </header>
 
       {/* Specialty Intelligence Links */}
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-7 gap-4">
         {[
           { label: 'SEO Authority', href: '/admin/analytics/seo', icon: Globe, color: 'text-primary', desc: 'Rankings' },
           { label: 'Traffic Pulse', href: '/admin/analytics/traffic', icon: Activity, color: 'text-secondary', desc: 'Visitors' },
           { label: 'User Activity', href: '/admin/analytics/engagement', icon: Target, color: 'text-primary', desc: 'Retention' },
           { label: 'Content Depth', href: '/admin/analytics/content', icon: FileText, color: 'text-secondary', desc: 'Engagement' },
-          { label: 'Expert Network', href: '/admin/analytics/creators', icon: Users, color: 'text-primary', desc: 'Creators' },
+          { label: 'Creator Reach', href: '/admin/analytics/creators', icon: Users, color: 'text-primary', desc: 'Growth' },
+          { label: 'Social Engagement', href: '/admin/analytics/creator-engagement', icon: Sparkles, color: 'text-secondary', desc: 'Interactions' },
           { label: 'Moderation', href: '/admin/analytics/moderation', icon: ShieldAlert, color: 'text-amber-500', desc: 'Integrity' },
         ].map((node) => (
           <Link key={node.href} href={node.href}>
