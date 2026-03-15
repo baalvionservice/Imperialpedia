@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog, SecuritySettings, GlobalNotificationSettings, AuditTrailEntry, FeatureSettings, AdminSession, BrandingSettings, SystemAlert, AdminHomeOverview, SecurityDashboardData, AdminSystemHubData, SecurityMockData, InfrastructureMockData, EdgeComputingData, CdnManagementData, SeoManagementData, ExperimentManagementData, IncidentResponseData, AccessManagementData } from '@/types/system';
+import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog, SecuritySettings, GlobalNotificationSettings, AuditTrailEntry, FeatureSettings, AdminSession, BrandingSettings, SystemAlert, AdminHomeOverview, SecurityDashboardData, AdminSystemHubData, SecurityMockData, InfrastructureMockData, EdgeComputingData, CdnManagementData, SeoManagementData, ExperimentManagementData, IncidentResponseData, AccessManagementData, LocalizationData } from '@/types/system';
 
 /**
  * @fileOverview Mock service for managing global platform configuration and system notifications.
@@ -359,6 +359,38 @@ const mockAccessManagementData: AccessManagementData = {
     { user: "User789", assigned_role: "User" },
     { user: "Eleanor Vance", assigned_role: "Admin" },
     { user: "Julian Wealth", assigned_role: "Editor" }
+  ]
+};
+
+const mockLocalizationData: LocalizationData = {
+  languages: [
+    { language_code: "en", language_name: "English", status: "mock_enabled" },
+    { language_code: "es", language_name: "Spanish", status: "mock_enabled" },
+    { language_code: "fr", language_name: "French", status: "mock_disabled" },
+    { language_code: "hi", language_name: "Hindi", status: "mock_enabled" }
+  ],
+  localization_content: [
+    { 
+      key: "glossary_term_compound_interest", 
+      source_text: "Compound Interest", 
+      translation: { "es": "Interés Compuesto", "fr": "Intérêt Composé", "hi": "चक्रवृद्धि ब्याज" }, 
+      status: "mock_reviewed",
+      module: "Glossary"
+    },
+    { 
+      key: "guide_long_form_intro", 
+      source_text: "Complete Guide to Investing", 
+      translation: { "es": "Guía Completa de Inversión", "fr": "Guide Complet d'Investissement", "hi": "निवेश के लिए पूर्ण गाइड" }, 
+      status: "mock_pending",
+      module: "Guides"
+    },
+    { 
+      key: "ui_button_subscribe", 
+      source_text: "Subscribe to Pro", 
+      translation: { "es": "Suscribirse a Pro", "fr": "S'abonner à Pro", "hi": "प्रो की सदस्यता लें" }, 
+      status: "mock_approved",
+      module: "UI Components"
+    }
   ]
 };
 
@@ -722,6 +754,14 @@ export const getAccessManagementData = async (): Promise<ApiResponse<AccessManag
   await new Promise((resolve) => setTimeout(resolve, 500));
   return {
     data: mockAccessManagementData,
+    status: 200,
+  };
+};
+
+export const getLocalizationData = async (): Promise<ApiResponse<LocalizationData>> => {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  return {
+    data: mockLocalizationData,
     status: 200,
   };
 };

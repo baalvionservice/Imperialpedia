@@ -556,3 +556,25 @@ export interface AccessManagementData {
   roles: RoleAccessNode[];
   mock_user_assignments: UserAssignmentNode[];
 }
+
+/**
+ * Prompt 52: Multi-Language & Localization Types
+ */
+export interface LanguageNode {
+  language_code: string;
+  language_name: string;
+  status: 'mock_enabled' | 'mock_disabled';
+}
+
+export interface LocalizationItem {
+  key: string;
+  source_text: string;
+  translation: Record<string, string>;
+  status: 'mock_reviewed' | 'mock_pending' | 'mock_approved';
+  module?: string;
+}
+
+export interface LocalizationData {
+  languages: LanguageNode[];
+  localization_content: LocalizationItem[];
+}

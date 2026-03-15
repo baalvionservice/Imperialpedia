@@ -60,7 +60,6 @@ import {
   Award,
   CreditCard,
   FileSearch,
-  LineChart,
   Layout,
   Spline,
   Fingerprint,
@@ -68,7 +67,8 @@ import {
   Network,
   FlaskConical,
   ShieldWarning,
-  Key
+  Key,
+  Languages
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 import { useAppStore } from '@/lib/state/app-store';
@@ -158,6 +158,7 @@ const Sidebar = ({ className }: { className?: string }) => {
     { icon: Network, label: 'Edge & Multi-Region', href: '/admin/control/edge' },
     { icon: Globe, label: 'CDN & Page Cache', href: '/admin/control/cdn' },
     { icon: Search, label: 'SEO & Sitemaps', href: '/admin/control/seo' },
+    { icon: Languages, label: 'Localization Hub', href: '/admin/control/localization' },
     { icon: Monitor, label: 'Active Sessions', href: '/admin/control/sessions' },
     { icon: Bell, label: 'Notification Settings', href: '/admin/control/notifications' },
     { icon: Zap, label: 'Feature Toggles', href: '/admin/control/features' },
