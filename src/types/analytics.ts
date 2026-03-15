@@ -315,6 +315,24 @@ export interface EventIntelligenceData {
 }
 
 /**
+ * AI Trend & Recap Types (Prompt 33)
+ */
+export interface TrendExplanationItem {
+  asset_name: string;
+  symbol: string;
+  trend: 'Uptrend' | 'Downtrend' | 'Sideways';
+  explanation: string;
+  confidence_score: number;
+}
+
+export interface RecapSummaryItem {
+  date: string;
+  top_movers: string[];
+  top_laggers: string[];
+  key_points: string[];
+}
+
+/**
  * ADMIN ANALYTICS MOCK DATA TYPES (Prompt 28)
  */
 

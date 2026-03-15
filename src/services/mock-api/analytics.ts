@@ -23,7 +23,9 @@ import {
   AdminAnalyticsData,
   AssetSummary,
   AssetCase,
-  EventIntelligenceData
+  EventIntelligenceData,
+  TrendExplanationItem,
+  RecapSummaryItem
 } from '@/types/analytics';
 
 /**
@@ -223,7 +225,7 @@ export const getTrendingContent = async (): Promise<ApiResponse<TrendingContent[
       shares: 120, 
       category: 'Crypto', 
       velocity: 45.2,
-      trendData: dates.map(d => ({ date: d, views: Math.floor(Math.random() * 2000) + 500 }))
+      trendData: dates.map(d => ({ date: d, views: Math.floor(Math.random() * 200) + 500 }))
     }
   ];
 
@@ -595,6 +597,39 @@ export const getEventIntelligence = async (): Promise<ApiResponse<EventIntellige
         { asset_name: "Microsoft", symbol: "MSFT", estimated_eps: 2.80, actual_eps: 2.95, estimated_revenue: "62B", actual_revenue: "64.2B", notes: "Cloud acceleration continues", date: "2026-03-10" },
       ]
     },
+    status: 200
+  };
+};
+
+export const getTrendExplanations = async (): Promise<ApiResponse<TrendExplanationItem[]>> => {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  return {
+    data: [
+      { asset_name: "XYZ Corp", symbol: "XYZ", trend: "Uptrend", explanation: "Strong buying momentum after positive earnings beat and revised forward guidance. Institutional accumulation nodes detected at $55 support level.", confidence_score: 0.88 },
+      { asset_name: "ABC Inc", symbol: "ABC", trend: "Downtrend", explanation: "Selling pressure due to sector-wide slowdown and regulatory headwinds in the APAC region. Support re-test expected at 200-day moving average.", confidence_score: 0.72 },
+      { asset_name: "Bitcoin", symbol: "BTC", trend: "Sideways", explanation: "Consolidation phase between major liquidity zones. Low volatility clusters suggest a breakout is imminent as open interest builds.", confidence_score: 0.65 }
+    ],
+    status: 200
+  };
+};
+
+export const getRecapSummaries = async (): Promise<ApiResponse<RecapSummaryItem[]>> => {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  return {
+    data: [
+      {
+        date: "2026-03-15",
+        top_movers: ["XYZ +3.5%", "NVDA +2.8%", "ETH +4.2%"],
+        top_laggers: ["ABC -2.1%", "TSLA -1.5%", "AAPL -0.8%"],
+        key_points: ["XYZ posted strong earnings beat", "Sector rotation toward AI and Semiconductors", "Crude oil volatility spiked due to geopolitical shifts"]
+      },
+      {
+        date: "2026-03-14",
+        top_movers: ["GHI +4.0%", "JKL +3.2%", "BTC +1.5%"],
+        top_laggers: ["MNO -2.5%", "PQR -1.8%", "GLD -0.5%"],
+        key_points: ["Market volatility increased significantly", "Investors shifted to safe-haven assets", "Unemployment data came in cooler than consensus"]
+      }
+    ],
     status: 200
   };
 };
