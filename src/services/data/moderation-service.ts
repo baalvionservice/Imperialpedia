@@ -1,5 +1,5 @@
 import * as mockApi from '@/services/mock-api/moderation';
-import { ApiResponse, ModerationItem } from '@/types';
+import { ApiResponse, ModerationItem, ModerationApproval } from '@/types';
 import { errorHandler } from '@/lib/errors/error-handler';
 
 /**
@@ -14,6 +14,32 @@ export const moderationService = {
       const appError = errorHandler.handleError(error);
       return {
         data: [],
+        status: appError.statusCode,
+        error: appError.message,
+      };
+    }
+  },
+
+  async getModerationApprovals(): Promise<ApiResponse<ModerationApproval[]>> {
+    try {
+      return await mockApi.getModerationApprovals();
+    } catch (error) {
+      const appError = errorHandler.handleError(error);
+      return {
+        data: [],
+        status: appError.statusCode,
+        error: appError.message,
+      };
+    }
+  },
+
+  async moderateContent(contentId: string, action: 'Approve' | 'Reject'): Promise<ApiResponse<ModerationApproval | null>> {
+    try {
+      return await mockApi.moderateContent(contentId, action);
+    } catch (error) {
+      const appError = errorHandler.handleError(error);
+      return {
+        data: null,
         status: appError.statusCode,
         error: appError.message,
       };
