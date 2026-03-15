@@ -6,6 +6,7 @@ import { Article } from '../types';
 import { getArticleBySlug } from '../services/content-service';
 import { ArticleHeader } from './ArticleHeader';
 import { ArticleBody } from './ArticleBody';
+import { RelatedArticles } from './RelatedArticles';
 import { Loader2, AlertCircle, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
@@ -78,13 +79,14 @@ export const ArticlePage = ({ slug }: ArticlePageProps) => {
       <Container isNarrow>
         <ArticleHeader article={article} />
         {/* In a real scenario, sections would be populated. 
-            For this prototype, we'll assume Article type might eventually include sections 
-            or we'd fetch them separately. Here we pass an empty array to satisfy the prop. */}
+            For this prototype, we'll assume sections are fetched or included. */}
         <ArticleBody sections={[]} />
+        
+        <RelatedArticles currentArticleId={article.id} category={article.category} />
         
         <div className="mt-20 pt-8 border-t text-center">
           <Button variant="outline" asChild>
-            <Link href="/glossary">Explore Related Terms</Link>
+            <Link href="/glossary">Explore Full Glossary</Link>
           </Button>
         </div>
       </Container>

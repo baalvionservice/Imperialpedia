@@ -60,8 +60,6 @@ export async function getArticleBySlug(slug: string): Promise<ApiResponse<Articl
  * Fetches articles belonging to a specific financial category.
  */
 export async function getArticlesByCategory(category: string): Promise<ApiResponse<Article[]>> {
-  // In this prototype, we fetch all and filter client-side.
-  // In production, this would be a filtered server-side query.
   const response = await articlesService.getArticles(1, 100);
   const filtered = response.data
     .filter(article => article.category.toLowerCase() === category.toLowerCase())
@@ -74,18 +72,25 @@ export async function getArticlesByCategory(category: string): Promise<ApiRespon
 }
 
 /**
- * Fetches a list of articles related to the given article ID.
- * Currently uses a simple strategy of returning other articles from the same source.
+ * Fetches a list of articles related to the given article.
+ * Logic: Same category, excluding the current article.
  */
-export async function getRelatedArticles(articleId: string): Promise<ApiResponse<Article[]>> {
-  const response = await articlesService.getArticles(1, 10);
-  const related = response.data
-    .filter(article => article.id !== articleId)
-    .slice(0, 3)
-    .map(mapToArticleModel);
+export async function getRelatedArticles(articleId: string, category?: string): Promise<ApiResponse<Article[]>> {
+  const response = await articlesService.getArticles(1, 50);
+  
+  let related = response.data.filter(article => article.id !== articleId);
+  
+  if (category) {
+    const sameCategory = related.filter(a => a.category === category);
+    if (sameCategory.length > 0) {
+      related = sameCategory;
+    }
+  }
+
+  const mapped = related.slice(0, 3).map(mapToArticleModel);
 
   return {
-    data: related,
+    data: mapped,
     status: 200,
   };
 }
