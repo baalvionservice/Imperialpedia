@@ -228,3 +228,16 @@ export interface AdminSession {
   ip: string;
   status: 'Active' | 'Inactive';
 }
+
+/**
+ * Interface for the Admin Control Center Home Overview
+ */
+export interface AdminHomeOverview {
+  totalUsers: number;
+  totalCreators: number;
+  pendingModeration: number;
+  activeSessions: number;
+  alertsActive: number;
+  pSEONodes: number;
+  systemHealth: 'Healthy' | 'Degraded' | 'Critical';
+}

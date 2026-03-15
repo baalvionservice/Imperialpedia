@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog, SecuritySettings, GlobalNotificationSettings, AuditTrailEntry, FeatureSettings, AdminSession, BrandingSettings, SystemAlert } from '@/types/system';
+import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog, SecuritySettings, GlobalNotificationSettings, AuditTrailEntry, FeatureSettings, AdminSession, BrandingSettings, SystemAlert, AdminHomeOverview } from '@/types/system';
 
 /**
  * @fileOverview Mock service for managing global platform configuration and system notifications.
@@ -153,6 +153,16 @@ const mockAdminSessions: AdminSession[] = [
   { id: 'sess-3', user: 'The Market Maven', role: 'Administrator', loginTime: '2024-03-11T16:45:00Z', ip: '45.12.88.2', status: 'Inactive' },
   { id: 'sess-4', user: 'Platform Lead', role: 'Administrator', loginTime: '2024-03-12T14:00:00Z', ip: '172.16.0.1', status: 'Active' },
 ];
+
+const mockAdminHomeOverview: AdminHomeOverview = {
+  totalUsers: 142500,
+  totalCreators: 156,
+  pendingModeration: 5,
+  activeSessions: 12,
+  alertsActive: 3,
+  pSEONodes: 1248500,
+  systemHealth: 'Healthy'
+};
 
 export const getPlatformSettings = async (): Promise<ApiResponse<PlatformSettings>> => {
   await new Promise((resolve) => setTimeout(resolve, 400));
@@ -427,5 +437,13 @@ export const terminateSession = async (id: string): Promise<ApiResponse<void>> =
     data: undefined,
     status: 200,
     message: 'Session terminated across production clusters.'
+  };
+};
+
+export const getAdminHomeOverview = async (): Promise<ApiResponse<AdminHomeOverview>> => {
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  return {
+    data: mockAdminHomeOverview,
+    status: 200,
   };
 };
