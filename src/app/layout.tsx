@@ -1,29 +1,13 @@
-import type {Metadata} from 'next';
+import type { Metadata } from 'next';
 import './globals.css';
-import {Toaster} from '@/components/ui/toaster';
+import { Toaster } from '@/components/ui/toaster';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import { seoConfig } from '@/config/seo';
 import { GlobalStoreProvider } from '@/lib/state';
+import { buildMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
-  title: seoConfig.defaultTitle,
-  description: seoConfig.defaultDescription,
-  keywords: seoConfig.defaultKeywords,
-  openGraph: {
-    type: 'website',
-    locale: seoConfig.openGraph.locale,
-    url: seoConfig.openGraph.url,
-    siteName: seoConfig.openGraph.siteName,
-    images: seoConfig.openGraph.images,
-  },
-  twitter: {
-    card: 'summary_large_image',
-    site: seoConfig.twitter.site,
-    creator: seoConfig.twitter.handle,
-  },
-  robots: 'index, follow',
-};
+// Global metadata generated from the SEO system foundation
+export const metadata: Metadata = buildMetadata();
 
 export default function RootLayout({
   children,
