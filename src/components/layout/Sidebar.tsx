@@ -26,7 +26,9 @@ import {
   Tags,
   ShieldAlert,
   GitPullRequest,
-  Bell
+  Bell,
+  ShieldCheck,
+  History
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 import { useAppStore } from '@/lib/state/app-store';
@@ -89,6 +91,7 @@ const Sidebar = ({ className }: { className?: string }) => {
     { icon: Layers, label: 'Categories', href: '/admin/categories' },
     { icon: Tags, label: 'Topics & Tags', href: '/admin/tags' },
     { icon: BarChart3, label: 'Analytics', href: '/admin/analytics' },
+    { icon: ShieldCheck, label: 'Audit Trail', href: '/admin/audit' },
     { icon: ShieldAlert, label: 'pSEO Health', href: '/admin/seo-audit' },
   ];
 
@@ -96,6 +99,7 @@ const Sidebar = ({ className }: { className?: string }) => {
     { icon: LayoutDashboard, label: 'Editor Home', href: '/editor' },
     { icon: GitPullRequest, label: 'Editorial Workflow', href: '/editor/workflow' },
     { icon: FileSearch, label: 'Pending Reviews', href: '/editor/pending' },
+    { icon: History, label: 'Review History', href: '/editor/history' },
     { icon: CheckCircle, label: 'Approved Index', href: '/editor/approved' },
     { icon: MessageSquare, label: 'Editorial Chat', href: '/editor/messages' },
   ];

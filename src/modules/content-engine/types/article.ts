@@ -75,6 +75,27 @@ export interface Notification {
   read: boolean;
 }
 
+export interface ReviewAction {
+  id: string;
+  articleId: string;
+  articleTitle: string;
+  action: "submitted" | "approved" | "changes_requested" | "commented" | "published";
+  userId: string;
+  userName: string;
+  comment?: string;
+  timestamp: string;
+}
+
+export interface AuditLog {
+  id: string;
+  userId: string;
+  userName: string;
+  action: string;
+  target: string;
+  timestamp: string;
+  type: 'content' | 'user' | 'system';
+}
+
 export interface Writer {
   id: ID;
   name: string;
