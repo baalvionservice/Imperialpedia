@@ -5,6 +5,9 @@ export const metadata = {
   description: 'Use generative AI to structure your financial articles and discover high-impact SEO topics.',
 };
 
+/**
+ * Page for generating AI-assisted content outlines.
+ */
 export default function OutlinePage() {
   return (
     <div className="py-20 lg:py-32">

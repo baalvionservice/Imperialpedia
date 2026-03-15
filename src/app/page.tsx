@@ -4,7 +4,11 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { ArrowRight, BookOpen, PenTool, Database, PieChart, ShieldCheck } from 'lucide-react';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { routes } from '@/config/routes';
 
+/**
+ * Main landing page for the Imperialpedia platform.
+ */
 export default function Home() {
   const heroImg = PlaceHolderImages.find(img => img.id === 'hero-bg');
 
@@ -23,10 +27,10 @@ export default function Home() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button size="lg" className="px-8 font-bold text-base h-14" asChild>
-                <Link href="/outline">Start Creating <PenTool className="ml-2 h-5 w-5" /></Link>
+                <Link href={routes.public.outline}>Start Creating <PenTool className="ml-2 h-5 w-5" /></Link>
               </Button>
               <Button size="lg" variant="outline" className="px-8 font-bold text-base h-14" asChild>
-                <Link href="/glossary">Explore Glossary <BookOpen className="ml-2 h-5 w-5" /></Link>
+                <Link href={routes.public.glossary}>Explore Glossary <BookOpen className="ml-2 h-5 w-5" /></Link>
               </Button>
             </div>
           </div>
