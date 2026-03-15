@@ -1,5 +1,27 @@
 import { ApiResponse } from '@/types';
-import { TrafficAnalytics, SeoAnalytics, PlatformOverview, TrafficAnalyticsReport, ContentAnalytics, EngagementAnalytics, ModerationAnalytics, CreatorEngagement, TrafficSources, TrendingContent, DailyActiveUsers, WeeklyActiveUsers, TopContent, TopKeyword, GrowthMetrics, EngagementByCategory, TrafficTrends, EngagementTrends, FullAnalyticsOverview, TopCreator } from '@/types/analytics';
+import { 
+  TrafficAnalytics, 
+  SeoAnalytics, 
+  PlatformOverview, 
+  TrafficAnalyticsReport, 
+  ContentAnalytics, 
+  EngagementAnalytics, 
+  ModerationAnalytics, 
+  CreatorEngagement, 
+  TrafficSources, 
+  TrendingContent, 
+  DailyActiveUsers, 
+  WeeklyActiveUsers, 
+  TopContent, 
+  TopKeyword, 
+  GrowthMetrics, 
+  EngagementByCategory, 
+  TrafficTrends, 
+  EngagementTrends, 
+  FullAnalyticsOverview, 
+  TopCreator,
+  AdminAnalyticsData
+} from '@/types/analytics';
 
 /**
  * @fileOverview Mock service for platform analytics and trending data.
@@ -386,8 +408,8 @@ export const getModerationAnalytics = async (): Promise<ApiResponse<ModerationAn
       { id: 'm-1', content: 'Understanding Yield Curve Inversion', creator: 'marketmaven', reportType: 'Spam', status: 'Pending', date: '2024-03-12T10:30:00Z' },
       { id: 'm-2', content: 'Macro Trends in 2026', creator: 'econvance', reportType: 'Fact Check', status: 'Reviewed', date: '2024-03-11T16:45:00Z' },
       { id: 'm-3', content: 'DeFi Liquidity Pools', creator: 'defianalyst', reportType: 'Plagiarism', status: 'Action Taken', date: '2024-03-10T09:15:00Z' },
-      { id: 'm-4', content: 'Re: Passive Income', creator: 'ReaderNode_42', reportType: 'Harassment', status: 'Pending', date: '2024-03-12T11:00:00Z' },
-      { id: 'm-5', content: 'Expert Profile: Ken Macro', creator: 'kenmacro', reportType: 'Impersonation', status: 'Reviewed', date: '2024-03-11T14:20:00Z' },
+      { id: 'm-4', content: 'Passive Income with Dividends', creator: 'dividenddan', reportType: 'Inaccurate Data', status: 'Pending', date: '2024-03-12T11:00:00Z' },
+      { id: 'm-5', content: 'Institutional Yield Strategies', creator: 'wealthbuilder', reportType: 'Copyright', status: 'Reviewed', date: '2024-03-11T14:20:00Z' },
     ],
     status: 200
   };
@@ -407,27 +429,46 @@ export const getCreatorEngagement = async (): Promise<ApiResponse<CreatorEngagem
   };
 };
 
-export const getTopCreators = async (): Promise<ApiResponse<TopCreator[]>> => {
-  await new Promise((resolve) => setTimeout(resolve, 500));
-  const data: TopCreator[] = mockAdminCreatorAnalytics.map(c => ({
-    id: c.id,
-    name: c.name,
-    avatar: c.avatar,
-    totalContent: c.contentCount,
-    followers: c.followers,
-    engagementRate: c.engagementRate,
-    revenue: c.totalRevenue,
-    verified: c.verified,
-    category: c.category
-  })).sort((a, b) => b.revenue - a.revenue);
+export const getAdminAnalyticsData = async (): Promise<ApiResponse<AdminAnalyticsData>> => {
+  await new Promise((resolve) => setTimeout(resolve, 600));
   
-  return { data, status: 200 };
-};
+  const dates = Array.from({ length: 14 }, (_, i) => {
+    const d = new Date();
+    d.setDate(d.getDate() - (13 - i));
+    return d.toISOString().split('T')[0];
+  });
 
-const mockAdminCreatorAnalytics: AdminCreatorAnalytics[] = [
-  { id: 'creator-1', name: 'The Market Maven', username: 'marketmaven', avatar: 'https://picsum.photos/seed/maven/200/200', contentCount: 42, followers: 15400, engagementRate: 5.8, totalViews: 850000, totalRevenue: 12450.00, lastActive: '2024-03-12T10:30:00Z', verified: true, category: 'Economics' },
-  { id: 'creator-4', name: 'Eleanor Vance', username: 'econvance', avatar: 'https://picsum.photos/seed/eleanor/200/200', contentCount: 120, followers: 25000, engagementRate: 4.2, totalViews: 4500000, totalRevenue: 28900.00, lastActive: '2024-03-12T11:45:00Z', verified: true, category: 'Economics' },
-  { id: 'creator-2', name: 'Julian Wealth', username: 'wealthbuilder', avatar: 'https://picsum.photos/seed/wealth/200/200', contentCount: 15, followers: 8200, engagementRate: 6.4, totalViews: 120000, totalRevenue: 8500.50, lastActive: '2024-03-11T16:20:00Z', verified: true, category: 'Investing' },
-  { id: 'creator-3', name: 'Sarah Crypto', username: 'defianalyst', avatar: 'https://picsum.photos/seed/defi/200/200', contentCount: 8, followers: 3500, engagementRate: 3.9, totalViews: 45000, totalRevenue: 1200.00, lastActive: '2024-03-10T09:15:00Z', verified: false, category: 'Crypto' },
-  { id: 'creator-8', name: 'Dan Income', username: 'dividenddan', avatar: 'https://picsum.photos/seed/dan/200/200', contentCount: 35, followers: 12500, engagementRate: 7.1, totalViews: 420000, totalRevenue: 15600.00, lastActive: '2024-03-12T08:00:00Z', verified: true, category: 'Investing' },
-];
+  return {
+    data: {
+      user_activity: dates.map(date => ({
+        date,
+        active_users: Math.floor(Math.random() * 50) + 100,
+        new_signups: Math.floor(Math.random() * 10) + 5
+      })),
+      engagement_metrics: {
+        comments: 1240,
+        upvotes: 4520,
+        shares: 850
+      },
+      revenue_metrics: dates.map(date => ({
+        date,
+        amount: Math.floor(Math.random() * 200) + 400
+      })),
+      feature_usage: [
+        { feature: 'Watchlist Hub', usage_count: 12400 },
+        { feature: 'Portfolio Architect', usage_count: 8500 },
+        { icon: 'Sparkles', feature: 'AI Analyst Suite', usage_count: 6200 },
+        { feature: 'Glossary Index', usage_count: 4100 },
+        { feature: 'ROI Engines', usage_count: 3200 },
+      ],
+      content_reports: [
+        { id: '1', type: 'article', title: 'Yield Curve Inversion 2026', views: 45200, likes: 1240 },
+        { id: '2', type: 'glossary_term', title: 'Quantitative Easing', views: 38900, likes: 850 },
+        { id: '3', type: 'guide', title: 'Retirement Scaling 101', views: 24500, likes: 620 },
+        { id: '4', type: 'article', title: 'DeFi Liquidity Audit', views: 18200, likes: 410 },
+        { id: '5', type: 'article', title: 'Passive Incomesuper-cycle', views: 15400, likes: 380 },
+      ]
+    },
+    status: 200
+  };
+};

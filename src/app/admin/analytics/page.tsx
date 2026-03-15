@@ -24,10 +24,14 @@ import {
   Target,
   ShieldAlert,
   Sparkles,
-  Layers
+  Layers,
+  MessageSquare,
+  ArrowBigUp,
+  DollarSign
 } from 'lucide-react';
 import Link from 'next/link';
-import { getDashboardMetrics, DashboardMetrics } from '@/services/mock-api/analytics';
+import { getAdminAnalyticsData } from '@/services/mock-api/analytics';
+import { AdminAnalyticsData } from '@/types/analytics';
 import { 
   AreaChart, 
   Area, 
@@ -37,32 +41,37 @@ import {
   Tooltip, 
   ResponsiveContainer,
   BarChart,
-  Bar
+  Bar,
+  Cell,
+  Legend
 } from 'recharts';
+import { Badge } from '@/components/ui/badge';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 /**
- * Main Platform Analytics Dashboard for administrators.
- * Aggregates core system metrics and provides deep-dive links to specialized modules.
+ * Main Platform Analytics & Reporting Dashboard for administrators.
+ * Aggregates core system metrics, user activity, revenue, and content performance.
  */
 export default function AnalyticsDashboardPage() {
-  const [metrics, setMetrics] = useState<DashboardMetrics | null>(null);
+  const [data, setData] = useState<AdminAnalyticsData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [period, setPeriod] = useState<'weekly' | 'monthly'>('weekly');
 
   useEffect(() => {
-    async function loadMetrics() {
+    async function loadData() {
       try {
-        const response = await getDashboardMetrics();
-        setMetrics(response.data);
+        const response = await getAdminAnalyticsData();
+        setData(response.data);
       } catch (e) {
-        console.error(e);
+        console.error('Failed to sync analytics matrix', e);
       } finally {
         setLoading(false);
       }
     }
-    loadMetrics();
+    loadData();
   }, []);
 
-  if (loading || !metrics) {
+  if (loading || !data) {
     return (
       <div className="py-40 flex flex-col items-center justify-center space-y-4">
         <Loader2 className="h-12 w-12 text-primary animate-spin" />
@@ -76,260 +85,289 @@ export default function AnalyticsDashboardPage() {
   const formatCompact = (val: number) => 
     new Intl.NumberFormat('en-US', { notation: 'compact' }).format(val);
 
+  const formatCurrency = (val: number) => 
+    new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(val);
+
   return (
-    <div className="space-y-8 pb-12 animate-in fade-in duration-700">
-      <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div className="space-y-8 pb-24 animate-in fade-in duration-700">
+      <header className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
           <div className="flex items-center gap-2 text-primary mb-1">
             <BarChart3 className="h-4 w-4" />
             <Text variant="label" className="text-[10px] font-bold tracking-widest uppercase">Intelligence Engine</Text>
           </div>
-          <Text variant="h1" className="text-3xl font-bold">Global Analytics Hub</Text>
+          <Text variant="h1" className="text-3xl font-bold tracking-tight">Analytics & Reporting</Text>
           <Text variant="bodySmall" className="text-muted-foreground mt-1">
-            Orchestrating growth across the Imperialpedia programmatic index.
+            Visualizing growth, engagement, and content performance across the Imperialpedia index.
           </Text>
         </div>
-        <div className="flex gap-2">
-          <Button variant="outline" size="sm" className="rounded-xl border-white/10 bg-card/30">
-            <Calendar className="mr-2 h-4 w-4" /> Monthly Review
-          </Button>
-          <Button size="sm" className="rounded-xl shadow-lg shadow-primary/20 font-bold bg-primary">
-            <Download className="mr-2 h-4 w-4" /> Export Datasets
+        <div className="flex items-center gap-3">
+          <Tabs value={period} onValueChange={(v: any) => setPeriod(v)} className="w-auto">
+            <TabsList className="bg-card/30 border border-white/5 h-11 px-1 rounded-xl">
+              <TabsTrigger value="weekly" className="rounded-lg px-4 font-bold text-[10px] uppercase">Weekly</TabsTrigger>
+              <TabsTrigger value="monthly" className="rounded-lg px-4 font-bold text-[10px] uppercase">Monthly</TabsTrigger>
+            </TabsList>
+          </Tabs>
+          <Button variant="outline" className="h-11 px-6 rounded-xl border-white/10 bg-card/30 gap-2 font-bold text-xs">
+            <Download className="h-4 w-4" /> Export Datasets
           </Button>
         </div>
       </header>
 
-      {/* Specialty Intelligence Links */}
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-8 gap-4">
-        {[
-          { label: 'SEO Authority', href: '/admin/analytics/seo', icon: Globe, color: 'text-primary', desc: 'Rankings' },
-          { label: 'Traffic Pulse', href: '/admin/analytics/traffic', icon: Activity, color: 'text-secondary', desc: 'Visitors' },
-          { label: 'User Activity', href: '/admin/analytics/engagement', icon: Target, color: 'text-primary', desc: 'Retention' },
-          { label: 'Content Depth', href: '/admin/analytics/content', icon: FileText, color: 'text-secondary', desc: 'Engagement' },
-          { label: 'Hub Analysis', href: '/admin/analytics/engagement-category', icon: Layers, color: 'text-primary', desc: 'Categories' },
-          { label: 'Creator Reach', href: '/admin/analytics/creators', icon: Users, color: 'text-secondary', desc: 'Growth' },
-          { label: 'Social Engagement', href: '/admin/analytics/creator-engagement', icon: Sparkles, color: 'text-primary', desc: 'Interactions' },
-          { label: 'Moderation', href: '/admin/analytics/moderation', icon: ShieldAlert, color: 'text-amber-500', desc: 'Integrity' },
-        ].map((node) => (
-          <Link key={node.href} href={node.href}>
-            <Card className="glass-card p-4 hover:border-primary/40 transition-all group h-full">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className={`p-2 rounded-lg bg-background/50 border border-white/5 ${node.color}`}>
-                    <node.icon className="h-4 w-4" />
-                  </div>
-                  <div className="min-w-0">
-                    <Text variant="bodySmall" weight="bold" className="text-[10px] truncate">{node.label}</Text>
-                    <Text variant="caption" className="text-muted-foreground text-[8px] uppercase font-bold">{node.desc}</Text>
-                  </div>
-                </div>
-                <ArrowRight className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-all -translate-x-2 group-hover:translate-x-0 text-primary shrink-0" />
-              </div>
-            </Card>
-          </Link>
-        ))}
-      </div>
-
-      {/* Primary Metrics Matrix */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
-        <Card className="glass-card border-none shadow-xl">
-          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Total Articles</CardTitle>
-            <FileText className="h-4 w-4 text-primary" />
+      {/* Aggregate Engagement Matrix */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <Card className="glass-card border-none shadow-xl bg-primary/5 group hover:border-primary/20 transition-all">
+          <CardHeader className="pb-2 flex flex-row items-center justify-between space-y-0">
+            <CardTitle className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">User Activity</CardTitle>
+            <Users className="h-4 w-4 text-primary group-hover:animate-pulse" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{metrics.totalArticles.toLocaleString()}</div>
-            <div className="flex items-center text-[10px] text-emerald-500 font-bold mt-1">
-              <ArrowUpRight className="h-3 w-3 mr-1" /> +12 this week
-            </div>
+            <div className="text-2xl font-bold">{data.user_activity[data.user_activity.length - 1].active_users} Active</div>
+            <p className="text-[10px] text-emerald-500 font-bold mt-1 flex items-center gap-1">
+              <ArrowUpRight className="h-2.5 w-2.5" /> +{data.user_activity[data.user_activity.length - 1].new_signups} signups today
+            </p>
           </CardContent>
         </Card>
 
         <Card className="glass-card border-none shadow-xl">
-          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Expert Authors</CardTitle>
-            <Users className="h-4 w-4 text-secondary" />
+          <CardHeader className="pb-2 flex flex-row items-center justify-between space-y-0">
+            <CardTitle className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Engagement Node</CardTitle>
+            <MessageSquare className="h-4 w-4 text-secondary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{metrics.totalAuthors}</div>
-            <div className="flex items-center text-[10px] text-emerald-500 font-bold mt-1">
-              <ArrowUpRight className="h-3 w-3 mr-1" /> +3 pending vetting
+            <div className="text-2xl font-bold">{formatCompact(data.engagement_metrics.comments)} Comments</div>
+            <div className="flex items-center gap-3 mt-1">
+              <span className="text-[10px] text-muted-foreground flex items-center gap-1">
+                <ArrowBigUp className="h-2.5 w-2.5" /> {formatCompact(data.engagement_metrics.upvotes)}
+              </span>
+              <span className="text-[10px] text-muted-foreground flex items-center gap-1">
+                <Zap className="h-2.5 w-2.5" /> {formatCompact(data.engagement_metrics.shares)}
+              </span>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="glass-card border-none shadow-xl">
-          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Active Readers</CardTitle>
-            <Zap className="h-4 w-4 text-primary" />
+        <Card className="glass-card border-none shadow-xl bg-emerald-500/5">
+          <CardHeader className="pb-2 flex flex-row items-center justify-between space-y-0">
+            <CardTitle className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Revenue Flow</CardTitle>
+            <DollarSign className="h-4 w-4 text-emerald-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{formatCompact(metrics.activeUsers)}</div>
-            <div className="flex items-center text-[10px] text-emerald-500 font-bold mt-1">
-              <ArrowUpRight className="h-3 w-3 mr-1" /> +8.4% daily growth
-            </div>
+            <div className="text-2xl font-bold">{formatCurrency(data.revenue_metrics[data.revenue_metrics.length - 1].amount)}</div>
+            <p className="text-[10px] text-emerald-500 font-bold mt-1 flex items-center gap-1">
+              <ArrowUpRight className="h-2.5 w-2.5" /> Platform Accrual Stable
+            </p>
           </CardContent>
         </Card>
 
         <Card className="glass-card border-none shadow-xl">
-          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Engines Used</CardTitle>
-            <Calculator className="h-4 w-4 text-secondary" />
+          <CardHeader className="pb-2 flex flex-row items-center justify-between space-y-0">
+            <CardTitle className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Index Coverage</CardTitle>
+            <Layers className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{formatCompact(metrics.calculatorsUsed)}</div>
-            <div className="flex items-center text-[10px] text-muted-foreground font-bold mt-1">
-              Top: Compound Interest
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="glass-card border-none shadow-xl">
-          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Search Queries</CardTitle>
-            <Search className="h-4 w-4 text-primary" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{formatCompact(metrics.searchQueries)}</div>
-            <div className="flex items-center text-[10px] text-emerald-500 font-bold mt-1">
-              <ArrowUpRight className="h-3 w-3 mr-1" /> +15.2% intent volume
-            </div>
+            <div className="text-2xl font-bold">1.2M+ Nodes</div>
+            <p className="text-[10px] text-muted-foreground mt-1">Programmatic SEO Active</p>
           </CardContent>
         </Card>
       </div>
 
-      {/* Dynamic Trend visualization */}
-      <Tabs defaultValue="traffic" className="w-full">
-        <Card className="glass-card border-none shadow-2xl overflow-hidden">
-          <CardHeader className="bg-card/30 border-b border-white/5 p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        {/* User Activity Visualization */}
+        <Card className="lg:col-span-8 glass-card border-none shadow-2xl overflow-hidden">
+          <CardHeader className="bg-card/30 border-b border-white/5 p-8 flex flex-row items-center justify-between">
             <div>
-              <CardTitle className="text-lg">System Momentum</CardTitle>
-              <CardDescription>Visualizing growth trends across platform domains.</CardDescription>
+              <CardTitle className="text-lg">User Activity Momentum</CardTitle>
+              <CardDescription>Correlation between active users and new registrations.</CardDescription>
             </div>
-            <TabsList className="bg-background/50 border border-white/5 p-1 rounded-xl h-11">
-              <TabsTrigger value="traffic" className="rounded-lg px-6 font-bold text-xs data-[state=active]:bg-primary">Traffic Velocity</TabsTrigger>
-              <TabsTrigger value="network" className="rounded-lg px-6 font-bold text-xs data-[state=active]:bg-primary">Network Growth</TabsTrigger>
-              <TabsTrigger value="interaction" className="rounded-lg px-6 font-bold text-xs data-[state=active]:bg-primary">Engine Interaction</TabsTrigger>
-            </TabsList>
+            <Badge variant="outline" className="border-primary/20 bg-primary/5 text-primary text-[10px] font-bold uppercase tracking-widest px-3">Live Stream</Badge>
           </CardHeader>
-          
-          <CardContent className="p-8">
-            <TabsContent value="traffic" className="mt-0 h-[400px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={metrics.trends}>
-                  <defs>
-                    <linearGradient id="colorTraffic" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#8272F2" stopOpacity={0.3}/>
-                      <stop offset="95%" stopColor="#8272F2" stopOpacity={0}/>
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#ffffff05" vertical={false} />
-                  <XAxis 
-                    dataKey="date" 
-                    stroke="#888888" 
-                    fontSize={10} 
-                    tickLine={false} 
-                    axisLine={false} 
-                    tickFormatter={(val) => val.split('-')[2]}
-                  />
-                  <YAxis 
-                    stroke="#888888" 
-                    fontSize={10} 
-                    tickLine={false} 
-                    axisLine={false} 
-                    tickFormatter={(val) => `${val / 1000}k`}
-                  />
-                  <Tooltip 
-                    contentStyle={{ backgroundColor: '#1C1822', border: '1px solid #ffffff10', borderRadius: '12px' }}
-                    itemStyle={{ color: '#8272F2' }}
-                  />
-                  <Area 
-                    type="monotone" 
-                    dataKey="traffic" 
-                    stroke="#8272F2" 
-                    fillOpacity={1} 
-                    fill="url(#colorTraffic)" 
-                    strokeWidth={3}
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
-            </TabsContent>
-
-            <TabsContent value="network" className="mt-0 h-[400px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={metrics.trends}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#ffffff05" vertical={false} />
-                  <XAxis 
-                    dataKey="date" 
-                    stroke="#888888" 
-                    fontSize={10} 
-                    tickLine={false} 
-                    axisLine={false} 
-                    tickFormatter={(val) => val.split('-')[2]}
-                  />
-                  <YAxis stroke="#888888" fontSize={10} tickLine={false} axisLine={false} />
-                  <Tooltip 
-                    cursor={{ fill: '#ffffff05' }}
-                    contentStyle={{ backgroundColor: '#1C1822', border: '1px solid #ffffff10', borderRadius: '12px' }}
-                  />
-                  <Bar dataKey="users" fill="#69B9FF" radius={[4, 4, 0, 0]} barSize={40} />
-                </BarChart>
-              </ResponsiveContainer>
-            </TabsContent>
-
-            <TabsContent value="interaction" className="mt-0 h-[400px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={metrics.trends}>
-                  <defs>
-                    <linearGradient id="colorUsage" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#10b981" stopOpacity={0.3}/>
-                      <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#ffffff05" vertical={false} />
-                  <XAxis dataKey="date" stroke="#888888" fontSize={10} tickLine={false} axisLine={false} />
-                  <YAxis stroke="#888888" fontSize={10} tickLine={false} axisLine={false} />
-                  <Tooltip contentStyle={{ backgroundColor: '#1C1822', border: '1px solid #ffffff10', borderRadius: '12px' }} />
-                  <Area type="step" dataKey="usage" stroke="#10b981" fillOpacity={1} fill="url(#colorUsage)" strokeWidth={3} />
-                </AreaChart>
-              </ResponsiveContainer>
-            </TabsContent>
+          <CardContent className="p-8 h-[400px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={data.user_activity}>
+                <defs>
+                  <linearGradient id="colorActive" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#8272F2" stopOpacity={0.3}/>
+                    <stop offset="95%" stopColor="#8272F2" stopOpacity={0}/>
+                  </linearGradient>
+                  <linearGradient id="colorSignups" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#69B9FF" stopOpacity={0.2}/>
+                    <stop offset="95%" stopColor="#69B9FF" stopOpacity={0}/>
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="#ffffff05" vertical={false} />
+                <XAxis 
+                  dataKey="date" 
+                  stroke="#888888" 
+                  fontSize={10} 
+                  tickLine={false} 
+                  axisLine={false}
+                  tickFormatter={(val) => val.split('-').slice(1).join('/')}
+                />
+                <YAxis stroke="#888888" fontSize={10} tickLine={false} axisLine={false} />
+                <Tooltip 
+                  contentStyle={{ backgroundColor: '#1C1822', border: '1px solid #ffffff10', borderRadius: '12px' }}
+                />
+                <Legend verticalAlign="top" height={36} />
+                <Area 
+                  type="monotone" 
+                  dataKey="active_users" 
+                  name="Active Users"
+                  stroke="#8272F2" 
+                  fillOpacity={1} 
+                  fill="url(#colorActive)" 
+                  strokeWidth={3}
+                />
+                <Area 
+                  type="monotone" 
+                  dataKey="new_signups" 
+                  name="New Signups"
+                  stroke="#69B9FF" 
+                  fillOpacity={1} 
+                  fill="url(#colorSignups)" 
+                  strokeWidth={2}
+                />
+              </AreaChart>
+            </ResponsiveContainer>
           </CardContent>
         </Card>
-      </Tabs>
 
-      {/* Insight Sidebar / System Health */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <Card className="lg:col-span-2 glass-card border-none p-8 flex flex-col md:flex-row items-center gap-8">
-          <div className="w-24 h-24 rounded-3xl bg-primary/10 flex items-center justify-center text-primary shrink-0">
-            <BarChart3 className="h-12 w-12" />
-          </div>
-          <div className="space-y-2 text-center md:text-left">
-            <Text variant="h3" className="font-bold">Intelligence Index Scaling</Text>
-            <Text variant="bodySmall" className="text-muted-foreground leading-relaxed">
-              The platform is currently operating at <span className="text-emerald-500 font-bold">102% efficiency</span> compared to last month's ingestion benchmarks. All pSEO taxonomies are synchronized and sitemaps are verified.
-            </Text>
-            <div className="pt-2">
-              <Button variant="link" className="p-0 text-secondary h-auto text-xs font-bold" asChild>
-                <Link href="/admin/health">View infrastructure telemetry <ArrowUpRight className="ml-1 h-3 w-3" /></Link>
-              </Button>
-            </div>
-          </div>
-        </Card>
-
-        <Card className="glass-card border-none bg-primary/5 border-primary/20">
-          <CardHeader>
-            <CardTitle className="text-sm flex items-center gap-2">
-              <TrendingUp className="h-4 w-4 text-primary" /> Market Intent Insight
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Text variant="caption" className="text-muted-foreground italic leading-relaxed">
-              "Search volume for 'Recession Hedging' has spiked 420% in the last 48 hours. The system recommends prioritizing expert analysis on fixed-income and gold cycles."
-            </Text>
-          </CardContent>
-        </Card>
+        {/* Feature usage Sidebar */}
+        <div className="lg:col-span-4 space-y-8">
+          <Card className="glass-card border-none shadow-xl h-full flex flex-col">
+            <CardHeader className="bg-card/30 border-b border-white/5 p-6">
+              <CardTitle className="text-sm font-bold uppercase tracking-widest text-primary flex items-center gap-2">
+                <Zap className="h-4 w-4" /> Feature Utilization
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-6 flex-grow flex flex-col justify-center">
+              <div className="h-[250px] w-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={data.feature_usage} layout="vertical">
+                    <CartesianGrid strokeDasharray="3 3" stroke="#ffffff05" horizontal={false} vertical={true} />
+                    <XAxis type="number" hide />
+                    <YAxis 
+                      dataKey="feature" 
+                      type="category" 
+                      stroke="#888888" 
+                      fontSize={9} 
+                      tickLine={false} 
+                      axisLine={false}
+                      width={100}
+                    />
+                    <Tooltip 
+                      contentStyle={{ backgroundColor: '#1C1822', border: '1px solid #ffffff10', borderRadius: '12px' }}
+                      cursor={{ fill: 'rgba(255,255,255,0.02)' }}
+                    />
+                    <Bar dataKey="usage_count" name="Usage Count" fill="#8272F2" radius={[0, 4, 4, 0]} barSize={20} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+              
+              <div className="mt-6 p-4 rounded-xl bg-secondary/5 border border-secondary/20">
+                <div className="flex items-center gap-2 text-secondary font-bold text-[10px] uppercase mb-2">
+                  <Sparkles className="h-3 w-3" /> Growth Insight
+                </div>
+                <Text variant="caption" className="italic text-muted-foreground leading-relaxed">
+                  "Watchlist Hub adoption is up 45% following the deployment of the real-time sentiment node."
+                </Text>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
+
+      {/* Content Performance Matrix */}
+      <Card className="glass-card border-none shadow-2xl overflow-hidden">
+        <CardHeader className="bg-card/30 border-b border-white/5 p-8 flex flex-row items-center justify-between">
+          <div>
+            <CardTitle className="text-xl flex items-center gap-2">
+              <FileText className="h-5 w-5 text-primary" /> Intelligence Report Matrix
+            </CardTitle>
+            <CardDescription>Auditing individual content node impact and conversion.</CardDescription>
+          </div>
+          <Button variant="ghost" size="sm" className="text-primary font-bold text-xs group">
+            View All Content <ChevronRight className="h-4 w-4 ml-1 transition-transform group-hover:translate-x-1" />
+          </Button>
+        </CardHeader>
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow className="bg-muted/20 hover:bg-muted/20 border-b border-white/5">
+                <TableHead className="pl-8 font-bold text-[10px] uppercase tracking-widest py-4">Intelligence Node</TableHead>
+                <TableHead className="font-bold text-[10px] uppercase tracking-widest">Classification</TableHead>
+                <TableHead className="font-bold text-[10px] uppercase tracking-widest text-right">Global Reach</TableHead>
+                <TableHead className="font-bold text-[10px] uppercase tracking-widest text-right">Interaction Node</TableHead>
+                <TableHead className="text-right pr-8 font-bold text-[10px] uppercase tracking-widest">Decision Status</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {data.content_reports.map((report) => (
+                <TableRow key={report.id} className="group hover:bg-white/5 border-b border-white/5 transition-colors">
+                  <TableCell className="pl-8 py-5">
+                    <Text variant="bodySmall" weight="bold" className="group-hover:text-primary transition-colors">{report.title}</Text>
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20 text-[8px] font-bold uppercase">
+                      {report.type.replace('_', ' ')}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="text-right font-mono font-bold text-sm">
+                    {formatCompact(report.views)}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <div className="flex items-center justify-end gap-1 text-emerald-500 font-bold text-xs">
+                      <ArrowUpRight className="h-3 w-3" /> {formatCompact(report.likes)} likes
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-right pr-8">
+                    <Badge className="bg-emerald-500/10 text-emerald-500 border-none text-[9px] font-bold uppercase px-3 h-6">Optimized</Badge>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      </Card>
+
+      {/* Revenue Matrix */}
+      <Card className="glass-card border-none bg-primary/5 p-10 relative overflow-hidden">
+        <div className="absolute right-0 top-0 w-1/3 h-full bg-gradient-to-l from-primary/10 to-transparent pointer-events-none" />
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 relative z-10">
+          <div className="lg:col-span-4 flex flex-col justify-center space-y-4">
+            <div className="w-16 h-16 rounded-3xl bg-primary/20 flex items-center justify-center text-primary shadow-2xl">
+              <DollarSign className="h-8 w-8" />
+            </div>
+            <div>
+              <Text variant="h2" className="text-2xl font-bold">Revenue Momentum</Text>
+              <Text variant="bodySmall" className="text-muted-foreground leading-relaxed mt-2">
+                Monitoring high-fidelity platform accrual across institutional and expert member tiers.
+              </Text>
+            </div>
+            <Button className="w-fit rounded-xl font-bold bg-primary hover:bg-primary/90 shadow-xl shadow-primary/20 h-12 px-8">
+              Audit Settlement Ledger
+            </Button>
+          </div>
+          
+          <div className="lg:col-span-8 h-[250px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={data.revenue_metrics}>
+                <defs>
+                  <linearGradient id="colorRev" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#10b981" stopOpacity={0.3}/>
+                    <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="#ffffff05" vertical={false} />
+                <XAxis dataKey="date" hide />
+                <YAxis hide />
+                <Tooltip contentStyle={{ backgroundColor: '#1C1822', border: '1px solid #ffffff10', borderRadius: '12px' }} />
+                <Area type="monotone" dataKey="amount" stroke="#10b981" fillOpacity={1} fill="url(#colorRev)" strokeWidth={3} name="Daily Revenue" />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      </Card>
     </div>
   );
 }

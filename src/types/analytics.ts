@@ -246,3 +246,45 @@ export interface FullAnalyticsOverview {
   trafficTrends: TrafficTrends;
   engagementTrends: EngagementTrends;
 }
+
+/**
+ * ADMIN ANALYTICS MOCK DATA TYPES (Prompt 28)
+ */
+
+export interface UserActivityMetric {
+  date: string;
+  active_users: number;
+  new_signups: number;
+}
+
+export interface EngagementMetrics {
+  comments: number;
+  upvotes: number;
+  shares: number;
+}
+
+export interface RevenueMetric {
+  date: string;
+  amount: number;
+}
+
+export interface FeatureUsageMetric {
+  feature: string;
+  usage_count: number;
+}
+
+export interface ContentReportItem {
+  id: string;
+  type: 'article' | 'guide' | 'glossary_term';
+  title: string;
+  views: number;
+  likes: number;
+}
+
+export interface AdminAnalyticsData {
+  user_activity: UserActivityMetric[];
+  engagement_metrics: EngagementMetrics;
+  revenue_metrics: RevenueMetric[];
+  feature_usage: FeatureUsageMetric[];
+  content_reports: ContentReportItem[];
+}
