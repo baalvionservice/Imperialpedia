@@ -1,6 +1,5 @@
-
 import { ApiResponse } from '@/types';
-import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog, SecuritySettings, GlobalNotificationSettings, AuditTrailEntry, FeatureSettings, AdminSession, BrandingSettings, SystemAlert, AdminHomeOverview } from '@/types/system';
+import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog, SecuritySettings, GlobalNotificationSettings, AuditTrailEntry, FeatureSettings, AdminSession, BrandingSettings, SystemAlert, AdminHomeOverview, SecurityDashboardData } from '@/types/system';
 
 /**
  * @fileOverview Mock service for managing global platform configuration and system notifications.
@@ -76,6 +75,14 @@ const mockSecuritySettings: SecuritySettings = {
   sessionTimeoutMinutes: 120
 };
 
+const mockSecurityDashboard: SecurityDashboardData = {
+  system_health: "Good",
+  active_threats: 0,
+  failed_logins: 3,
+  rate_limit_status: "Normal",
+  admin_ip_restriction: ["192.168.1.1", "10.0.0.5"]
+};
+
 const mockNotifications: SystemNotification[] = [
   { id: 'sn-1', title: 'Q1 Performance Grants', message: 'Applications for the Q1 Intelligence Research grants are now open for verified experts.', active: true, type: 'success', target: 'creators', createdAt: '2024-03-10T10:00:00Z' },
   { id: 'sn-2', title: 'System Maintenance', message: 'The pSEO indexing engine will undergo scheduled optimization on Sunday at 02:00 UTC.', active: true, type: 'warning', target: 'all', createdAt: '2024-03-12T08:30:00Z' },
@@ -140,12 +147,11 @@ const mockAdminActivityLogs: AdminActivityLog[] = [
 ];
 
 const mockAuditTrailEntries: AuditTrailEntry[] = [
-  { id: 'at-1', event: 'Global SEO Re-index', user: 'Eleanor Vance', module: 'pSEO Engine', date: '2024-03-12T14:30:00Z', status: 'Success' },
-  { id: 'at-2', event: 'User Permission Shift', user: 'Platform Lead', module: 'Auth Kernel', date: '2024-03-12T13:15:00Z', status: 'Success' },
-  { id: 'at-3', event: 'Backup Restoration Attempt', user: 'Eleanor Vance', module: 'Resilience Hub', date: '2024-03-12T11:45:00Z', status: 'Failed' },
-  { id: 'at-4', event: 'High-Impact Content Purge', user: 'Expert Editor', module: 'Moderation', date: '2024-03-12T10:00:00Z', status: 'Success' },
-  { id: 'at-5', event: 'API Gateway Scaling', user: 'System Bot', module: 'Infrastructure', date: '2024-03-12T09:30:00Z', status: 'Success' },
-  { id: 'at-6', event: 'Financial Tool Hot-fix', user: 'Platform Dev', module: 'Calculators', date: '2024-03-11T16:20:00Z', status: 'Success' },
+  { id: 'at-1', timestamp: "2026-03-15 10:00", user: "Admin123", action: "Edited Article: Mock Article 1", module: 'pSEO Engine', status: 'Success' },
+  { id: 'at-2', timestamp: "2026-03-15 10:15", user: "Editor456", action: "Approved Glossary Term: XYZ", module: 'Auth Kernel', status: 'Success' },
+  { id: 'at-3', timestamp: "2026-03-15 10:30", user: "Admin123", action: "Changed Feature Flag: Beta Feature", module: 'Resilience Hub', status: 'Failed' },
+  { id: 'at-4', timestamp: "2026-03-15 11:00", user: "ExpertEditor", action: "Purged High-Impact Node: Yield Scam", module: 'Moderation', status: 'Success' },
+  { id: 'at-5', timestamp: "2026-03-15 11:45", user: "SystemBot", action: "Scaled API Gateway Cluster", module: 'Infrastructure', status: 'Success' },
 ];
 
 const mockAdminSessions: AdminSession[] = [
@@ -264,6 +270,14 @@ export const updateSecuritySettings = async (settings: SecuritySettings): Promis
     data: settings,
     status: 200,
     message: 'Security protocols updated and broadcast to all nodes.'
+  };
+};
+
+export const getSecurityDashboardData = async (): Promise<ApiResponse<SecurityDashboardData>> => {
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  return {
+    data: mockSecurityDashboard,
+    status: 200,
   };
 };
 

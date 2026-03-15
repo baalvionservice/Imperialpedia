@@ -72,6 +72,17 @@ export interface SecuritySettings {
   sessionTimeoutMinutes: number;
 }
 
+/**
+ * Prompt 29: Security Dashboard Data
+ */
+export interface SecurityDashboardData {
+  system_health: 'Good' | 'Warning' | 'Critical';
+  active_threats: number;
+  failed_logins: number;
+  rate_limit_status: 'Normal' | 'Throttled' | 'High';
+  admin_ip_restriction: string[];
+}
+
 export type SystemNotificationType = 'info' | 'success' | 'warning' | 'error';
 export type SystemNotificationTarget = 'all' | 'creators' | 'admins';
 
@@ -180,15 +191,15 @@ export interface AdminActivityLog {
 }
 
 /**
- * Interface for the Platform Audit Trail
+ * Interface for the Platform Audit Trail (Refined for Prompt 29)
  */
 export interface AuditTrailEntry {
   id: string;
-  event: string;
+  timestamp: string;
   user: string;
-  module: string;
-  date: string;
-  status: 'Success' | 'Failed';
+  action: string;
+  module?: string;
+  status?: 'Success' | 'Failed';
 }
 
 /**
