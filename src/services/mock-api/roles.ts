@@ -1,4 +1,4 @@
-import { ApiResponse, RoleDefinition, RoleControl } from '@/types';
+import { ApiResponse, RoleDefinition, RoleControl, RolePermissionSet } from '@/types';
 
 /**
  * @fileOverview Mock service for managing platform roles and permissions.
@@ -91,5 +91,24 @@ export const getControlRoles = async (): Promise<ApiResponse<RoleControl[]>> => 
   return {
     data: mockControlRoles,
     status: 200,
+  };
+};
+
+export const getRolePermissions = async (): Promise<ApiResponse<RolePermissionSet[]>> => {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  
+  const data: RolePermissionSet[] = mockControlRoles.map(role => ({
+    roleId: role.id,
+    roleName: role.roleName,
+    description: role.description || '',
+    permissions: ALL_PERMISSIONS.map(p => ({
+      name: p.label,
+      enabled: role.permissions.includes(p.id)
+    }))
+  }));
+
+  return {
+    data,
+    status: 200
   };
 };

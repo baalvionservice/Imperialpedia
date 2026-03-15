@@ -1,6 +1,6 @@
 import * as mockApi from '@/services/mock-api/users';
 import * as roleApi from '@/services/mock-api/roles';
-import { User, RoleDefinition, RoleControl, ApiResponse } from '@/types';
+import { User, RoleDefinition, RoleControl, RolePermissionSet, ApiResponse } from '@/types';
 import { errorHandler } from '@/lib/errors/error-handler';
 
 /**
@@ -37,6 +37,19 @@ export const usersService = {
   async getControlRoles(): Promise<ApiResponse<RoleControl[]>> {
     try {
       return await roleApi.getControlRoles();
+    } catch (error) {
+      const appError = errorHandler.handleError(error);
+      return {
+        data: [],
+        status: appError.statusCode,
+        error: appError.message,
+      };
+    }
+  },
+
+  async getRolePermissions(): Promise<ApiResponse<RolePermissionSet[]>> {
+    try {
+      return await roleApi.getRolePermissions();
     } catch (error) {
       const appError = errorHandler.handleError(error);
       return {

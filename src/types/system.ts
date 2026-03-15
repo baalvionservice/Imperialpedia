@@ -121,3 +121,18 @@ export interface RoleControl {
   permissions: string[];
   description?: string;
 }
+
+/**
+ * Interface for Granular Permission Control
+ */
+export interface Permission {
+  name: string;
+  enabled: boolean;
+}
+
+export interface RolePermissionSet {
+  roleId: string;
+  roleName: string;
+  description: string;
+  permissions: Permission[];
+}
