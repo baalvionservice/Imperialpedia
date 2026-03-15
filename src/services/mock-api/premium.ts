@@ -1,57 +1,56 @@
-import { ApiResponse, SubscriptionTier, PremiumState, PremiumReport, PremiumAnalytics } from '@/types';
+import { ApiResponse, SubscriptionTier, PremiumState, PremiumReport, PremiumAnalytics, MockPaymentStatus } from '@/types/premium';
 
 /**
  * @fileOverview Mock service for managing subscription tiers, premium reports, and advanced analytics.
+ * Aligned with Prompt 40 requirements.
  */
+
+const mockSubscriptionPlans = [
+  { plan_name: "Free", price: 0, features: ["Access to basic content", "Limited calculators"] },
+  { plan_name: "Pro", price: 29.99, features: ["Full content access", "Advanced calculators", "AI portfolio insights"] },
+  { plan_name: "Enterprise", price: 99.99, features: ["Team accounts", "API access", "Custom reports"] }
+];
 
 const mockTiers: SubscriptionTier[] = [
   {
-    id: 'tier-basic',
-    name: 'Basic',
+    id: 'tier-free',
+    name: 'Free',
+    plan_name: 'Free',
     description: 'Foundational access for retail learners.',
     priceMonthly: '$0',
+    price: 0,
     priceYearly: '$0',
-    features: [
-      'Access to free articles',
-      'Standard glossary terms',
-      'Basic financial calculators',
-      'Public community forums'
-    ],
+    features: mockSubscriptionPlans[0].features,
     color: 'primary'
   },
   {
     id: 'tier-pro',
     name: 'Pro',
+    plan_name: 'Pro',
     description: 'The definitive suite for serious analysts.',
-    priceMonthly: '$20',
-    priceYearly: '$200',
-    features: [
-      'Advanced AI Analyst Suite',
-      'Bull/Bear Case Generators',
-      'Full Portfolio Intelligence',
-      'Exportable Research Nodes',
-      'Early access to Beta features',
-      'Priority Editorial support'
-    ],
+    priceMonthly: '$29.99',
+    price: 29.99,
+    priceYearly: '$299',
+    features: mockSubscriptionPlans[1].features,
     isPopular: true,
     color: 'secondary'
   },
   {
     id: 'tier-enterprise',
     name: 'Enterprise',
+    plan_name: 'Enterprise',
     description: 'Institutional-grade research infrastructure.',
-    priceMonthly: '$100',
-    priceYearly: '$1,000',
-    features: [
-      'Programmatic API access',
-      'Custom strategy builder',
-      'Institutional heatmaps',
-      'Dedicated account executive',
-      'Bulk expert verification',
-      'White-label reporting'
-    ],
+    priceMonthly: '$99.99',
+    price: 99.99,
+    priceYearly: '$999',
+    features: mockSubscriptionPlans[2].features,
     color: 'emerald'
   }
+];
+
+const mockPaymentStatuses: MockPaymentStatus[] = [
+  { user: "User123", plan_selected: "Pro", status: "success", message: "Payment successful" },
+  { user: "User456", plan_selected: "Enterprise", status: "failed", message: "Card declined" }
 ];
 
 export const getSubscriptionTiers = async (): Promise<ApiResponse<SubscriptionTier[]>> => {
@@ -67,7 +66,8 @@ export const getPremiumState = async (): Promise<ApiResponse<PremiumState>> => {
   return {
     data: {
       tiers: mockTiers,
-      activeTier: 'tier-pro', // Simulating a Pro user for these views
+      subscription_plans: mockSubscriptionPlans,
+      activeTier: 'tier-free', 
       trialInfo: {
         available: true,
         durationDays: 14
@@ -94,13 +94,6 @@ export const getPremiumReports = async (): Promise<ApiResponse<PremiumReport[]>>
         type: "table",
         category: "Market Audit",
         data: [{ sector: "Technology", performance: "+12.4%", volatility: "Low" }, { sector: "Renewables", performance: "+8.2%", volatility: "Medium" }, { sector: "Traditional Finance", performance: "-2.1%", volatility: "Low" }]
-      },
-      {
-        id: 'rep-3',
-        report_name: "DeFi Yield Benchmarks",
-        type: "summary",
-        category: "Web3 Intelligence",
-        data: [{ protocol: "Aave", apy: "4.2%" }, { protocol: "Compound", apy: "3.8%" }]
       }
     ],
     status: 200
@@ -113,25 +106,7 @@ export const getPremiumAnalytics = async (): Promise<ApiResponse<PremiumAnalytic
     data: [
       {
         type: "portfolio_deep_dive",
-        summary: "Your portfolio shows a high concentration in large-cap technology (45%), which has provided 2.4x the benchmark yield this cycle. However, risk telemetry suggests a potential 12% drawdown exposure in the event of a hawkish Fed shift."
-      },
-      {
-        type: "historical_sentiment",
-        data: [
-          { date: "2024-03-08", sentiment_score: 0.72, price_index: 100 },
-          { date: "2024-03-09", sentiment_score: 0.68, price_index: 102 },
-          { date: "2024-03-10", sentiment_score: 0.65, price_index: 101 },
-          { date: "2024-03-11", sentiment_score: 0.75, price_index: 105 },
-          { date: "2024-03-12", sentiment_score: 0.82, price_index: 108 }
-        ]
-      },
-      {
-        type: "backtesting",
-        results: [
-          { strategy: "SIP Growth (Balanced)", mock_return: "+14.2%", max_drawdown: "-4.5%" },
-          { strategy: "Aggensive Momentum", mock_return: "+28.5%", max_drawdown: "-18.2%" },
-          { strategy: "Defensive Hedge", mock_return: "+6.8%", max_drawdown: "-1.2%" }
-        ]
+        summary: "Your portfolio shows a high concentration in large-cap technology (45%), which has provided 2.4x the benchmark yield this cycle."
       }
     ],
     status: 200

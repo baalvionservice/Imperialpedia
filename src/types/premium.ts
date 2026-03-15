@@ -5,8 +5,10 @@
 export interface SubscriptionTier {
   id: string;
   name: string;
+  plan_name?: string; // Align with Prompt 40
   description: string;
   priceMonthly: string;
+  price?: number; // Align with Prompt 40
   priceYearly: string;
   features: string[];
   isPopular?: boolean;
@@ -15,6 +17,7 @@ export interface SubscriptionTier {
 
 export interface PremiumState {
   tiers: SubscriptionTier[];
+  subscription_plans?: any[]; // For Prompt 40 structure
   activeTier: string;
   trialInfo: {
     available: boolean;
@@ -41,4 +44,11 @@ export interface PremiumAnalytics {
   summary?: string;
   data?: any[];
   results?: any[];
+}
+
+export interface MockPaymentStatus {
+  user: string;
+  plan_selected: string;
+  status: 'success' | 'failed';
+  message: string;
 }
