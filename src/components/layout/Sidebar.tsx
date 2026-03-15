@@ -45,7 +45,8 @@ import {
   FileCode,
   Shield,
   Monitor,
-  Palette
+  Palette,
+  TrendingDown
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 import { useAppStore } from '@/lib/state/app-store';
@@ -160,6 +161,7 @@ const Sidebar = ({ className }: { className?: string }) => {
   const publishingItems = [
     { icon: PenTool, label: 'Content Engine', href: '/articles' },
     { icon: Sparkles, label: 'AI Bull Case', href: '/ai-analyst/bull-case' },
+    { icon: TrendingDown, label: 'AI Bear Case', href: '/ai-analyst/bear-case' },
     { icon: Search, label: 'Internal Search', href: '/search' },
     { icon: UsersIcon, label: 'Creator Network', href: '/creators' },
     { icon: CalcIcon, label: 'Financial Tools', href: '/financial-tools' },
