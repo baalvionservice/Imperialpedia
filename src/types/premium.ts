@@ -27,3 +27,18 @@ export interface CheckoutSession {
   billingCycle: 'monthly' | 'yearly';
   status: 'idle' | 'processing' | 'completed' | 'error';
 }
+
+export interface PremiumReport {
+  id: string;
+  report_name: string;
+  type: 'chart' | 'table' | 'summary';
+  category: string;
+  data: any[];
+}
+
+export interface PremiumAnalytics {
+  type: 'portfolio_deep_dive' | 'historical_sentiment' | 'backtesting';
+  summary?: string;
+  data?: any[];
+  results?: any[];
+}

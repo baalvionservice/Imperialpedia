@@ -58,7 +58,9 @@ import {
   Star,
   Trophy,
   Award,
-  CreditCard
+  CreditCard,
+  FileSearch,
+  LineChart
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 import { useAppStore } from '@/lib/state/app-store';
@@ -116,9 +118,14 @@ const Sidebar = ({ className }: { className?: string }) => {
   const personalItems = [
     { icon: User, label: 'My Dashboard', href: '/dashboard' },
     { icon: Briefcase, label: 'Portfolio & Holdings', href: '/dashboard/portfolio' },
-    { icon: CreditCard, label: 'Premium Access', href: '/premium/subscribe' },
     { icon: Search, label: 'Market Search', href: '/search' },
     { icon: Activity, label: 'Intelligence Feed', href: '/dashboard/feed' },
+  ];
+
+  const premiumItems = [
+    { icon: CreditCard, label: 'Subscription Hub', href: '/premium/subscribe' },
+    { icon: FileSearch, label: 'Intelligence Reports', href: '/premium/reports' },
+    { icon: LineChart, label: 'Advanced Analytics', href: '/premium/analytics' },
   ];
 
   const communityItems = [
@@ -233,6 +240,22 @@ const Sidebar = ({ className }: { className?: string }) => {
           </div>
         </div>
 
+        {/* Premium Section */}
+        <div className="pt-4 border-t border-white/5">
+          <Text variant="label" className="px-4 mb-3 text-[10px] text-primary/60 font-bold uppercase tracking-widest">
+            Pro Intelligence
+          </Text>
+          <div className="space-y-1">
+            {premiumItems.map((item) => (
+              <SidebarItem
+                key={item.href}
+                {...item}
+                isActive={pathname === item.href}
+              />
+            ))}
+          </div>
+        </div>
+
         {/* Community Section */}
         <div className="pt-4 border-t border-white/5">
           <Text variant="label" className="px-4 mb-3 text-[10px] text-muted-foreground/50 font-bold uppercase tracking-widest">
@@ -304,7 +327,7 @@ const Sidebar = ({ className }: { className?: string }) => {
         )}
 
         {/* General Knowledge Context */}
-        {(!pathname.startsWith('/admin') && !pathname.startsWith('/writer') && !pathname.startsWith('/editor') && !pathname.startsWith('/creator') && !pathname.startsWith('/dashboard') && !pathname.startsWith('/community')) && (
+        {(!pathname.startsWith('/admin') && !pathname.startsWith('/writer') && !pathname.startsWith('/editor') && !pathname.startsWith('/creator') && !pathname.startsWith('/dashboard') && !pathname.startsWith('/community') && !pathname.startsWith('/premium')) && (
           <div className="pt-4 border-t border-white/5">
             <Text variant="label" className="px-4 mb-3 text-[10px] text-muted-foreground/50 font-bold uppercase tracking-widest">
               Knowledge Hub
