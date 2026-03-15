@@ -1,4 +1,4 @@
-import { CreatorProfile, ApiResponse, CreatorContentItem, CreatorDashboardSummary, CreatorDashboardAnalytics } from '@/types';
+import { CreatorProfile, ApiResponse, CreatorContentItem, CreatorDashboardSummary, CreatorDashboardAnalytics, CreatorVerification } from '@/types';
 
 /**
  * @fileOverview Mock service for managing creator profiles, stats, and dashboard content.
@@ -90,6 +90,27 @@ const mockCreatorDashboardContent: CreatorContentItem[] = [
   }
 ];
 
+const mockPendingVerifications: CreatorVerification[] = [
+  {
+    creatorId: 'u-4',
+    creatorName: 'Wealth Builder',
+    creatorAvatar: 'https://picsum.photos/seed/wealth/200/200',
+    verified: false,
+    requestedAt: '2024-03-10T10:00:00Z',
+    status: 'pending',
+    documentsProvided: ['LinkedIn Profile', 'FINRA Certification']
+  },
+  {
+    creatorId: 'u-6',
+    creatorName: 'DeFi Analyst',
+    creatorAvatar: 'https://picsum.photos/seed/defi/200/200',
+    verified: false,
+    requestedAt: '2024-03-11T14:20:00Z',
+    status: 'pending',
+    documentsProvided: ['Whitepaper Authorship', 'Github Repository']
+  }
+];
+
 export const getCreators = async (): Promise<ApiResponse<CreatorProfile[]>> => {
   await new Promise((resolve) => setTimeout(resolve, 300));
   return {
@@ -152,6 +173,14 @@ export const getCreatorAnalytics = async (creatorId: string): Promise<ApiRespons
         { date: '2024-03-07', views: 25400, revenue: 252.80, engagement: 960 }
       ]
     },
+    status: 200
+  };
+};
+
+export const getPendingVerifications = async (): Promise<ApiResponse<CreatorVerification[]>> => {
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  return {
+    data: mockPendingVerifications,
     status: 200
   };
 };

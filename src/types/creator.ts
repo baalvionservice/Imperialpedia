@@ -84,3 +84,15 @@ export interface CreatorDashboardAnalytics {
     engagement: number;
   }>;
 }
+
+export interface CreatorVerification {
+  creatorId: string;
+  creatorName: string;
+  creatorAvatar: string;
+  verified: boolean;
+  requestedAt: string;
+  approvedAt?: string;
+  approverId?: string;
+  status: "pending" | "approved" | "rejected";
+  documentsProvided: string[];
+}

@@ -89,6 +89,7 @@ const Sidebar = ({ className }: { className?: string }) => {
   const adminItems = [
     { icon: LayoutDashboard, label: 'Admin Home', href: '/admin' },
     { icon: UsersIcon, label: 'User Management', href: '/admin/users' },
+    { icon: ShieldCheck, label: 'Expert Verifications', href: '/admin/creators/verification' },
     { icon: Calendar, label: 'Publisher Scheduler', href: '/admin/scheduler' },
     { icon: ImageIcon, label: 'Media Library', href: '/admin/media' },
     { icon: Layers, label: 'Categories', href: '/admin/categories' },
