@@ -271,6 +271,23 @@ export interface AssetSummary {
 }
 
 /**
+ * AI Scenario Modeler Types (Prompt 31)
+ */
+export interface CaseAnalysis {
+  summary: string;
+  key_drivers?: string[]; // for bull
+  key_risks?: string[];   // for bear
+  confidence_score: number;
+}
+
+export interface AssetCase {
+  asset_name: string;
+  symbol: string;
+  bull_case: CaseAnalysis;
+  bear_case: CaseAnalysis;
+}
+
+/**
  * ADMIN ANALYTICS MOCK DATA TYPES (Prompt 28)
  */
 

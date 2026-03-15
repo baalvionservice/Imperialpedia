@@ -2,7 +2,7 @@ import * as mockApi from '@/services/mock-api/analytics';
 import { ApiResponse } from '@/types';
 import { TrendingItem } from '@/services/mock-api/analytics';
 import { errorHandler } from '@/lib/errors/error-handler';
-import { TrafficAnalytics, SeoAnalytics, PlatformOverview, ContentAnalyticsReport, TrafficAnalyticsReport, EngagementAnalytics, ModerationAnalytics, CreatorEngagement, TrafficSources, TrendingContent, DailyActiveUsers, WeeklyActiveUsers, TopContent, TopKeyword, GrowthMetrics, EngagementByCategory, TrafficTrends, EngagementTrends, FullAnalyticsOverview, AssetSummary } from '@/types/analytics';
+import { TrafficAnalytics, SeoAnalytics, PlatformOverview, ContentAnalyticsReport, TrafficAnalyticsReport, EngagementAnalytics, ModerationAnalytics, CreatorEngagement, TrafficSources, TrendingContent, DailyActiveUsers, WeeklyActiveUsers, TopContent, TopKeyword, GrowthMetrics, EngagementByCategory, TrafficTrends, EngagementTrends, FullAnalyticsOverview, AssetSummary, AssetCase } from '@/types/analytics';
 
 /**
  * @fileOverview Abstraction layer for analytics and trending data with error handling.
@@ -200,7 +200,7 @@ export const analyticsService = {
         avgEngagement: response.data.avgEngagement,
         totalArticles: response.data.totalArticles,
         avgReadTime: 402, // 6m 42s in seconds
-        topContent: response.data.topArticles.map(a => ({
+        topContent: response.data.topArticles.map((a: any) => ({
           id: a.articleId,
           title: a.title,
           views: a.views,
@@ -210,7 +210,7 @@ export const analyticsService = {
           seoScore: a.seoScore,
           category: a.category
         })),
-        categoryBreakdown: response.data.topCategories.map(c => ({
+        categoryBreakdown: response.data.topCategories.map((c: any) => ({
           category: c.category,
           views: c.views
         }))
@@ -307,6 +307,19 @@ export const analyticsService = {
   async getAssetSummaries(): Promise<ApiResponse<AssetSummary[]>> {
     try {
       return await mockApi.getAssetSummaries();
+    } catch (error) {
+      const appError = errorHandler.handleError(error);
+      return {
+        data: [],
+        status: appError.statusCode,
+        error: appError.message,
+      };
+    }
+  },
+
+  async getAssetCases(query?: string): Promise<ApiResponse<AssetCase[]>> {
+    try {
+      return await mockApi.getAssetCases(query);
     } catch (error) {
       const appError = errorHandler.handleError(error);
       return {

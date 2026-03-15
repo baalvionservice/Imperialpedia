@@ -61,7 +61,8 @@ import {
   CreditCard,
   FileSearch,
   LineChart,
-  Layout
+  Layout,
+  Spline
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 import { useAppStore } from '@/lib/state/app-store';
@@ -201,6 +202,7 @@ const Sidebar = ({ className }: { className?: string }) => {
     { icon: History, label: 'AI Automated Recap', href: '/ai-analyst/automated-recap' },
     { icon: Newspaper, label: 'AI News Summary', href: '/ai-analyst/news-summary' },
     { icon: Activity, label: 'AI Trend Explainer', href: '/ai-analyst/trend-explanation' },
+    { icon: Spline, label: 'AI Scenario Modeler', href: '/ai-analyst/scenario-modeling' },
     { icon: Sparkles, label: 'AI Bull Case', href: '/ai-analyst/bull-case' },
     { icon: TrendingDown, label: 'AI Bear Case', href: '/ai-analyst/bear-case' },
     { icon: ShieldAlert, label: 'AI Risk Scanner', href: '/ai-analyst/risk-detection' },

@@ -21,7 +21,8 @@ import {
   FullAnalyticsOverview, 
   TopCreator,
   AdminAnalyticsData,
-  AssetSummary
+  AssetSummary,
+  AssetCase
 } from '@/types/analytics';
 
 /**
@@ -235,7 +236,7 @@ export const getTopKeywords = async (): Promise<ApiResponse<TopKeyword[]>> => {
   const mockData: TopKeyword[] = [
     { id: '1', keyword: 'Yield Curve Inversion', page: '/articles/yield-curve', rank: 1.2, impressions: 125000, clicks: 34200, ctr: 27.4, trend: 'Up', history: dates.map(d => ({ date: d, impressions: Math.floor(Math.random() * 20000) + 10000 })) },
     { id: '2', keyword: 'Compound Interest Calc', page: '/financial-tools/compound-interest', rank: 2.1, impressions: 85400, clicks: 21800, ctr: 25.5, trend: 'Up', history: dates.map(d => ({ date: d, impressions: Math.floor(Math.random() * 15000) + 8000 })) },
-    { id: '3', keyword: 'Recession Indicators', page: '/tags/recession', rank: 3.4, impressions: 62000, clicks: 12400, ctr: 20.0, trend: 'Down', history: dates.map(d => ({ date: d, impressions: Math.floor(Math.random() * 10000) + 5000 })) },
+    { id: '3', keyword: 'Recession Indicators', page: '/tags/recession', rank: 3.4, impressions: 62000, clicks: 12400, some: 20.0, trend: 'Down', history: dates.map(d => ({ date: d, impressions: Math.floor(Math.random() * 10000) + 5000 })) } as any,
     { id: '4', keyword: 'Passive Income Strategies', page: '/articles/dividend-income', rank: 4.8, impressions: 45000, clicks: 8200, ctr: 18.2, trend: 'Up', history: dates.map(d => ({ date: d, impressions: Math.floor(Math.random() * 8000) + 4000 })) },
     { id: '5', keyword: 'Bull Market Definition', page: '/glossary/bull-market', rank: 1.5, impressions: 38000, clicks: 9500, ctr: 25.0, trend: 'Down', history: dates.map(d => ({ date: d, impressions: Math.floor(Math.random() * 6000) + 3000 })) },
   ];
@@ -458,7 +459,7 @@ export const getAdminAnalyticsData = async (): Promise<ApiResponse<AdminAnalytic
       feature_usage: [
         { feature: 'Watchlist Hub', usage_count: 12400 },
         { feature: 'Portfolio Architect', usage_count: 8500 },
-        { icon: 'Sparkles', feature: 'AI Analyst Suite', usage_count: 6200 },
+        { feature: 'AI Analyst Suite', usage_count: 6200 },
         { feature: 'Glossary Index', usage_count: 4100 },
         { feature: 'ROI Engines', usage_count: 3200 },
       ],
@@ -534,6 +535,43 @@ export const getAssetSummaries = async (): Promise<ApiResponse<AssetSummary[]>> 
           confidence_score: 0.92
         },
         price_history: dates.map(d => ({ date: d, price: 175 + Math.random() * 10 }))
+      }
+    ],
+    status: 200
+  };
+};
+
+export const getAssetCases = async (query?: string): Promise<ApiResponse<AssetCase[]>> => {
+  await new Promise((resolve) => setTimeout(resolve, 600));
+  return {
+    data: [
+      {
+        asset_name: "XYZ Corp",
+        symbol: "XYZ",
+        bull_case: {
+          summary: "XYZ expected to outperform due to strong product demand and sector growth.",
+          key_drivers: ["Earnings growth", "New market expansion", "Positive sentiment"],
+          confidence_score: 0.82
+        },
+        bear_case: {
+          summary: "XYZ may underperform due to regulatory challenges and market volatility.",
+          key_risks: ["Regulatory risk", "Sector slowdown", "High competition"],
+          confidence_score: 0.68
+        }
+      },
+      {
+        asset_name: "Tesla Inc.",
+        symbol: "TSLA",
+        bull_case: {
+          summary: "Expansion into energy storage and autonomous driving software provides a high-multiple floor for the stock.",
+          key_drivers: ["FSD version 12 rollout", "Megapack utility scale growth", "Model 2 manufacturing efficiencies"],
+          confidence_score: 0.75
+        },
+        bear_case: {
+          summary: "Declining margins in core EV manufacturing and heavy competition in the Chinese market pose near-term headwinds.",
+          key_risks: ["Inventory backlog", "Consumer spending shift", "Hardware commoditization"],
+          confidence_score: 0.85
+        }
       }
     ],
     status: 200
