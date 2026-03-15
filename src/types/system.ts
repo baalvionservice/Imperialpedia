@@ -530,3 +530,29 @@ export interface IncidentResponseData {
   alerts: SystemAlertNode[];
   incident_details: IncidentDetail[];
 }
+
+/**
+ * Prompt 51: Feature Flags & RBAC Types
+ */
+export interface FeatureFlagNode {
+  feature_name: string;
+  description: string;
+  status: 'mock_on' | 'mock_off';
+  category?: string;
+}
+
+export interface RoleAccessNode {
+  role_name: string;
+  permissions: string[];
+}
+
+export interface UserAssignmentNode {
+  user: string;
+  assigned_role: string;
+}
+
+export interface AccessManagementData {
+  feature_flags: FeatureFlagNode[];
+  roles: RoleAccessNode[];
+  mock_user_assignments: UserAssignmentNode[];
+}

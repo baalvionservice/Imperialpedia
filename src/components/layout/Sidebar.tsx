@@ -67,7 +67,8 @@ import {
   Cpu,
   Network,
   FlaskConical,
-  ShieldWarning
+  ShieldWarning,
+  Key
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 import { useAppStore } from '@/lib/state/app-store';
@@ -147,6 +148,7 @@ const Sidebar = ({ className }: { className?: string }) => {
     { icon: LayoutDashboard, label: 'Admin Dashboard', href: '/admin/dashboard' },
     { icon: BarChart3, label: 'Analytics Overview', href: '/admin/analytics/full-overview' },
     { icon: ShieldAlert, label: 'Incident Response', href: '/admin/control/incidents' },
+    { icon: Key, label: 'Access Orchestration', href: '/admin/control/access' },
     { icon: UsersIcon, label: 'User Management', href: '/admin/control/users' },
     { icon: Lock, label: 'Roles & Permissions', href: '/admin/roles' },
     { icon: Shield, label: 'Security Protocols', href: '/admin/control/security' },

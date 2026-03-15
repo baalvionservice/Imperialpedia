@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog, SecuritySettings, GlobalNotificationSettings, AuditTrailEntry, FeatureSettings, AdminSession, BrandingSettings, SystemAlert, AdminHomeOverview, SecurityDashboardData, AdminSystemHubData, SecurityMockData, InfrastructureMockData, EdgeComputingData, CdnManagementData, SeoManagementData, ExperimentManagementData, IncidentResponseData } from '@/types/system';
+import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog, SecuritySettings, GlobalNotificationSettings, AuditTrailEntry, FeatureSettings, AdminSession, BrandingSettings, SystemAlert, AdminHomeOverview, SecurityDashboardData, AdminSystemHubData, SecurityMockData, InfrastructureMockData, EdgeComputingData, CdnManagementData, SeoManagementData, ExperimentManagementData, IncidentResponseData, AccessManagementData } from '@/types/system';
 
 /**
  * @fileOverview Mock service for managing global platform configuration and system notifications.
@@ -337,6 +337,28 @@ const mockIncidentResponseData: IncidentResponseData = {
   ],
   incident_details: [
     { incident_id: "INC001", timeline: "mock_timeline", affected_systems: ["Server1", "LoadBalancer1"], suggested_resolution: "Restart servers and redistribute load" }
+  ]
+};
+
+const mockAccessManagementData: AccessManagementData = {
+  feature_flags: [
+    { feature_name: "Advanced Analytics", description: "Enable advanced reporting charts and longitudinal tracking.", status: "mock_on", category: "Core" },
+    { feature_name: "Beta AI Summary", description: "Enable AI-generated summaries for financial guides.", status: "mock_off", category: "AI Analyst" },
+    { feature_name: "Real-time Sentiment", description: "Live market sentiment node processing from social wires.", status: "mock_on", category: "AI Analyst" },
+    { feature_name: "Portfolio Backtesting", description: "Allow Pro users to simulate strategies against historical nodes.", status: "mock_off", category: "Premium" }
+  ],
+  roles: [
+    { role_name: "Admin", permissions: ["manage_users", "edit_content", "view_analytics", "system_config", "audit_logs", "feature_toggles"] },
+    { role_name: "Editor", permissions: ["edit_content", "view_analytics", "moderate_comments", "publish_content"] },
+    { role_name: "User", permissions: ["view_content", "post_comments", "use_calculators", "watchlist_hub"] },
+    { role_name: "Guest", permissions: ["view_public_content", "register_account"] }
+  ],
+  mock_user_assignments: [
+    { user: "User123", assigned_role: "Admin" },
+    { user: "User456", assigned_role: "Editor" },
+    { user: "User789", assigned_role: "User" },
+    { user: "Eleanor Vance", assigned_role: "Admin" },
+    { user: "Julian Wealth", assigned_role: "Editor" }
   ]
 };
 
@@ -692,6 +714,14 @@ export const getIncidentResponseData = async (): Promise<ApiResponse<IncidentRes
   await new Promise((resolve) => setTimeout(resolve, 600));
   return {
     data: mockIncidentResponseData,
+    status: 200,
+  };
+};
+
+export const getAccessManagementData = async (): Promise<ApiResponse<AccessManagementData>> => {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  return {
+    data: mockAccessManagementData,
     status: 200,
   };
 };

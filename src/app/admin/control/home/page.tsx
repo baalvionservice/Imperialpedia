@@ -30,7 +30,8 @@ import {
   Globe,
   Search,
   FlaskConical,
-  ShieldWarning
+  ShieldWarning,
+  Key
 } from 'lucide-react';
 import Link from 'next/link';
 import { systemService } from '@/services/data/system-service';
@@ -74,8 +75,9 @@ export default function AdminControlCenterHomePage() {
 
   const modules = [
     { label: 'Identity Matrix', desc: 'Manage user directory & states.', href: '/admin/control/users', icon: Users, color: 'text-primary', badge: 0 },
-    { label: 'Persona Architect', desc: 'Define system roles.', href: '/admin/control/roles', icon: Lock, color: 'text-secondary', badge: 0 },
-    { label: 'Capability Hub', desc: 'Assign granular permissions.', href: '/admin/control/permissions/assign', icon: ShieldCheck, color: 'text-primary', badge: 0 },
+    { label: 'Access Orchestration', desc: 'Feature flags & RBAC hub.', href: '/admin/control/access', icon: Key, color: 'text-secondary', badge: 0 },
+    { label: 'Persona Architect', desc: 'Define system roles.', href: '/admin/control/roles', icon: Lock, color: 'text-primary', badge: 0 },
+    { label: 'Capability Hub', desc: 'Assign granular permissions.', href: '/admin/control/permissions/assign', icon: ShieldCheck, color: 'text-secondary', badge: 0 },
     { label: 'Incident Command', desc: 'Triage production threats.', href: '/admin/control/incidents', icon: ShieldAlert, color: 'text-destructive', badge: overview.alertsActive },
     { label: 'Moderation Gate', desc: 'Process content reports.', href: '/admin/control/moderation/approvals', icon: ShieldX, color: 'text-destructive', badge: overview.pendingModeration },
     { label: 'Kernel Logic', desc: 'Configure global settings.', href: '/admin/control/settings', icon: Settings, color: 'text-secondary', badge: 0 },
@@ -195,7 +197,7 @@ export default function AdminControlCenterHomePage() {
       </div>
 
       {/* System Health Snapshot */}
-      <Card className="glass-card border-none bg-primary/5 p-10 relative overflow-hidden">
+      <Card className="glass-card border-none bg-primary/5 p-10 relative overflow-hidden text-center lg:text-left">
         <div className="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-primary/10 to-transparent pointer-events-none" />
         <div className="flex flex-col lg:flex-row items-center gap-10 relative z-10">
           <div className="w-20 h-20 rounded-[2.5rem] bg-primary/20 flex items-center justify-center text-primary shadow-2xl shrink-0">
