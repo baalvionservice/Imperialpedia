@@ -20,7 +20,8 @@ import {
   Zap,
   Globe,
   Activity,
-  ArrowRight
+  ArrowRight,
+  Target
 } from 'lucide-react';
 import Link from 'next/link';
 import { getDashboardMetrics, DashboardMetrics } from '@/services/mock-api/analytics';
@@ -96,23 +97,24 @@ export default function AnalyticsDashboardPage() {
       </header>
 
       {/* Specialty Intelligence Links */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
         {[
-          { label: 'SEO Authority', href: '/admin/analytics/seo', icon: Globe, color: 'text-primary', desc: 'Indexing & Rankings' },
-          { label: 'Traffic Pulse', href: '/admin/analytics/traffic', icon: Activity, color: 'text-secondary', desc: 'Real-time Requests' },
-          { label: 'Content Depth', href: '/admin/analytics/content', icon: FileText, color: 'text-primary', desc: 'Node Engagement' },
-          { label: 'Expert Network', href: '/admin/analytics/creators', icon: Users, color: 'text-secondary', desc: 'Creator Velocity' },
+          { label: 'SEO Authority', href: '/admin/analytics/seo', icon: Globe, color: 'text-primary', desc: 'Rankings' },
+          { label: 'Traffic Pulse', href: '/admin/analytics/traffic', icon: Activity, color: 'text-secondary', desc: 'Visitors' },
+          { label: 'User Activity', href: '/admin/analytics/engagement', icon: Target, color: 'text-primary', desc: 'Retention' },
+          { label: 'Content Depth', href: '/admin/analytics/content', icon: FileText, color: 'text-secondary', desc: 'Engagement' },
+          { label: 'Expert Network', href: '/admin/analytics/creators', icon: Users, color: 'text-primary', desc: 'Creators' },
         ].map((node) => (
           <Link key={node.href} href={node.href}>
-            <Card className="glass-card p-4 hover:border-primary/40 transition-all group">
+            <Card className="glass-card p-4 hover:border-primary/40 transition-all group h-full">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className={`p-2 rounded-lg bg-background/50 border border-white/5 ${node.color}`}>
                     <node.icon className="h-4 w-4" />
                   </div>
                   <div>
-                    <Text variant="bodySmall" weight="bold">{node.label}</Text>
-                    <Text variant="caption" className="text-muted-foreground text-[10px]">{node.desc}</Text>
+                    <Text variant="bodySmall" weight="bold" className="text-xs">{node.label}</Text>
+                    <Text variant="caption" className="text-muted-foreground text-[9px] uppercase font-bold">{node.desc}</Text>
                   </div>
                 </div>
                 <ArrowRight className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-all -translate-x-2 group-hover:translate-x-0 text-primary" />

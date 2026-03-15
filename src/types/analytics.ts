@@ -89,3 +89,21 @@ export interface ContentAnalyticsReport {
   topContent: ContentPerformance[];
   categoryBreakdown: { category: string; views: number }[];
 }
+
+export interface EngagementAnalytics {
+  dau: { date: string; users: number }[];
+  wau: { week: string; users: number }[];
+  topUsers: { 
+    id: string; 
+    name: string; 
+    avatar: string; 
+    actions: number; 
+    level: 'High' | 'Medium' | 'Low';
+    lastActive: string;
+  }[];
+  stats: {
+    avgDailyActions: number;
+    retentionRate: number;
+    stickinessRatio: number;
+  };
+}

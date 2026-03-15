@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { TrafficAnalytics, SeoAnalytics, PlatformOverview, TrafficAnalyticsReport } from '@/types/analytics';
+import { TrafficAnalytics, SeoAnalytics, PlatformOverview, TrafficAnalyticsReport, ContentAnalytics, EngagementAnalytics } from '@/types/analytics';
 
 /**
  * @fileOverview Mock service for platform analytics and trending data.
@@ -24,29 +24,6 @@ export interface DashboardMetrics {
     users: number;
     usage: number;
   }[];
-}
-
-export interface ContentMetrics {
-  articleId: string;
-  title: string;
-  category: string;
-  tags: string[];
-  views: number;
-  likes: number;
-  comments: number;
-  shares: number;
-  avgReadTime: number; // in seconds
-  seoScore: number;
-}
-
-export interface ContentAnalytics {
-  totalViews: number;
-  totalArticles: number;
-  avgEngagement: number;
-  topArticles: ContentMetrics[];
-  topCategories: { category: string; views: number; articleCount: number }[];
-  topTags: { tag: string; views: number }[];
-  dailyViews: { date: string; views: number }[];
 }
 
 const mockTrending: TrendingItem[] = [
@@ -136,41 +113,20 @@ export const getContentAnalytics = async (): Promise<ApiResponse<ContentAnalytic
           shares: 210,
           avgReadTime: 640,
           seoScore: 92
-        },
-        {
-          articleId: 'art-4',
-          title: 'DeFi Liquidity Pools Explained',
-          category: 'Crypto',
-          tags: ['DeFi', 'Liquidity'],
-          views: 28400,
-          likes: 720,
-          comments: 145,
-          shares: 85,
-          avgReadTime: 510,
-          seoScore: 88
         }
       ],
       topCategories: [
         { category: 'Economics', views: 450000, articleCount: 320 },
         { category: 'Investing', views: 380000, articleCount: 450 },
-        { category: 'Markets', views: 220000, articleCount: 280 },
-        { category: 'Crypto', views: 150000, articleCount: 120 },
-        { category: 'Personal Finance', views: 54000, articleCount: 78 }
+        { category: 'Markets', views: 220000, articleCount: 280 }
       ],
       topTags: [
         { tag: 'Macro', views: 120000 },
-        { tag: 'Recession', views: 95000 },
-        { tag: 'Wealth', views: 82000 },
-        { tag: 'Dividends', views: 45000 }
+        { tag: 'Recession', views: 95000 }
       ],
       dailyViews: [
         { date: '2024-03-01', views: 42000 },
-        { date: '2024-03-02', views: 45000 },
-        { date: '2024-03-03', views: 38000 },
-        { date: '2024-03-04', views: 52000 },
-        { date: '2024-03-05', views: 61000 },
-        { date: '2024-03-06', views: 58000 },
-        { date: '2024-03-07', views: 65000 }
+        { date: '2024-03-02', views: 45000 }
       ]
     },
     status: 200
@@ -183,19 +139,11 @@ export const getTrafficAnalytics = async (): Promise<ApiResponse<TrafficAnalytic
     data: {
       activeUsers: 1420,
       pageViews: 425000,
-      sessionDuration: 402, // 6m 42s
+      sessionDuration: 402,
       bounceRate: 32.4,
-      deviceBreakdown: {
-        desktop: 58,
-        mobile: 35,
-        tablet: 7
-      },
+      deviceBreakdown: { desktop: 58, mobile: 35, tablet: 7 },
       geoBreakdown: [
-        { country: 'United States', users: 125000, percentage: 42 },
-        { country: 'United Kingdom', users: 45000, percentage: 15 },
-        { country: 'Germany', users: 32000, percentage: 11 },
-        { country: 'Singapore', users: 24000, percentage: 8 },
-        { country: 'Canada', users: 18000, percentage: 6 }
+        { country: 'United States', users: 125000, percentage: 42 }
       ],
       hourlyTraffic: Array.from({ length: 24 }, (_, i) => ({
         hour: `${i}:00`,
@@ -230,8 +178,6 @@ export const getTrafficAnalyticsReport = async (): Promise<ApiResponse<TrafficAn
         { page: '/articles/yield-curve', visits: 45200, bounceRate: 24.5 },
         { page: '/financial-tools/compound-interest', visits: 38900, bounceRate: 18.2 },
         { page: '/glossary/bull-market', visits: 28400, bounceRate: 35.1 },
-        { page: '/articles/macro-trends-2026', visits: 22100, bounceRate: 21.8 },
-        { page: '/financial-tools/retirement', visits: 18500, bounceRate: 15.4 },
       ]
     },
     status: 200
@@ -249,18 +195,10 @@ export const getSeoAnalytics = async (): Promise<ApiResponse<SeoAnalytics>> => {
       topKeywords: [
         { id: '1', page: '/articles/yield-curve', keyword: 'Yield Curve Inversion', rank: 1.2, clicks: 12400, impressions: 45000, ctr: 27.5, trend: 'up' },
         { id: '2', page: '/financial-tools/compound-interest', keyword: 'Compound Interest Calculator', rank: 2.4, clicks: 8200, impressions: 32000, ctr: 25.6, trend: 'up' },
-        { id: '3', page: '/articles/macro-economics', keyword: 'Macro Economics Trends', rank: 4.8, clicks: 5100, impressions: 28000, ctr: 18.2, trend: 'stable' },
-        { id: '4', page: '/articles/inflation-impact', keyword: 'Inflation Impact', rank: 3.1, clicks: 4800, impressions: 15000, ctr: 32.0, trend: 'up' },
-        { id: '5', page: '/articles/retirement-strategy', keyword: 'Retirement Savings Strategy', rank: 8.5, clicks: 2400, impressions: 12000, ctr: 20.0, trend: 'down' },
       ],
       trends: [
         { date: '2024-03-01', clicks: 4200, impressions: 120000 },
         { date: '2024-03-02', clicks: 4500, impressions: 125000 },
-        { date: '2024-03-03', clicks: 3800, impressions: 110000 },
-        { date: '2024-03-04', clicks: 5200, impressions: 140000 },
-        { date: '2024-03-05', clicks: 6100, impressions: 165000 },
-        { date: '2024-03-06', clicks: 5800, impressions: 155000 },
-        { date: '2024-03-07', clicks: 6500, impressions: 180000 },
       ]
     },
     status: 200
@@ -286,9 +224,43 @@ export const getPlatformOverview = async (): Promise<ApiResponse<PlatformOvervie
       topContent: [
         { id: '1', title: 'Quantitative Easing vs Tightening', author: 'The Market Maven', views: 45200, engagement: 8.4, status: 'Trending' },
         { id: '2', title: 'The Power of Compound Interest', author: 'Julian Wealth', views: 38900, engagement: 12.1, status: 'Viral' },
-        { id: '3', title: 'DeFi Liquidity Pools', author: 'Sarah Crypto', views: 28400, engagement: 6.8, status: 'Stable' },
-        { id: '4', title: 'Macro Trends in 2026', author: 'Eleanor Vance', views: 22100, engagement: 9.2, status: 'Growing' },
       ]
+    },
+    status: 200
+  };
+};
+
+export const getEngagementAnalytics = async (): Promise<ApiResponse<EngagementAnalytics>> => {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  return {
+    data: {
+      dau: [
+        { date: '2024-03-01', users: 12400 },
+        { date: '2024-03-02', users: 13100 },
+        { date: '2024-03-03', users: 11800 },
+        { date: '2024-03-04', users: 14200 },
+        { date: '2024-03-05', users: 15600 },
+        { date: '2024-03-06', users: 15100 },
+        { date: '2024-03-07', users: 16800 },
+      ],
+      wau: [
+        { week: 'W1', users: 45000 },
+        { week: 'W2', users: 48500 },
+        { week: 'W3', users: 52100 },
+        { week: 'W4', users: 58400 },
+      ],
+      topUsers: [
+        { id: 'u-1', name: 'Eleanor Vance', avatar: 'https://picsum.photos/seed/eleanor/200/200', actions: 1240, level: 'High', lastActive: '2024-03-12T10:30:00Z' },
+        { id: 'u-2', name: 'Julian Wealth', avatar: 'https://picsum.photos/seed/wealth/200/200', actions: 850, level: 'High', lastActive: '2024-03-12T09:15:00Z' },
+        { id: 'u-3', name: 'Sarah Crypto', avatar: 'https://picsum.photos/seed/defi/200/200', actions: 420, level: 'Medium', lastActive: '2024-03-11T16:45:00Z' },
+        { id: 'u-4', name: 'Reader_42', avatar: 'https://picsum.photos/seed/r1/200/200', actions: 310, level: 'Medium', lastActive: '2024-03-12T11:00:00Z' },
+        { id: 'u-5', name: 'Dan Income', avatar: 'https://picsum.photos/seed/dan/200/200', actions: 120, level: 'Low', lastActive: '2024-03-10T14:20:00Z' },
+      ],
+      stats: {
+        avgDailyActions: 14.5,
+        retentionRate: 68.2,
+        stickinessRatio: 42.1
+      }
     },
     status: 200
   };
