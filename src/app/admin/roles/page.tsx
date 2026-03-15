@@ -1,58 +1,51 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
 import { Text } from '@/design-system/typography/text';
 import { 
   ShieldCheck, 
-  ShieldAlert, 
   Settings2, 
   Plus, 
-  Edit, 
   Trash2, 
-  CheckCircle2, 
   Loader2,
   Lock,
   Search,
-  Info
+  Users,
+  ShieldAlert,
+  ChevronRight,
+  Info,
+  CheckCircle2,
+  ArrowLeft,
+  UserPlus
 } from 'lucide-react';
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogDescription, 
-  DialogFooter, 
-  DialogHeader, 
-  DialogTitle, 
-  DialogTrigger 
-} from '@/components/ui/dialog';
-import { usersService } from '@/services/data/users-service';
-import { RoleDefinition } from '@/types';
-import { ALL_PERMISSIONS } from '@/services/mock-api/roles';
+import { getCmsDashboardData } from '@/services/mock-api/admin-cms';
+import { UserRoleItem } from '@/types/system';
 import { toast } from '@/hooks/use-toast';
+import Link from 'next/link';
+import { Input } from '@/components/ui/input';
 
 /**
- * Role and Permission Management Dashboard.
- * Allows administrators to define capabilities for platform staff and experts.
+ * Role Governance & Persona Architect.
+ * Specialized suite for defining system capabilities and access boundaries.
+ * Aligned with Prompt 42 requirements for a permissions matrix.
  */
-export default function RoleManagementPage() {
-  const [roles, setRoles] = useState<RoleDefinition[]>([]);
+export default function RoleControlMatrixPage() {
+  const [users, setUsers] = useState<UserRoleItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isEditing, setIsEditing] = useState(false);
-  const [currentRole, setCurrentRole] = useState<RoleDefinition | null>(null);
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     async function loadRoles() {
       try {
-        const response = await usersService.getRoles();
-        setRoles(response.data);
+        const response = await getCmsDashboardData();
+        if (response.data) setUsers(response.data.user_roles);
       } catch (e) {
-        console.error(e);
+        console.error('Role matrix sync failure', e);
       } finally {
         setLoading(false);
       }
@@ -60,113 +53,148 @@ export default function RoleManagementPage() {
     loadRoles();
   }, []);
 
-  const handleTogglePermission = (permissionId: string) => {
-    if (!currentRole) return;
+  const filteredUsers = users.filter(u => 
+    u.username.toLowerCase().includes(search.toLowerCase()) ||
+    u.role.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const handleToggle = (username: string, permission: keyof UserRoleItem['permissions']) => {
+    setUsers(prev => prev.map(u => {
+      if (u.username === username) {
+        return {
+          ...u,
+          permissions: {
+            ...u.permissions,
+            [permission]: !u.permissions[permission]
+          }
+        };
+      }
+      return u;
+    }));
     
-    const hasPermission = currentRole.permissions.includes(permissionId);
-    const updatedPermissions = hasPermission
-      ? currentRole.permissions.filter(p => p !== permissionId)
-      : [...currentRole.permissions, permissionId];
-      
-    setCurrentRole({ ...currentRole, permissions: updatedPermissions });
+    toast({
+      title: "Capability Synchronized",
+      description: `Updated ${permission} permission for ${username}.`,
+    });
   };
 
-  const handleSave = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!currentRole) return;
-
-    if (currentRole.id) {
-      setRoles(prev => prev.map(r => r.id === currentRole.id ? currentRole : r));
-    } else {
-      setRoles(prev => [...prev, { ...currentRole, id: Math.random().toString() }]);
-    }
-
+  const handleAction = (username: string, action: string) => {
     toast({
-      title: "Capabilities Updated",
-      description: `Permissions for the "${currentRole.name}" role have been synchronized.`,
+      title: `Action: ${action}`,
+      description: `Modifying node: ${username}`,
     });
-    setIsEditing(false);
   };
 
   if (loading) {
     return (
       <div className="py-40 flex flex-col items-center justify-center space-y-4">
         <Loader2 className="h-12 w-12 text-primary animate-spin" />
-        <Text variant="bodySmall" className="animate-pulse">Retrieving Access Matrix...</Text>
+        <Text variant="bodySmall" className="animate-pulse font-bold tracking-widest uppercase text-muted-foreground">
+          Calibrating Security Matrix...
+        </Text>
       </div>
     );
   }
 
   return (
-    <div className="space-y-8 pb-12 animate-in fade-in duration-700">
-      <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-2 text-primary mb-1">
-            <Lock className="h-4 w-4" />
-            <Text variant="label" className="text-[10px] font-bold tracking-widest uppercase">System Security</Text>
+    <div className="space-y-8 pb-24 animate-in fade-in duration-700">
+      <header className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="flex items-center gap-4">
+          <Button variant="ghost" size="icon" className="rounded-full h-12 w-12" asChild>
+            <Link href="/admin"><ArrowLeft className="h-6 w-6" /></Link>
+          </Button>
+          <div>
+            <div className="flex items-center gap-2 text-primary mb-1">
+              <Lock className="h-4 w-4" />
+              <Text variant="label" className="text-[10px] font-bold tracking-widest uppercase">Persona Studio</Text>
+            </div>
+            <Text variant="h1" className="text-3xl font-bold tracking-tight">User Roles & Permissions</Text>
           </div>
-          <Text variant="h1" className="text-3xl font-bold">Role Capabilities</Text>
-          <Text variant="bodySmall" className="text-muted-foreground mt-1">
-            Define and audit functional permissions for platform staff and the expert network.
-          </Text>
         </div>
-        <Button onClick={() => {
-          setCurrentRole({ id: '', name: 'reader', description: '', permissions: [] });
-          setIsEditing(true);
-        }} className="rounded-xl shadow-lg shadow-primary/20 font-bold">
-          <Plus className="mr-2 h-4 w-4" /> Create Custom Role
+        
+        <Button className="bg-primary hover:bg-primary/90 rounded-xl h-12 px-8 shadow-xl shadow-primary/20 font-bold transition-all scale-105 active:scale-95">
+          <UserPlus className="mr-2 h-4 w-4" /> Provision New Persona
         </Button>
       </header>
 
-      {/* Main Roles Table */}
+      {/* Toolbar */}
+      <div className="flex flex-col md:flex-row gap-4 bg-card/30 p-4 rounded-2xl border border-white/5 backdrop-blur-sm sticky top-20 z-30">
+        <div className="relative flex-1 group">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
+          <Input 
+            placeholder="Search personas by identity or role..." 
+            className="pl-12 bg-background/50 h-12 border-white/10 rounded-xl text-sm" 
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+        <Button variant="outline" className="h-12 px-6 rounded-xl border-white/10 bg-background/30 gap-2 font-bold text-xs">
+          <ShieldAlert className="h-4 w-4 text-primary" /> View Security Log
+        </Button>
+      </div>
+
       <Card className="glass-card border-none shadow-2xl overflow-hidden">
         <div className="overflow-x-auto">
           <Table>
             <TableHeader>
               <TableRow className="bg-muted/20 hover:bg-muted/20 border-b border-white/5">
-                <TableHead className="pl-6 font-bold text-[10px] uppercase tracking-widest">Role Identity</TableHead>
-                <TableHead className="font-bold text-[10px] uppercase tracking-widest">Description</TableHead>
-                <TableHead className="font-bold text-[10px] uppercase tracking-widest text-center">Active Nodes</TableHead>
-                <TableHead className="text-right pr-6 font-bold text-[10px] uppercase tracking-widest">Administrative Action</TableHead>
+                <TableHead className="pl-8 font-bold text-[10px] uppercase tracking-widest py-6">User Identity</TableHead>
+                <TableHead className="font-bold text-[10px] uppercase tracking-widest">Platform Persona</TableHead>
+                <TableHead className="font-bold text-[10px] uppercase tracking-widest text-center">View</TableHead>
+                <TableHead className="font-bold text-[10px] uppercase tracking-widest text-center">Edit</TableHead>
+                <TableHead className="font-bold text-[10px] uppercase tracking-widest text-center">Delete</TableHead>
+                <TableHead className="text-right pr-8 font-bold text-[10px] uppercase tracking-widest">Administrative Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {roles.map((role) => (
-                <TableRow key={role.id} className="group hover:bg-muted/10 transition-colors border-b border-white/5">
-                  <TableCell className="py-5 pl-6">
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 rounded-lg bg-primary/10 text-primary">
-                        <ShieldCheck className="h-4 w-4" />
-                      </div>
-                      <span className="text-sm font-bold uppercase tracking-tight">{role.name}</span>
-                    </div>
+              {filteredUsers.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={6} className="h-48 text-center text-muted-foreground italic">
+                    No matching identities localized in current governance buffer.
                   </TableCell>
-                  <TableCell className="max-w-xs">
-                    <Text variant="caption" className="text-muted-foreground leading-relaxed line-clamp-2">
-                      {role.description}
-                    </Text>
+                </TableRow>
+              ) : filteredUsers.map((user) => (
+                <TableRow key={user.username} className="group hover:bg-muted/10 transition-colors border-b border-white/5">
+                  <TableCell className="py-6 pl-8">
+                    <div className="flex items-center gap-4">
+                      <div className="p-2 rounded-lg bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-all">
+                        <Users className="h-4 w-4" />
+                      </div>
+                      <span className="text-sm font-bold uppercase tracking-tight block group-hover:text-primary transition-colors">{user.username}</span>
+                    </div>
                   </TableCell>
                   <TableCell>
-                    <div className="flex justify-center">
-                      <Badge variant="secondary" className="bg-primary/5 text-primary border-none font-mono font-bold text-[10px] px-3">
-                        {role.permissions.length} nodes
-                      </Badge>
-                    </div>
+                    <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20 text-[9px] font-bold uppercase h-6 px-3">
+                      {user.role}
+                    </Badge>
                   </TableCell>
-                  <TableCell className="text-right pr-6">
+                  <TableCell className="text-center">
+                    <Switch 
+                      checked={user.permissions.view} 
+                      onCheckedChange={() => handleToggle(user.username, 'view')}
+                      className="scale-75"
+                    />
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <Switch 
+                      checked={user.permissions.edit} 
+                      onCheckedChange={() => handleToggle(user.username, 'edit')}
+                      className="scale-75"
+                    />
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <Switch 
+                      checked={user.permissions.delete} 
+                      onCheckedChange={() => handleToggle(user.username, 'delete')}
+                      className="scale-75"
+                    />
+                  </TableCell>
+                  <TableCell className="text-right pr-8">
                     <div className="flex justify-end gap-2">
-                      <Button 
-                        variant="ghost" 
-                        size="sm" 
-                        className="h-9 px-3 text-xs font-bold gap-2 text-muted-foreground hover:text-primary transition-colors"
-                        onClick={() => {
-                          setCurrentRole(role);
-                          setIsEditing(true);
-                        }}
-                      >
+                      <Button variant="ghost" size="sm" className="h-9 px-4 text-xs font-bold gap-2 text-muted-foreground hover:text-primary transition-all rounded-xl" onClick={() => handleAction(user.username, 'Edit Profile')}>
                         <Settings2 className="h-3.5 w-3.5" /> Configure
                       </Button>
-                      <Button variant="ghost" size="icon" className="h-9 w-9 text-muted-foreground hover:text-destructive transition-colors">
+                      <Button variant="ghost" size="icon" className="h-9 w-9 text-muted-foreground hover:text-destructive transition-colors rounded-xl" onClick={() => handleAction(user.username, 'Purge')}>
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </div>
@@ -178,122 +206,32 @@ export default function RoleManagementPage() {
         </div>
       </Card>
 
-      {/* Security Context Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card className="glass-card bg-primary/5 border-primary/20 p-6 flex flex-col gap-4">
-          <div className="p-3 rounded-2xl bg-primary/10 w-fit text-primary">
-            <Lock className="h-6 w-6" />
+      {/* Governance Context Footer */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-12">
+        <Card className="glass-card border-none bg-primary/5 p-8 flex items-start gap-6 group hover:border-primary/30 transition-all">
+          <div className="p-4 rounded-3xl bg-primary/10 text-primary shrink-0 group-hover:scale-110 transition-transform">
+            <ShieldCheck className="h-8 w-8" />
           </div>
-          <div>
-            <Text variant="bodySmall" weight="bold">Least Privilege Principle</Text>
-            <Text variant="caption" className="text-muted-foreground mt-1 leading-relaxed">
-              Users are assigned the minimum levels of access necessary to perform their roles. This limits platform risk and prevents lateral traversal during account compromise.
+          <div className="space-y-2">
+            <Text variant="bodySmall" weight="bold">Least Privilege Enforced</Text>
+            <Text variant="caption" className="text-muted-foreground leading-relaxed">
+              Every persona change is cryptographically sealed and logged. Users are granted only the nodes required for their tactical duties.
             </Text>
           </div>
         </Card>
         
-        <Card className="glass-card border-secondary/20 p-6 flex flex-col gap-4">
-          <div className="p-3 rounded-2xl bg-secondary/10 w-fit text-secondary">
-            <ShieldCheck className="h-6 w-6" />
+        <Card className="glass-card border-none bg-secondary/5 p-8 flex items-start gap-6 group hover:border-secondary/30 transition-all">
+          <div className="p-4 rounded-3xl bg-secondary/10 text-secondary shrink-0 group-hover:scale-110 transition-transform">
+            <Info className="h-8 w-8" />
           </div>
-          <div>
-            <Text variant="bodySmall" weight="bold">Immutable Audit Chain</Text>
-            <Text variant="caption" className="text-muted-foreground mt-1 leading-relaxed">
-              Every permission change is logged in the cryptographic Audit Trail. Role modifications are attributed to the initiating administrator for total platform accountability.
-            </Text>
-          </div>
-        </Card>
-
-        <Card className="glass-card border-amber-500/20 p-6 flex flex-col gap-4">
-          <div className="p-3 rounded-2xl bg-amber-500/10 w-fit text-amber-500">
-            <ShieldAlert className="h-6 w-6" />
-          </div>
-          <div>
-            <Text variant="bodySmall" weight="bold">Inheritance Logic</Text>
-            <Text variant="caption" className="text-muted-foreground mt-1 leading-relaxed">
-              Platform roles utilize a flat inheritance model. To add higher-level permissions to a role, toggle the specific capability nodes within the Role Configuration hub.
+          <div className="space-y-2">
+            <Text variant="bodySmall" weight="bold">State Propagation</Text>
+            <Text variant="caption" className="text-muted-foreground leading-relaxed">
+              Modifying the permission matrix triggers an immediate state broadcast across all 12 platform clusters. Latency is maintained at 180ms.
             </Text>
           </div>
         </Card>
       </div>
-
-      {/* Role Edit Dialog */}
-      <Dialog open={isEditing} onOpenChange={setIsEditing}>
-        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto bg-card border-white/10 p-0">
-          <form onSubmit={handleSave}>
-            <DialogHeader className="p-8 bg-primary/5 border-b border-white/5">
-              <DialogTitle className="text-2xl font-bold flex items-center gap-3">
-                <Settings2 className="h-6 w-6 text-primary" /> 
-                {currentRole?.id ? 'Configure Role' : 'Create Custom Role'}
-              </DialogTitle>
-              <DialogDescription className="text-muted-foreground pt-2">
-                Define functional nodes and access parameters for this persona.
-              </DialogDescription>
-            </DialogHeader>
-            
-            <div className="p-8 space-y-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Role Label</Label>
-                  <Input 
-                    value={currentRole?.name || ''} 
-                    onChange={(e) => setCurrentRole(prev => prev ? { ...prev, name: e.target.value as any } : null)}
-                    placeholder="e.g. Moderator" 
-                    className="bg-background/50 border-white/5 h-12"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Internal Description</Label>
-                  <Input 
-                    value={currentRole?.description || ''} 
-                    onChange={(e) => setCurrentRole(prev => prev ? { ...prev, description: e.target.value } : null)}
-                    placeholder="Briefly explain this role's purpose..." 
-                    className="bg-background/50 border-white/5 h-12"
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-4">
-                <div className="flex items-center gap-2 text-primary font-bold text-sm uppercase tracking-widest">
-                  <ShieldCheck className="h-4 w-4" /> Capability Matrix
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {ALL_PERMISSIONS.map((perm) => (
-                    <div 
-                      key={perm.id} 
-                      className={`flex items-start gap-4 p-4 rounded-xl border transition-all cursor-pointer hover:bg-white/5 ${
-                        currentRole?.permissions.includes(perm.id) 
-                          ? 'border-primary/40 bg-primary/5' 
-                          : 'border-white/5 bg-background/30'
-                      }`}
-                      onClick={() => handleTogglePermission(perm.id)}
-                    >
-                      <Checkbox 
-                        id={perm.id} 
-                        checked={currentRole?.permissions.includes(perm.id)}
-                        onCheckedChange={() => handleTogglePermission(perm.id)}
-                        className="mt-1"
-                      />
-                      <div className="space-y-1">
-                        <Label htmlFor={perm.id} className="text-sm font-bold cursor-pointer">{perm.label}</Label>
-                        <p className="text-[10px] text-muted-foreground leading-relaxed">{perm.description}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <DialogFooter className="p-8 bg-muted/20 border-t border-white/5 gap-3">
-              <Button type="button" variant="ghost" onClick={() => setIsEditing(false)}>Cancel</Button>
-              <Button type="submit" className="h-12 px-8 rounded-xl font-bold bg-primary hover:bg-primary/90 shadow-xl shadow-primary/20">
-                Synchronize Role
-              </Button>
-            </DialogFooter>
-          </form>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }

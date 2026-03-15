@@ -1,97 +1,42 @@
-
 import { ApiResponse } from '@/types';
+import { CMSDashboardData } from '@/types/system';
 
 /**
  * @fileOverview Specialized mock service for the Admin CMS Dashboard.
- * Provides structured data for content, roles, analytics, and infrastructure.
+ * Aligned with Prompt 42 requirements for content, roles, and logs.
  */
 
-export interface CmsContentItem {
-  id: string;
-  type: 'article' | 'glossary_term' | 'guide';
-  title?: string;
-  term?: string;
-  status: 'draft' | 'review' | 'published' | 'approved';
-}
-
-export interface CmsRole {
-  role: string;
-  permissions: string[];
-  userCount: number;
-}
-
-export interface CmsAnalytics {
-  user_activity: { date: string; active_users: number }[];
-  revenue: { date: string; amount: number }[];
-  system_logs: string[];
-  ai_accuracy: number;
-}
-
-export interface CmsDashboardData {
-  content_editor: CmsContentItem[];
-  roles_permissions: CmsRole[];
-  analytics: CmsAnalytics;
-  deployment_status: { last_deploy: string; status: string; version: string };
-  backup_status: { last_backup: string; status: string; size: string };
-  cache_status: { hit_rate: string; status: string };
-}
-
-const mockCmsData: CmsDashboardData = {
-  content_editor: [
-    { id: '1', type: 'article', title: 'Understanding QE 2026', status: 'draft' },
-    { id: '2', type: 'glossary_term', term: 'Stagflation', status: 'review' },
-    { id: '3', type: 'article', title: 'Macro Trends in APAC', status: 'approved' },
-    { id: '4', type: 'guide', title: 'Portfolio Rebalancing 101', status: 'published' },
+const mockCMSData: CMSDashboardData = {
+  cms_content: [
+    { content_id: 1, title: "Macro Trends in 2026", author: "Eleanor Vance", status: "Published", last_updated: "2026-03-15" },
+    { content_id: 2, title: "Understanding QE Cycles", author: "The Market Maven", status: "Draft", last_updated: "2026-03-15" },
+    { content_id: 3, title: "DeFi Liquidity Audit", author: "Sarah Crypto", status: "Review", last_updated: "2026-03-14" },
+    { content_id: 4, title: "Fixed Income Fundamentals", author: "Julian Wealth", status: "Published", last_updated: "2026-03-12" }
   ],
-  roles_permissions: [
-    { role: 'Administrator', permissions: ['edit', 'publish', 'delete', 'manage_users', 'system_config'], userCount: 5 },
-    { role: 'Editor', permissions: ['edit', 'publish', 'review'], userCount: 12 },
-    { role: 'Expert', permissions: ['create', 'edit_own', 'analytics'], userCount: 156 },
+  user_roles: [
+    { username: "AdminUser", role: "Admin", permissions: { view: true, edit: true, delete: true } },
+    { username: "EditorUser", role: "Editor", permissions: { view: true, edit: true, delete: false } },
+    { username: "ModeratorUser", role: "Moderator", permissions: { view: true, edit: false, delete: true } },
+    { username: "GuestReader", role: "Viewer", permissions: { view: true, edit: false, delete: false } }
   ],
-  analytics: {
-    user_activity: [
-      { date: '2024-03-08', active_users: 11200 },
-      { date: '2024-03-09', active_users: 11500 },
-      { date: '2024-03-10', active_users: 10800 },
-      { date: '2024-03-11', active_users: 12400 },
-      { date: '2024-03-12', active_users: 13200 },
-    ],
-    revenue: [
-      { date: '2024-03-08', amount: 4200 },
-      { date: '2024-03-09', amount: 4500 },
-      { date: '2024-03-10', amount: 3800 },
-      { date: '2024-03-11', amount: 5200 },
-      { date: '2024-03-12', amount: 6100 },
-    ],
-    system_logs: [
-      "User 'market_maven' submitted article node 'QE 2026'",
-      "Administrator 'e_vance' updated system role 'Editor'",
-      "Backup snapshot 'bak-8F2D' sealed successfully",
-      "pSEO Engine re-indexed 14,200 nodes",
-      "Critical: API Latency spike detected in Cluster Alpha"
-    ],
-    ai_accuracy: 0.924
-  },
-  deployment_status: {
-    last_deploy: '2024-03-12T10:30:00Z',
-    status: 'success',
-    version: 'v4.2.0-broadcast'
-  },
-  backup_status: {
-    last_backup: '2024-03-12T04:00:00Z',
-    status: 'success',
-    size: '1.42GB'
-  },
-  cache_status: {
-    hit_rate: '98.4%',
-    status: 'optimal'
-  }
+  analytics: [
+    { metric: "Article Views", value: 124500 },
+    { metric: "Guide Engagement", value: 8420 },
+    { metric: "Total Users", value: 142500 },
+    { metric: "Active Experts", value: 156 }
+  ],
+  system_logs: [
+    { event: "Content Approved: Macro Trends", user: "AdminUser", timestamp: "2026-03-15 10:00" },
+    { event: "User Role Changed: editor_john", user: "AdminUser", timestamp: "2026-03-15 11:00" },
+    { event: "Draft Created: yield_scam_audit", user: "EditorUser", timestamp: "2026-03-15 12:30" },
+    { event: "Security Alert: Unusual Login", user: "System", timestamp: "2026-03-15 14:20" }
+  ]
 };
 
-export const getCmsDashboardData = async (): Promise<ApiResponse<CmsDashboardData>> => {
+export const getCmsDashboardData = async (): Promise<ApiResponse<CMSDashboardData>> => {
   await new Promise((resolve) => setTimeout(resolve, 600));
   return {
-    data: mockCmsData,
+    data: mockCMSData,
     status: 200,
   };
 };

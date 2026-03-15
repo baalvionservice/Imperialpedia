@@ -1,68 +1,49 @@
-
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Text } from '@/design-system/typography/text';
 import { 
   LayoutDashboard, 
-  Users, 
   FileText, 
+  Users, 
   TrendingUp, 
-  Globe, 
   ShieldAlert, 
-  Lock, 
-  Settings, 
-  ArrowUpRight, 
   Loader2,
-  Activity,
-  CheckCircle2,
-  Calendar,
-  Download,
   ChevronRight,
   Plus,
   Zap,
   BarChart3,
-  Server,
-  Database,
-  RotateCcw,
-  ShieldCheck,
-  Terminal,
-  Cpu,
   History,
-  Rocket,
-  RefreshCw,
+  Terminal,
+  Edit,
+  CheckCircle2,
+  Trash2,
   MoreVertical,
-  FlaskConical
+  Activity
 } from 'lucide-react';
 import Link from 'next/link';
-import { getCmsDashboardData, CmsDashboardData } from '@/services/mock-api/admin-cms';
-import { 
-  AreaChart, 
-  Area, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
-  ResponsiveContainer,
-  BarChart,
-  Bar,
-  Cell
-} from 'recharts';
+import { getCmsDashboardData } from '@/services/mock-api/admin-cms';
+import { CMSDashboardData } from '@/types/system';
 import { Badge } from '@/components/ui/badge';
-import { Switch } from '@/components/ui/switch';
-import { Progress } from '@/components/ui/progress';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { format } from 'date-fns';
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuTrigger 
+} from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
+import { toast } from '@/hooks/use-toast';
 
 /**
- * Integrated Admin CMS Mission Control.
- * Orchestrates content, governance, analytics, and infrastructure across the Imperialpedia cluster.
+ * Integrated Admin CMS Dashboard.
+ * Orchestrates content lifecycle and system-wide intelligence auditing.
+ * Aligned with Prompt 42 requirements.
  */
 export default function AdminCmsDashboardPage() {
-  const [data, setData] = useState<CmsDashboardData | null>(null);
+  const [data, setData] = useState<CMSDashboardData | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -71,7 +52,7 @@ export default function AdminCmsDashboardPage() {
         const response = await getCmsDashboardData();
         setData(response.data);
       } catch (e) {
-        console.error('CMS data sync failure', e);
+        console.error('CMS synchronization failure', e);
       } finally {
         setLoading(false);
       }
@@ -79,19 +60,23 @@ export default function AdminCmsDashboardPage() {
     loadData();
   }, []);
 
+  const handleAction = (title: string, action: string) => {
+    toast({
+      title: `Action Initiated: ${action}`,
+      description: `Targeting intelligence node: "${title}"`,
+    });
+  };
+
   if (loading || !data) {
     return (
       <div className="py-40 flex flex-col items-center justify-center space-y-4">
         <Loader2 className="h-12 w-12 text-primary animate-spin" />
         <Text variant="bodySmall" className="animate-pulse font-bold tracking-widest uppercase text-muted-foreground">
-          Establishing Secure Handshake...
+          Establishing Governance Handshake...
         </Text>
       </div>
     );
   }
-
-  const formatCurrency = (val: number) => 
-    new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(val);
 
   return (
     <div className="space-y-10 pb-24 animate-in fade-in duration-700">
@@ -99,121 +84,106 @@ export default function AdminCmsDashboardPage() {
         <div>
           <div className="flex items-center gap-2 text-primary mb-1">
             <LayoutDashboard className="h-4 w-4" />
-            <Text variant="label" className="text-[10px] font-bold tracking-widest uppercase">Admin mission control</Text>
+            <Text variant="label" className="text-[10px] font-bold tracking-widest uppercase">Admin Command Hub</Text>
           </div>
-          <Text variant="h1" className="text-3xl font-bold tracking-tight">System Command Hub</Text>
+          <Text variant="h1" className="text-3xl font-bold tracking-tight">CMS Mission Control</Text>
           <Text variant="bodySmall" className="text-muted-foreground mt-1">
-            Orchestrating intelligence nodes and infrastructure for the global index.
+            Orchestrating intelligence nodes and user personas across the index.
           </Text>
         </div>
         <div className="flex items-center gap-3">
-          <Button variant="outline" size="sm" className="rounded-xl border-white/10 bg-card/30 h-11 px-6">
-            <Download className="mr-2 h-4 w-4" /> Export Ledger
+          <Button variant="outline" className="rounded-xl border-white/10 h-11 px-6 bg-card/30">
+            <Plus className="mr-2 h-4 w-4" /> New Category
           </Button>
-          <Button size="sm" className="rounded-xl shadow-lg shadow-primary/20 font-bold bg-primary hover:bg-primary/90 h-11 px-8">
-            <Rocket className="mr-2 h-4 w-4" /> Deploy Alpha
+          <Button className="rounded-xl shadow-lg shadow-primary/20 font-bold bg-primary hover:bg-primary/90 h-11 px-8">
+            <Plus className="mr-2 h-4 w-4" /> Provision Node
           </Button>
         </div>
       </header>
 
-      {/* Vital Metrics Matrix */}
+      {/* Analytics Summary Matrix */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card className="glass-card border-none shadow-xl bg-emerald-500/5">
-          <CardHeader className="pb-2 flex flex-row items-center justify-between space-y-0">
-            <CardTitle className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">System Health</CardTitle>
-            <Activity className="h-4 w-4 text-emerald-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">Stable</div>
-            <p className="text-[10px] text-emerald-500 font-bold mt-1 uppercase">99.98% SLA Verified</p>
-          </CardContent>
-        </Card>
-
-        <Card className="glass-card border-none shadow-xl">
-          <CardHeader className="pb-2 flex flex-row items-center justify-between space-y-0">
-            <CardTitle className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">AI Precision</CardTitle>
-            <Cpu className="h-4 w-4 text-primary" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{(data.analytics.ai_accuracy * 100).toFixed(1)}%</div>
-            <Progress value={data.analytics.ai_accuracy * 100} className="h-1 mt-2 bg-primary/10" />
-          </CardContent>
-        </Card>
-
-        <Card className="glass-card border-none shadow-xl">
-          <CardHeader className="pb-2 flex flex-row items-center justify-between space-y-0">
-            <CardTitle className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Daily Revenue</CardTitle>
-            <TrendingUp className="h-4 w-4 text-secondary" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{formatCurrency(data.analytics.revenue[data.analytics.revenue.length - 1].amount)}</div>
-            <p className="text-[10px] text-emerald-500 font-bold mt-1">+12.4% vs prev cycle</p>
-          </CardContent>
-        </Card>
-
-        <Card className="glass-card border-none shadow-xl bg-destructive/5">
-          <CardHeader className="pb-2 flex flex-row items-center justify-between space-y-0">
-            <CardTitle className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Pending Triage</CardTitle>
-            <ShieldAlert className="h-4 w-4 text-destructive" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">5</div>
-            <p className="text-[10px] text-destructive font-bold mt-1 uppercase">Action Required</p>
-          </CardContent>
-        </Card>
+        {data.analytics.map((item, idx) => (
+          <Card key={idx} className="glass-card border-none shadow-xl group hover:border-primary/20 transition-all">
+            <CardHeader className="pb-2 flex flex-row items-center justify-between space-y-0">
+              <CardTitle className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{item.metric}</CardTitle>
+              {idx % 2 === 0 ? <TrendingUp className="h-4 w-4 text-emerald-500" /> : <BarChart3 className="h-4 w-4 text-primary" />}
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{item.value.toLocaleString()}</div>
+              <p className="text-[10px] text-emerald-500 font-bold mt-1 uppercase tracking-tighter">Stable Cycle</p>
+            </CardContent>
+          </Card>
+        ))}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* Left Column: Workflow & Roles */}
+        {/* Main CMS Management Table */}
         <div className="lg:col-span-8 space-y-8">
-          {/* Content & Workflow Manager */}
           <Card className="glass-card border-none shadow-2xl overflow-hidden">
             <CardHeader className="bg-card/30 border-b border-white/5 p-8 flex flex-row items-center justify-between">
               <div>
                 <CardTitle className="text-xl flex items-center gap-2">
-                  <FileText className="h-5 w-5 text-primary" /> Intelligence Pipeline
+                  <FileText className="h-5 w-5 text-primary" /> Intelligence Management
                 </CardTitle>
-                <CardDescription>Managing workflow states for research nodes.</CardDescription>
+                <CardDescription>Managing content lifecycle for high-scale research nodes.</CardDescription>
               </div>
-              <Button variant="ghost" size="sm" className="text-primary font-bold" asChild>
-                <Link href="/admin/scheduler">Full Calendar <ChevronRight className="h-4 w-4 ml-1" /></Link>
+              <Button variant="ghost" size="sm" className="text-primary font-bold text-xs" asChild>
+                <Link href="/admin/media">Media Library <ChevronRight className="ml-1 h-4 w-4" /></Link>
               </Button>
             </CardHeader>
             <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
                   <TableRow className="bg-muted/20 border-b border-white/5">
-                    <TableHead className="pl-8 font-bold text-[10px] uppercase tracking-widest py-4">Node Type</TableHead>
-                    <TableHead className="font-bold text-[10px] uppercase tracking-widest">Intelligence Title</TableHead>
-                    <TableHead className="font-bold text-[10px] uppercase tracking-widest">Status</TableHead>
-                    <TableHead className="text-right pr-8 font-bold text-[10px] uppercase tracking-widest">Administrative Action</TableHead>
+                    <TableHead className="pl-8 font-bold text-[10px] uppercase tracking-widest py-4">Intelligence Title</TableHead>
+                    <TableHead className="font-bold text-[10px] uppercase tracking-widest">Expert</TableHead>
+                    <TableHead className="font-bold text-[10px] uppercase tracking-widest text-center">Status</TableHead>
+                    <TableHead className="text-right pr-8 font-bold text-[10px] uppercase tracking-widest">Administrative Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {data.content_editor.map((item) => (
-                    <TableRow key={item.id} className="hover:bg-white/5 border-b border-white/5 group">
+                  {data.cms_content.map((item) => (
+                    <TableRow key={item.content_id} className="hover:bg-white/5 border-b border-white/5 group transition-colors">
                       <TableCell className="pl-8 py-5">
-                        <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20 text-[8px] font-bold uppercase">
-                          {item.type.replace('_', ' ')}
-                        </Badge>
+                        <div className="flex flex-col">
+                          <span className="text-sm font-bold truncate max-w-[300px] block">{item.title}</span>
+                          <span className="text-[10px] text-muted-foreground mt-1 font-mono uppercase">Updated: {item.last_updated}</span>
+                        </div>
                       </TableCell>
                       <TableCell>
-                        <span className="text-sm font-bold truncate max-w-[300px] block">{item.title || item.term}</span>
+                        <div className="flex items-center gap-2">
+                          <div className="w-6 h-6 rounded-lg bg-primary/10 flex items-center justify-center text-primary font-bold text-[10px]">
+                            {item.author.charAt(0)}
+                          </div>
+                          <span className="text-xs font-medium">{item.author}</span>
+                        </div>
                       </TableCell>
                       <TableCell>
-                        <Badge className={cn(
-                          "text-[9px] font-bold uppercase border-none px-2 h-5",
-                          item.status === 'published' ? "bg-emerald-500/10 text-emerald-500" : 
-                          item.status === 'review' ? "bg-amber-500/10 text-amber-500" : 
-                          item.status === 'approved' ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"
-                        )}>
-                          {item.status}
-                        </Badge>
+                        <div className="flex justify-center">
+                          <Badge className={cn(
+                            "text-[9px] font-bold uppercase border-none px-2 h-5",
+                            item.status === 'Published' ? "bg-emerald-500/10 text-emerald-500" : 
+                            item.status === 'Review' ? "bg-amber-500/10 text-amber-500" : "bg-muted text-muted-foreground"
+                          )}>
+                            {item.status}
+                          </Badge>
+                        </div>
                       </TableCell>
                       <TableCell className="text-right pr-8">
-                        <Button variant="ghost" size="sm" className="h-8 px-3 text-[10px] font-bold uppercase tracking-widest text-primary hover:bg-primary/5">
-                          Audit Node
-                        </Button>
+                        <div className="flex justify-end gap-2">
+                          <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-primary transition-colors" onClick={() => handleAction(item.title, 'Edit')}>
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                          {item.status === 'Review' && (
+                            <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-emerald-500 transition-colors" title="Approve" onClick={() => handleAction(item.title, 'Approve')}>
+                              <CheckCircle2 className="h-4 w-4" />
+                            </Button>
+                          )}
+                          <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-destructive transition-colors" onClick={() => handleAction(item.title, 'Delete')}>
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -221,179 +191,89 @@ export default function AdminCmsDashboardPage() {
               </Table>
             </div>
           </Card>
-
-          {/* Role-based Permissions Panel */}
-          <Card className="glass-card border-none shadow-2xl">
-            <CardHeader className="bg-card/30 border-b border-white/5 p-8 flex flex-row items-center justify-between">
-              <div>
-                <CardTitle className="text-xl flex items-center gap-2">
-                  <Lock className="h-5 w-5 text-secondary" /> Persona Architect
-                </CardTitle>
-                <CardDescription>Defining system capabilities and access boundaries.</CardDescription>
-              </div>
-              <Button variant="outline" size="sm" className="rounded-xl border-white/10" asChild>
-                <Link href="/admin/roles">Configure Matrix</Link>
-              </Button>
-            </CardHeader>
-            <CardContent className="p-0">
-              <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/5">
-                {data.roles_permissions.map((role, i) => (
-                  <div key={i} className="p-8 space-y-4 hover:bg-white/5 transition-colors">
-                    <div className="flex justify-between items-center">
-                      <Text variant="bodySmall" weight="bold" className="uppercase tracking-tight">{role.role}</Text>
-                      <Badge className="bg-primary/10 text-primary border-none text-[10px] font-bold">{role.userCount} Users</Badge>
-                    </div>
-                    <div className="flex flex-wrap gap-1">
-                      {role.permissions.slice(0, 3).map(p => (
-                        <Badge key={p} variant="outline" className="text-[8px] border-white/10 opacity-60 uppercase">{p}</Badge>
-                      ))}
-                      {role.permissions.length > 3 && <span className="text-[8px] text-muted-foreground font-bold">+{role.permissions.length - 3}</span>}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
         </div>
 
-        {/* Right Column: Analytics & Infrastructure */}
+        {/* System Logs Buffer */}
         <div className="lg:col-span-4 space-y-8">
-          {/* Feature Gateways Panel */}
-          <Card className="glass-card border-none shadow-xl bg-primary/5">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-sm font-bold flex items-center gap-2 uppercase tracking-widest text-primary">
-                <Zap className="h-4 w-4" /> Feature Gateways
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {[
-                { name: 'AI Content Outliner', module: 'Generative Engine', enabled: true },
-                { name: 'pSEO v2 Indexing', module: 'Search Infrastructure', enabled: true },
-                { name: 'Monetization Hub', module: 'Payment Node', enabled: false },
-              ].map((flag, i) => (
-                <div key={i} className="flex items-center justify-between p-3 rounded-xl bg-background/40 border border-white/5">
-                  <div className="space-y-0.5">
-                    <Text variant="caption" className="font-bold text-[11px]">{flag.name}</Text>
-                    <Text variant="caption" className="text-[9px] text-muted-foreground block">{flag.module}</Text>
-                  </div>
-                  <Switch checked={flag.enabled} className="scale-75" />
-                </div>
-              ))}
-              <Button variant="link" className="w-full text-[10px] font-bold uppercase tracking-widest text-primary h-8" asChild>
-                <Link href="/admin/feature-flags">View All Gateways</Link>
-              </Button>
-            </CardContent>
-          </Card>
-
-          {/* Infrastructure Health & Deployment */}
-          <Card className="glass-card border-none shadow-xl overflow-hidden">
-            <CardHeader className="bg-card/30 border-b border-white/5">
-              <CardTitle className="text-sm flex items-center gap-2">
-                <Server className="h-4 w-4 text-muted-foreground" /> Infrastructure Node
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-6 space-y-6">
-              <div className="space-y-4">
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center gap-2">
-                    <Database className="h-3.5 w-3.5 text-secondary" />
-                    <span className="text-[10px] font-bold uppercase text-muted-foreground">Snapshot Integrity</span>
-                  </div>
-                  <Badge className="bg-emerald-500/10 text-emerald-500 border-none text-[10px]">Verified</Badge>
-                </div>
-                <div className="p-3 rounded-xl bg-background/50 border border-white/5 flex justify-between items-center">
-                  <div className="space-y-0.5">
-                    <Text variant="caption" className="font-bold text-[10px]">{data.backup_status.size}</Text>
-                    <Text variant="caption" className="text-[8px] text-muted-foreground uppercase">{format(new Date(data.backup_status.last_backup), 'MMM d, HH:mm')} UTC</Text>
-                  </div>
-                  <Button variant="ghost" size="icon" className="h-8 w-8 text-primary hover:bg-primary/5">
-                    <RefreshCw className="h-3.5 w-3.5" />
-                  </Button>
-                </div>
+          <Card className="glass-card border-none shadow-xl h-full flex flex-col">
+            <CardHeader className="bg-card/30 border-b border-white/5 p-6">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-sm font-bold uppercase tracking-widest text-primary flex items-center gap-2">
+                  <Terminal className="h-4 w-4" /> Platform Activity
+                </CardTitle>
+                <Badge variant="outline" className="border-primary/20 text-primary text-[8px] font-bold h-5 px-2">LIVE STREAM</Badge>
               </div>
-
-              <div className="space-y-4 pt-2">
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center gap-2">
-                    <Globe className="h-3.5 w-3.5 text-primary" />
-                    <span className="text-[10px] font-bold uppercase text-muted-foreground">CDN HIT RATIO</span>
-                  </div>
-                  <span className="text-xs font-bold text-emerald-500">{data.cache_status.hit_rate}</span>
-                </div>
-                <Progress value={98.4} className="h-1 bg-white/5" />
-              </div>
-
-              <div className="pt-4 border-t border-white/5">
-                <Button className="w-full h-11 bg-card hover:bg-white/5 border border-white/10 rounded-xl font-bold text-xs gap-2">
-                  <History className="h-4 w-4" /> Access Logs Matrix
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Master Log Buffer */}
-          <Card className="glass-card border-none shadow-xl bg-card/30">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2">
-                <Terminal className="h-3.5 w-3.5" /> System Logs Buffer
-              </CardTitle>
             </CardHeader>
-            <CardContent className="p-0">
-              <div className="divide-y divide-white/5 max-h-[200px] overflow-y-auto no-scrollbar">
-                {data.analytics.system_logs.map((log, i) => (
-                  <div key={i} className="p-4 space-y-1 hover:bg-white/5 transition-colors group">
-                    <Text variant="caption" className="text-[10px] leading-relaxed text-foreground/80 group-hover:text-primary transition-colors">
-                      {log}
-                    </Text>
+            <CardContent className="p-0 flex-grow">
+              <div className="divide-y divide-white/5 overflow-y-auto max-h-[500px] no-scrollbar">
+                {data.system_logs.map((log, i) => (
+                  <div key={i} className="p-5 hover:bg-white/5 transition-colors space-y-2 group">
+                    <div className="flex justify-between items-start">
+                      <Text variant="caption" className="font-bold text-foreground group-hover:text-primary transition-colors leading-relaxed">
+                        {log.event}
+                      </Text>
+                    </div>
+                    <div className="flex justify-between items-center text-[10px] text-muted-foreground font-mono uppercase tracking-tighter">
+                      <span>User: {log.user}</span>
+                      <span>{log.timestamp.split(' ')[1]}</span>
+                    </div>
                   </div>
                 ))}
               </div>
-              <Button variant="ghost" className="w-full h-10 text-[9px] font-bold uppercase tracking-widest border-t border-white/5 rounded-none" asChild>
-                <Link href="/admin/control/activity-log">Review Global Trail</Link>
-              </Button>
             </CardContent>
+            <div className="p-4 bg-muted/20 border-t border-white/5">
+              <Button variant="ghost" className="w-full h-10 text-[9px] font-bold uppercase tracking-widest text-muted-foreground hover:text-primary rounded-none" asChild>
+                <Link href="/admin/control/activity-log">View Global Audit Trail</Link>
+              </Button>
+            </div>
           </Card>
         </div>
       </div>
 
-      {/* Analytics Visualization Footer */}
-      <Card className="glass-card border-none bg-primary/5 p-10 relative overflow-hidden">
-        <div className="absolute right-0 top-0 w-1/3 h-full bg-gradient-to-l from-primary/10 to-transparent pointer-events-none" />
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 relative z-10">
-          <div className="lg:col-span-4 flex flex-col justify-center space-y-4">
-            <div className="w-16 h-16 rounded-3xl bg-primary/20 flex items-center justify-center text-primary shadow-2xl">
-              <BarChart3 className="h-8 w-8" />
+      {/* Strategic Redirect Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <Card className="glass-card bg-primary/5 border-primary/20 p-8 flex items-start gap-6 group hover:border-primary/40 transition-all cursor-pointer" asChild>
+          <Link href="/admin/roles">
+            <div className="p-4 rounded-3xl bg-primary/10 text-primary shrink-0 group-hover:scale-110 transition-transform">
+              <Users className="h-8 w-8" />
             </div>
-            <div>
-              <Text variant="h2" className="text-2xl font-bold">Ecosystem Trajectory</Text>
-              <Text variant="bodySmall" className="text-muted-foreground leading-relaxed mt-2">
-                Aggregated user activity and revenue velocity across the programmatic index nodes.
+            <div className="space-y-2">
+              <Text variant="bodySmall" weight="bold">Persona Architect</Text>
+              <Text variant="caption" className="text-muted-foreground leading-relaxed">
+                Manage system roles and granular capability nodes for all {data.user_roles.length} administrative identities.
               </Text>
             </div>
-            <Button variant="outline" className="w-fit rounded-xl font-bold border-primary/30 hover:bg-primary/5" asChild>
-              <Link href="/admin/analytics/full-overview">Deep Analytics Hub</Link>
-            </Button>
-          </div>
-          
-          <div className="lg:col-span-8 h-[300px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={data.analytics.user_activity}>
-                <defs>
-                  <linearGradient id="colorActive" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#8272F2" stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor="#8272F2" stopOpacity={0}/>
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#ffffff05" vertical={false} />
-                <XAxis dataKey="date" hide />
-                <YAxis hide />
-                <Tooltip contentStyle={{ backgroundColor: '#1C1822', border: '1px solid #ffffff10', borderRadius: '12px' }} />
-                <Area type="monotone" dataKey="active_users" stroke="#8272F2" fillOpacity={1} fill="url(#colorActive)" strokeWidth={3} name="Daily Active Users" />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-      </Card>
+          </Link>
+        </Card>
+        
+        <Card className="glass-card border-none bg-secondary/5 p-8 flex items-start gap-6 group hover:border-secondary/40 transition-all cursor-pointer" asChild>
+          <Link href="/admin/analytics">
+            <div className="p-4 rounded-3xl bg-secondary/10 text-secondary shrink-0 group-hover:scale-110 transition-transform">
+              <Activity className="h-8 w-8" />
+            </div>
+            <div className="space-y-2">
+              <Text variant="bodySmall" weight="bold">Intelligence Analytics</Text>
+              <Text variant="caption" className="text-muted-foreground leading-relaxed">
+                Analyze reach velocity and interaction depth across the programmatic search index.
+              </Text>
+            </div>
+          </Link>
+        </Card>
+
+        <Card className="glass-card border-none bg-amber-500/5 p-8 flex items-start gap-6 group hover:border-amber-500/40 transition-all cursor-pointer" asChild>
+          <Link href="/admin/moderation">
+            <div className="p-4 rounded-3xl bg-amber-500/10 text-amber-500 shrink-0 group-hover:scale-110 transition-transform">
+              <ShieldAlert className="h-8 w-8" />
+            </div>
+            <div className="space-y-2">
+              <Text variant="bodySmall" weight="bold">Integrity Gate</Text>
+              <Text variant="caption" className="text-muted-foreground leading-relaxed">
+                Process reported content and enforce factual compliance across community dialogue nodes.
+              </Text>
+            </div>
+          </Link>
+        </Card>
+      </div>
     </div>
   );
 }

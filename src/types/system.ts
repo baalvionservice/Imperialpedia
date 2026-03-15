@@ -72,9 +72,6 @@ export interface SecuritySettings {
   sessionTimeoutMinutes: number;
 }
 
-/**
- * Prompt 29: Security Dashboard Data
- */
 export interface SecurityDashboardData {
   system_health: 'Good' | 'Warning' | 'Critical';
   active_threats: number;
@@ -178,9 +175,6 @@ export interface FeatureFlag {
   module: string;
 }
 
-/**
- * Interface for the Admin Activity Log
- */
 export interface AdminActivityLog {
   id: string;
   admin: string;
@@ -190,9 +184,6 @@ export interface AdminActivityLog {
   status: 'Success' | 'Failed';
 }
 
-/**
- * Interface for the Platform Audit Trail (Refined for Prompt 29)
- */
 export interface AuditTrailEntry {
   id: string;
   timestamp: string;
@@ -202,9 +193,6 @@ export interface AuditTrailEntry {
   status?: 'Success' | 'Failed';
 }
 
-/**
- * Interface for the Role Control Matrix
- */
 export interface RoleControl {
   id: string;
   roleName: string;
@@ -213,9 +201,6 @@ export interface RoleControl {
   description?: string;
 }
 
-/**
- * Interface for Granular Permission Control
- */
 export interface Permission {
   name: string;
   enabled: boolean;
@@ -228,9 +213,6 @@ export interface RolePermissionSet {
   permissions: Permission[];
 }
 
-/**
- * Interface for Admin Session Management
- */
 export interface AdminSession {
   id: string;
   user: string;
@@ -240,9 +222,6 @@ export interface AdminSession {
   status: 'Active' | 'Inactive';
 }
 
-/**
- * Interface for the Admin Control Center Home Overview
- */
 export interface AdminHomeOverview {
   totalUsers: number;
   totalCreators: number;
@@ -251,4 +230,43 @@ export interface AdminHomeOverview {
   alertsActive: number;
   pSEONodes: number;
   systemHealth: 'Healthy' | 'Degraded' | 'Critical';
+}
+
+/**
+ * Prompt 42: Admin CMS Dashboard Types
+ */
+export interface CMSContentItem {
+  content_id: string | number;
+  title: string;
+  author: string;
+  status: 'Draft' | 'Review' | 'Published';
+  last_updated: string;
+}
+
+export interface UserRoleItem {
+  username: string;
+  role: 'Admin' | 'Editor' | 'Moderator' | 'Viewer';
+  permissions: {
+    view: boolean;
+    edit: boolean;
+    delete: boolean;
+  };
+}
+
+export interface CMSAnalyticsMetric {
+  metric: string;
+  value: number;
+}
+
+export interface SystemLogItem {
+  event: string;
+  user: string;
+  timestamp: string;
+}
+
+export interface CMSDashboardData {
+  cms_content: CMSContentItem[];
+  user_roles: UserRoleItem[];
+  analytics: CMSAnalyticsMetric[];
+  system_logs: SystemLogItem[];
 }
