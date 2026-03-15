@@ -4,6 +4,7 @@ import {Toaster} from '@/components/ui/toaster';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { seoConfig } from '@/config/seo';
+import { GlobalStoreProvider } from '@/lib/state';
 
 export const metadata: Metadata = {
   title: seoConfig.defaultTitle,
@@ -21,7 +22,6 @@ export const metadata: Metadata = {
     site: seoConfig.twitter.site,
     creator: seoConfig.twitter.handle,
   },
-  viewport: 'width=device-width, initial-scale=1',
   robots: 'index, follow',
 };
 
@@ -38,12 +38,14 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet" />
       </head>
       <body className="font-body bg-background text-foreground antialiased min-h-screen flex flex-col">
-        <Header />
-        <main className="flex-grow">
-          {children}
-        </main>
-        <Footer />
-        <Toaster />
+        <GlobalStoreProvider>
+          <Header />
+          <main className="flex-grow">
+            {children}
+          </main>
+          <Footer />
+          <Toaster />
+        </GlobalStoreProvider>
       </body>
     </html>
   );
