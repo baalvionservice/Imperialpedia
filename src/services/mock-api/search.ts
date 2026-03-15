@@ -1,4 +1,4 @@
-import { ApiResponse, SearchResult } from '@/types';
+import { ApiResponse, SearchResult, SearchSuggestion } from '@/types';
 
 /**
  * @fileOverview Mock service for the Global Search System.
@@ -80,6 +80,31 @@ export const globalSearch = async (query: string): Promise<ApiResponse<SearchRes
 
   return {
     data: results,
+    status: 200
+  };
+};
+
+export const getSearchSuggestions = async (query: string): Promise<ApiResponse<SearchSuggestion[]>> => {
+  await new Promise((resolve) => setTimeout(resolve, 300));
+  
+  const normalizedQuery = query.toLowerCase().trim();
+  
+  if (!normalizedQuery || normalizedQuery.length < 2) {
+    return { data: [], status: 200 };
+  }
+
+  const suggestions = mockSearchData
+    .filter(item => item.title.toLowerCase().includes(normalizedQuery))
+    .map(item => ({
+      id: item.id,
+      type: item.type,
+      title: item.title,
+      route: item.route
+    }))
+    .slice(0, 5);
+
+  return {
+    data: suggestions,
     status: 200
   };
 };

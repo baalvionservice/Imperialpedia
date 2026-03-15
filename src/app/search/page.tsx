@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Container } from '@/design-system/layout/container';
 import { Section } from '@/design-system/layout/section';
 import { Text } from '@/design-system/typography/text';
@@ -20,41 +20,80 @@ import {
   Database,
   ArrowRight,
   SearchX,
-  TrendingUp
+  TrendingUp,
+  History,
+  X
 } from 'lucide-react';
-import { SearchResult, SearchResultType } from '@/types';
+import { SearchResult, SearchResultType, SearchSuggestion } from '@/types';
 import { searchService } from '@/services/data/search-service';
 import Link from 'next/link';
+import { cn } from '@/lib/utils';
 
 /**
  * Global search page for the Imperialpedia platform.
- * Supports cross-entity discovery across articles, experts, tools, and glossary.
+ * Supports cross-entity discovery with real-time auto-suggestions.
  */
 export default function SearchPage() {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<SearchResult[]>([]);
+  const [suggestions, setSuggestions] = useState<SearchSuggestion[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isSuggestionsLoading, setIsSuggestionsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<string>('all');
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  
+  const searchContainerRef = useRef<HTMLDivElement>(null);
 
+  // Handle clicking outside to close suggestions
   useEffect(() => {
-    const delayDebounceFn = setTimeout(async () => {
-      if (query.trim().length >= 2) {
-        setIsLoading(true);
-        try {
-          const response = await searchService.performSearch(query);
-          setResults(response.data);
-        } catch (error) {
-          console.error('Search failed', error);
-        } finally {
-          setIsLoading(false);
-        }
-      } else {
-        setResults([]);
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchContainerRef.current && !searchContainerRef.current.contains(event.target as Node)) {
+        setShowSuggestions(false);
       }
-    }, 300);
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Suggestions Fetch Effect
+  useEffect(() => {
+    if (query.trim().length < 2) {
+      setSuggestions([]);
+      return;
+    }
+
+    const delayDebounceFn = setTimeout(async () => {
+      setIsSuggestionsLoading(true);
+      setShowSuggestions(true);
+      try {
+        const response = await searchService.getSuggestions(query);
+        setSuggestions(response.data);
+      } catch (error) {
+        console.error('Suggestions failed', error);
+      } finally {
+        setIsSuggestionsLoading(false);
+      }
+    }, 200);
 
     return () => clearTimeout(delayDebounceFn);
   }, [query]);
+
+  // Full Results Fetch Effect
+  const handlePerformSearch = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (query.trim().length < 2) return;
+
+    setIsLoading(true);
+    setShowSuggestions(false);
+    try {
+      const response = await searchService.performSearch(query);
+      setResults(response.data);
+    } catch (error) {
+      console.error('Search failed', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const filteredResults = useMemo(() => {
     if (activeTab === 'all') return results;
@@ -102,29 +141,93 @@ export default function SearchPage() {
             </Text>
           </header>
 
-          <div className="max-w-2xl mx-auto mb-12">
-            <div className="relative group">
+          <div className="max-w-2xl mx-auto mb-12 relative" ref={searchContainerRef}>
+            <form onSubmit={handlePerformSearch} className="relative group">
               <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
               <Input
                 type="text"
                 placeholder="Search by topic, expert, or tool..."
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
+                onFocus={() => query.length >= 2 && setShowSuggestions(true)}
                 className="h-14 pl-12 pr-12 text-lg rounded-2xl border-primary/20 bg-card/50 backdrop-blur-sm focus:ring-primary/40 focus:border-primary transition-all shadow-xl"
                 autoFocus
               />
-              {isLoading && (
-                <div className="absolute right-4 top-1/2 -translate-y-1/2">
+              <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
+                {query && (
+                  <button 
+                    type="button" 
+                    onClick={() => { setQuery(''); setSuggestions([]); setResults([]); }}
+                    className="p-1 hover:bg-muted rounded-full text-muted-foreground transition-colors"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                )}
+                {isLoading && (
                   <Loader2 className="h-5 w-5 text-primary animate-spin" />
-                </div>
-              )}
-            </div>
+                )}
+              </div>
+            </form>
+
+            {/* Suggestions Dropdown */}
+            {showSuggestions && (query.length >= 2) && (
+              <Card className="absolute top-full left-0 right-0 mt-2 z-50 glass-card border-primary/20 overflow-hidden shadow-2xl animate-in fade-in slide-in-from-top-2 duration-200">
+                <CardContent className="p-2">
+                  {isSuggestionsLoading ? (
+                    <div className="p-4 space-y-3">
+                      <Skeleton className="h-4 w-1/3" />
+                      <Skeleton className="h-10 w-full rounded-lg" />
+                      <Skeleton className="h-10 w-full rounded-lg" />
+                    </div>
+                  ) : suggestions.length > 0 ? (
+                    <div className="space-y-1">
+                      <div className="px-3 py-2">
+                        <Text variant="label" className="text-[9px] text-primary/60">Live Suggestions</Text>
+                      </div>
+                      {suggestions.map((suggestion) => (
+                        <Link 
+                          key={suggestion.id} 
+                          href={suggestion.route}
+                          onClick={() => setShowSuggestions(false)}
+                          className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-primary/10 transition-colors group"
+                        >
+                          <div className="p-2 rounded-lg bg-muted group-hover:bg-primary/20 text-muted-foreground group-hover:text-primary transition-colors">
+                            {getResultIcon(suggestion.type)}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <Text variant="bodySmall" weight="bold" className="truncate block">
+                              {suggestion.title}
+                            </Text>
+                            <Text variant="caption" className="text-muted-foreground uppercase text-[8px] tracking-tighter">
+                              {suggestion.type}
+                            </Text>
+                          </div>
+                          <ArrowRight className="h-3 w-3 text-primary opacity-0 group-hover:opacity-100 transition-all -translate-x-2 group-hover:translate-x-0" />
+                        </Link>
+                      ))}
+                      <button 
+                        onClick={() => handlePerformSearch()}
+                        className="w-full text-center py-3 border-t border-white/5 hover:bg-muted transition-colors"
+                      >
+                        <Text variant="caption" className="font-bold text-primary">View all results for "{query}"</Text>
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="p-8 text-center opacity-50">
+                      <SearchX className="h-8 w-8 mx-auto mb-2" />
+                      <Text variant="caption">No instant matches for "{query}"</Text>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+
             <div className="mt-4 flex flex-wrap gap-2 justify-center">
               <Text variant="caption" className="text-muted-foreground mr-2 font-bold uppercase tracking-tighter">Popular Queries:</Text>
               {['Yield Curve', 'Compound Interest', 'Maven', 'Recession'].map(term => (
                 <button
                   key={term}
-                  onClick={() => setQuery(term)}
+                  onClick={() => { setQuery(term); }}
                   className="text-xs font-bold text-primary/70 hover:text-primary transition-colors hover:underline"
                 >
                   #{term}
@@ -205,7 +308,7 @@ export default function SearchPage() {
                     </Link>
                   ))}
                 </div>
-              ) : query.trim().length >= 2 ? (
+              ) : query.trim().length >= 2 && results.length === 0 && !isLoading ? (
                 <div className="py-32 text-center bg-card/10 rounded-[3rem] border-2 border-dashed border-white/5">
                   <div className="w-20 h-20 bg-muted/20 rounded-full flex items-center justify-center mx-auto mb-6">
                     <SearchX className="h-10 w-10 text-muted-foreground opacity-50" />
@@ -214,7 +317,7 @@ export default function SearchPage() {
                   <Text variant="bodySmall" className="text-muted-foreground max-w-sm mx-auto">
                     We couldn't find any nodes matching "{query}". Try broadening your search terms or browsing by category.
                   </Text>
-                  <Button variant="link" className="mt-4 text-primary font-bold" onClick={() => setQuery('')}>
+                  <Button variant="link" className="mt-4 text-primary font-bold" onClick={() => { setQuery(''); setSuggestions([]); }}>
                     Clear search query
                   </Button>
                 </div>

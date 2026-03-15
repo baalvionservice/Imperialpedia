@@ -15,6 +15,13 @@ export interface SearchResult {
   tags?: string[];
 }
 
+export interface SearchSuggestion {
+  id: string;
+  type: SearchResultType;
+  title: string;
+  route: string;
+}
+
 export interface SearchFilters {
   type?: SearchResultType | 'all';
   category?: string;
