@@ -28,19 +28,30 @@ export function buildMetadata({
   const finalTitle = title ? `${title} | ${seoConfig.defaultTitle}` : seoConfig.defaultTitle;
   const finalDescription = description || seoConfig.defaultDescription;
   const finalKeywords = keywords || seoConfig.defaultKeywords;
-  const url = canonical ? `${env.siteUrl}${canonical}` : env.siteUrl;
+  
+  // Ensure canonical is an absolute URL
+  let finalCanonical = env.siteUrl;
+  if (canonical) {
+    if (canonical.startsWith('http')) {
+      finalCanonical = canonical;
+    } else {
+      const baseUrl = env.siteUrl.endsWith('/') ? env.siteUrl.slice(0, -1) : env.siteUrl;
+      const path = canonical.startsWith('/') ? canonical : `/${canonical}`;
+      finalCanonical = `${baseUrl}${path}`;
+    }
+  }
 
   return {
     title: finalTitle,
     description: finalDescription,
     keywords: finalKeywords,
     alternates: {
-      canonical: url,
+      canonical: finalCanonical,
     },
     openGraph: {
       title: finalTitle,
       description: finalDescription,
-      url: url,
+      url: finalCanonical,
       siteName: seoConfig.openGraph.siteName,
       images: [
         {

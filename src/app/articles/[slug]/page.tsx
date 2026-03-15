@@ -10,6 +10,7 @@ import { breadcrumbService } from '@/modules/seo-engine/services/breadcrumb-serv
 import { Article } from '@/modules/content-engine/types';
 import { JsonLd } from '@/modules/seo-engine/components/JsonLd';
 import { schemaService } from '@/modules/seo/services/schema-service';
+import { canonicalService } from '@/modules/seo/services/canonical-service';
 
 interface ArticleRouteProps {
   params: Promise<{ slug: string }>;
@@ -31,12 +32,15 @@ export async function generateMetadata({ params }: ArticleRouteProps): Promise<M
     });
   }
 
+  const canonical = canonicalService.getCanonicalTag(slug, 'article');
+
   return buildMetadata({
     title: article.title,
     description: article.description || article.excerpt,
     keywords: article.tags,
     ogImage: article.featuredImage,
     ogType: 'article',
+    canonical: canonical,
   });
 }
 

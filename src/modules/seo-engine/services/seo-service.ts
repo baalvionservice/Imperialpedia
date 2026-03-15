@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { buildMetadata } from '@/lib/seo/metadata-builder';
 import { structuredData } from '@/lib/seo/structured-data';
 import { SEOPageData, BreadcrumbItem } from '../types';
+import { canonicalService, ContentType } from '@/modules/seo/services/canonical-service';
 
 /**
  * @fileOverview Core service for Programmatic SEO logic.
@@ -28,11 +29,21 @@ export const seoService = {
    * Generates dynamic Next.js Metadata for programmatic pages.
    */
   generateMetadata: (data: SEOPageData, pathPrefix: string): Metadata => {
+    // Determine content type for canonical generation
+    let contentType: ContentType = 'article';
+    if (pathPrefix.includes('glossary')) contentType = 'glossary';
+    if (pathPrefix.includes('calculators')) contentType = 'tool';
+    if (pathPrefix.includes('categories')) contentType = 'category';
+    if (pathPrefix.includes('tags')) contentType = 'tag';
+    if (pathPrefix.includes('topics')) contentType = 'topic';
+
+    const canonical = canonicalService.getCanonicalTag(data.slug, contentType);
+
     return buildMetadata({
       title: data.title,
       description: data.description,
       keywords: data.keywords,
-      canonical: `${pathPrefix}/${data.slug}`,
+      canonical: canonical,
       ogImage: data.image,
       ogType: data.type === 'article' ? 'article' : 'website',
     });

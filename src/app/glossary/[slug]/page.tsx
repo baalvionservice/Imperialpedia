@@ -12,6 +12,7 @@ import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/ca
 import { ArrowRight, ChevronRight, Home } from 'lucide-react';
 import { Breadcrumbs } from '@/modules/seo-engine/components/Breadcrumbs';
 import { breadcrumbService } from '@/modules/seo-engine/services/breadcrumb-service';
+import { canonicalService } from '@/modules/seo/services/canonical-service';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -25,6 +26,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   
   if (slug.length === 1) {
     const letter = slug.toUpperCase();
+    const canonical = canonicalService.getCanonicalTag(slug, 'glossary');
     return seoService.generateMetadata({
       title: `Financial Terms Starting with ${letter} — Glossary Index`,
       description: `Browse all financial terms and investment definitions starting with the letter ${letter}. Part of the Imperialpedia Intelligence Index.`,
@@ -41,12 +43,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     return { title: 'Term Not Found' };
   }
 
+  const canonical = canonicalService.getCanonicalTag(term.slug, 'glossary');
+
   return seoService.generateMetadata({
     title: `${term.term} Definition & Financial Meaning`,
     description: term.definition,
     slug: term.slug,
     type: 'glossary',
     keywords: [term.term, term.category, 'Financial Glossary', 'Investment Terms'],
+    image: '',
   }, '/glossary');
 }
 
