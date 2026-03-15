@@ -11,7 +11,9 @@ import {
   CommunityRankingsData,
   RankedUser,
   ContestLeaderboardEntry,
-  UserPrediction
+  UserPrediction,
+  AssetSentiment,
+  UserSentimentVote
 } from '@/types/community';
 
 /**
@@ -109,6 +111,40 @@ const mockUserPredictions: UserPrediction[] = [
   { id: 'p-2', contestName: "NVIDIA Earnings Target", asset: "NVDA", prediction: "$25.8B", result: "Correct", points: 450, rank: 12, date: "2026-02-20" },
   { id: 'p-3', contestName: "Fed Interest Rate Hike", asset: "FED", prediction: "25bps", result: "Incorrect", points: 10, date: "2026-01-15" },
 ];
+
+/**
+ * Prompt 63: Community Sentiment Data
+ */
+const generateHistory = () => Array.from({ length: 7 }, (_, i) => ({
+  date: `2026-03-0${i + 9}`,
+  bullish: Math.floor(Math.random() * 30) + 50,
+  price_proxy: 100 + Math.random() * 20
+}));
+
+const mockAssetSentiment: AssetSentiment[] = [
+  { id: 's-1', name: "Apple", ticker: "AAPL", bullish: 68, bearish: 32, votes: 4200, trend: 'Up', history: generateHistory() },
+  { id: 's-2', name: "Bitcoin", ticker: "BTC", bullish: 74, bearish: 26, votes: 8200, trend: 'Up', history: generateHistory() },
+  { id: 's-3', name: "Tesla", ticker: "TSLA", bullish: 55, bearish: 45, votes: 3100, trend: 'Down', history: generateHistory() },
+  { id: 's-4', name: "Ethereum", ticker: "ETH", bullish: 62, bearish: 38, votes: 5400, trend: 'Stable', history: generateHistory() },
+  { id: 's-5', name: "S&P 500 Index", ticker: "SPX", bullish: 51, bearish: 49, votes: 12500, trend: 'Down', history: generateHistory() },
+  { id: 's-6', name: "Gold", ticker: "XAU", bullish: 45, bearish: 55, votes: 2100, trend: 'Up', history: generateHistory() },
+];
+
+const mockUserSentimentHistory: UserSentimentVote[] = [
+  { id: 'uv-1', asset: 'Bitcoin', ticker: 'BTC', vote: 'Bull', date: '2026-03-15', currentBullish: 74 },
+  { id: 'uv-2', asset: 'Tesla', ticker: 'TSLA', vote: 'Bear', date: '2026-03-14', currentBullish: 55 },
+  { id: 'uv-3', asset: 'Apple', ticker: 'AAPL', vote: 'Bull', date: '2026-03-12', currentBullish: 68 },
+];
+
+export const getAssetSentiment = async (): Promise<ApiResponse<AssetSentiment[]>> => {
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  return { data: mockAssetSentiment, status: 200 };
+};
+
+export const getUserSentimentHistory = async (): Promise<ApiResponse<UserSentimentVote[]>> => {
+  await new Promise((resolve) => setTimeout(resolve, 300));
+  return { data: mockUserSentimentHistory, status: 200 };
+};
 
 export const getPredictionContests = async (): Promise<ApiResponse<PredictionContest[]>> => {
   await new Promise((resolve) => setTimeout(resolve, 400));

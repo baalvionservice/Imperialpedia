@@ -99,6 +99,35 @@ export interface PredictionContest {
   assets?: string[]; // Legacy mapping
 }
 
+/**
+ * Prompt 63: Community Sentiment Types
+ */
+export interface SentimentTrendNode {
+  date: string;
+  bullish: number;
+  price_proxy: number;
+}
+
+export interface AssetSentiment {
+  id: string;
+  name: string;
+  ticker: string;
+  bullish: number;
+  bearish: number;
+  votes: number;
+  trend: 'Up' | 'Down' | 'Stable';
+  history: SentimentTrendNode[];
+}
+
+export interface UserSentimentVote {
+  id: string;
+  asset: string;
+  ticker: string;
+  vote: 'Bull' | 'Bear';
+  date: string;
+  currentBullish: number;
+}
+
 export interface CommunityData {
   comments: Comment[];
   trendingDiscussions: string[];

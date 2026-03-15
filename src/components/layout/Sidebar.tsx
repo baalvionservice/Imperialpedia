@@ -146,6 +146,7 @@ const Sidebar = ({ className }: { className?: string }) => {
   ];
 
   const communityItems = [
+    { icon: ActivityIcon, label: 'Market Sentiment', href: '/community/sentiment' },
     { icon: Trophy, label: 'Rankings & Leaderboards', href: '/community/rankings' },
     { icon: Target, label: 'Polls & Contests', href: '/community/contests' },
     { icon: Award, label: 'Authority & Badges', href: '/community/leaderboard' },
