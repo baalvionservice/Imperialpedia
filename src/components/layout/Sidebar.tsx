@@ -50,7 +50,8 @@ import {
   PieChart,
   Globe,
   Newspaper,
-  CalendarDays
+  CalendarDays,
+  GitCompare
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 import { useAppStore } from '@/lib/state/app-store';
@@ -170,6 +171,7 @@ const Sidebar = ({ className }: { className?: string }) => {
     { icon: TrendingDown, label: 'AI Bear Case', href: '/ai-analyst/bear-case' },
     { icon: ShieldAlert, label: 'AI Risk Scanner', href: '/ai-analyst/risk-detection' },
     { icon: Zap, label: 'AI Catalyst Scanner', href: '/ai-analyst/catalyst-detection' },
+    { icon: GitCompare, label: 'AI Asset Compare', href: '/ai-analyst/compare' },
     { icon: PieChart, label: 'AI Earnings Summary', href: '/ai-analyst/earnings-summary' },
     { icon: Globe, label: 'AI Macro Summary', href: '/ai-analyst/macro-summary' },
     { icon: Layers, label: 'AI Sector Overview', href: '/ai-analyst/sector-overview' },

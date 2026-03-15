@@ -12,3 +12,4 @@ import '@/ai/flows/sector-overview-flow.ts';
 import '@/ai/flows/social-sentiment-flow.ts';
 import '@/ai/flows/daily-briefing-flow.ts';
 import '@/ai/flows/weekly-digest-flow.ts';
+import '@/ai/flows/asset-comparison-flow.ts';
