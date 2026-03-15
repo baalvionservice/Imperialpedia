@@ -23,7 +23,8 @@ import {
   ArrowRight,
   Target,
   ShieldAlert,
-  Sparkles
+  Sparkles,
+  Layers
 } from 'lucide-react';
 import Link from 'next/link';
 import { getDashboardMetrics, DashboardMetrics } from '@/services/mock-api/analytics';
@@ -92,21 +93,22 @@ export default function AnalyticsDashboardPage() {
           <Button variant="outline" size="sm" className="rounded-xl border-white/10 bg-card/30">
             <Calendar className="mr-2 h-4 w-4" /> Monthly Review
           </Button>
-          <Button size="sm" className="rounded-xl shadow-lg shadow-primary/20 font-bold">
+          <Button size="sm" className="rounded-xl shadow-lg shadow-primary/20 font-bold bg-primary">
             <Download className="mr-2 h-4 w-4" /> Export Datasets
           </Button>
         </div>
       </header>
 
       {/* Specialty Intelligence Links */}
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-7 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-8 gap-4">
         {[
           { label: 'SEO Authority', href: '/admin/analytics/seo', icon: Globe, color: 'text-primary', desc: 'Rankings' },
           { label: 'Traffic Pulse', href: '/admin/analytics/traffic', icon: Activity, color: 'text-secondary', desc: 'Visitors' },
           { label: 'User Activity', href: '/admin/analytics/engagement', icon: Target, color: 'text-primary', desc: 'Retention' },
           { label: 'Content Depth', href: '/admin/analytics/content', icon: FileText, color: 'text-secondary', desc: 'Engagement' },
-          { label: 'Creator Reach', href: '/admin/analytics/creators', icon: Users, color: 'text-primary', desc: 'Growth' },
-          { label: 'Social Engagement', href: '/admin/analytics/creator-engagement', icon: Sparkles, color: 'text-secondary', desc: 'Interactions' },
+          { label: 'Hub Analysis', href: '/admin/analytics/engagement-category', icon: Layers, color: 'text-primary', desc: 'Categories' },
+          { label: 'Creator Reach', href: '/admin/analytics/creators', icon: Users, color: 'text-secondary', desc: 'Growth' },
+          { label: 'Social Engagement', href: '/admin/analytics/creator-engagement', icon: Sparkles, color: 'text-primary', desc: 'Interactions' },
           { label: 'Moderation', href: '/admin/analytics/moderation', icon: ShieldAlert, color: 'text-amber-500', desc: 'Integrity' },
         ].map((node) => (
           <Link key={node.href} href={node.href}>
@@ -116,12 +118,12 @@ export default function AnalyticsDashboardPage() {
                   <div className={`p-2 rounded-lg bg-background/50 border border-white/5 ${node.color}`}>
                     <node.icon className="h-4 w-4" />
                   </div>
-                  <div>
-                    <Text variant="bodySmall" weight="bold" className="text-xs">{node.label}</Text>
-                    <Text variant="caption" className="text-muted-foreground text-[9px] uppercase font-bold">{node.desc}</Text>
+                  <div className="min-w-0">
+                    <Text variant="bodySmall" weight="bold" className="text-[10px] truncate">{node.label}</Text>
+                    <Text variant="caption" className="text-muted-foreground text-[8px] uppercase font-bold">{node.desc}</Text>
                   </div>
                 </div>
-                <ArrowRight className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-all -translate-x-2 group-hover:translate-x-0 text-primary" />
+                <ArrowRight className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-all -translate-x-2 group-hover:translate-x-0 text-primary shrink-0" />
               </div>
             </Card>
           </Link>

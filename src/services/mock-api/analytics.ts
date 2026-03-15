@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { TrafficAnalytics, SeoAnalytics, PlatformOverview, TrafficAnalyticsReport, ContentAnalytics, EngagementAnalytics, ModerationAnalytics, CreatorEngagement, TrafficSources, TrendingContent, DailyActiveUsers, WeeklyActiveUsers, TopContent, TopKeyword, GrowthMetrics } from '@/types/analytics';
+import { TrafficAnalytics, SeoAnalytics, PlatformOverview, TrafficAnalyticsReport, ContentAnalytics, EngagementAnalytics, ModerationAnalytics, CreatorEngagement, TrafficSources, TrendingContent, DailyActiveUsers, WeeklyActiveUsers, TopContent, TopKeyword, GrowthMetrics, EngagementByCategory } from '@/types/analytics';
 
 /**
  * @fileOverview Mock service for platform analytics and trending data.
@@ -218,6 +218,18 @@ export const getTopKeywords = async (): Promise<ApiResponse<TopKeyword[]>> => {
   ];
 
   return { data: mockData, status: 200 };
+};
+
+export const getCategoryEngagement = async (): Promise<ApiResponse<EngagementByCategory[]>> => {
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  const data: EngagementByCategory[] = [
+    { category: 'Economics', views: 450000, likes: 12400, comments: 2840, shares: 1560, engagementRate: 8.4 },
+    { category: 'Investing', views: 380000, likes: 15600, comments: 1100, shares: 3200, engagementRate: 12.1 },
+    { category: 'Markets', views: 220000, likes: 8200, comments: 950, shares: 1200, engagementRate: 6.8 },
+    { category: 'Crypto', views: 180000, likes: 5600, comments: 2400, shares: 4100, engagementRate: 15.2 },
+    { category: 'Personal Finance', views: 125000, likes: 4200, comments: 310, shares: 850, engagementRate: 4.5 },
+  ].sort((a, b) => b.engagementRate - a.engagementRate);
+  return { data, status: 200 };
 };
 
 export const getContentAnalytics = async (): Promise<ApiResponse<ContentAnalytics>> => {

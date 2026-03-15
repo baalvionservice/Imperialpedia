@@ -191,6 +191,15 @@ export interface EngagementAnalytics {
   };
 }
 
+export interface EngagementByCategory {
+  category: string;
+  likes: number;
+  comments: number;
+  shares: number;
+  views: number;
+  engagementRate: number;
+}
+
 export interface ModerationAnalytics {
   id: string;
   content: string;
