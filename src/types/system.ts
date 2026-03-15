@@ -110,3 +110,14 @@ export interface FeatureFlag {
   isBeta: boolean;
   module: string;
 }
+
+/**
+ * Interface for the Role Control Matrix
+ */
+export interface RoleControl {
+  id: string;
+  roleName: string;
+  usersAssigned: number;
+  permissions: string[];
+  description?: string;
+}
