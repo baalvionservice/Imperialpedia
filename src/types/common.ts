@@ -21,6 +21,13 @@ export interface User {
   avatar?: string;
 }
 
+export interface RoleDefinition {
+  id: string;
+  name: Role;
+  description: string;
+  permissions: string[];
+}
+
 export interface BaseModule {
   id: ID;
   name: string;

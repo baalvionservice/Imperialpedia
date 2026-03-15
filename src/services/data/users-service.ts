@@ -1,9 +1,10 @@
 import * as mockApi from '@/services/mock-api/users';
-import { User, ApiResponse } from '@/types';
+import * as roleApi from '@/services/mock-api/roles';
+import { User, RoleDefinition, ApiResponse } from '@/types';
 import { errorHandler } from '@/lib/errors/error-handler';
 
 /**
- * @fileOverview Abstraction layer for user-related data fetching with error handling.
+ * @fileOverview Abstraction layer for user and role related data fetching with error handling.
  */
 
 export const usersService = {
@@ -19,4 +20,17 @@ export const usersService = {
       };
     }
   },
+
+  async getRoles(): Promise<ApiResponse<RoleDefinition[]>> {
+    try {
+      return await roleApi.getRoles();
+    } catch (error) {
+      const appError = errorHandler.handleError(error);
+      return {
+        data: [],
+        status: appError.statusCode,
+        error: appError.message,
+      };
+    }
+  }
 };

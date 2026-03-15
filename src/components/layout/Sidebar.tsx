@@ -29,7 +29,8 @@ import {
   UserCircle,
   PenTool,
   Calculator as CalcIcon,
-  ShieldX
+  ShieldX,
+  Lock
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 import { useAppStore } from '@/lib/state/app-store';
@@ -87,6 +88,7 @@ const Sidebar = ({ className }: { className?: string }) => {
   const adminItems = [
     { icon: LayoutDashboard, label: 'Admin Home', href: '/admin' },
     { icon: UsersIcon, label: 'User Management', href: '/admin/users' },
+    { icon: Lock, label: 'Roles & Permissions', href: '/admin/roles' },
     { icon: ShieldX, label: 'Content Moderation', href: '/admin/moderation' },
     { icon: ShieldCheck, label: 'Expert Verifications', href: '/admin/creators/verification' },
     { icon: Calendar, label: 'Publisher Scheduler', href: '/admin/scheduler' },
