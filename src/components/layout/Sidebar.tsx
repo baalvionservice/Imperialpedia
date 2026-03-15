@@ -106,6 +106,7 @@ const Sidebar = ({ className }: { className?: string }) => {
     { icon: Layers, label: 'Categories', href: '/admin/categories' },
     { icon: Tags, label: 'Topics & Tags', href: '/admin/tags' },
     { icon: BarChart3, label: 'System Analytics', href: '/admin/analytics' },
+    { icon: ShieldAlert, label: 'Moderation Audit', href: '/admin/analytics/moderation' },
     { icon: Activity, label: 'System Health', href: '/admin/health' },
     { icon: Bug, label: 'Error Logs', href: '/admin/errors' },
     { icon: ShieldCheck, label: 'Audit Trail', href: '/admin/audit-logs' },

@@ -107,3 +107,12 @@ export interface EngagementAnalytics {
     stickinessRatio: number;
   };
 }
+
+export interface ModerationAnalytics {
+  id: string;
+  content: string;
+  creator: string;
+  reportType: string;
+  status: 'Pending' | 'Reviewed' | 'Action Taken';
+  date: string;
+}

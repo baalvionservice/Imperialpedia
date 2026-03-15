@@ -21,7 +21,8 @@ import {
   Globe,
   Activity,
   ArrowRight,
-  Target
+  Target,
+  ShieldAlert
 } from 'lucide-react';
 import Link from 'next/link';
 import { getDashboardMetrics, DashboardMetrics } from '@/services/mock-api/analytics';
@@ -97,13 +98,14 @@ export default function AnalyticsDashboardPage() {
       </header>
 
       {/* Specialty Intelligence Links */}
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
         {[
           { label: 'SEO Authority', href: '/admin/analytics/seo', icon: Globe, color: 'text-primary', desc: 'Rankings' },
           { label: 'Traffic Pulse', href: '/admin/analytics/traffic', icon: Activity, color: 'text-secondary', desc: 'Visitors' },
           { label: 'User Activity', href: '/admin/analytics/engagement', icon: Target, color: 'text-primary', desc: 'Retention' },
           { label: 'Content Depth', href: '/admin/analytics/content', icon: FileText, color: 'text-secondary', desc: 'Engagement' },
           { label: 'Expert Network', href: '/admin/analytics/creators', icon: Users, color: 'text-primary', desc: 'Creators' },
+          { label: 'Moderation', href: '/admin/analytics/moderation', icon: ShieldAlert, color: 'text-amber-500', desc: 'Integrity' },
         ].map((node) => (
           <Link key={node.href} href={node.href}>
             <Card className="glass-card p-4 hover:border-primary/40 transition-all group h-full">
