@@ -24,18 +24,23 @@ export interface TrafficAnalytics {
   }[];
 }
 
+export interface SeoPerformanceItem {
+  id: string;
+  page: string;
+  keyword: string;
+  rank: number;
+  impressions: number;
+  clicks: number;
+  ctr: number;
+  trend: 'up' | 'down' | 'stable';
+}
+
 export interface SeoAnalytics {
   indexedPages: number;
   clickThroughRate: number;
   avgPosition: number;
   backlinks: number;
-  topKeywords: { 
-    keyword: string; 
-    position: number; 
-    clicks: number; 
-    impressions: number;
-    trend: 'up' | 'down' | 'stable';
-  }[];
+  topKeywords: SeoPerformanceItem[];
   trends: { 
     date: string; 
     clicks: number; 

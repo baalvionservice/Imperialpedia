@@ -20,7 +20,8 @@ import {
   Download,
   ChevronRight,
   TrendingDown,
-  Minus
+  Minus,
+  Activity
 } from 'lucide-react';
 import Link from 'next/link';
 import { analyticsService } from '@/services/data/analytics-service';
@@ -33,11 +34,15 @@ import {
   CartesianGrid, 
   Tooltip, 
   ResponsiveContainer,
-  BarChart,
-  Bar,
-  Cell
+  LineChart,
+  Line
 } from 'recharts';
+import { cn } from '@/lib/utils';
 
+/**
+ * SEO Performance Monitoring Dashboard.
+ * Tracks organic visibility, ranking authority, and keyword conversion for the Intelligence Index.
+ */
 export default function SeoPerformanceMonitoringPage() {
   const [data, setData] = useState<SeoAnalytics | null>(null);
   const [loading, setLoading] = useState(true);
@@ -48,7 +53,7 @@ export default function SeoPerformanceMonitoringPage() {
         const response = await analyticsService.getSeoAnalytics();
         if (response.data) setData(response.data);
       } catch (e) {
-        console.error(e);
+        console.error('SEO Intelligence Sync Failure', e);
       } finally {
         setLoading(false);
       }
@@ -78,6 +83,14 @@ export default function SeoPerformanceMonitoringPage() {
     }
   };
 
+  const getStatusBadge = (trend: string) => {
+    switch (trend) {
+      case 'up': return <Badge className="bg-emerald-500/10 text-emerald-500 border-none text-[9px] font-bold uppercase h-5">Improving</Badge>;
+      case 'down': return <Badge variant="destructive" className="text-[9px] font-bold uppercase h-5">Declining</Badge>;
+      default: return <Badge variant="outline" className="text-[9px] font-bold uppercase h-5 text-muted-foreground">Stable</Badge>;
+    }
+  };
+
   return (
     <div className="space-y-8 pb-12 animate-in fade-in duration-700">
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -97,7 +110,7 @@ export default function SeoPerformanceMonitoringPage() {
           <Button variant="outline" size="sm" className="rounded-xl border-white/10 bg-card/30">
             <Calendar className="mr-2 h-4 w-4" /> 30 Day Outlook
           </Button>
-          <Button size="sm" className="rounded-xl shadow-lg shadow-primary/20 font-bold">
+          <Button size="sm" className="rounded-xl shadow-lg shadow-primary/20 font-bold bg-primary">
             <Download className="mr-2 h-4 w-4" /> Export SEO Audit
           </Button>
         </div>
@@ -105,10 +118,10 @@ export default function SeoPerformanceMonitoringPage() {
 
       {/* High-Level Search Metrics */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card className="glass-card border-none shadow-xl">
+        <Card className="glass-card border-none shadow-xl group hover:border-primary/20 transition-all">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
             <CardTitle className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Indexed Pages</CardTitle>
-            <Globe className="h-4 w-4 text-primary" />
+            <Globe className="h-4 w-4 text-primary group-hover:scale-110 transition-transform" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{formatCompact(data.indexedPages)}</div>
@@ -118,10 +131,10 @@ export default function SeoPerformanceMonitoringPage() {
           </CardContent>
         </Card>
 
-        <Card className="glass-card border-none shadow-xl">
+        <Card className="glass-card border-none shadow-xl group hover:border-secondary/20 transition-all">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
             <CardTitle className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Average CTR</CardTitle>
-            <MousePointer2 className="h-4 w-4 text-secondary" />
+            <MousePointer2 className="h-4 w-4 text-secondary group-hover:scale-110 transition-transform" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{data.clickThroughRate}%</div>
@@ -131,10 +144,10 @@ export default function SeoPerformanceMonitoringPage() {
           </CardContent>
         </Card>
 
-        <Card className="glass-card border-none shadow-xl">
+        <Card className="glass-card border-none shadow-xl group hover:border-primary/20 transition-all">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
             <CardTitle className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Average Position</CardTitle>
-            <Search className="h-4 w-4 text-primary" />
+            <Search className="h-4 w-4 text-primary group-hover:scale-110 transition-transform" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">#{data.avgPosition}</div>
@@ -144,10 +157,10 @@ export default function SeoPerformanceMonitoringPage() {
           </CardContent>
         </Card>
 
-        <Card className="glass-card border-none shadow-xl">
+        <Card className="glass-card border-none shadow-xl group hover:border-secondary/20 transition-all">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
             <CardTitle className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Organic Backlinks</CardTitle>
-            <LinkIcon className="h-4 w-4 text-secondary" />
+            <LinkIcon className="h-4 w-4 text-secondary group-hover:scale-110 transition-transform" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{formatCompact(data.backlinks)}</div>
@@ -164,7 +177,7 @@ export default function SeoPerformanceMonitoringPage() {
           <CardHeader className="flex flex-row items-center justify-between border-b border-white/5 bg-card/30 p-6">
             <div>
               <CardTitle className="text-lg">Visibility Momentum</CardTitle>
-              <CardDescription>Visualizing organic clicks vs total search impressions.</CardDescription>
+              <CardDescription>Organic clicks vs total search impressions over time.</CardDescription>
             </div>
             <Badge variant="outline" className="border-primary/20 bg-primary/5 text-primary text-[10px] font-bold">LIVE SYNC</Badge>
           </CardHeader>
@@ -202,6 +215,7 @@ export default function SeoPerformanceMonitoringPage() {
                   fill="url(#colorImpressions)" 
                   strokeWidth={2}
                   strokeDasharray="5 5"
+                  name="Impressions"
                 />
                 <Area 
                   type="monotone" 
@@ -210,13 +224,14 @@ export default function SeoPerformanceMonitoringPage() {
                   fillOpacity={1} 
                   fill="url(#colorClicks)" 
                   strokeWidth={3}
+                  name="Clicks"
                 />
               </AreaChart>
             </ResponsiveContainer>
           </CardContent>
         </Card>
 
-        {/* SEO Context / Insights */}
+        {/* SEO Intelligence Context */}
         <div className="lg:col-span-4 space-y-6">
           <Card className="glass-card border-none shadow-xl bg-primary/5">
             <CardHeader>
@@ -245,9 +260,12 @@ export default function SeoPerformanceMonitoringPage() {
                 </div>
               </div>
 
-              <div className="mt-8 p-5 rounded-2xl border border-white/5 bg-card/30">
+              <div className="p-5 rounded-2xl border border-white/5 bg-card/30 mt-6">
+                <div className="flex items-center gap-2 text-secondary font-bold text-[10px] uppercase mb-2">
+                  <Activity className="h-3 w-3" /> Strategy Peak
+                </div>
                 <Text variant="caption" className="italic text-muted-foreground leading-relaxed">
-                  "Programmatic pages in the **Glossary Index** are seeing a 45% higher CTR than static articles this month. Recommend increasing internal linking from Glossary terms to Expert Profiles."
+                  "Programmatic nodes in the **Glossary Index** are seeing a 45% higher CTR than static research. Recommend cross-linking from glossary definitions to expert profiles."
                 </Text>
               </div>
             </CardContent>
@@ -255,60 +273,70 @@ export default function SeoPerformanceMonitoringPage() {
 
           <div className="p-6 rounded-[2rem] border border-secondary/20 bg-secondary/5 space-y-4">
             <div className="flex items-center gap-2 text-secondary font-bold text-sm">
-              <TrendingUp className="h-4 w-4" /> Strategy Tip
+              <TrendingUp className="h-4 w-4" /> Growth Tip
             </div>
             <Text variant="caption" className="text-muted-foreground leading-relaxed">
-              Top opportunity: **Retirement Planning** keywords are showing high impression volume but low position (avg #18). Directing more backlink authority to this cluster could trigger a 200% traffic lift.
+              **Retirement Planning** keywords are showing high impression volume but low average position (#18). Strategic backlink targeting could trigger a 200% traffic lift.
             </Text>
           </div>
         </div>
       </div>
 
-      {/* Keyword Performance Matrix */}
+      {/* Detailed Keyword & Page Performance Matrix */}
       <Card className="glass-card border-none shadow-2xl overflow-hidden">
         <CardHeader className="bg-card/30 border-b border-white/5 p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <CardTitle className="text-xl">Keyword Performance Matrix</CardTitle>
-            <CardDescription>Top organic search queries driving traffic to the Intelligence Index.</CardDescription>
+            <CardTitle className="text-xl">Organic Discovery Matrix</CardTitle>
+            <CardDescription>Comprehensive audit of keyword rankings and node-level conversion.</CardDescription>
           </div>
-          <Button variant="ghost" size="sm" className="text-primary font-bold">
-            View Search Console Hub <ChevronRight className="ml-1 h-4 w-4" />
-          </Button>
+          <div className="relative w-full md:w-72">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input placeholder="Filter discovery nodes..." className="pl-10 bg-background/50 h-10 rounded-xl" />
+          </div>
         </CardHeader>
         <div className="overflow-x-auto">
           <Table>
             <TableHeader>
               <TableRow className="bg-muted/20 hover:bg-muted/20 border-b border-white/5">
-                <TableHead className="pl-6 font-bold text-[10px] uppercase tracking-widest">Search Query</TableHead>
-                <TableHead className="font-bold text-[10px] uppercase tracking-widest text-right">Avg. Position</TableHead>
-                <TableHead className="font-bold text-[10px] uppercase tracking-widest text-right">Total Clicks</TableHead>
+                <TableHead className="pl-6 font-bold text-[10px] uppercase tracking-widest">Discovery Node (Page)</TableHead>
+                <TableHead className="font-bold text-[10px] uppercase tracking-widest">Search Query</TableHead>
+                <TableHead className="font-bold text-[10px] uppercase tracking-widest text-right">Avg. Rank</TableHead>
                 <TableHead className="font-bold text-[10px] uppercase tracking-widest text-right">Impressions</TableHead>
+                <TableHead className="font-bold text-[10px] uppercase tracking-widest text-right">Clicks</TableHead>
                 <TableHead className="font-bold text-[10px] uppercase tracking-widest text-right">CTR</TableHead>
-                <TableHead className="font-bold text-[10px] uppercase tracking-widest text-right pr-6">Momentum</TableHead>
+                <TableHead className="font-bold text-[10px] uppercase tracking-widest text-right pr-6">Trajectory</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data.topKeywords.map((item, idx) => (
-                <TableRow key={idx} className="group hover:bg-muted/10 transition-colors border-b border-white/5">
+              {data.topKeywords.map((item) => (
+                <TableRow key={item.id} className="group hover:bg-muted/10 transition-colors border-b border-white/5">
                   <TableCell className="py-5 pl-6">
+                    <div className="flex flex-col">
+                      <span className="text-xs font-mono font-medium text-primary hover:underline cursor-pointer truncate max-w-[180px]">
+                        {item.page}
+                      </span>
+                    </div>
+                  </TableCell>
+                  <TableCell>
                     <span className="text-sm font-bold">{item.keyword}</span>
                   </TableCell>
                   <TableCell className="text-right">
-                    <span className="font-mono text-xs font-bold">#{item.position}</span>
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <span className="text-xs font-bold">{formatCompact(item.clicks)}</span>
+                    <span className="font-mono text-xs font-bold">#{item.rank}</span>
                   </TableCell>
                   <TableCell className="text-right">
                     <span className="text-xs text-muted-foreground">{formatCompact(item.impressions)}</span>
                   </TableCell>
                   <TableCell className="text-right">
+                    <span className="text-xs font-bold">{formatCompact(item.clicks)}</span>
+                  </TableCell>
+                  <TableCell className="text-right">
                     <Badge variant="outline" className="border-primary/20 bg-primary/5 text-primary text-[10px] font-bold">
-                      {((item.clicks / item.impressions) * 100).toFixed(1)}%
+                      {item.ctr}%
                     </Badge>
                   </TableCell>
                   <TableCell className="text-right pr-6">
-                    <div className="flex justify-end">
+                    <div className="flex justify-end items-center gap-3">
+                      {getStatusBadge(item.trend)}
                       <div className="p-1.5 rounded-lg bg-background/50 border border-white/5">
                         {getTrendIcon(item.trend)}
                       </div>

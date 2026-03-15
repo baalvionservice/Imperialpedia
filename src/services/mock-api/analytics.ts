@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { TrafficAnalytics, SeoAnalytics, PlatformOverview } from '@/types/analytics';
+import { TrafficAnalytics, SeoAnalytics, PlatformOverview, SeoPerformanceItem } from '@/types/analytics';
 
 /**
  * @fileOverview Mock service for platform analytics and trending data.
@@ -216,11 +216,11 @@ export const getSeoAnalytics = async (): Promise<ApiResponse<SeoAnalytics>> => {
       avgPosition: 12.4,
       backlinks: 85400,
       topKeywords: [
-        { keyword: 'Yield Curve Inversion', position: 1.2, clicks: 12400, impressions: 45000, trend: 'up' },
-        { keyword: 'Compound Interest Calculator', position: 2.4, clicks: 8200, impressions: 32000, trend: 'up' },
-        { keyword: 'Macro Economics Trends', position: 4.8, clicks: 5100, impressions: 28000, trend: 'stable' },
-        { keyword: 'Inflation Impact', position: 3.1, clicks: 4800, impressions: 15000, trend: 'up' },
-        { keyword: 'Retirement Savings Strategy', position: 8.5, clicks: 2400, impressions: 12000, trend: 'down' },
+        { id: '1', page: '/articles/yield-curve', keyword: 'Yield Curve Inversion', rank: 1.2, clicks: 12400, impressions: 45000, ctr: 27.5, trend: 'up' },
+        { id: '2', page: '/financial-tools/compound-interest', keyword: 'Compound Interest Calculator', rank: 2.4, clicks: 8200, impressions: 32000, ctr: 25.6, trend: 'up' },
+        { id: '3', page: '/articles/macro-economics', keyword: 'Macro Economics Trends', rank: 4.8, clicks: 5100, impressions: 28000, ctr: 18.2, trend: 'stable' },
+        { id: '4', page: '/articles/inflation-impact', keyword: 'Inflation Impact', rank: 3.1, clicks: 4800, impressions: 15000, ctr: 32.0, trend: 'up' },
+        { id: '5', page: '/articles/retirement-strategy', keyword: 'Retirement Savings Strategy', rank: 8.5, clicks: 2400, impressions: 12000, ctr: 20.0, trend: 'down' },
       ],
       trends: [
         { date: '2024-03-01', clicks: 4200, impressions: 120000 },
