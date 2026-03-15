@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { UserDashboardData, UserPortfolioData } from '@/types/user-system';
+import { UserDashboardData, UserPortfolioData, UserAlertsAndNotificationsData } from '@/types/user-system';
 
 /**
  * @fileOverview Mock service for retrieving personalized user dashboard data.
@@ -112,6 +112,25 @@ export const getMockUserPortfolio = async (): Promise<ApiResponse<UserPortfolioD
         { id: 't-1', asset: 'BTC', type: 'Buy', price: '$62,100.00', quantity: '0.05', date: '2024-03-05T10:30:00Z' },
         { id: 't-2', asset: 'NVDA', type: 'Buy', price: '$820.00', quantity: '10', date: '2024-03-01T14:20:00Z' },
         { id: 't-3', asset: 'AAPL', type: 'Sell', price: '$185.00', quantity: '25', date: '2024-02-25T09:15:00Z' },
+      ]
+    },
+    status: 200
+  };
+};
+
+export const getMockUserAlertsAndNotifications = async (): Promise<ApiResponse<UserAlertsAndNotificationsData>> => {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  return {
+    data: {
+      alerts: [
+        { id: 'al-1', type: "price", asset: "XYZ Corp", threshold: 60, status: "active" },
+        { id: 'al-2', type: "volume", asset: "ABC Inc", threshold: 50000, status: "inactive" },
+        { id: 'al-3', type: "sentiment", asset: "DEF Ltd", threshold: 0.7, status: "active" }
+      ],
+      notifications: [
+        { id: 'nt-1', type: "alert_triggered", asset: "XYZ Corp", message: "Price crossed $60 threshold", datetime: "2026-03-15 10:30" },
+        { id: 'nt-2', type: "news_update", asset: "ABC Inc", message: "New earnings report released for Q1", datetime: "2026-03-14 09:00" },
+        { id: 'nt-3', type: "system", asset: "Portfolio", message: "Your weekly performance summary is ready", datetime: "2026-03-13 08:00" }
       ]
     },
     status: 200

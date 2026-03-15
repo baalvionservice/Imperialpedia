@@ -34,10 +34,19 @@ export interface UserAlert {
   id: string;
   asset: string;
   type: 'price' | 'volume' | 'sentiment';
-  threshold: string;
-  triggered: boolean;
+  threshold: string | number;
   status: 'active' | 'inactive';
-  createdAt: string;
+  createdAt?: string;
+  triggered?: boolean;
+}
+
+export interface UserNotification {
+  id: string;
+  type: 'alert_triggered' | 'news_update' | 'system';
+  asset: string;
+  message: string;
+  datetime: string;
+  read?: boolean;
 }
 
 export interface UserDashboardData {
@@ -84,4 +93,9 @@ export interface UserPortfolioData {
     quantity: string;
     date: string;
   }>;
+}
+
+export interface UserAlertsAndNotificationsData {
+  alerts: UserAlert[];
+  notifications: UserNotification[];
 }
