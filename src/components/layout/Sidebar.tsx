@@ -52,7 +52,8 @@ import {
   Newspaper,
   CalendarDays,
   GitCompare,
-  Activity as ActivityIcon
+  Activity as ActivityIcon,
+  User
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 import { useAppStore } from '@/lib/state/app-store';
@@ -106,6 +107,12 @@ const Sidebar = ({ className }: { className?: string }) => {
   const isAdmin = role === 'admin';
   const isEditor = role === 'editor' || role === 'admin';
   const isWriter = role === 'writer' || role === 'admin';
+
+  const personalItems = [
+    { icon: User, label: 'My Dashboard', href: '/dashboard' },
+    { icon: Search, label: 'Market Search', href: '/search' },
+    { icon: Activity, label: 'Intelligence Feed', href: '/dashboard/feed' },
+  ];
 
   const adminItems = [
     { icon: LayoutDashboard, label: 'Admin Dashboard', href: '/admin/dashboard' },
@@ -196,9 +203,25 @@ const Sidebar = ({ className }: { className?: string }) => {
       </div>
 
       <div className="space-y-6 flex-grow overflow-y-auto">
+        {/* Personal User Section */}
+        <div>
+          <Text variant="label" className="px-4 mb-3 text-[10px] text-muted-foreground/50 font-bold uppercase tracking-widest">
+            Personal System
+          </Text>
+          <div className="space-y-1">
+            {personalItems.map((item) => (
+              <SidebarItem
+                key={item.href}
+                {...item}
+                isActive={pathname === item.href}
+              />
+            ))}
+          </div>
+        </div>
+
         {/* Admin Section */}
         {isAdmin && (pathname.startsWith('/admin') || pathname === '/admin') && (
-          <div>
+          <div className="pt-4 border-t border-white/5">
             <Text variant="label" className="px-4 mb-3 text-[10px] text-muted-foreground/50 font-bold uppercase tracking-widest">
               Administration
             </Text>
@@ -216,7 +239,7 @@ const Sidebar = ({ className }: { className?: string }) => {
 
         {/* Editor Section */}
         {isEditor && (pathname.startsWith('/editor') || pathname === '/editor') && (
-          <div>
+          <div className="pt-4 border-t border-white/5">
             <Text variant="label" className="px-4 mb-3 text-[10px] text-muted-foreground/50 font-bold uppercase tracking-widest">
               Editorial Intelligence
             </Text>
@@ -234,7 +257,7 @@ const Sidebar = ({ className }: { className?: string }) => {
 
         {/* Creator Section */}
         {(isWriter || isAdmin) && (pathname.startsWith('/creator') || pathname.startsWith('/writer') || pathname === '/creator/dashboard') && (
-          <div>
+          <div className="pt-4 border-t border-white/5">
             <Text variant="label" className="px-4 mb-3 text-[10px] text-muted-foreground/50 font-bold uppercase tracking-widest">
               Creator Studio
             </Text>
@@ -251,8 +274,8 @@ const Sidebar = ({ className }: { className?: string }) => {
         )}
 
         {/* General Knowledge Context */}
-        {(!pathname.startsWith('/admin') && !pathname.startsWith('/writer') && !pathname.startsWith('/editor') && !pathname.startsWith('/creator')) && (
-          <div>
+        {(!pathname.startsWith('/admin') && !pathname.startsWith('/writer') && !pathname.startsWith('/editor') && !pathname.startsWith('/creator') && !pathname.startsWith('/dashboard')) && (
+          <div className="pt-4 border-t border-white/5">
             <Text variant="label" className="px-4 mb-3 text-[10px] text-muted-foreground/50 font-bold uppercase tracking-widest">
               Knowledge Hub
             </Text>
