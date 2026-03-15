@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { TrafficAnalytics, SeoAnalytics, PlatformOverview, TrafficAnalyticsReport, ContentAnalytics, EngagementAnalytics, ModerationAnalytics, CreatorEngagement, TrafficSources, TrendingContent, DailyActiveUsers, WeeklyActiveUsers, TopContent } from '@/types/analytics';
+import { TrafficAnalytics, SeoAnalytics, PlatformOverview, TrafficAnalyticsReport, ContentAnalytics, EngagementAnalytics, ModerationAnalytics, CreatorEngagement, TrafficSources, TrendingContent, DailyActiveUsers, WeeklyActiveUsers, TopContent, TopKeyword } from '@/types/analytics';
 
 /**
  * @fileOverview Mock service for platform analytics and trending data.
@@ -184,6 +184,21 @@ export const getTrendingContent = async (): Promise<ApiResponse<TrendingContent[
   return { data: mockData, status: 200 };
 };
 
+export const getTopKeywords = async (): Promise<ApiResponse<TopKeyword[]>> => {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  const dates = ['2024-03-01', '2024-03-02', '2024-03-03', '2024-03-04', '2024-03-05', '2024-03-06', '2024-03-07'];
+  
+  const mockData: TopKeyword[] = [
+    { id: '1', keyword: 'Yield Curve Inversion', page: '/articles/yield-curve', rank: 1.2, impressions: 125000, clicks: 34200, ctr: 27.4, trend: 'Up', history: dates.map(d => ({ date: d, impressions: Math.floor(Math.random() * 20000) + 10000 })) },
+    { id: '2', keyword: 'Compound Interest Calc', page: '/financial-tools/compound-interest', rank: 2.1, impressions: 85400, clicks: 21800, ctr: 25.5, trend: 'Up', history: dates.map(d => ({ date: d, impressions: Math.floor(Math.random() * 15000) + 8000 })) },
+    { id: '3', keyword: 'Recession Indicators', page: '/tags/recession', rank: 3.4, impressions: 62000, clicks: 12400, ctr: 20.0, trend: 'Down', history: dates.map(d => ({ date: d, impressions: Math.floor(Math.random() * 10000) + 5000 })) },
+    { id: '4', keyword: 'Passive Income Strategies', page: '/articles/dividend-income', rank: 4.8, impressions: 45000, clicks: 8200, ctr: 18.2, trend: 'Up', history: dates.map(d => ({ date: d, impressions: Math.floor(Math.random() * 8000) + 4000 })) },
+    { id: '5', keyword: 'Bull Market Definition', page: '/glossary/bull-market', rank: 1.5, impressions: 38000, clicks: 9500, ctr: 25.0, trend: 'Down', history: dates.map(d => ({ date: d, impressions: Math.floor(Math.random() * 6000) + 3000 })) },
+  ];
+
+  return { data: mockData, status: 200 };
+};
+
 export const getContentAnalytics = async (): Promise<ApiResponse<ContentAnalytics>> => {
   await new Promise((resolve) => setTimeout(resolve, 500));
   return {
@@ -354,7 +369,7 @@ export const getPlatformOverview = async (): Promise<ApiResponse<PlatformOvervie
         { date: '2024-02-20', users: 139500 },
         { date: '2024-02-25', users: 140800 },
         { date: '2024-03-01', users: 141200 },
-        { date: '2024-03-05', users: 141900 },
+        { date: '2024-02-05', users: 141900 },
         { date: '2024-03-10', users: 142500 },
       ],
       topContent: [

@@ -66,6 +66,18 @@ export interface SeoPerformanceItem {
   trend: 'up' | 'down' | 'stable';
 }
 
+export interface TopKeyword {
+  id: string;
+  keyword: string;
+  page: string;
+  rank: number;
+  impressions: number;
+  clicks: number;
+  ctr: number;
+  trend: 'Up' | 'Down';
+  history: { date: string; impressions: number }[];
+}
+
 export interface SeoAnalytics {
   indexedPages: number;
   clickThroughRate: number;
