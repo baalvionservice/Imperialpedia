@@ -417,9 +417,14 @@ export function PortfolioTrackerClient({ data }: PortfolioTrackerClientProps) {
                     {alert.triggered ? (
                       <Badge className="bg-emerald-500 text-white border-none animate-pulse text-[8px] h-5 px-2">TRIGGERED</Badge>
                     ) : (
-                      <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity">
-                        <MoreVertical className="h-4 w-4" />
-                      </Button>
+                      <div className="flex items-center gap-2">
+                        <Badge variant={alert.status === 'active' ? "outline" : "secondary"} className="text-[8px] h-5 uppercase">
+                          {alert.status}
+                        </Badge>
+                        <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity">
+                          <MoreVertical className="h-4 w-4" />
+                        </Button>
+                      </div>
                     )}
                   </div>
                 ))}

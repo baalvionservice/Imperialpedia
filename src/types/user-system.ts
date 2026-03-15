@@ -36,6 +36,7 @@ export interface UserAlert {
   type: 'price' | 'volume' | 'sentiment';
   threshold: string;
   triggered: boolean;
+  status: 'active' | 'inactive';
   createdAt: string;
 }
 

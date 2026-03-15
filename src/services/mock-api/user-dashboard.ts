@@ -104,9 +104,9 @@ export const getMockUserPortfolio = async (): Promise<ApiResponse<UserPortfolioD
         performance_chart_data: generateHistory(45000)
       },
       alerts: [
-        { id: 'al-1', asset: 'NVDA', type: 'price', threshold: '$900.00', triggered: false, createdAt: '2024-03-10T10:00:00Z' },
-        { id: 'al-2', asset: 'BTC', type: 'sentiment', threshold: 'Bearish', triggered: false, createdAt: '2024-03-11T14:30:00Z' },
-        { id: 'al-3', asset: 'ETH', type: 'volume', threshold: '> 2B', triggered: true, createdAt: '2024-03-12T09:15:00Z' },
+        { id: 'al-1', asset: 'NVIDIA', type: 'price', threshold: '900', triggered: false, status: 'active', createdAt: '2024-03-10T10:00:00Z' },
+        { id: 'al-2', asset: 'Bitcoin', type: 'sentiment', threshold: 'Bearish', triggered: false, status: 'inactive', createdAt: '2024-03-11T14:30:00Z' },
+        { id: 'al-3', asset: 'Ethereum', type: 'volume', threshold: '2B', triggered: true, status: 'active', createdAt: '2024-03-12T09:15:00Z' },
       ],
       trade_history: [
         { id: 't-1', asset: 'BTC', type: 'Buy', price: '$62,100.00', quantity: '0.05', date: '2024-03-05T10:30:00Z' },
