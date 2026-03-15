@@ -55,6 +55,7 @@ export interface CreatorContentItem {
   comments: number;
   slug: string;
   snippet?: string;
+  scheduledAt?: string;
 }
 
 export interface CreatorDashboardSummary {
@@ -110,4 +111,13 @@ export interface CreatorLeaderboard {
   totalRevenue: number;
   totalViews: number;
   totalLikes: number;
+}
+
+export interface ScheduledContent {
+  id: string;
+  title: string;
+  scheduledAt: string;
+  status: "draft" | "scheduled";
+  category: string;
+  tags: string[];
 }

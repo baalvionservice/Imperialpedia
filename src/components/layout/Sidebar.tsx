@@ -31,7 +31,8 @@ import {
   History,
   TrendingUp,
   Briefcase,
-  DollarSign
+  DollarSign,
+  CalendarCheck
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 import { useAppStore } from '@/lib/state/app-store';
@@ -111,6 +112,7 @@ const Sidebar = ({ className }: { className?: string }) => {
   const creatorItems = [
     { icon: LayoutDashboard, label: 'Expert Dashboard', href: '/creator/dashboard' },
     { icon: PlusSquare, label: 'Create Insight', href: '/creator/dashboard/create' },
+    { icon: CalendarCheck, label: 'Publishing Schedule', href: '/creator/dashboard/schedule' },
     { icon: FileEdit, label: 'Intelligence Drafts', href: '/writer/drafts' },
     { icon: BarChart3, label: 'Insights Analytics', href: '/creator/dashboard/analytics' },
     { icon: Bell, label: 'Activity Feed', href: '/creator/dashboard/notifications', badge: unreadNotifications },

@@ -1,4 +1,4 @@
-import { CreatorProfile, ApiResponse, CreatorContentItem, CreatorDashboardSummary, CreatorDashboardAnalytics, CreatorVerification, CreatorLeaderboard } from '@/types';
+import { CreatorProfile, ApiResponse, CreatorContentItem, CreatorDashboardSummary, CreatorDashboardAnalytics, CreatorVerification, CreatorLeaderboard, ScheduledContent } from '@/types';
 import { Notification } from '@/modules/content-engine/types/article';
 
 /**
@@ -261,6 +261,21 @@ export const getCreatorNotifications = async (creatorId: string): Promise<ApiRes
     status: 200
   };
 };
+
+export const getScheduledContent = async (creatorId: string): Promise<ApiResponse<ScheduledContent[]>> => {
+  await new Promise((resolve) => setTimeout(resolve, 300));
+  return {
+    data: mockScheduledContent,
+    status: 200
+  };
+};
+
+const mockScheduledContent: ScheduledContent[] = [
+  { id: 'sc-1', title: 'Macro Trends in 2026', scheduledAt: '2024-04-10T10:00:00Z', status: 'scheduled', category: 'Economics', tags: ['Macro', 'Future'] },
+  { id: 'sc-2', title: 'Quantitative Easing vs Tightening', scheduledAt: '2024-04-12T14:30:00Z', status: 'scheduled', category: 'Markets', tags: ['Bonds', 'Fed'] },
+  { id: 'sc-3', title: 'The Future of DeFi', scheduledAt: '2024-04-15T09:00:00Z', status: 'scheduled', category: 'Crypto', tags: ['Web3', 'Ethereum'] },
+  { id: 'sc-4', title: 'Passive Income Strategies', scheduledAt: '', status: 'draft', category: 'Investing', tags: ['Wealth', 'Dividends'] },
+];
 
 const mockNotifications: Notification[] = [
   {
