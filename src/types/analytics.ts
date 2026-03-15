@@ -116,6 +116,18 @@ export interface TopContent {
   category: string;
 }
 
+export interface TopCreator {
+  id: string;
+  name: string;
+  avatar: string;
+  totalContent: number;
+  followers: number;
+  engagementRate: number;
+  revenue: number;
+  verified: boolean;
+  category: string;
+}
+
 export interface TrendingContent {
   id: string;
   title: string;

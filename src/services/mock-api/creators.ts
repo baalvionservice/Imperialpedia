@@ -1,4 +1,5 @@
 import { CreatorProfile, ApiResponse, CreatorContentItem, CreatorDashboardSummary, CreatorDashboardAnalytics, CreatorVerification, CreatorLeaderboard, ScheduledContent, CreatorSettings, CreatorDashboardStats, Follower, CreatorRevenue, CreatorRevenueSummary, AdminCreatorAnalytics } from '@/types';
+import { TopCreator } from '@/types/analytics';
 import { Notification } from '@/modules/content-engine/types/article';
 
 /**
@@ -127,6 +128,23 @@ export const getAdminCreatorAnalytics = async (): Promise<ApiResponse<AdminCreat
     data: mockAdminCreatorAnalytics,
     status: 200,
   };
+};
+
+export const getTopCreators = async (): Promise<ApiResponse<TopCreator[]>> => {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  const data: TopCreator[] = mockAdminCreatorAnalytics.map(c => ({
+    id: c.id,
+    name: c.name,
+    avatar: c.avatar,
+    totalContent: c.contentCount,
+    followers: c.followers,
+    engagementRate: c.engagementRate,
+    revenue: c.totalRevenue,
+    verified: c.verified,
+    category: c.category
+  })).sort((a, b) => b.revenue - a.revenue);
+  
+  return { data, status: 200 };
 };
 
 const mockLeaderboard: CreatorLeaderboard[] = [

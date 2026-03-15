@@ -1,5 +1,6 @@
 import * as mockApi from '@/services/mock-api/creators';
 import { CreatorProfile, ApiResponse } from '@/types';
+import { TopCreator } from '@/types/analytics';
 import { errorHandler } from '@/lib/errors/error-handler';
 
 /**
@@ -32,4 +33,17 @@ export const creatorsService = {
       };
     }
   },
+
+  async getTopCreators(): Promise<ApiResponse<TopCreator[]>> {
+    try {
+      return await mockApi.getTopCreators();
+    } catch (error) {
+      const appError = errorHandler.handleError(error);
+      return {
+        data: [],
+        status: appError.statusCode,
+        error: appError.message,
+      };
+    }
+  }
 };
