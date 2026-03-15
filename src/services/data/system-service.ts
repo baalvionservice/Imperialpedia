@@ -1,6 +1,6 @@
 import * as mockApi from '@/services/mock-api/system';
 import { ApiResponse } from '@/types';
-import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog, SecuritySettings, GlobalNotificationSettings, AuditTrailEntry, FeatureSettings, AdminSession, BrandingSettings, SystemAlert, AdminHomeOverview, SecurityDashboardData, AdminSystemHubData, SecurityMockData, InfrastructureMockData, EdgeComputingData } from '@/types/system';
+import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog, SecuritySettings, GlobalNotificationSettings, AuditTrailEntry, FeatureSettings, AdminSession, BrandingSettings, SystemAlert, AdminHomeOverview, SecurityDashboardData, AdminSystemHubData, SecurityMockData, InfrastructureMockData, EdgeComputingData, CdnManagementData } from '@/types/system';
 import { errorHandler } from '@/lib/errors/error-handler';
 
 /**
@@ -466,6 +466,19 @@ export const systemService = {
   async getEdgeComputingData(): Promise<ApiResponse<EdgeComputingData | null>> {
     try {
       return await mockApi.getEdgeComputingData();
+    } catch (error) {
+      const appError = errorHandler.handleError(error);
+      return {
+        data: null,
+        status: appError.statusCode,
+        error: appError.message,
+      };
+    }
+  },
+
+  async getCdnManagementData(): Promise<ApiResponse<CdnManagementData | null>> {
+    try {
+      return await mockApi.getCdnManagementData();
     } catch (error) {
       const appError = errorHandler.handleError(error);
       return {

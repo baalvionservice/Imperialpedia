@@ -26,7 +26,8 @@ import {
   FileCode,
   ShieldX,
   Network,
-  Cpu
+  Cpu,
+  Globe
 } from 'lucide-react';
 import Link from 'next/link';
 import { systemService } from '@/services/data/system-service';
@@ -80,6 +81,7 @@ export default function AdminControlCenterHomePage() {
     { label: 'Session Command', desc: 'Monitor active connections.', href: '/admin/control/sessions', icon: Activity, color: 'text-primary', badge: overview.activeSessions },
     { label: 'Scaling Hub', desc: 'Cluster & deployment telemetry.', href: '/admin/control/infrastructure', icon: Cpu, color: 'text-secondary', badge: 0 },
     { label: 'Distribution Hub', desc: 'Edge & Multi-Region monitoring.', href: '/admin/control/edge', icon: Network, color: 'text-primary', badge: 0 },
+    { label: 'Content Delivery', desc: 'CDN & Cache orchestration.', href: '/admin/control/cdn', icon: Globe, color: 'text-secondary', badge: 0 },
     { label: 'Audit Kernel', desc: 'Immutable platform logs.', href: '/admin/control/audit-trail', icon: History, color: 'text-primary', badge: 0 },
   ];
 

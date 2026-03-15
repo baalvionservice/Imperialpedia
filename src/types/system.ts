@@ -392,3 +392,37 @@ export interface EdgeComputingData {
   edge_nodes: EdgeNode[];
   alerts: EdgeAlert[];
 }
+
+/**
+ * Prompt 47: CDN & Page Cache Types
+ */
+export interface CdnNode {
+  node_name: string;
+  region: string;
+  latency: string;
+  bandwidth_usage: string;
+  status: 'mock_active' | 'mock_warning' | 'mock_inactive';
+}
+
+export interface PageCacheItem {
+  page_url: string;
+  cache_status: 'mock_cached' | 'mock_expired' | 'mock_miss';
+  last_refresh: string;
+  ttl: string;
+  cache_hit_ratio: string;
+}
+
+export interface CdnLogEntry {
+  alert_type?: string;
+  node?: string;
+  status?: string;
+  log_type?: string;
+  page?: string;
+  timestamp: string;
+}
+
+export interface CdnManagementData {
+  cdn_nodes: CdnNode[];
+  page_cache: PageCacheItem[];
+  alerts_logs: CdnLogEntry[];
+}

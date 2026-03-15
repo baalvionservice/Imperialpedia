@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog, SecuritySettings, GlobalNotificationSettings, AuditTrailEntry, FeatureSettings, AdminSession, BrandingSettings, SystemAlert, AdminHomeOverview, SecurityDashboardData, AdminSystemHubData, SecurityMockData, InfrastructureMockData, EdgeComputingData } from '@/types/system';
+import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog, SecuritySettings, GlobalNotificationSettings, AuditTrailEntry, FeatureSettings, AdminSession, BrandingSettings, SystemAlert, AdminHomeOverview, SecurityDashboardData, AdminSystemHubData, SecurityMockData, InfrastructureMockData, EdgeComputingData, CdnManagementData } from '@/types/system';
 
 /**
  * @fileOverview Mock service for managing global platform configuration and system notifications.
@@ -236,6 +236,26 @@ const mockEdgeComputingData: EdgeComputingData = {
     { alert_type: "High Latency", region: "EU-West", current: "60ms", status: "mock_triggered" },
     { alert_type: "Node Offline", node: "EdgeNode3", status: "mock_triggered" },
     { alert_type: "Memory Spike", node: "EdgeNode4", current: "90%", status: "mock_triggered" }
+  ]
+};
+
+const mockCdnManagementData: CdnManagementData = {
+  cdn_nodes: [
+    { node_name: "CDN-US-East", region: "US-East", latency: "45ms", bandwidth_usage: "120Mbps", status: "mock_active" },
+    { node_name: "CDN-EU-West", region: "EU-West", latency: "60ms", bandwidth_usage: "90Mbps", status: "mock_warning" },
+    { node_name: "CDN-AP-South", region: "AP-South", latency: "110ms", bandwidth_usage: "45Mbps", status: "mock_active" },
+    { node_name: "CDN-SA-East", region: "SA-East", latency: "240ms", bandwidth_usage: "12Mbps", status: "mock_inactive" }
+  ],
+  page_cache: [
+    { page_url: "/glossary/compound-interest", cache_status: "mock_cached", last_refresh: "2026-03-15 10:00", ttl: "3600s", cache_hit_ratio: "95%" },
+    { page_url: "/guides/long-form-guide", cache_status: "mock_expired", last_refresh: "2026-03-14 15:00", ttl: "3600s", cache_hit_ratio: "88%" },
+    { page_url: "/articles/macro-outlook-2026", cache_status: "mock_cached", last_refresh: "2026-03-15 11:30", ttl: "7200s", cache_hit_ratio: "92%" },
+    { page_url: "/search?q=inflation", cache_status: "mock_miss", last_refresh: "N/A", ttl: "600s", cache_hit_ratio: "42%" }
+  ],
+  alerts_logs: [
+    { alert_type: "CDN Node High Latency", node: "CDN-EU-West", status: "mock_triggered", timestamp: "2026-03-15 12:45" },
+    { log_type: "Cache Purge", page: "/guides/long-form-guide", timestamp: "2026-03-15 09:00" },
+    { log_type: "Global Cache Burst", timestamp: "2026-03-14 23:00" }
   ]
 };
 
@@ -559,6 +579,14 @@ export const getEdgeComputingData = async (): Promise<ApiResponse<EdgeComputingD
   await new Promise((resolve) => setTimeout(resolve, 600));
   return {
     data: mockEdgeComputingData,
+    status: 200,
+  };
+};
+
+export const getCdnManagementData = async (): Promise<ApiResponse<CdnManagementData>> => {
+  await new Promise((resolve) => setTimeout(resolve, 600));
+  return {
+    data: mockCdnManagementData,
     status: 200,
   };
 };
