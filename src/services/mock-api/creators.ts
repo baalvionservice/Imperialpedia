@@ -3,6 +3,7 @@ import { Notification } from '@/modules/content-engine/types/article';
 
 /**
  * @fileOverview Mock service for managing creator profiles, stats, and discovery data.
+ * Expanded with more diverse data for high-scale discovery simulation.
  */
 
 const mockCreators: CreatorProfile[] = [
@@ -39,7 +40,7 @@ const mockCreators: CreatorProfile[] = [
     id: 'creator-2',
     username: 'wealthbuilder',
     displayName: 'Julian Wealth',
-    bio: 'Strategic wealth manager specializing in ESG and sustainable long-term portfolios.',
+    bio: 'Strategic wealth manager specializing in ESG and sustainable long-term portfolios. Focused on private equity and impact investing.',
     avatar: 'https://picsum.photos/seed/wealth/200/200',
     joinedDate: '2023-05-20T00:00:00Z',
     specialties: ['Wealth Management', 'ESG', 'Strategy'],
@@ -64,7 +65,7 @@ const mockCreators: CreatorProfile[] = [
     id: 'creator-3',
     username: 'defianalyst',
     displayName: 'Sarah Crypto',
-    bio: 'DeFi researcher and smart contract security expert. Helping investors navigate the yield farm landscape.',
+    bio: 'DeFi researcher and smart contract security expert. Helping investors navigate the yield farm landscape and protocol governance.',
     avatar: 'https://picsum.photos/seed/defi/200/200',
     joinedDate: '2024-01-10T00:00:00Z',
     specialties: ['DeFi', 'Web3', 'Ethereum'],
@@ -89,7 +90,7 @@ const mockCreators: CreatorProfile[] = [
     id: 'creator-4',
     username: 'econvance',
     displayName: 'Eleanor Vance',
-    bio: 'Lead Administrator and Content Strategist at Imperialpedia. Focused on platform growth and pSEO integrity.',
+    bio: 'Lead Administrator and Content Strategist at Imperialpedia. Focused on platform growth, pSEO integrity, and institutional research.',
     avatar: 'https://picsum.photos/seed/eleanor/200/200',
     joinedDate: '2022-12-01T00:00:00Z',
     specialties: ['Economics', 'Growth', 'Strategy'],
@@ -114,7 +115,7 @@ const mockCreators: CreatorProfile[] = [
     id: 'creator-5',
     username: 'macroken',
     displayName: 'Ken Macro',
-    bio: 'Global macro analyst with 20 years experience in treasury markets and gold cycles.',
+    bio: 'Global macro analyst with 20 years experience in treasury markets and gold cycles. Author of the "Yield Hunter" newsletter.',
     avatar: 'https://picsum.photos/seed/ken/200/200',
     joinedDate: '2023-02-15T00:00:00Z',
     specialties: ['Gold', 'Macro', 'Treasuries'],
@@ -132,6 +133,78 @@ const mockCreators: CreatorProfile[] = [
     },
     socialLinks: [
       { platform: 'Twitter', url: '#' }
+    ],
+  },
+  {
+    id: 'creator-6',
+    username: 'fintechqueen',
+    displayName: 'Elena Tech',
+    bio: 'FinTech innovator and payments analyst. Exploring the intersection of traditional banking and AI-driven fiscal tools.',
+    avatar: 'https://picsum.photos/seed/queen/200/200',
+    joinedDate: '2024-02-01T00:00:00Z',
+    specialties: ['FinTech', 'AI', 'Banking'],
+    category: 'Personal Finance',
+    region: 'EMEA',
+    verified: true,
+    stats: {
+      followersCount: 5600,
+      followingCount: 120,
+      articlesCount: 12,
+      totalViews: 85000,
+    },
+    content: {
+      recentArticles: [],
+    },
+    socialLinks: [
+      { platform: 'Twitter', url: '#' }
+    ],
+  },
+  {
+    id: 'creator-7',
+    username: 'realestateron',
+    displayName: 'Ron Property',
+    bio: 'Commercial real estate strategist and REIT specialist. Providing deep insights into global property markets and urban cycles.',
+    avatar: 'https://picsum.photos/seed/ron/200/200',
+    joinedDate: '2023-08-10T00:00:00Z',
+    specialties: ['Real Estate', 'REITs', 'Commercial'],
+    category: 'Investing',
+    region: 'North America',
+    verified: false,
+    stats: {
+      followersCount: 2100,
+      followingCount: 30,
+      articlesCount: 4,
+      totalViews: 15000,
+    },
+    content: {
+      recentArticles: [],
+    },
+    socialLinks: [
+      { platform: 'LinkedIn', url: '#' }
+    ],
+  },
+  {
+    id: 'creator-8',
+    username: 'dividenddan',
+    displayName: 'Dan Income',
+    bio: 'Dividend growth investor and cash flow specialist. Helping readers build sustainable passive income through high-quality yield.',
+    avatar: 'https://picsum.photos/seed/dan/200/200',
+    joinedDate: '2023-11-15T00:00:00Z',
+    specialties: ['Dividends', 'Passive Income', 'Equities'],
+    category: 'Investing',
+    region: 'North America',
+    verified: true,
+    stats: {
+      followersCount: 12500,
+      followingCount: 85,
+      articlesCount: 35,
+      totalViews: 420000,
+    },
+    content: {
+      recentArticles: [],
+    },
+    socialLinks: [
+      { platform: 'YouTube', url: '#' }
     ],
   }
 ];
