@@ -6,16 +6,21 @@ export type VoteType = 'Bull' | 'Bear' | 'Neutral';
 
 export interface Comment {
   id: string;
+  comment_id: string | number; // Aligned with Prompt 37 JSON
   username: string;
   avatar?: string;
-  reputationScore: number;
+  reputation: number; // Aligned with Prompt 37 JSON
+  reputationScore: number; // Legacy support
   badge?: string;
   timestamp: string;
   content: string;
+  text?: string; // Aligned with Prompt 37 JSON
   upvotes: number;
   downvotes: number;
   bullBearVote: VoteType;
+  bull_bear?: VoteType; // Aligned with Prompt 37 JSON
   replies?: Comment[];
+  parent_id?: string | number; // Aligned with Prompt 37 JSON
   isFlagged?: boolean;
 }
 
@@ -47,12 +52,13 @@ export interface UserReputation {
 }
 
 export interface LeaderboardEntry {
-  rank: number;
+  rank?: number;
   username: string;
-  avatar: string;
-  reputationScore: number;
-  badges: string[];
-  trend: 'up' | 'down' | 'stable';
+  avatar?: string;
+  reputation: number; // Aligned with Prompt 37 JSON
+  reputationScore?: number; // Legacy
+  badges?: string[];
+  trend?: 'up' | 'down' | 'stable';
 }
 
 export interface ContestParticipant {
