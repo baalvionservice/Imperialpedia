@@ -5,10 +5,10 @@
 export interface SubscriptionTier {
   id: string;
   name: string;
-  plan_name?: string; // Align with Prompt 40
+  plan_name?: string;
   description: string;
   priceMonthly: string;
-  price?: number; // Align with Prompt 40
+  price?: number;
   priceYearly: string;
   features: string[];
   isPopular?: boolean;
@@ -17,7 +17,7 @@ export interface SubscriptionTier {
 
 export interface PremiumState {
   tiers: SubscriptionTier[];
-  subscription_plans?: any[]; // For Prompt 40 structure
+  subscription_plans?: any[];
   activeTier: string;
   trialInfo: {
     available: boolean;
@@ -25,18 +25,28 @@ export interface PremiumState {
   };
 }
 
-export interface CheckoutSession {
-  tierId: string;
-  billingCycle: 'monthly' | 'yearly';
-  status: 'idle' | 'processing' | 'completed' | 'error';
-}
-
 export interface PremiumReport {
   id: string;
   report_name: string;
+  description: string;
+  date: string;
+  download_link: string;
   type: 'chart' | 'table' | 'summary';
   category: string;
   data: any[];
+}
+
+export interface BacktestingTool {
+  strategy_name: string;
+  parameters: {
+    entry_rule: string;
+    exit_rule: string;
+  };
+  results: {
+    total_return: string;
+    max_drawdown: string;
+    performance_chart: string;
+  };
 }
 
 export interface PremiumAnalytics {
@@ -44,6 +54,7 @@ export interface PremiumAnalytics {
   summary?: string;
   data?: any[];
   results?: any[];
+  backtesting_tools?: BacktestingTool[];
 }
 
 export interface MockPaymentStatus {

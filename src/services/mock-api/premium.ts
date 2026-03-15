@@ -1,8 +1,8 @@
-import { ApiResponse, SubscriptionTier, PremiumState, PremiumReport, PremiumAnalytics, MockPaymentStatus } from '@/types/premium';
+import { ApiResponse, SubscriptionTier, PremiumState, PremiumReport, PremiumAnalytics, MockPaymentStatus, BacktestingTool } from '@/types/premium';
 
 /**
  * @fileOverview Mock service for managing subscription tiers, premium reports, and advanced analytics.
- * Aligned with Prompt 40 requirements.
+ * Aligned with Prompt 41 requirements.
  */
 
 const mockSubscriptionPlans = [
@@ -48,11 +48,6 @@ const mockTiers: SubscriptionTier[] = [
   }
 ];
 
-const mockPaymentStatuses: MockPaymentStatus[] = [
-  { user: "User123", plan_selected: "Pro", status: "success", message: "Payment successful" },
-  { user: "User456", plan_selected: "Enterprise", status: "failed", message: "Card declined" }
-];
-
 export const getSubscriptionTiers = async (): Promise<ApiResponse<SubscriptionTier[]>> => {
   await new Promise((resolve) => setTimeout(resolve, 400));
   return {
@@ -67,7 +62,7 @@ export const getPremiumState = async (): Promise<ApiResponse<PremiumState>> => {
     data: {
       tiers: mockTiers,
       subscription_plans: mockSubscriptionPlans,
-      activeTier: 'tier-free', 
+      activeTier: 'tier-pro', 
       trialInfo: {
         available: true,
         durationDays: 14
@@ -77,36 +72,98 @@ export const getPremiumState = async (): Promise<ApiResponse<PremiumState>> => {
   };
 };
 
+const mockReports: PremiumReport[] = [
+  {
+    id: 'rep-1',
+    report_name: "AI Portfolio Deep Dive",
+    description: "Mock analysis of asset allocation and risk weightings across indexed nodes.",
+    date: "2026-03-15",
+    download_link: "mock_link",
+    type: "summary",
+    category: "Tactical Research",
+    data: [
+      { protocol: "Tech Growth Cluster", apy: "+12.4%" },
+      { protocol: "Fixed Income Hedge", apy: "+4.2%" },
+      { protocol: "Liquidity Buffer", apy: "0.5%" }
+    ]
+  },
+  {
+    id: 'rep-2',
+    report_name: "Historical Sentiment Chart",
+    description: "Mock sentiment analysis over time correlated with primary market price action.",
+    date: "2026-03-14",
+    download_link: "mock_link",
+    type: "chart",
+    category: "Market Audit",
+    data: [
+      { asset: "NVDA", value: 85 },
+      { asset: "AAPL", value: 62 },
+      { asset: "MSFT", value: 58 },
+      { asset: "BTC", value: 74 }
+    ]
+  },
+  {
+    id: 'rep-3',
+    report_name: "Sector Rotation Matrix",
+    description: "Identifying capital migration from defensive to cyclical nodes.",
+    date: "2026-03-12",
+    download_link: "mock_link",
+    type: "table",
+    category: "Institutional",
+    data: [
+      { sector: "Technology", performance: "+15.2%", volatility: "Low" },
+      { sector: "Energy", performance: "-2.1%", volatility: "Medium" },
+      { sector: "Consumer Staples", performance: "+1.4%", volatility: "Low" }
+    ]
+  }
+];
+
 export const getPremiumReports = async (): Promise<ApiResponse<PremiumReport[]>> => {
   await new Promise((resolve) => setTimeout(resolve, 500));
   return {
-    data: [
-      {
-        id: 'rep-1',
-        report_name: "Top Stocks This Month",
-        type: "chart",
-        category: "Tactical Research",
-        data: [{ asset: "NVDA", value: 85 }, { asset: "AAPL", value: 62 }, { asset: "MSFT", value: 58 }, { asset: "TSLA", value: 45 }]
-      },
-      {
-        id: 'rep-2',
-        report_name: "Sector Performance",
-        type: "table",
-        category: "Market Audit",
-        data: [{ sector: "Technology", performance: "+12.4%", volatility: "Low" }, { sector: "Renewables", performance: "+8.2%", volatility: "Medium" }, { sector: "Traditional Finance", performance: "-2.1%", volatility: "Low" }]
-      }
-    ],
-    status: 200
+    data: mockReports,
+    status: 200,
   };
 };
 
+const mockBacktestingTools: BacktestingTool[] = [
+  {
+    strategy_name: "Mock Strategy 1",
+    parameters: { entry_rule: "RSI < 30", exit_rule: "RSI > 70" },
+    results: { total_return: "12%", max_drawdown: "5%", performance_chart: "mock_chart_placeholder" }
+  },
+  {
+    strategy_name: "Mock Strategy 2",
+    parameters: { entry_rule: "SMA 50 Cross Above SMA 200", exit_rule: "Trailing Stop 5%" },
+    results: { total_return: "8%", max_drawdown: "3%", performance_chart: "mock_chart_placeholder" }
+  }
+];
+
 export const getPremiumAnalytics = async (): Promise<ApiResponse<PremiumAnalytics[]>> => {
   await new Promise((resolve) => setTimeout(resolve, 600));
+  const dates = Array.from({ length: 30 }, (_, i) => {
+    const d = new Date();
+    d.setDate(d.getDate() - (29 - i));
+    return d.toISOString().split('T')[0];
+  });
+
   return {
     data: [
       {
         type: "portfolio_deep_dive",
         summary: "Your portfolio shows a high concentration in large-cap technology (45%), which has provided 2.4x the benchmark yield this cycle."
+      },
+      {
+        type: "historical_sentiment",
+        data: dates.map(date => ({
+          date,
+          sentiment_score: Math.floor(Math.random() * 40) + 30,
+          price_index: Math.floor(Math.random() * 1000) + 5000
+        }))
+      },
+      {
+        type: "backtesting",
+        backtesting_tools: mockBacktestingTools
       }
     ],
     status: 200

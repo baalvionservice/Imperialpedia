@@ -1,11 +1,13 @@
 'use client';
 
 import React, { useState } from 'react';
-import { PremiumAnalytics } from '@/types/premium';
+import { PremiumAnalytics, BacktestingTool } from '@/types/premium';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Text } from '@/design-system/typography/text';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { 
   Activity, 
   TrendingUp, 
@@ -20,7 +22,10 @@ import {
   Sparkles,
   Info,
   Download,
-  RotateCcw
+  RotateCcw,
+  Play,
+  Settings2,
+  Database
 } from 'lucide-react';
 import { 
   LineChart, 
@@ -36,6 +41,7 @@ import {
 } from 'recharts';
 import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
+import { toast } from '@/hooks/use-toast';
 
 interface PremiumAnalyticsClientProps {
   analytics: PremiumAnalytics[];
@@ -43,12 +49,25 @@ interface PremiumAnalyticsClientProps {
 
 /**
  * Interactive Premium Analytics suite.
- * Features longitudinal sentiment tracking, portfolio deep-dives, and strategy backtesting.
+ * Features longitudinal sentiment tracking, portfolio deep-dives, and strategy backtesting tools.
  */
 export function PremiumAnalyticsClient({ analytics }: PremiumAnalyticsClientProps) {
   const deepDive = analytics.find(a => a.type === 'portfolio_deep_dive');
   const sentiment = analytics.find(a => a.type === 'historical_sentiment');
   const backtesting = analytics.find(a => a.type === 'backtesting');
+  
+  const [runningBacktest, setRunningBacktest] = useState(false);
+
+  const handleRunBacktest = () => {
+    setRunningBacktest(true);
+    setTimeout(() => {
+      setRunningBacktest(false);
+      toast({
+        title: "Simulation Complete",
+        description: "Strategy nodes have been synchronized with historical yield curves.",
+      });
+    }, 2000);
+  };
 
   return (
     <div className="space-y-10 pb-24 animate-in fade-in duration-700">
@@ -131,40 +150,89 @@ export function PremiumAnalyticsClient({ analytics }: PremiumAnalyticsClientProp
             </CardContent>
           </Card>
 
-          {/* Strategy Backtesting Matrix */}
+          {/* BACKTESTING TOOLS PANEL */}
           <Card className="glass-card border-none shadow-2xl overflow-hidden">
             <CardHeader className="bg-card/30 border-b border-white/5 p-8 flex flex-row items-center justify-between">
               <div>
                 <CardTitle className="text-xl flex items-center gap-2">
-                  <Target className="h-5 w-5 text-secondary" /> Strategy Backtesting Matrix
+                  <Target className="h-5 w-5 text-secondary" /> Strategy Backtesting Suite
                 </CardTitle>
-                <CardDescription>Simulated historical performance across varied risk profiles.</CardDescription>
+                <CardDescription>Configure parameters and simulate historical performance.</CardDescription>
               </div>
-              <Button variant="ghost" size="sm" className="text-primary font-bold text-xs"><RotateCcw className="h-3.5 w-3.5 mr-1.5" /> Re-run Simulation</Button>
+              <Badge className="bg-primary/10 text-primary border-primary/20">PREMIUM ENGINE</Badge>
             </CardHeader>
-            <CardContent className="p-0">
-              <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/5">
-                {backtesting?.results?.map((res, i) => (
-                  <div key={i} className="p-8 space-y-6 hover:bg-white/5 transition-colors group">
-                    <div className="space-y-1">
-                      <Text variant="caption" className="text-muted-foreground uppercase font-bold text-[9px] tracking-widest">Strategy Node</Text>
-                      <Text variant="body" weight="bold" className="group-hover:text-primary transition-colors">{res.strategy}</Text>
+            <CardContent className="p-8 space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="space-y-4">
+                  <Text variant="label" className="text-[10px] text-muted-foreground font-bold">Strategy Parameters</Text>
+                  <div className="grid gap-4">
+                    <div className="space-y-2">
+                      <Label className="text-xs font-medium">Entry Logic</Label>
+                      <Input placeholder="e.g. RSI < 30" className="bg-background/50 border-white/10 h-11" />
                     </div>
-                    <div className="space-y-4">
-                      <div className="flex justify-between items-end">
-                        <Text variant="label" className="text-[10px] opacity-50">Backtested Return</Text>
-                        <span className="text-2xl font-bold text-emerald-500">{res.mock_return}</span>
-                      </div>
-                      <div className="space-y-1.5">
-                        <div className="flex justify-between text-[9px] font-bold uppercase">
-                          <span className="text-muted-foreground">Max Drawdown</span>
-                          <span className="text-destructive">{res.max_drawdown}</span>
-                        </div>
-                        <Progress value={Math.abs(parseFloat(res.max_drawdown)) * 4} className="h-1 bg-white/5" />
-                      </div>
+                    <div className="space-y-2">
+                      <Label className="text-xs font-medium">Exit Logic</Label>
+                      <Input placeholder="e.g. Price > MA(200)" className="bg-background/50 border-white/10 h-11" />
                     </div>
                   </div>
-                ))}
+                  <Button 
+                    onClick={handleRunBacktest} 
+                    disabled={runningBacktest}
+                    className="w-full h-12 rounded-xl font-bold bg-secondary text-secondary-foreground hover:bg-secondary/90 transition-all shadow-lg shadow-secondary/20"
+                  >
+                    {runningBacktest ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Play className="mr-2 h-4 w-4" />}
+                    Run Backtest Simulation
+                  </Button>
+                </div>
+
+                <div className="space-y-4">
+                  <Text variant="label" className="text-[10px] text-muted-foreground font-bold">Historical Nodes</Text>
+                  <div className="p-6 rounded-2xl bg-background/40 border border-white/5 flex flex-col justify-center h-[180px] text-center space-y-4">
+                    <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center mx-auto text-secondary">
+                      <Database className="h-6 w-6" />
+                    </div>
+                    <Text variant="caption" className="text-muted-foreground italic">
+                      "Simulator ready. Select asset node and time horizon to begin."
+                    </Text>
+                  </div>
+                </div>
+              </div>
+
+              {/* MOCK RESULTS GRID */}
+              <div className="pt-8 border-t border-white/5 space-y-6">
+                <Text variant="label" className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">Saved Strategy Benchmarks</Text>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {backtesting?.backtesting_tools?.map((tool, i) => (
+                    <div key={i} className="p-6 rounded-2xl bg-white/5 border border-white/5 hover:border-secondary/30 transition-all group">
+                      <div className="flex justify-between items-start mb-4">
+                        <Text variant="bodySmall" weight="bold" className="text-foreground group-hover:text-secondary transition-colors">
+                          {tool.strategy_name}
+                        </Text>
+                        <Badge variant="outline" className="text-[8px] border-secondary/20 text-secondary">STABLE</Badge>
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-1">
+                          <Text variant="label" className="text-[8px] opacity-50">Total Return</Text>
+                          <div className="text-xl font-bold text-emerald-500">{tool.results.total_return}</div>
+                        </div>
+                        <div className="space-y-1 text-right">
+                          <Text variant="label" className="text-[8px] opacity-50">Max Drawdown</Text>
+                          <div className="text-xl font-bold text-destructive">{tool.results.max_drawdown}</div>
+                        </div>
+                      </div>
+                      <div className="mt-4 pt-4 border-t border-white/5 flex items-center justify-between">
+                        <div className="flex gap-2">
+                          <div className="w-1.5 h-1.5 rounded-full bg-secondary" />
+                          <div className="w-1.5 h-1.5 rounded-full bg-white/10" />
+                          <div className="w-1.5 h-1.5 rounded-full bg-white/10" />
+                        </div>
+                        <Button variant="ghost" size="sm" className="h-7 text-[10px] font-bold uppercase tracking-widest">
+                          Load Config
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -183,7 +251,7 @@ export function PremiumAnalyticsClient({ analytics }: PremiumAnalyticsClientProp
                 </div>
                 <div>
                   <CardTitle className="text-lg">AI Portfolio Deep-Dive</CardTitle>
-                  <Text variant="label" className="text-[9px] text-primary font-bold">Verified Audit Node</Text>
+                  <Text variant="label" className="text-[9px] text-primary font-bold">Institutional Audit Node</Text>
                 </div>
               </div>
               <CardDescription className="text-foreground/90 leading-relaxed font-medium italic border-l-2 border-primary/20 pl-4 py-2">
@@ -192,13 +260,13 @@ export function PremiumAnalyticsClient({ analytics }: PremiumAnalyticsClientProp
             </CardHeader>
             <CardContent className="p-8 flex-grow space-y-8">
               <div className="space-y-4">
-                <Text variant="label" className="text-[10px] font-bold tracking-widest text-muted-foreground uppercase">Risk Concentration</Text>
+                <Text variant="label" className="text-[10px] font-bold tracking-widest text-muted-foreground uppercase">Risk Concentration Matrix</Text>
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="p-4 rounded-xl bg-background/50 border border-white/5 space-y-1">
+                  <div className="p-4 rounded-xl bg-background/50 border border-white/5 space-y-1 group hover:border-primary/30 transition-all">
                     <div className="text-sm font-bold">Medium</div>
                     <Text variant="label" className="text-[8px] opacity-50 font-bold uppercase">Volatility Score</Text>
                   </div>
-                  <div className="p-4 rounded-xl bg-background/50 border border-white/5 space-y-1">
+                  <div className="p-4 rounded-xl bg-background/50 border border-white/5 space-y-1 group hover:border-emerald-500/30 transition-all">
                     <div className="text-sm font-bold text-emerald-500">Stable</div>
                     <Text variant="label" className="text-[8px] opacity-50 font-bold uppercase">Liquidity Health</Text>
                   </div>
@@ -231,7 +299,7 @@ export function PremiumAnalyticsClient({ analytics }: PremiumAnalyticsClientProp
               <div className="flex items-start gap-3">
                 <Info className="h-4 w-4 text-primary shrink-0 mt-0.5" />
                 <Text variant="caption" className="text-muted-foreground leading-relaxed italic">
-                  Deep-dive logic utilizes standard **Pro Hub** benchmarks. Performance metrics are synchronized every 4 hours.
+                  Deep-dive logic utilizes standard **Institutional** benchmarks. Performance metrics are synchronized every 4 hours via the real-time wire feed.
                 </Text>
               </div>
             </CardFooter>
