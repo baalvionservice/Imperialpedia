@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { CommunityData, Comment, Poll } from '@/types/community';
+import { CommunityData, Comment, Poll, UserReputation, LeaderboardEntry, CommunityBadge } from '@/types/community';
 
 /**
  * @fileOverview Mock service for the Community and Engagement engine.
@@ -55,6 +55,30 @@ const mockPolls: Poll[] = [
   }
 ];
 
+const mockBadges: CommunityBadge[] = [
+  { id: 'b-1', name: 'Expert Contributor', description: 'Published 10+ high-impact research nodes.', icon: 'Award', rarity: 'Expert' },
+  { id: 'b-2', name: 'Verified Analyst', description: 'Credentials verified by the Compliance Hub.', icon: 'ShieldCheck', rarity: 'Legendary' },
+  { id: 'b-3', name: 'AMA Host', description: 'Hosted a successful community strategy session.', icon: 'Mic', rarity: 'Rare' },
+  { id: 'b-4', name: 'Top Forecaster', description: 'Achieved 90%+ accuracy in community polls.', icon: 'Target', rarity: 'Legendary' },
+];
+
+const mockUserReputation: UserReputation = {
+  username: 'Deepak Kumar',
+  reputationScore: 1200,
+  level: 14,
+  nextLevelProgress: 65,
+  activityPoints: 450,
+  badges: [mockBadges[0], mockBadges[1]]
+};
+
+const mockLeaderboard: LeaderboardEntry[] = [
+  { rank: 1, username: 'MarketMaven', avatar: 'https://picsum.photos/seed/maven/200/200', reputationScore: 15400, badges: ['Verified Analyst', 'Expert Contributor'], trend: 'stable' },
+  { rank: 2, username: 'WealthBuilder', avatar: 'https://picsum.photos/seed/wealth/200/200', reputationScore: 12200, badges: ['AMA Host', 'Expert Contributor'], trend: 'up' },
+  { rank: 3, username: 'SarahCrypto', avatar: 'https://picsum.photos/seed/defi/200/200', reputationScore: 8500, badges: ['Top Forecaster'], trend: 'down' },
+  { rank: 4, username: 'AlphaHunter', avatar: 'https://picsum.photos/seed/alpha/200/200', reputationScore: 4200, badges: ['Verified Analyst'], trend: 'up' },
+  { rank: 5, username: 'DividendDan', avatar: 'https://picsum.photos/seed/dan/200/200', reputationScore: 3800, badges: ['Expert Contributor'], trend: 'stable' },
+];
+
 const mockTrending: string[] = [
   'Yield Curve Inversion 2026',
   'DeFi Liquidity Crisis?',
@@ -68,7 +92,9 @@ export const getCommunityData = async (): Promise<ApiResponse<CommunityData>> =>
     data: {
       comments: mockComments,
       polls: mockPolls,
-      trendingDiscussions: mockTrending
+      trendingDiscussions: mockTrending,
+      userReputation: mockUserReputation,
+      leaderboard: mockLeaderboard
     },
     status: 200,
   };

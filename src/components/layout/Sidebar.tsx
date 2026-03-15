@@ -55,7 +55,9 @@ import {
   Activity as ActivityIcon,
   User,
   Briefcase,
-  Star
+  Star,
+  Trophy,
+  Award
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 import { useAppStore } from '@/lib/state/app-store';
@@ -115,6 +117,12 @@ const Sidebar = ({ className }: { className?: string }) => {
     { icon: Briefcase, label: 'Portfolio & Holdings', href: '/dashboard/portfolio' },
     { icon: Search, label: 'Market Search', href: '/search' },
     { icon: Activity, label: 'Intelligence Feed', href: '/dashboard/feed' },
+  ];
+
+  const communityItems = [
+    { icon: Trophy, label: 'Network Leaderboard', href: '/community/leaderboard' },
+    { icon: Award, label: 'Authority & Badges', href: '/community/reputation' },
+    { icon: MessageSquare, label: 'Discovery Forums', href: '/community/discussions' },
   ];
 
   const adminItems = [
@@ -222,6 +230,22 @@ const Sidebar = ({ className }: { className?: string }) => {
           </div>
         </div>
 
+        {/* Community Section */}
+        <div className="pt-4 border-t border-white/5">
+          <Text variant="label" className="px-4 mb-3 text-[10px] text-muted-foreground/50 font-bold uppercase tracking-widest">
+            Community Node
+          </Text>
+          <div className="space-y-1">
+            {communityItems.map((item) => (
+              <SidebarItem
+                key={item.href}
+                {...item}
+                isActive={pathname === item.href}
+              />
+            ))}
+          </div>
+        </div>
+
         {/* Admin Section */}
         {isAdmin && (pathname.startsWith('/admin') || pathname === '/admin') && (
           <div className="pt-4 border-t border-white/5">
@@ -277,7 +301,7 @@ const Sidebar = ({ className }: { className?: string }) => {
         )}
 
         {/* General Knowledge Context */}
-        {(!pathname.startsWith('/admin') && !pathname.startsWith('/writer') && !pathname.startsWith('/editor') && !pathname.startsWith('/creator') && !pathname.startsWith('/dashboard')) && (
+        {(!pathname.startsWith('/admin') && !pathname.startsWith('/writer') && !pathname.startsWith('/editor') && !pathname.startsWith('/creator') && !pathname.startsWith('/dashboard') && !pathname.startsWith('/community')) && (
           <div className="pt-4 border-t border-white/5">
             <Text variant="label" className="px-4 mb-3 text-[10px] text-muted-foreground/50 font-bold uppercase tracking-widest">
               Knowledge Hub
