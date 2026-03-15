@@ -17,7 +17,6 @@ import {
   ArrowUpRight, 
   Loader2,
   Activity,
-  Search,
   CheckCircle2,
   Calendar,
   Download,
@@ -29,16 +28,16 @@ import {
   Database,
   RotateCcw,
   ShieldCheck,
-  ToggleLeft,
   Terminal,
   Cpu,
-  History
+  History,
+  Rocket,
+  RefreshCw,
+  MoreVertical,
+  FlaskConical
 } from 'lucide-react';
 import Link from 'next/link';
-import { getDashboardMetrics, DashboardMetrics } from '@/services/mock-api/analytics';
-import { getSeoAnalytics } from '@/services/mock-api/analytics';
-import { getAdminCreatorAnalytics } from '@/services/mock-api/creators';
-import { systemService } from '@/services/data/system-service';
+import { getCmsDashboardData, CmsDashboardData } from '@/services/mock-api/admin-cms';
 import { 
   AreaChart, 
   Area, 
@@ -46,217 +45,209 @@ import {
   YAxis, 
   CartesianGrid, 
   Tooltip, 
-  ResponsiveContainer 
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  Cell
 } from 'recharts';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { Progress } from '@/components/ui/progress';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { format } from 'date-fns';
+import { cn } from '@/lib/utils';
 
 /**
- * Integrated Administrative Mission Control.
- * Aggregates content management, user control, feature flags, and infrastructure status.
+ * Integrated Admin CMS Mission Control.
+ * Orchestrates content, governance, analytics, and infrastructure across the Imperialpedia cluster.
  */
-export default function AdminDashboardSummaryPage() {
-  const [metrics, setMetrics] = useState<DashboardMetrics | null>(null);
-  const [seo, setSeo] = useState<any>(null);
-  const [creators, setCreators] = useState<any[]>([]);
-  const [flags, setFlags] = useState<any[]>([]);
-  const [logs, setLogs] = useState<any[]>([]);
+export default function AdminCmsDashboardPage() {
+  const [data, setData] = useState<CmsDashboardData | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function loadAllData() {
+    async function loadData() {
       try {
-        const [metricsRes, seoRes, creatorsRes, flagsRes, logsRes] = await Promise.all([
-          getDashboardMetrics(),
-          getSeoAnalytics(),
-          getAdminCreatorAnalytics(),
-          systemService.getFeatureFlags(),
-          systemService.getAdminLogs()
-        ]);
-        setMetrics(metricsRes.data);
-        setSeo(seoRes.data);
-        setCreators(creatorsRes.data);
-        setFlags(flagsRes.data || []);
-        setLogs(logsRes.data || []);
+        const response = await getCmsDashboardData();
+        setData(response.data);
       } catch (e) {
-        console.error('Failed to sync administrative intelligence', e);
+        console.error('CMS data sync failure', e);
       } finally {
         setLoading(false);
       }
     }
-    loadAllData();
+    loadData();
   }, []);
 
-  if (loading || !metrics) {
+  if (loading || !data) {
     return (
       <div className="py-40 flex flex-col items-center justify-center space-y-4">
         <Loader2 className="h-12 w-12 text-primary animate-spin" />
-        <Text variant="bodySmall" className="animate-pulse font-bold uppercase tracking-widest text-muted-foreground">
-          Synchronizing Global Control Matrix...
+        <Text variant="bodySmall" className="animate-pulse font-bold tracking-widest uppercase text-muted-foreground">
+          Establishing Secure Handshake...
         </Text>
       </div>
     );
   }
 
-  const formatCompact = (val: number) => 
-    new Intl.NumberFormat('en-US', { notation: 'compact' }).format(val);
+  const formatCurrency = (val: number) => 
+    new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(val);
 
   return (
-    <div className="space-y-8 pb-24 animate-in fade-in duration-700">
+    <div className="space-y-10 pb-24 animate-in fade-in duration-700">
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
           <div className="flex items-center gap-2 text-primary mb-1">
             <LayoutDashboard className="h-4 w-4" />
             <Text variant="label" className="text-[10px] font-bold tracking-widest uppercase">Admin mission control</Text>
           </div>
-          <Text variant="h1" className="text-3xl font-bold tracking-tight">Integrated Command Hub</Text>
+          <Text variant="h1" className="text-3xl font-bold tracking-tight">System Command Hub</Text>
           <Text variant="bodySmall" className="text-muted-foreground mt-1">
-            Orchestrating platform intelligence and infrastructure across the Imperialpedia Index.
+            Orchestrating intelligence nodes and infrastructure for the global index.
           </Text>
         </div>
         <div className="flex items-center gap-3">
           <Button variant="outline" size="sm" className="rounded-xl border-white/10 bg-card/30 h-11 px-6">
-            <Download className="mr-2 h-4 w-4" /> Global Audit
+            <Download className="mr-2 h-4 w-4" /> Export Ledger
           </Button>
           <Button size="sm" className="rounded-xl shadow-lg shadow-primary/20 font-bold bg-primary hover:bg-primary/90 h-11 px-8">
-            <Zap className="mr-2 h-4 w-4" /> Deploy Alpha
+            <Rocket className="mr-2 h-4 w-4" /> Deploy Alpha
           </Button>
         </div>
       </header>
 
-      {/* Primary Aggregate matrix */}
+      {/* Vital Metrics Matrix */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card className="glass-card border-none shadow-xl group hover:border-primary/20 transition-all">
+        <Card className="glass-card border-none shadow-xl bg-emerald-500/5">
           <CardHeader className="pb-2 flex flex-row items-center justify-between space-y-0">
-            <CardTitle className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Ecosystem Health</CardTitle>
-            <Activity className="h-4 w-4 text-emerald-500 group-hover:animate-pulse" />
+            <CardTitle className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">System Health</CardTitle>
+            <Activity className="h-4 w-4 text-emerald-500" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">Stable</div>
-            <p className="text-[10px] text-emerald-500 font-bold mt-1">99.98% Uptime SLA</p>
+            <p className="text-[10px] text-emerald-500 font-bold mt-1 uppercase">99.98% SLA Verified</p>
           </CardContent>
         </Card>
 
         <Card className="glass-card border-none shadow-xl">
           <CardHeader className="pb-2 flex flex-row items-center justify-between space-y-0">
-            <CardTitle className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">AI Accuracy</CardTitle>
+            <CardTitle className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">AI Precision</CardTitle>
             <Cpu className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">92.4%</div>
-            <Progress value={92.4} className="h-1 mt-2 bg-primary/10" />
+            <div className="text-2xl font-bold">{(data.analytics.ai_accuracy * 100).toFixed(1)}%</div>
+            <Progress value={data.analytics.ai_accuracy * 100} className="h-1 mt-2 bg-primary/10" />
           </CardContent>
         </Card>
 
         <Card className="glass-card border-none shadow-xl">
           <CardHeader className="pb-2 flex flex-row items-center justify-between space-y-0">
-            <CardTitle className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Total Revenue</CardTitle>
-            <DollarSign className="h-4 w-4 text-secondary" />
+            <CardTitle className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Daily Revenue</CardTitle>
+            <TrendingUp className="h-4 w-4 text-secondary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">$124.5k</div>
-            <p className="text-[10px] text-muted-foreground mt-1 uppercase tracking-tighter">Gross Month-to-date</p>
+            <div className="text-2xl font-bold">{formatCurrency(data.analytics.revenue[data.analytics.revenue.length - 1].amount)}</div>
+            <p className="text-[10px] text-emerald-500 font-bold mt-1">+12.4% vs prev cycle</p>
           </CardContent>
         </Card>
 
         <Card className="glass-card border-none shadow-xl bg-destructive/5">
           <CardHeader className="pb-2 flex flex-row items-center justify-between space-y-0">
-            <CardTitle className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Critical Flags</CardTitle>
+            <CardTitle className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Pending Triage</CardTitle>
             <ShieldAlert className="h-4 w-4 text-destructive" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">3</div>
-            <p className="text-[10px] text-destructive font-bold mt-1">Action required</p>
+            <div className="text-2xl font-bold">5</div>
+            <p className="text-[10px] text-destructive font-bold mt-1 uppercase">Action Required</p>
           </CardContent>
         </Card>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* Content & Roles Column */}
+        {/* Left Column: Workflow & Roles */}
         <div className="lg:col-span-8 space-y-8">
-          {/* Content Pipeline */}
+          {/* Content & Workflow Manager */}
           <Card className="glass-card border-none shadow-2xl overflow-hidden">
-            <CardHeader className="bg-card/30 border-b border-white/5 p-6 flex flex-row items-center justify-between">
+            <CardHeader className="bg-card/30 border-b border-white/5 p-8 flex flex-row items-center justify-between">
               <div>
                 <CardTitle className="text-xl flex items-center gap-2">
                   <FileText className="h-5 w-5 text-primary" /> Intelligence Pipeline
                 </CardTitle>
-                <CardDescription>Managing workflow states for expert research nodes.</CardDescription>
+                <CardDescription>Managing workflow states for research nodes.</CardDescription>
               </div>
               <Button variant="ghost" size="sm" className="text-primary font-bold" asChild>
-                <Link href="/admin/scheduler">Full Scheduler <ChevronRight className="h-4 w-4 ml-1" /></Link>
+                <Link href="/admin/scheduler">Full Calendar <ChevronRight className="h-4 w-4 ml-1" /></Link>
               </Button>
             </CardHeader>
-            <Table>
-              <TableHeader>
-                <TableRow className="bg-muted/30 border-b border-white/5">
-                  <TableHead className="pl-6 font-bold text-[10px] uppercase tracking-widest">Insight Node</TableHead>
-                  <TableHead className="font-bold text-[10px] uppercase tracking-widest">Expert</TableHead>
-                  <TableHead className="font-bold text-[10px] uppercase tracking-widest">Lifecycle Status</TableHead>
-                  <TableHead className="text-right pr-6 font-bold text-[10px] uppercase tracking-widest">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {[
-                  { title: 'The Yield Curve supercycle', author: 'Market Maven', status: 'Review' },
-                  { title: 'DeFi Liquidity Nodes v2', author: 'Sarah Crypto', status: 'Draft' },
-                  { title: 'Passive Income Architecture', author: 'Eleanor Vance', status: 'Approved' },
-                ].map((item, i) => (
-                  <TableRow key={i} className="hover:bg-white/5 border-b border-white/5 group">
-                    <TableCell className="pl-6 py-4">
-                      <span className="text-sm font-bold truncate max-w-[200px] block">{item.title}</span>
-                    </TableCell>
-                    <TableCell>
-                      <span className="text-xs text-muted-foreground">{item.author}</span>
-                    </TableCell>
-                    <TableCell>
-                      <Badge className={cn(
-                        "text-[9px] font-bold uppercase border-none px-2 h-5",
-                        item.status === 'Approved' ? "bg-emerald-500/10 text-emerald-500" : 
-                        item.status === 'Review' ? "bg-amber-500/10 text-amber-500" : "bg-muted text-muted-foreground"
-                      )}>
-                        {item.status}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-right pr-6">
-                      <Button variant="ghost" size="icon" className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <ArrowUpRight className="h-4 w-4" />
-                      </Button>
-                    </TableCell>
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow className="bg-muted/20 border-b border-white/5">
+                    <TableHead className="pl-8 font-bold text-[10px] uppercase tracking-widest py-4">Node Type</TableHead>
+                    <TableHead className="font-bold text-[10px] uppercase tracking-widest">Intelligence Title</TableHead>
+                    <TableHead className="font-bold text-[10px] uppercase tracking-widest">Status</TableHead>
+                    <TableHead className="text-right pr-8 font-bold text-[10px] uppercase tracking-widest">Administrative Action</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {data.content_editor.map((item) => (
+                    <TableRow key={item.id} className="hover:bg-white/5 border-b border-white/5 group">
+                      <TableCell className="pl-8 py-5">
+                        <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20 text-[8px] font-bold uppercase">
+                          {item.type.replace('_', ' ')}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <span className="text-sm font-bold truncate max-w-[300px] block">{item.title || item.term}</span>
+                      </TableCell>
+                      <TableCell>
+                        <Badge className={cn(
+                          "text-[9px] font-bold uppercase border-none px-2 h-5",
+                          item.status === 'published' ? "bg-emerald-500/10 text-emerald-500" : 
+                          item.status === 'review' ? "bg-amber-500/10 text-amber-500" : 
+                          item.status === 'approved' ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"
+                        )}>
+                          {item.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-right pr-8">
+                        <Button variant="ghost" size="sm" className="h-8 px-3 text-[10px] font-bold uppercase tracking-widest text-primary hover:bg-primary/5">
+                          Audit Node
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
           </Card>
 
-          {/* User Roles & Permissions Summary */}
+          {/* Role-based Permissions Panel */}
           <Card className="glass-card border-none shadow-2xl">
-            <CardHeader className="bg-card/30 border-b border-white/5 p-6 flex flex-row items-center justify-between">
+            <CardHeader className="bg-card/30 border-b border-white/5 p-8 flex flex-row items-center justify-between">
               <div>
-                <CardTitle className="text-lg">Governance Roles</CardTitle>
-                <CardDescription>Persona architecture and capability nodes.</CardDescription>
+                <CardTitle className="text-xl flex items-center gap-2">
+                  <Lock className="h-5 w-5 text-secondary" /> Persona Architect
+                </CardTitle>
+                <CardDescription>Defining system capabilities and access boundaries.</CardDescription>
               </div>
-              <Button variant="outline" size="sm" className="h-9 rounded-xl border-white/10" asChild>
-                <Link href="/admin/roles">Manage Roles</Link>
+              <Button variant="outline" size="sm" className="rounded-xl border-white/10" asChild>
+                <Link href="/admin/roles">Configure Matrix</Link>
               </Button>
             </CardHeader>
             <CardContent className="p-0">
-              <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-white/5">
-                {[
-                  { role: 'Administrator', users: 5, permission: 'Full System' },
-                  { role: 'Expert Editor', users: 12, permission: 'Publishing' },
-                ].map((r, i) => (
-                  <div key={i} className="p-6 space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/5">
+                {data.roles_permissions.map((role, i) => (
+                  <div key={i} className="p-8 space-y-4 hover:bg-white/5 transition-colors">
                     <div className="flex justify-between items-center">
-                      <Text variant="bodySmall" weight="bold" className="uppercase tracking-tight">{r.role}</Text>
-                      <Badge variant="secondary" className="bg-primary/5 text-primary text-[10px] font-bold">{r.users} Users</Badge>
+                      <Text variant="bodySmall" weight="bold" className="uppercase tracking-tight">{role.role}</Text>
+                      <Badge className="bg-primary/10 text-primary border-none text-[10px] font-bold">{role.userCount} Users</Badge>
                     </div>
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="text-muted-foreground">Primary Capability</span>
-                      <span className="font-bold text-primary">{r.permission}</span>
+                    <div className="flex flex-wrap gap-1">
+                      {role.permissions.slice(0, 3).map(p => (
+                        <Badge key={p} variant="outline" className="text-[8px] border-white/10 opacity-60 uppercase">{p}</Badge>
+                      ))}
+                      {role.permissions.length > 3 && <span className="text-[8px] text-muted-foreground font-bold">+{role.permissions.length - 3}</span>}
                     </div>
                   </div>
                 ))}
@@ -265,9 +256,9 @@ export default function AdminDashboardSummaryPage() {
           </Card>
         </div>
 
-        {/* System & Infrastructure Sidebar */}
+        {/* Right Column: Analytics & Infrastructure */}
         <div className="lg:col-span-4 space-y-8">
-          {/* Feature Flags Panel */}
+          {/* Feature Gateways Panel */}
           <Card className="glass-card border-none shadow-xl bg-primary/5">
             <CardHeader className="pb-4">
               <CardTitle className="text-sm font-bold flex items-center gap-2 uppercase tracking-widest text-primary">
@@ -275,8 +266,12 @@ export default function AdminDashboardSummaryPage() {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              {flags.slice(0, 3).map((flag) => (
-                <div key={flag.id} className="flex items-center justify-between p-3 rounded-xl bg-background/40 border border-white/5">
+              {[
+                { name: 'AI Content Outliner', module: 'Generative Engine', enabled: true },
+                { name: 'pSEO v2 Indexing', module: 'Search Infrastructure', enabled: true },
+                { name: 'Monetization Hub', module: 'Payment Node', enabled: false },
+              ].map((flag, i) => (
+                <div key={i} className="flex items-center justify-between p-3 rounded-xl bg-background/40 border border-white/5">
                   <div className="space-y-0.5">
                     <Text variant="caption" className="font-bold text-[11px]">{flag.name}</Text>
                     <Text variant="caption" className="text-[9px] text-muted-foreground block">{flag.module}</Text>
@@ -290,93 +285,115 @@ export default function AdminDashboardSummaryPage() {
             </CardContent>
           </Card>
 
-          {/* Infrastructure Health */}
-          <Card className="glass-card border-none shadow-xl">
-            <CardHeader className="pb-2">
+          {/* Infrastructure Health & Deployment */}
+          <Card className="glass-card border-none shadow-xl overflow-hidden">
+            <CardHeader className="bg-card/30 border-b border-white/5">
               <CardTitle className="text-sm flex items-center gap-2">
                 <Server className="h-4 w-4 text-muted-foreground" /> Infrastructure Node
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-6">
+            <CardContent className="p-6 space-y-6">
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
                   <div className="flex items-center gap-2">
                     <Database className="h-3.5 w-3.5 text-secondary" />
-                    <span className="text-[10px] font-bold uppercase text-muted-foreground">Last Backup</span>
+                    <span className="text-[10px] font-bold uppercase text-muted-foreground">Snapshot Integrity</span>
                   </div>
-                  <Badge className="bg-emerald-500/10 text-emerald-500 border-none text-[10px]">Success</Badge>
+                  <Badge className="bg-emerald-500/10 text-emerald-500 border-none text-[10px]">Verified</Badge>
                 </div>
-                <div className="flex justify-between items-end border-b border-white/5 pb-2">
-                  <Text variant="caption" className="text-muted-foreground font-mono">bak-8F2D-stable</Text>
-                  <Text variant="caption" className="text-[9px]">4h ago</Text>
+                <div className="p-3 rounded-xl bg-background/50 border border-white/5 flex justify-between items-center">
+                  <div className="space-y-0.5">
+                    <Text variant="caption" className="font-bold text-[10px]">{data.backup_status.size}</Text>
+                    <Text variant="caption" className="text-[8px] text-muted-foreground uppercase">{format(new Date(data.backup_status.last_backup), 'MMM d, HH:mm')} UTC</Text>
+                  </div>
+                  <Button variant="ghost" size="icon" className="h-8 w-8 text-primary hover:bg-primary/5">
+                    <RefreshCw className="h-3.5 w-3.5" />
+                  </Button>
                 </div>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-4 pt-2">
                 <div className="flex justify-between items-center">
                   <div className="flex items-center gap-2">
                     <Globe className="h-3.5 w-3.5 text-primary" />
-                    <span className="text-[10px] font-bold uppercase text-muted-foreground">Deploy Hash</span>
+                    <span className="text-[10px] font-bold uppercase text-muted-foreground">CDN HIT RATIO</span>
                   </div>
-                  <div className="flex items-center gap-1.5 text-emerald-500 font-bold text-[9px]">
-                    <CheckCircle2 className="h-3 w-3" /> LIVE
-                  </div>
+                  <span className="text-xs font-bold text-emerald-500">{data.cache_status.hit_rate}</span>
                 </div>
-                <div className="p-3 rounded-lg bg-background/50 border border-white/5 font-mono text-[10px] text-muted-foreground flex justify-between">
-                  <span>SHA-256: 4a1c...9e0b</span>
-                  <RotateCcw className="h-3 w-3 cursor-pointer hover:text-primary transition-colors" />
-                </div>
+                <Progress value={98.4} className="h-1 bg-white/5" />
+              </div>
+
+              <div className="pt-4 border-t border-white/5">
+                <Button className="w-full h-11 bg-card hover:bg-white/5 border border-white/10 rounded-xl font-bold text-xs gap-2">
+                  <History className="h-4 w-4" /> Access Logs Matrix
+                </Button>
               </div>
             </CardContent>
           </Card>
 
-          {/* Audit Summary */}
+          {/* Master Log Buffer */}
           <Card className="glass-card border-none shadow-xl bg-card/30">
             <CardHeader className="pb-2">
-              <CardTitle className="text-xs flex items-center gap-2 uppercase tracking-widest text-muted-foreground">
+              <CardTitle className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2">
                 <Terminal className="h-3.5 w-3.5" /> System Logs Buffer
               </CardTitle>
             </CardHeader>
             <CardContent className="p-0">
-              <div className="divide-y divide-white/5">
-                {logs.slice(0, 3).map((log) => (
-                  <div key={log.id} className="p-4 space-y-1 hover:bg-white/5 transition-colors group">
-                    <Text variant="caption" className="font-bold text-[10px] text-foreground group-hover:text-primary transition-colors">{log.action}</Text>
-                    <div className="flex justify-between items-center text-[9px] text-muted-foreground font-mono">
-                      <span>{log.admin}</span>
-                      <span>{format(new Date(log.date), 'HH:mm:ss')}</span>
-                    </div>
+              <div className="divide-y divide-white/5 max-h-[200px] overflow-y-auto no-scrollbar">
+                {data.analytics.system_logs.map((log, i) => (
+                  <div key={i} className="p-4 space-y-1 hover:bg-white/5 transition-colors group">
+                    <Text variant="caption" className="text-[10px] leading-relaxed text-foreground/80 group-hover:text-primary transition-colors">
+                      {log}
+                    </Text>
                   </div>
                 ))}
               </div>
               <Button variant="ghost" className="w-full h-10 text-[9px] font-bold uppercase tracking-widest border-t border-white/5 rounded-none" asChild>
-                <Link href="/admin/control/activity-log">View Global Trail</Link>
+                <Link href="/admin/control/activity-log">Review Global Trail</Link>
               </Button>
             </CardContent>
           </Card>
         </div>
       </div>
 
-      {/* Analytics Insight Fragment */}
+      {/* Analytics Visualization Footer */}
       <Card className="glass-card border-none bg-primary/5 p-10 relative overflow-hidden">
-        <div className="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-primary/10 to-transparent pointer-events-none" />
-        <div className="flex flex-col lg:flex-row items-center gap-10 relative z-10">
-          <div className="w-20 h-20 rounded-[2.5rem] bg-primary/20 flex items-center justify-center text-primary shadow-2xl shrink-0">
-            <BarChart3 className="h-10 w-10" />
+        <div className="absolute right-0 top-0 w-1/3 h-full bg-gradient-to-l from-primary/10 to-transparent pointer-events-none" />
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 relative z-10">
+          <div className="lg:col-span-4 flex flex-col justify-center space-y-4">
+            <div className="w-16 h-16 rounded-3xl bg-primary/20 flex items-center justify-center text-primary shadow-2xl">
+              <BarChart3 className="h-8 w-8" />
+            </div>
+            <div>
+              <Text variant="h2" className="text-2xl font-bold">Ecosystem Trajectory</Text>
+              <Text variant="bodySmall" className="text-muted-foreground leading-relaxed mt-2">
+                Aggregated user activity and revenue velocity across the programmatic index nodes.
+              </Text>
+            </div>
+            <Button variant="outline" className="w-fit rounded-xl font-bold border-primary/30 hover:bg-primary/5" asChild>
+              <Link href="/admin/analytics/full-overview">Deep Analytics Hub</Link>
+            </Button>
           </div>
-          <div className="flex-1 text-center lg:text-left space-y-2">
-            <Text variant="h2" className="text-2xl font-bold">Platform Ingestion Pulse</Text>
-            <Text variant="bodySmall" className="text-muted-foreground leading-relaxed max-w-2xl">
-              pSEO Engine is successfully crawling **1.2M nodes**. Average ingestion latency is 42ms. CDN cache-hit ratio remains optimized at 98.4%.
-            </Text>
+          
+          <div className="lg:col-span-8 h-[300px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={data.analytics.user_activity}>
+                <defs>
+                  <linearGradient id="colorActive" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#8272F2" stopOpacity={0.3}/>
+                    <stop offset="95%" stopColor="#8272F2" stopOpacity={0}/>
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="#ffffff05" vertical={false} />
+                <XAxis dataKey="date" hide />
+                <YAxis hide />
+                <Tooltip contentStyle={{ backgroundColor: '#1C1822', border: '1px solid #ffffff10', borderRadius: '12px' }} />
+                <Area type="monotone" dataKey="active_users" stroke="#8272F2" fillOpacity={1} fill="url(#colorActive)" strokeWidth={3} name="Daily Active Users" />
+              </AreaChart>
+            </ResponsiveContainer>
           </div>
-          <Button variant="outline" className="h-12 px-8 rounded-xl font-bold border-primary/30 hover:bg-primary/5 shrink-0" asChild>
-            <Link href="/admin/analytics/full-overview">Ecosystem Analytics</Link>
-          </Button>
         </div>
       </Card>
     </div>
   );
 }
-
-import { DollarSign as DollarSignIcon } from 'lucide-react';
