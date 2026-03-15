@@ -30,6 +30,21 @@ export interface TrafficAnalyticsReport {
   topPages: { page: string; visits: number; bounceRate: number }[];
 }
 
+export interface TrafficSources {
+  sources: { 
+    name: string; 
+    percent: number; 
+    trend: 'Up' | 'Down' | 'Stable';
+    count: number;
+  }[];
+  topReferrers: { 
+    source: string; 
+    visits: number; 
+    conversion: number;
+    trend: 'Up' | 'Down' | 'Stable';
+  }[];
+}
+
 export interface SeoPerformanceItem {
   id: string;
   page: string;

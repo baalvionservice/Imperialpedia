@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { TrafficAnalytics, SeoAnalytics, PlatformOverview, TrafficAnalyticsReport, ContentAnalytics, EngagementAnalytics, ModerationAnalytics, CreatorEngagement } from '@/types/analytics';
+import { TrafficAnalytics, SeoAnalytics, PlatformOverview, TrafficAnalyticsReport, ContentAnalytics, EngagementAnalytics, ModerationAnalytics, CreatorEngagement, TrafficSources } from '@/types/analytics';
 
 /**
  * @fileOverview Mock service for platform analytics and trending data.
@@ -178,6 +178,28 @@ export const getTrafficAnalyticsReport = async (): Promise<ApiResponse<TrafficAn
         { page: '/articles/yield-curve', visits: 45200, bounceRate: 24.5 },
         { page: '/financial-tools/compound-interest', visits: 38900, bounceRate: 18.2 },
         { page: '/glossary/bull-market', visits: 28400, bounceRate: 35.1 },
+      ]
+    },
+    status: 200
+  };
+};
+
+export const getTrafficSources = async (): Promise<ApiResponse<TrafficSources>> => {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  return {
+    data: {
+      sources: [
+        { name: 'Organic Search', percent: 45.2, trend: 'Up', count: 56400 },
+        { name: 'Direct', percent: 24.8, trend: 'Stable', count: 31000 },
+        { name: 'Social Media', percent: 18.5, trend: 'Up', count: 23100 },
+        { name: 'Referral', percent: 11.5, trend: 'Down', count: 14300 },
+      ],
+      topReferrers: [
+        { source: 'google.com', visits: 42500, conversion: 4.2, trend: 'Up' },
+        { source: 'twitter.com', visits: 15400, conversion: 6.8, trend: 'Up' },
+        { source: 'linkedin.com', visits: 8200, conversion: 8.4, trend: 'Stable' },
+        { source: 'bing.com', visits: 4100, conversion: 2.1, trend: 'Down' },
+        { source: 'duckduckgo.com', visits: 2800, conversion: 3.5, trend: 'Up' },
       ]
     },
     status: 200
