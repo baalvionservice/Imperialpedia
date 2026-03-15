@@ -270,3 +270,35 @@ export interface CMSDashboardData {
   analytics: CMSAnalyticsMetric[];
   system_logs: SystemLogItem[];
 }
+
+/**
+ * Prompt 43: Admin System Hub Types
+ */
+export interface AdminAnalyticsKPI {
+  metric: string;
+  value: number;
+  trend: 'up' | 'down';
+}
+
+export interface SystemMonitoringNode {
+  server: string;
+  cpu_usage: string;
+  memory_usage: string;
+  active_requests: number;
+  uptime: string;
+  status: 'healthy' | 'warning' | 'critical';
+}
+
+export interface ThresholdAlert {
+  alert_type: string;
+  server: string;
+  threshold: string;
+  current: string;
+  status: 'mock_triggered' | 'resolved';
+}
+
+export interface AdminSystemHubData {
+  analytics: AdminAnalyticsKPI[];
+  system_monitoring: SystemMonitoringNode[];
+  alerts: ThresholdAlert[];
+}

@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog, SecuritySettings, GlobalNotificationSettings, AuditTrailEntry, FeatureSettings, AdminSession, BrandingSettings, SystemAlert, AdminHomeOverview, SecurityDashboardData } from '@/types/system';
+import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog, SecuritySettings, GlobalNotificationSettings, AuditTrailEntry, FeatureSettings, AdminSession, BrandingSettings, SystemAlert, AdminHomeOverview, SecurityDashboardData, AdminSystemHubData } from '@/types/system';
 
 /**
  * @fileOverview Mock service for managing global platform configuration and system notifications.
@@ -169,6 +169,22 @@ const mockAdminHomeOverview: AdminHomeOverview = {
   alertsActive: 3,
   pSEONodes: 1248500,
   systemHealth: 'Healthy'
+};
+
+const mockAdminSystemHubData: AdminSystemHubData = {
+  analytics: [
+    { metric: "Active Users", value: 1200, trend: "up" },
+    { metric: "Content Engagement", value: 350, trend: "up" },
+    { metric: "Subscription Conversions", value: 75, trend: "down" }
+  ],
+  system_monitoring: [
+    { server: "Server1", cpu_usage: "45%", memory_usage: "68%", active_requests: 120, uptime: "99.9%", status: "healthy" },
+    { server: "Server2", cpu_usage: "78%", memory_usage: "82%", active_requests: 200, uptime: "99.5%", status: "warning" }
+  ],
+  alerts: [
+    { alert_type: "High CPU", server: "Server2", threshold: "75%", current: "78%", status: "mock_triggered" },
+    { alert_type: "Low Memory", server: "Server3", threshold: "20%", current: "18%", status: "mock_triggered" }
+  ]
 };
 
 export const getPlatformSettings = async (): Promise<ApiResponse<PlatformSettings>> => {
@@ -459,6 +475,14 @@ export const getAdminHomeOverview = async (): Promise<ApiResponse<AdminHomeOverv
   await new Promise((resolve) => setTimeout(resolve, 400));
   return {
     data: mockAdminHomeOverview,
+    status: 200,
+  };
+};
+
+export const getAdminSystemHubData = async (): Promise<ApiResponse<AdminSystemHubData>> => {
+  await new Promise((resolve) => setTimeout(resolve, 600));
+  return {
+    data: mockAdminSystemHubData,
     status: 200,
   };
 };
