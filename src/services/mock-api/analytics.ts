@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { TrafficAnalytics, SeoAnalytics } from '@/types/analytics';
+import { TrafficAnalytics, SeoAnalytics, PlatformOverview } from '@/types/analytics';
 
 /**
  * @fileOverview Mock service for platform analytics and trending data.
@@ -230,6 +230,33 @@ export const getSeoAnalytics = async (): Promise<ApiResponse<SeoAnalytics>> => {
         { date: '2024-03-05', clicks: 6100, impressions: 165000 },
         { date: '2024-03-06', clicks: 5800, impressions: 155000 },
         { date: '2024-03-07', clicks: 6500, impressions: 180000 },
+      ]
+    },
+    status: 200
+  };
+};
+
+export const getPlatformOverview = async (): Promise<ApiResponse<PlatformOverview>> => {
+  await new Promise((resolve) => setTimeout(resolve, 600));
+  return {
+    data: {
+      totalUsers: 142500,
+      activeCreators: 156,
+      totalContent: 1248,
+      totalTraffic: 4250000,
+      userGrowth: [
+        { date: '2024-02-15', users: 138000 },
+        { date: '2024-02-20', users: 139500 },
+        { date: '2024-02-25', users: 140800 },
+        { date: '2024-03-01', users: 141200 },
+        { date: '2024-03-05', users: 141900 },
+        { date: '2024-03-10', users: 142500 },
+      ],
+      topContent: [
+        { id: '1', title: 'Quantitative Easing vs Tightening', author: 'The Market Maven', views: 45200, engagement: 8.4, status: 'Trending' },
+        { id: '2', title: 'The Power of Compound Interest', author: 'Julian Wealth', views: 38900, engagement: 12.1, status: 'Viral' },
+        { id: '3', title: 'DeFi Liquidity Pools', author: 'Sarah Crypto', views: 28400, engagement: 6.8, status: 'Stable' },
+        { id: '4', title: 'Macro Trends in 2026', author: 'Eleanor Vance', views: 22100, engagement: 9.2, status: 'Growing' },
       ]
     },
     status: 200

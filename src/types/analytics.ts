@@ -42,3 +42,19 @@ export interface SeoAnalytics {
     impressions: number;
   }[];
 }
+
+export interface PlatformOverview {
+  totalUsers: number;
+  activeCreators: number;
+  totalContent: number;
+  totalTraffic: number;
+  userGrowth: { date: string; users: number }[];
+  topContent: Array<{
+    id: string;
+    title: string;
+    author: string;
+    views: number;
+    engagement: number;
+    status: string;
+  }>;
+}
