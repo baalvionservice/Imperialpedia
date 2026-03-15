@@ -27,7 +27,8 @@ import {
   CalendarCheck,
   UserCog,
   UserCircle,
-  PenTool
+  PenTool,
+  Calculator as CalcIcon
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 import { useAppStore } from '@/lib/state/app-store';
@@ -121,6 +122,7 @@ const Sidebar = ({ className }: { className?: string }) => {
     { icon: PenTool, label: 'Content Engine', href: '/articles' },
     { icon: Search, label: 'Internal Search', href: '/search' },
     { icon: UsersIcon, label: 'Creator Network', href: '/creators' },
+    { icon: CalcIcon, label: 'Financial Tools', href: '/financial-tools' },
   ];
 
   return (

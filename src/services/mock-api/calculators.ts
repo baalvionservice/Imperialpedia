@@ -1,31 +1,66 @@
 import { ApiResponse } from '@/types';
+import { FinancialCalculator } from '@/types/financial-tools';
 
 /**
- * @fileOverview Mock service for managing financial calculator metadata.
+ * @fileOverview Mock service for managing financial calculator metadata and tool discovery.
  */
 
-export interface Calculator {
-  id: string;
-  name: string;
-  slug: string;
-  description: string;
-  category: string;
-}
+export interface Calculator extends FinancialCalculator {}
 
-const mockCalculators: Calculator[] = [
+export const mockCalculators: Calculator[] = [
   {
-    id: 'calc-1',
-    name: 'Compound Interest Calculator',
+    id: 'calc-compound',
+    name: 'Compound Interest',
     slug: 'compound-interest',
-    description: 'Calculate how your savings grow over time with compounding.',
-    category: 'Personal Finance',
+    type: 'compound',
+    description: 'Visualize the exponential growth of your savings through compounding interest and regular contributions.',
+    category: 'Wealth Building',
+    icon: 'TrendingUp'
   },
   {
-    id: 'calc-2',
-    name: 'Mortgage Payment Calculator',
-    slug: 'mortgage',
-    description: 'Estimate your monthly mortgage payments and total interest.',
-    category: 'Real Estate',
+    id: 'calc-loan',
+    name: 'Loan Repayment',
+    slug: 'loan',
+    type: 'loan',
+    description: 'Calculate monthly payments, total interest, and payoff timelines for mortgages, auto loans, or personal debt.',
+    category: 'Debt Management',
+    icon: 'CreditCard'
+  },
+  {
+    id: 'calc-investment',
+    name: 'Investment ROI',
+    slug: 'investment',
+    type: 'investment',
+    description: 'Estimate the potential return on investment for stocks, real estate, or business ventures.',
+    category: 'Investing',
+    icon: 'PieChart'
+  },
+  {
+    id: 'calc-retirement',
+    name: 'Retirement Planner',
+    slug: 'retirement',
+    type: 'retirement',
+    description: 'Determine if you are on track for your retirement goals based on current savings and expected returns.',
+    category: 'Retirement',
+    icon: 'Sunrise'
+  },
+  {
+    id: 'calc-portfolio',
+    name: 'Portfolio Rebalancer',
+    slug: 'portfolio',
+    type: 'portfolio',
+    description: 'Analyze your asset allocation and determine necessary trades to return to your target risk profile.',
+    category: 'Investing',
+    icon: 'Layers'
+  },
+  {
+    id: 'calc-inflation',
+    name: 'Inflation Impact',
+    slug: 'inflation',
+    type: 'inflation',
+    description: 'Understand how purchasing power changes over time and how inflation affects your long-term goals.',
+    category: 'Economics',
+    icon: 'ArrowUpRight'
   },
 ];
 

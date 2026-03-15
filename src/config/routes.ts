@@ -9,7 +9,7 @@ export const routes: RouteConfig = {
     home: '/',
     outline: '/outline',
     glossary: '/glossary',
-    calculators: '/calculators',
+    calculators: '/financial-tools',
     creators: '/creators',
   },
   platform: {
