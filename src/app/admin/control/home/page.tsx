@@ -27,7 +27,8 @@ import {
   ShieldX,
   Network,
   Cpu,
-  Globe
+  Globe,
+  Search
 } from 'lucide-react';
 import Link from 'next/link';
 import { systemService } from '@/services/data/system-service';
@@ -77,6 +78,7 @@ export default function AdminControlCenterHomePage() {
     { label: 'Kernel Logic', desc: 'Configure global settings.', href: '/admin/control/settings', icon: Settings, color: 'text-secondary', badge: 0 },
     { label: 'Feature Studio', desc: 'Toggle system gateways.', href: '/admin/control/features', icon: Zap, color: 'text-amber-500', badge: 0 },
     { label: 'Identity Studio', desc: 'Manage brand & visual tokens.', href: '/admin/control/branding', icon: Palette, color: 'text-primary', badge: 0 },
+    { label: 'Discovery Logic', desc: 'Manage SEO & Sitemaps.', href: '/admin/control/seo', icon: Search, color: 'text-secondary', badge: 0 },
     { label: 'Broadcast Hub', desc: 'Manage system alerts.', href: '/admin/control/alerts', icon: Megaphone, color: 'text-secondary', badge: overview.alertsActive },
     { label: 'Session Command', desc: 'Monitor active connections.', href: '/admin/control/sessions', icon: Activity, color: 'text-primary', badge: overview.activeSessions },
     { label: 'Scaling Hub', desc: 'Cluster & deployment telemetry.', href: '/admin/control/infrastructure', icon: Cpu, color: 'text-secondary', badge: 0 },

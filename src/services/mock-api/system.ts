@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog, SecuritySettings, GlobalNotificationSettings, AuditTrailEntry, FeatureSettings, AdminSession, BrandingSettings, SystemAlert, AdminHomeOverview, SecurityDashboardData, AdminSystemHubData, SecurityMockData, InfrastructureMockData, EdgeComputingData, CdnManagementData } from '@/types/system';
+import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog, SecuritySettings, GlobalNotificationSettings, AuditTrailEntry, FeatureSettings, AdminSession, BrandingSettings, SystemAlert, AdminHomeOverview, SecurityDashboardData, AdminSystemHubData, SecurityMockData, InfrastructureMockData, EdgeComputingData, CdnManagementData, SeoManagementData } from '@/types/system';
 
 /**
  * @fileOverview Mock service for managing global platform configuration and system notifications.
@@ -256,6 +256,46 @@ const mockCdnManagementData: CdnManagementData = {
     { alert_type: "CDN Node High Latency", node: "CDN-EU-West", status: "mock_triggered", timestamp: "2026-03-15 12:45" },
     { log_type: "Cache Purge", page: "/guides/long-form-guide", timestamp: "2026-03-15 09:00" },
     { log_type: "Global Cache Burst", timestamp: "2026-03-14 23:00" }
+  ]
+};
+
+const mockSeoManagementData: SeoManagementData = {
+  seo_pages: [
+    { 
+      page_url: "/glossary/compound-interest", 
+      title: "Compound Interest Definition | Intelligence Index", 
+      meta_description: "Learn how compound interest builds long-term wealth. Explore expert definitions and real-world examples.", 
+      focus_keywords: ["compound interest", "finance", "investing"], 
+      seo_score: 85, 
+      social_preview: "mock_preview_url" 
+    },
+    { 
+      page_url: "/guides/long-form-guide", 
+      title: "The Comprehensive Guide to Wealth Preservation", 
+      meta_description: "An institutional-grade deep dive into protecting capital across complex market cycles.", 
+      focus_keywords: ["investing guide", "wealth", "strategy"], 
+      seo_score: 78, 
+      social_preview: "mock_preview_url" 
+    },
+    { 
+      page_url: "/articles/yield-curve-2026", 
+      title: "Analyzing the 2026 Yield Curve Inversion", 
+      meta_description: "What the current bond market is telling us about the upcoming fiscal super-cycle.", 
+      focus_keywords: ["yield curve", "bonds", "recession"], 
+      seo_score: 92, 
+      social_preview: "mock_preview_url" 
+    }
+  ],
+  sitemap: [
+    { page_url: "/glossary/compound-interest", parent: "/glossary", status: "mock_active", last_updated: "2026-03-15 10:00" },
+    { page_url: "/guides/long-form-guide", parent: "/guides", status: "mock_active", last_updated: "2026-03-14 15:00" },
+    { page_url: "/articles/yield-curve-2026", parent: "/articles", status: "mock_active", last_updated: "2026-03-15 09:30" }
+  ],
+  alerts_suggestions: [
+    { alert_type: "Missing Alt Tags", page: "/guides/long-form-guide", status: "mock_triggered" },
+    { alert_type: "Duplicate Meta Node", page: "/glossary/interest-rates", status: "mock_triggered" },
+    { suggestion: "Increase keyword density for 'fiscal Super-cycle'", page: "/articles/yield-curve-2026", status: "mock_suggested" },
+    { suggestion: "Improve meta description CTR mapping", page: "/glossary/compound-interest", status: "mock_suggested" }
   ]
 };
 
@@ -587,6 +627,14 @@ export const getCdnManagementData = async (): Promise<ApiResponse<CdnManagementD
   await new Promise((resolve) => setTimeout(resolve, 600));
   return {
     data: mockCdnManagementData,
+    status: 200,
+  };
+};
+
+export const getSeoManagementData = async (): Promise<ApiResponse<SeoManagementData>> => {
+  await new Promise((resolve) => setTimeout(resolve, 600));
+  return {
+    data: mockSeoManagementData,
     status: 200,
   };
 };

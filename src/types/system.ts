@@ -426,3 +426,35 @@ export interface CdnManagementData {
   page_cache: PageCacheItem[];
   alerts_logs: CdnLogEntry[];
 }
+
+/**
+ * Prompt 48: SEO & Sitemap Types
+ */
+export interface SeoManagementPage {
+  page_url: string;
+  title: string;
+  meta_description: string;
+  focus_keywords: string[];
+  seo_score: string | number;
+  social_preview: string;
+}
+
+export interface SitemapEntry {
+  page_url: string;
+  parent: string;
+  status: 'mock_active' | 'mock_inactive';
+  last_updated: string;
+}
+
+export interface SeoAlertSuggestion {
+  alert_type?: string;
+  suggestion?: string;
+  page: string;
+  status: 'mock_triggered' | 'mock_suggested';
+}
+
+export interface SeoManagementData {
+  seo_pages: SeoManagementPage[];
+  sitemap: SitemapEntry[];
+  alerts_suggestions: SeoAlertSuggestion[];
+}

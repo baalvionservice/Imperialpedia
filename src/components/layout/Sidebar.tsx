@@ -151,6 +151,7 @@ const Sidebar = ({ className }: { className?: string }) => {
     { icon: Cpu, label: 'Infrastructure & Scale', href: '/admin/control/infrastructure' },
     { icon: Network, label: 'Edge & Multi-Region', href: '/admin/control/edge' },
     { icon: Globe, label: 'CDN & Page Cache', href: '/admin/control/cdn' },
+    { icon: Search, label: 'SEO & Sitemaps', href: '/admin/control/seo' },
     { icon: Monitor, label: 'Active Sessions', href: '/admin/control/sessions' },
     { icon: Bell, label: 'Notification Settings', href: '/admin/control/notifications' },
     { icon: Zap, label: 'Feature Toggles', href: '/admin/control/features' },
