@@ -1,8 +1,9 @@
 import * as mockApi from '@/services/mock-api/articles';
 import { Article, ApiResponse, PaginatedResponse } from '@/types';
+import { errorHandler } from '@/lib/errors/error-handler';
 
 /**
- * @fileOverview Abstraction layer for article-related data fetching.
+ * @fileOverview Abstraction layer for article-related data fetching with error handling.
  */
 
 export const articlesService = {
@@ -10,10 +11,11 @@ export const articlesService = {
     try {
       return await mockApi.getArticles(page, limit);
     } catch (error) {
+      const appError = errorHandler.handleError(error);
       return {
         data: [],
-        status: 500,
-        error: 'Articles service unavailable',
+        status: appError.statusCode,
+        error: appError.message,
         pagination: {
           currentPage: 1,
           totalPages: 0,
@@ -30,10 +32,11 @@ export const articlesService = {
     try {
       return await mockApi.getArticleBySlug(slug);
     } catch (error) {
+      const appError = errorHandler.handleError(error);
       return {
         data: null,
-        status: 500,
-        error: 'Article retrieval failed',
+        status: appError.statusCode,
+        error: appError.message,
       };
     }
   },
@@ -42,10 +45,11 @@ export const articlesService = {
     try {
       return await mockApi.getFeaturedArticles();
     } catch (error) {
+      const appError = errorHandler.handleError(error);
       return {
         data: [],
-        status: 500,
-        error: 'Featured articles unavailable',
+        status: appError.statusCode,
+        error: appError.message,
       };
     }
   },

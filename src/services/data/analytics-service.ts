@@ -1,9 +1,10 @@
 import * as mockApi from '@/services/mock-api/analytics';
 import { ApiResponse } from '@/types';
 import { TrendingItem } from '@/services/mock-api/analytics';
+import { errorHandler } from '@/lib/errors/error-handler';
 
 /**
- * @fileOverview Abstraction layer for analytics and trending data.
+ * @fileOverview Abstraction layer for analytics and trending data with error handling.
  */
 
 export const analyticsService = {
@@ -11,10 +12,11 @@ export const analyticsService = {
     try {
       return await mockApi.getTrendingArticles();
     } catch (error) {
+      const appError = errorHandler.handleError(error);
       return {
         data: [],
-        status: 500,
-        error: 'Trending data unavailable',
+        status: appError.statusCode,
+        error: appError.message,
       };
     }
   },
@@ -23,10 +25,11 @@ export const analyticsService = {
     try {
       return await mockApi.getPopularTopics();
     } catch (error) {
+      const appError = errorHandler.handleError(error);
       return {
         data: [],
-        status: 500,
-        error: 'Popular topics unavailable',
+        status: appError.statusCode,
+        error: appError.message,
       };
     }
   },

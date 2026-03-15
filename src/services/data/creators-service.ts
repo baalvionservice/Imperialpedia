@@ -1,8 +1,9 @@
 import * as mockApi from '@/services/mock-api/creators';
 import { CreatorProfile, ApiResponse } from '@/types';
+import { errorHandler } from '@/lib/errors/error-handler';
 
 /**
- * @fileOverview Abstraction layer for creator-related data fetching.
+ * @fileOverview Abstraction layer for creator-related data fetching with error handling.
  */
 
 export const creatorsService = {
@@ -10,10 +11,11 @@ export const creatorsService = {
     try {
       return await mockApi.getCreators();
     } catch (error) {
+      const appError = errorHandler.handleError(error);
       return {
         data: [],
-        status: 500,
-        error: 'Creators service unavailable',
+        status: appError.statusCode,
+        error: appError.message,
       };
     }
   },
@@ -22,10 +24,11 @@ export const creatorsService = {
     try {
       return await mockApi.getCreatorByUsername(username);
     } catch (error) {
+      const appError = errorHandler.handleError(error);
       return {
         data: null,
-        status: 500,
-        error: 'Creator profile retrieval failed',
+        status: appError.statusCode,
+        error: appError.message,
       };
     }
   },

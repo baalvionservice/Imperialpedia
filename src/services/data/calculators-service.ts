@@ -1,9 +1,10 @@
 import * as mockApi from '@/services/mock-api/calculators';
 import { ApiResponse } from '@/types';
 import { Calculator } from '@/services/mock-api/calculators';
+import { errorHandler } from '@/lib/errors/error-handler';
 
 /**
- * @fileOverview Abstraction layer for calculator-related data fetching.
+ * @fileOverview Abstraction layer for calculator-related data fetching with error handling.
  */
 
 export const calculatorsService = {
@@ -11,10 +12,11 @@ export const calculatorsService = {
     try {
       return await mockApi.getCalculatorList();
     } catch (error) {
+      const appError = errorHandler.handleError(error);
       return {
         data: [],
-        status: 500,
-        error: 'Calculators service unavailable',
+        status: appError.statusCode,
+        error: appError.message,
       };
     }
   },
