@@ -1,6 +1,5 @@
 /**
- * Conflict resolution: this page is now managed at src/app/outline/page.tsx
+ * This route has been moved to src/app/outline/page.tsx to resolve parallel routing conflicts.
+ * This file is intentionally left without a default export to prevent Next.js from treating it as a page.
  */
-export default function ConflictResolutionPage() {
-  return null;
-}
+export const dynamic = 'force-static';
