@@ -26,6 +26,15 @@ export interface SearchSuggestion {
   route: string;
 }
 
+export interface TopicRecommendation {
+  id: string;
+  name: string;
+  slug: string;
+  icon?: string;
+  isTrending?: boolean;
+  category?: string;
+}
+
 export interface SearchFilters {
   type?: SearchResultType | 'all';
   category?: string;

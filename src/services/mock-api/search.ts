@@ -1,4 +1,4 @@
-import { ApiResponse, SearchResult, SearchSuggestion, AdvancedSearchFilters } from '@/types';
+import { ApiResponse, SearchResult, SearchSuggestion, AdvancedSearchFilters, TopicRecommendation } from '@/types';
 
 /**
  * @fileOverview Mock service for the Global Search System.
@@ -118,6 +118,14 @@ const mockSearchData: SearchResult[] = [
   }
 ];
 
+const mockRecommendedTopics: TopicRecommendation[] = [
+  { id: 'rec-1', name: 'Yield Curve Dynamics', slug: 'interest-rates', icon: 'TrendingUp', isTrending: true, category: 'Economics' },
+  { id: 'rec-2', name: 'Monetary Policy', slug: 'macro', icon: 'Landmark', isTrending: false, category: 'Economics' },
+  { id: 'rec-3', name: 'Dividend Growth', slug: 'investing', icon: 'BarChart3', isTrending: true, category: 'Wealth' },
+  { id: 'rec-4', name: 'DeFi Ecosystems', slug: 'crypto', icon: 'Layers', isTrending: false, category: 'Web3' },
+  { id: 'rec-5', name: 'Recession Hedging', slug: 'recession', icon: 'ShieldCheck', isTrending: true, category: 'Strategy' },
+];
+
 export const globalSearch = async (query: string, filters?: AdvancedSearchFilters): Promise<ApiResponse<SearchResult[]>> => {
   await new Promise((resolve) => setTimeout(resolve, 600));
   
@@ -200,6 +208,14 @@ export const getPopularContent = async (): Promise<ApiResponse<SearchResult[]>> 
     
   return {
     data: popular,
+    status: 200
+  };
+};
+
+export const getRecommendedTopics = async (query?: string): Promise<ApiResponse<TopicRecommendation[]>> => {
+  await new Promise((resolve) => setTimeout(resolve, 300));
+  return {
+    data: mockRecommendedTopics,
     status: 200
   };
 };

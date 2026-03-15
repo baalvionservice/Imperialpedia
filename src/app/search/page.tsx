@@ -48,9 +48,12 @@ import {
   ChevronUp,
   RotateCcw,
   SortAsc,
-  Flame
+  Flame,
+  Landmark,
+  ShieldCheck,
+  Star
 } from 'lucide-react';
-import { SearchResult, SearchResultType, SearchSuggestion, AdvancedSearchFilters, SearchSortOption } from '@/types';
+import { SearchResult, SearchResultType, SearchSuggestion, AdvancedSearchFilters, SearchSortOption, TopicRecommendation } from '@/types';
 import { searchService } from '@/services/data/search-service';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
@@ -58,15 +61,17 @@ import { cn } from '@/lib/utils';
 /**
  * Global search page for the Imperialpedia platform.
  * Supports cross-entity discovery with real-time auto-suggestions, category filtering, tag chips, and sorting.
- * Now includes a trending highlights section for popular discovery.
+ * Now includes a trending highlights section and topic recommendation engine.
  */
 export default function SearchPage() {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<SearchResult[]>([]);
   const [popularContent, setPopularContent] = useState<SearchResult[]>([]);
+  const [recommendations, setRecommendations] = useState<TopicRecommendation[]>([]);
   const [suggestions, setSuggestions] = useState<SearchSuggestion[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isPopularLoading, setIsPopularLoading] = useState(true);
+  const [isRecsLoading, setIsRecsLoading] = useState(true);
   const [isSuggestionsLoading, setIsSuggestionsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<string>('all');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
@@ -80,20 +85,26 @@ export default function SearchPage() {
 
   const searchContainerRef = useRef<HTMLDivElement>(null);
 
-  // Fetch Popular Content on Mount
+  // Fetch Popular Content and Recommendations on Mount
   useEffect(() => {
-    async function loadPopular() {
+    async function loadInitialData() {
       setIsPopularLoading(true);
+      setIsRecsLoading(true);
       try {
-        const response = await searchService.getPopularContent();
-        setPopularContent(response.data);
+        const [popularRes, recsRes] = await Promise.all([
+          searchService.getPopularContent(),
+          searchService.getRecommendedTopics()
+        ]);
+        setPopularContent(popularRes.data);
+        setRecommendations(recsRes.data);
       } catch (e) {
-        console.error('Popular content fetch failed', e);
+        console.error('Initial data fetch failed', e);
       } finally {
         setIsPopularLoading(false);
+        setIsRecsLoading(false);
       }
     }
-    loadPopular();
+    loadInitialData();
   }, []);
 
   // Handle clicking outside to close suggestions
@@ -197,13 +208,18 @@ export default function SearchPage() {
     return filtered;
   }, [results, activeTab, selectedTags]);
 
-  const getResultIcon = (type: SearchResultType) => {
+  const getResultIcon = (type: SearchResultType | string) => {
     switch (type) {
       case 'article': return <BookOpen className="h-4 w-4 text-primary" />;
       case 'author': return <User className="h-4 w-4 text-secondary" />;
       case 'calculator': return <CalcIcon className="h-4 w-4 text-primary" />;
       case 'glossary': return <Database className="h-4 w-4 text-secondary" />;
       case 'topic': return <TrendingUp className="h-4 w-4 text-primary" />;
+      case 'TrendingUp': return <TrendingUp className="h-4 w-4 text-primary" />;
+      case 'Landmark': return <Landmark className="h-4 w-4 text-secondary" />;
+      case 'BarChart3': return <BarChart3 className="h-4 w-4 text-primary" />;
+      case 'Layers': return <Layers className="h-4 w-4 text-secondary" />;
+      case 'ShieldCheck': return <ShieldCheck className="h-4 w-4 text-emerald-500" />;
       default: return <SearchIcon className="h-4 w-4" />;
     }
   };
@@ -394,81 +410,124 @@ export default function SearchPage() {
             </Collapsible>
           </div>
 
-          {/* Popular Content Discovery (Hot Nodes) */}
           {!query && results.length === 0 && (
-            <div className="mb-16 animate-in fade-in slide-in-from-bottom-2 duration-700">
-              <div className="flex items-center gap-2 mb-6 px-2">
-                <Flame className="h-5 w-5 text-amber-500" />
-                <Text variant="h4" className="font-bold">Trending Intelligence</Text>
-              </div>
-              
-              <Carousel className="w-full">
-                <CarouselContent className="-ml-4">
-                  {isPopularLoading ? (
-                    [1, 2, 3].map(i => (
-                      <CarouselItem key={i} className="pl-4 basis-full md:basis-1/2 lg:basis-1/3">
-                        <Skeleton className="h-48 w-full rounded-2xl" />
-                      </CarouselItem>
-                    ))
-                  ) : popularContent.map((item) => (
-                    <CarouselItem key={item.id} className="pl-4 basis-full md:basis-1/2 lg:basis-1/3">
-                      <Link href={item.route}>
-                        <Card className="glass-card h-full transition-all hover:border-primary/40 group relative overflow-hidden">
-                          <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                            {getResultIcon(item.type)}
-                          </div>
-                          <CardHeader className="p-6 pb-2">
-                            <div className="flex justify-between items-start mb-2">
-                              {getResultBadge(item.type)}
-                              {item.views && (
-                                <Text variant="label" className="text-[8px] text-emerald-500 font-bold">
-                                  {(item.views / 1000).toFixed(1)}k Views
-                                </Text>
-                              )}
-                            </div>
-                            <CardTitle className="text-lg line-clamp-1 group-hover:text-primary transition-colors">
-                              {item.title}
-                            </CardTitle>
-                          </CardHeader>
-                          <CardContent className="p-6 pt-2">
-                            <CardDescription className="text-xs line-clamp-2 text-muted-foreground leading-relaxed">
-                              {item.snippet}
-                            </CardDescription>
-                            <div className="mt-4 flex items-center text-[10px] font-bold text-primary opacity-0 group-hover:opacity-100 transition-all translate-x-[-4px] group-hover:translate-x-0">
-                              View Intelligence <ArrowRight className="ml-1 h-3 w-3" />
-                            </div>
-                          </CardContent>
-                        </Card>
-                      </Link>
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-                <div className="hidden md:block">
-                  <CarouselPrevious className="absolute -left-12 top-1/2" />
-                  <CarouselNext className="absolute -right-12 top-1/2" />
+            <div className="space-y-16 animate-in fade-in slide-in-from-bottom-2 duration-700">
+              {/* Popular Content Discovery */}
+              <div>
+                <div className="flex items-center gap-2 mb-6 px-2">
+                  <Flame className="h-5 w-5 text-amber-500" />
+                  <Text variant="h4" className="font-bold">Trending Intelligence</Text>
                 </div>
-              </Carousel>
+                
+                <Carousel className="w-full">
+                  <CarouselContent className="-ml-4">
+                    {isPopularLoading ? (
+                      [1, 2, 3].map(i => (
+                        <CarouselItem key={i} className="pl-4 basis-full md:basis-1/2 lg:basis-1/3">
+                          <Skeleton className="h-48 w-full rounded-2xl" />
+                        </CarouselItem>
+                      ))
+                    ) : popularContent.map((item) => (
+                      <CarouselItem key={item.id} className="pl-4 basis-full md:basis-1/2 lg:basis-1/3">
+                        <Link href={item.route}>
+                          <Card className="glass-card h-full transition-all hover:border-primary/40 group relative overflow-hidden">
+                            <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                              {getResultIcon(item.type)}
+                            </div>
+                            <CardHeader className="p-6 pb-2">
+                              <div className="flex justify-between items-start mb-2">
+                                {getResultBadge(item.type)}
+                                {item.views && (
+                                  <Text variant="label" className="text-[8px] text-emerald-500 font-bold">
+                                    {(item.views / 1000).toFixed(1)}k Views
+                                  </Text>
+                                )}
+                              </div>
+                              <CardTitle className="text-lg line-clamp-1 group-hover:text-primary transition-colors">
+                                {item.title}
+                              </CardTitle>
+                            </CardHeader>
+                            <CardContent className="p-6 pt-2">
+                              <CardDescription className="text-xs line-clamp-2 text-muted-foreground leading-relaxed">
+                                {item.snippet}
+                              </CardDescription>
+                              <div className="mt-4 flex items-center text-[10px] font-bold text-primary opacity-0 group-hover:opacity-100 transition-all translate-x-[-4px] group-hover:translate-x-0">
+                                View Intelligence <ArrowRight className="ml-1 h-3 w-3" />
+                              </div>
+                            </CardContent>
+                          </Card>
+                        </Link>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  <div className="hidden md:block">
+                    <CarouselPrevious className="absolute -left-12 top-1/2" />
+                    <CarouselNext className="absolute -right-12 top-1/2" />
+                  </div>
+                </Carousel>
+              </div>
+
+              {/* Recommended Topics Matrix */}
+              <div>
+                <div className="flex items-center gap-2 mb-6 px-2">
+                  <Star className="h-5 w-5 text-primary" />
+                  <Text variant="h4" className="font-bold">Recommended for You</Text>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                  {isRecsLoading ? (
+                    [1, 2, 3, 4, 5].map(i => (
+                      <Skeleton key={i} className="h-24 w-full rounded-2xl" />
+                    ))
+                  ) : recommendations.map((topic) => (
+                    <Link key={topic.id} href={`/tags/${topic.slug}`}>
+                      <Card className="glass-card hover:border-primary/40 transition-all group overflow-hidden h-full">
+                        <CardContent className="p-4 flex flex-col h-full justify-between">
+                          <div className="flex justify-between items-start mb-2">
+                            <div className="p-2 rounded-lg bg-primary/10 text-primary">
+                              {getResultIcon(topic.icon || 'topic')}
+                            </div>
+                            {topic.isTrending && (
+                              <Badge className="bg-amber-500/10 text-amber-500 border-none text-[8px] px-1.5 h-4 font-bold">HOT</Badge>
+                            )}
+                          </div>
+                          <div>
+                            <Text variant="bodySmall" weight="bold" className="group-hover:text-primary transition-colors block mb-1">
+                              {topic.name}
+                            </Text>
+                            <Text variant="caption" className="text-[9px] text-muted-foreground uppercase tracking-widest">
+                              {topic.category}
+                            </Text>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </Link>
+                  ))}
+                </div>
+              </div>
             </div>
           )}
 
           <Tabs value={activeTab} onValueChange={(val) => { setActiveTab(val); setSelectedTags([]); }} className="w-full">
-            <div className="flex justify-center mb-8">
-              <TabsList className="bg-card/30 border border-white/5 p-1 h-12 rounded-xl overflow-x-auto no-scrollbar justify-start sm:justify-center w-full sm:w-auto">
-                <TabsTrigger value="all" className="px-6 rounded-lg font-bold text-xs">All Results</TabsTrigger>
-                <TabsTrigger value="article" className="px-6 rounded-lg font-bold text-xs gap-2">
-                  <BookOpen className="h-3.5 w-3.5" /> Intelligence
-                </TabsTrigger>
-                <TabsTrigger value="author" className="px-6 rounded-lg font-bold text-xs gap-2">
-                  <User className="h-3.5 w-3.5" /> Experts
-                </TabsTrigger>
-                <TabsTrigger value="calculator" className="px-6 rounded-lg font-bold text-xs gap-2">
-                  <CalcIcon className="h-3.5 w-3.5" /> Engines
-                </TabsTrigger>
-                <TabsTrigger value="topic" className="px-6 rounded-lg font-bold text-xs gap-2">
-                  <Layers className="h-3.5 w-3.5" /> Topics
-                </TabsTrigger>
-              </TabsList>
-            </div>
+            {(results.length > 0) && (
+              <div className="flex justify-center mb-8">
+                <TabsList className="bg-card/30 border border-white/5 p-1 h-12 rounded-xl overflow-x-auto no-scrollbar justify-start sm:justify-center w-full sm:w-auto">
+                  <TabsTrigger value="all" className="px-6 rounded-lg font-bold text-xs">All Results</TabsTrigger>
+                  <TabsTrigger value="article" className="px-6 rounded-lg font-bold text-xs gap-2">
+                    <BookOpen className="h-3.5 w-3.5" /> Intelligence
+                  </TabsTrigger>
+                  <TabsTrigger value="author" className="px-6 rounded-lg font-bold text-xs gap-2">
+                    <User className="h-3.5 w-3.5" /> Experts
+                  </TabsTrigger>
+                  <TabsTrigger value="calculator" className="px-6 rounded-lg font-bold text-xs gap-2">
+                    <CalcIcon className="h-3.5 w-3.5" /> Engines
+                  </TabsTrigger>
+                  <TabsTrigger value="topic" className="px-6 rounded-lg font-bold text-xs gap-2">
+                    <Layers className="h-3.5 w-3.5" /> Topics
+                  </TabsTrigger>
+                </TabsList>
+              </div>
+            )}
 
             {/* Tag Filtering & Sorting Section */}
             {results.length > 0 && (
