@@ -2,6 +2,11 @@
  * @fileOverview Type definitions for platform-wide analytics and monitoring.
  */
 
+export interface DailyActiveUsers {
+  date: string;
+  activeUsers: number;
+}
+
 export interface TrafficAnalytics {
   activeUsers: number;
   pageViews: number;

@@ -2,7 +2,7 @@ import * as mockApi from '@/services/mock-api/analytics';
 import { ApiResponse } from '@/types';
 import { TrendingItem } from '@/services/mock-api/analytics';
 import { errorHandler } from '@/lib/errors/error-handler';
-import { TrafficAnalytics, SeoAnalytics, PlatformOverview, ContentAnalyticsReport, TrafficAnalyticsReport, EngagementAnalytics, ModerationAnalytics, CreatorEngagement, TrafficSources, TrendingContent } from '@/types/analytics';
+import { TrafficAnalytics, SeoAnalytics, PlatformOverview, ContentAnalyticsReport, TrafficAnalyticsReport, EngagementAnalytics, ModerationAnalytics, CreatorEngagement, TrafficSources, TrendingContent, DailyActiveUsers } from '@/types/analytics';
 
 /**
  * @fileOverview Abstraction layer for analytics and trending data with error handling.
@@ -12,6 +12,19 @@ export const analyticsService = {
   async getTrendingArticles(): Promise<ApiResponse<TrendingItem[]>> {
     try {
       return await mockApi.getTrendingArticles();
+    } catch (error) {
+      const appError = errorHandler.handleError(error);
+      return {
+        data: [],
+        status: appError.statusCode,
+        error: appError.message,
+      };
+    }
+  },
+
+  async getDAUData(): Promise<ApiResponse<DailyActiveUsers[]>> {
+    try {
+      return await mockApi.getDAUData();
     } catch (error) {
       const appError = errorHandler.handleError(error);
       return {

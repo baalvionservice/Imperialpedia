@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { TrafficAnalytics, SeoAnalytics, PlatformOverview, TrafficAnalyticsReport, ContentAnalytics, EngagementAnalytics, ModerationAnalytics, CreatorEngagement, TrafficSources, TrendingContent } from '@/types/analytics';
+import { TrafficAnalytics, SeoAnalytics, PlatformOverview, TrafficAnalyticsReport, ContentAnalytics, EngagementAnalytics, ModerationAnalytics, CreatorEngagement, TrafficSources, TrendingContent, DailyActiveUsers } from '@/types/analytics';
 
 /**
  * @fileOverview Mock service for platform analytics and trending data.
@@ -66,6 +66,28 @@ export const getDashboardMetrics = async (): Promise<ApiResponse<DashboardMetric
         { date: '2024-03-07', traffic: 6500, users: 2100, usage: 1800 },
       ]
     },
+    status: 200
+  };
+};
+
+export const getDAUData = async (): Promise<ApiResponse<DailyActiveUsers[]>> => {
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  const dates = [
+    '2024-02-15', '2024-02-16', '2024-02-17', '2024-02-18', '2024-02-19', 
+    '2024-02-20', '2024-02-21', '2024-02-22', '2024-02-23', '2024-02-24', 
+    '2024-02-25', '2024-02-26', '2024-02-27', '2024-02-28', '2024-02-29',
+    '2024-03-01', '2024-03-02', '2024-03-03', '2024-03-04', '2024-03-05',
+    '2024-03-06', '2024-03-07', '2024-03-08', '2024-03-09', '2024-03-10',
+    '2024-03-11', '2024-03-12'
+  ];
+  
+  const data = dates.map(date => ({
+    date,
+    activeUsers: Math.floor(Math.random() * 5000) + 12000
+  }));
+
+  return {
+    data,
     status: 200
   };
 };
