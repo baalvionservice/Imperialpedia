@@ -1,8 +1,8 @@
-import { ApiResponse, SubscriptionTier, PremiumState, PremiumReport, PremiumAnalytics, MockPaymentStatus, BacktestingTool, PremiumDashboardData } from '@/types/premium';
+import { ApiResponse, SubscriptionTier, PremiumState, PremiumReport, PremiumAnalytics, MockPaymentStatus, BacktestingTool, PremiumDashboardData, PortfolioDeepDiveData } from '@/types/premium';
 
 /**
  * @fileOverview Mock service for managing subscription tiers, premium reports, and advanced analytics.
- * Aligned with Prompt 41 and 54 requirements.
+ * Aligned with Prompt 41, 54, and 55 requirements.
  */
 
 const mockSubscriptionPlans = [
@@ -202,6 +202,81 @@ export const getPremiumDashboardData = async (): Promise<ApiResponse<PremiumDash
   await new Promise((resolve) => setTimeout(resolve, 600));
   return {
     data: mockPremiumDashboardData,
+    status: 200,
+  };
+};
+
+/**
+ * Prompt 55: AI Portfolio Deep Dive Mock API
+ */
+const mockPortfolioDeepDiveData: PortfolioDeepDiveData = {
+  portfolio_summary: {
+    total_value: "$125,000",
+    allocation: { "Stocks": "60%", "Bonds": "25%", "Crypto": "10%", "Cash": "5%" },
+    profit_loss: "$3,500",
+    risk_score: "Moderate"
+  },
+  assets: [
+    { 
+      name: "Apple Inc.", 
+      ticker: "AAPL", 
+      current_price: "$175", 
+      allocation: "20%", 
+      "P&L": "$500", 
+      ai_insights: { 
+        bull_case: "mock_up", 
+        bear_case: "mock_neutral", 
+        risk_alert: "mock_none" 
+      } 
+    },
+    { 
+      name: "Bitcoin", 
+      ticker: "BTC", 
+      current_price: "$64,200", 
+      allocation: "10%", 
+      "P&L": "$1,200", 
+      ai_insights: { 
+        bull_case: "mock_up", 
+        bear_case: "mock_down", 
+        risk_alert: "mock_warning" 
+      } 
+    },
+    { 
+      name: "Tesla Inc.", 
+      ticker: "TSLA", 
+      current_price: "$175", 
+      allocation: "15%", 
+      "P&L": "-$240", 
+      ai_insights: { 
+        bull_case: "mock_neutral", 
+        bear_case: "mock_down", 
+        risk_alert: "mock_critical" 
+      } 
+    },
+    { 
+      name: "Vanguard S&P 500", 
+      ticker: "VOO", 
+      current_price: "$475", 
+      allocation: "25%", 
+      "P&L": "$1,850", 
+      ai_insights: { 
+        bull_case: "mock_up", 
+        bear_case: "mock_neutral", 
+        risk_alert: "mock_none" 
+      } 
+    }
+  ],
+  risk_diversification: {
+    diversification_score: "85%",
+    sector_exposure: { "Tech": "50%", "Finance": "30%", "Healthcare": "20%" },
+    asset_correlation: { "AAPL-BTC": "0.12", "AAPL-GOOG": "0.75" }
+  }
+};
+
+export const getPortfolioDeepDiveData = async (): Promise<ApiResponse<PortfolioDeepDiveData>> => {
+  await new Promise((resolve) => setTimeout(resolve, 700));
+  return {
+    data: mockPortfolioDeepDiveData,
     status: 200,
   };
 };

@@ -92,3 +92,34 @@ export interface PremiumDashboardData {
   advanced_metrics: AdvancedMetricNode[];
   growth_chart_data: { date: string; revenue: number; users: number }[];
 }
+
+/**
+ * Prompt 55: AI Portfolio Deep Dive Types
+ */
+export interface DeepDiveAsset {
+  name: string;
+  ticker: string;
+  current_price: string;
+  allocation: string;
+  'P&L': string;
+  ai_insights: {
+    bull_case: 'mock_up' | 'mock_down' | 'mock_neutral';
+    bear_case: 'mock_up' | 'mock_down' | 'mock_neutral';
+    risk_alert: 'mock_none' | 'mock_warning' | 'mock_critical';
+  };
+}
+
+export interface PortfolioDeepDiveData {
+  portfolio_summary: {
+    total_value: string;
+    allocation: Record<string, string>;
+    profit_loss: string;
+    risk_score: string;
+  };
+  assets: DeepDiveAsset[];
+  risk_diversification: {
+    diversification_score: string;
+    sector_exposure: Record<string, string>;
+    asset_correlation: Record<string, string>;
+  };
+}

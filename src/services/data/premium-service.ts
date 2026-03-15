@@ -1,5 +1,5 @@
 import * as mockApi from '@/services/mock-api/premium';
-import { ApiResponse, SubscriptionTier, PremiumState, PremiumReport, PremiumAnalytics, PremiumDashboardData } from '@/types/premium';
+import { ApiResponse, SubscriptionTier, PremiumState, PremiumReport, PremiumAnalytics, PremiumDashboardData, PortfolioDeepDiveData } from '@/types/premium';
 import { errorHandler } from '@/lib/errors/error-handler';
 
 /**
@@ -62,6 +62,19 @@ export const premiumService = {
   async getDashboardData(): Promise<ApiResponse<PremiumDashboardData | null>> {
     try {
       return await mockApi.getPremiumDashboardData();
+    } catch (error) {
+      const appError = errorHandler.handleError(error);
+      return {
+        data: null,
+        status: appError.statusCode,
+        error: appError.message,
+      };
+    }
+  },
+
+  async getPortfolioDeepDive(): Promise<ApiResponse<PortfolioDeepDiveData | null>> {
+    try {
+      return await mockApi.getPortfolioDeepDiveData();
     } catch (error) {
       const appError = errorHandler.handleError(error);
       return {
