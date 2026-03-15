@@ -498,3 +498,35 @@ export interface ExperimentManagementData {
   ab_variants: AbVariant[];
   experiment_details: ExperimentDetail[];
 }
+
+/**
+ * Prompt 50: Incident Response & Alerts Types
+ */
+export interface IncidentNode {
+  incident_id: string;
+  type: string;
+  severity: 'High' | 'Medium' | 'Low';
+  status: 'mock_active' | 'mock_acknowledged' | 'mock_resolved';
+  timestamp: string;
+}
+
+export interface SystemAlertNode {
+  alert_id: string;
+  source: string;
+  severity: 'High' | 'Medium' | 'Low';
+  message: string;
+  timestamp: string;
+}
+
+export interface IncidentDetail {
+  incident_id: string;
+  timeline: string;
+  affected_systems: string[];
+  suggested_resolution: string;
+}
+
+export interface IncidentResponseData {
+  incidents: IncidentNode[];
+  alerts: SystemAlertNode[];
+  incident_details: IncidentDetail[];
+}

@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog, SecuritySettings, GlobalNotificationSettings, AuditTrailEntry, FeatureSettings, AdminSession, BrandingSettings, SystemAlert, AdminHomeOverview, SecurityDashboardData, AdminSystemHubData, SecurityMockData, InfrastructureMockData, EdgeComputingData, CdnManagementData, SeoManagementData, ExperimentManagementData } from '@/types/system';
+import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog, SecuritySettings, GlobalNotificationSettings, AuditTrailEntry, FeatureSettings, AdminSession, BrandingSettings, SystemAlert, AdminHomeOverview, SecurityDashboardData, AdminSystemHubData, SecurityMockData, InfrastructureMockData, EdgeComputingData, CdnManagementData, SeoManagementData, ExperimentManagementData, IncidentResponseData } from '@/types/system';
 
 /**
  * @fileOverview Mock service for managing global platform configuration and system notifications.
@@ -323,6 +323,20 @@ const mockExperimentData: ExperimentManagementData = {
         { date: 'Day 5', variantA: 162, variantB: 210 },
       ]
     }
+  ]
+};
+
+const mockIncidentResponseData: IncidentResponseData = {
+  incidents: [
+    { incident_id: "INC001", type: "Server Outage", severity: "High", status: "mock_active", timestamp: "2026-03-15 09:00" },
+    { incident_id: "INC002", type: "API Failure", severity: "Medium", status: "mock_resolved", timestamp: "2026-03-14 14:00" }
+  ],
+  alerts: [
+    { alert_id: "ALRT001", source: "Server1", severity: "High", message: "CPU usage exceeded threshold", timestamp: "2026-03-15 08:45" },
+    { alert_id: "ALRT002", source: "RedisCache1", severity: "Medium", message: "Cache hit ratio dropped below 80%", timestamp: "2026-03-14 13:30" }
+  ],
+  incident_details: [
+    { incident_id: "INC001", timeline: "mock_timeline", affected_systems: ["Server1", "LoadBalancer1"], suggested_resolution: "Restart servers and redistribute load" }
   ]
 };
 
@@ -670,6 +684,14 @@ export const getExperimentManagementData = async (): Promise<ApiResponse<Experim
   await new Promise((resolve) => setTimeout(resolve, 600));
   return {
     data: mockExperimentData,
+    status: 200,
+  };
+};
+
+export const getIncidentResponseData = async (): Promise<ApiResponse<IncidentResponseData>> => {
+  await new Promise((resolve) => setTimeout(resolve, 600));
+  return {
+    data: mockIncidentResponseData,
     status: 200,
   };
 };

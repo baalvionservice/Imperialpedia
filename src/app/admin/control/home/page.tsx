@@ -29,7 +29,8 @@ import {
   Cpu,
   Globe,
   Search,
-  FlaskConical
+  FlaskConical,
+  ShieldWarning
 } from 'lucide-react';
 import Link from 'next/link';
 import { systemService } from '@/services/data/system-service';
@@ -75,6 +76,7 @@ export default function AdminControlCenterHomePage() {
     { label: 'Identity Matrix', desc: 'Manage user directory & states.', href: '/admin/control/users', icon: Users, color: 'text-primary', badge: 0 },
     { label: 'Persona Architect', desc: 'Define system roles.', href: '/admin/control/roles', icon: Lock, color: 'text-secondary', badge: 0 },
     { label: 'Capability Hub', desc: 'Assign granular permissions.', href: '/admin/control/permissions/assign', icon: ShieldCheck, color: 'text-primary', badge: 0 },
+    { label: 'Incident Command', desc: 'Triage production threats.', href: '/admin/control/incidents', icon: ShieldAlert, color: 'text-destructive', badge: overview.alertsActive },
     { label: 'Moderation Gate', desc: 'Process content reports.', href: '/admin/control/moderation/approvals', icon: ShieldX, color: 'text-destructive', badge: overview.pendingModeration },
     { label: 'Kernel Logic', desc: 'Configure global settings.', href: '/admin/control/settings', icon: Settings, color: 'text-secondary', badge: 0 },
     { label: 'Feature Studio', desc: 'Toggle system gateways.', href: '/admin/control/features', icon: Zap, color: 'text-amber-500', badge: 0 },
@@ -201,13 +203,18 @@ export default function AdminControlCenterHomePage() {
           </div>
           <div className="flex-1 text-center lg:text-left space-y-2">
             <Text variant="h2" className="text-2xl font-bold">Platform Scalability Verified</Text>
-            <Text variant="bodySmall" className="text-muted-foreground leading-relaxed max-w-2xl">
+            <Text variant="bodySmall" className="text-muted-foreground leading-relaxed max-w-2xl text-base">
               The Intelligence Index has achieved **99.98% SLA** this cycle. pSEO Ingestion nodes are synchronized and all functional gateways are operating within the standard latency buffer (42ms).
             </Text>
           </div>
-          <Button variant="outline" className="h-12 px-8 rounded-xl font-bold border-primary/30 hover:bg-primary/5 shrink-0" asChild>
-            <Link href="/admin/control/health">Infrastructure Telemetry</Link>
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-4 shrink-0">
+            <Button variant="outline" className="h-12 px-8 rounded-xl font-bold border-primary/30 hover:bg-primary/5" asChild>
+              <Link href="/admin/control/health">Infrastructure Telemetry</Link>
+            </Button>
+            <Button className="h-12 px-8 rounded-xl font-bold bg-primary hover:bg-primary/90 shadow-xl shadow-primary/20" asChild>
+              <Link href="/admin/control/incidents">Incident Response Hub</Link>
+            </Button>
+          </div>
         </div>
       </Card>
     </div>
