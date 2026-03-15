@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Skeleton } from '@/components/ui/skeleton';
 import { calculatorsService } from '@/services/data';
 import { CalculatorResultModal } from '@/modules/calculators/components/CalculatorResultModal';
 import { ArrowUpRight, RefreshCcw, ArrowLeft, Info, Gauge, CheckCircle2, Loader2 } from 'lucide-react';
@@ -108,6 +109,7 @@ export default function InflationCalculatorPage() {
                       error={errors.amount}
                       className="h-12 bg-background/50 rounded-xl border-white/10"
                       placeholder="e.g. 5000"
+                      disabled={calculating}
                     />
                   </div>
                   
@@ -122,6 +124,7 @@ export default function InflationCalculatorPage() {
                       error={errors.rate}
                       className="h-12 bg-background/50 rounded-xl border-white/10"
                       placeholder="e.g. 3.2"
+                      disabled={calculating}
                     />
                   </div>
 
@@ -135,6 +138,7 @@ export default function InflationCalculatorPage() {
                       error={errors.years}
                       className="h-12 bg-background/50 rounded-xl border-white/10"
                       placeholder="e.g. 10"
+                      disabled={calculating}
                     />
                   </div>
 
@@ -147,7 +151,7 @@ export default function InflationCalculatorPage() {
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                  <Button type="button" variant="outline" onClick={handleReset} className="h-14 flex-1 rounded-2xl font-bold border-white/10 hover:bg-white/5 transition-all">
+                  <Button type="button" variant="outline" onClick={handleReset} className="h-14 flex-1 rounded-2xl font-bold border-white/10 hover:bg-white/5 transition-all" disabled={calculating}>
                     <RefreshCcw className="mr-2 h-4 w-4" /> Reset Tool
                   </Button>
                   <Button type="submit" disabled={calculating} className="h-14 flex-1 bg-primary hover:bg-primary/90 text-white rounded-2xl font-bold shadow-xl shadow-primary/20 transition-all scale-[1.02] active:scale-100">
@@ -158,6 +162,13 @@ export default function InflationCalculatorPage() {
               </form>
             </CardContent>
           </Card>
+
+          {calculating && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Skeleton className="h-32 w-full rounded-3xl" />
+              <Skeleton className="h-32 w-full rounded-3xl" />
+            </div>
+          )}
 
           {result && !calculating && (
             <Card className="glass-card border-none shadow-2xl overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-500">

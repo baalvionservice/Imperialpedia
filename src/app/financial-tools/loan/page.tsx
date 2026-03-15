@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Skeleton } from '@/components/ui/skeleton';
 import { calculatorsService } from '@/services/data';
 import { CalculatorResultModal } from '@/modules/calculators/components/CalculatorResultModal';
 import { RefreshCcw, ArrowLeft, Info, Landmark, CheckCircle2, Loader2 } from 'lucide-react';
@@ -114,6 +115,7 @@ export default function LoanCalculatorPage() {
                       error={errors.principal}
                       className="h-12 bg-background/50 rounded-xl border-white/10"
                       placeholder="e.g. 250000"
+                      disabled={calculating}
                     />
                   </div>
                   
@@ -128,6 +130,7 @@ export default function LoanCalculatorPage() {
                       error={errors.rate}
                       className="h-12 bg-background/50 rounded-xl border-white/10"
                       placeholder="e.g. 6.5"
+                      disabled={calculating}
                     />
                   </div>
 
@@ -141,6 +144,7 @@ export default function LoanCalculatorPage() {
                       error={errors.years}
                       className="h-12 bg-background/50 rounded-xl border-white/10"
                       placeholder="e.g. 30"
+                      disabled={calculating}
                     />
                   </div>
 
@@ -153,7 +157,7 @@ export default function LoanCalculatorPage() {
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                  <Button type="button" variant="outline" onClick={handleReset} className="h-14 flex-1 rounded-2xl font-bold border-white/10 hover:bg-white/5 transition-all">
+                  <Button type="button" variant="outline" onClick={handleReset} className="h-14 flex-1 rounded-2xl font-bold border-white/10 hover:bg-white/5 transition-all" disabled={calculating}>
                     <RefreshCcw className="mr-2 h-4 w-4" /> Reset Tool
                   </Button>
                   <Button type="submit" disabled={calculating} className="h-14 flex-1 bg-secondary hover:bg-secondary/90 text-secondary-foreground rounded-2xl font-bold shadow-xl shadow-secondary/20 transition-all scale-[1.02] active:scale-100">
@@ -164,6 +168,14 @@ export default function LoanCalculatorPage() {
               </form>
             </CardContent>
           </Card>
+
+          {calculating && (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <Skeleton className="h-24 w-full rounded-2xl" />
+              <Skeleton className="h-24 w-full rounded-2xl" />
+              <Skeleton className="h-24 w-full rounded-2xl" />
+            </div>
+          )}
 
           {result && !calculating && (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">

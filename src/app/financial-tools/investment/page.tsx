@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Skeleton } from '@/components/ui/skeleton';
 import { calculatorsService } from '@/services/data';
 import { CalculatorResultModal } from '@/modules/calculators/components/CalculatorResultModal';
 import { PieChart as PieIcon, RefreshCcw, ArrowLeft, Info, TrendingUp, CheckCircle2, Loader2 } from 'lucide-react';
@@ -123,6 +124,7 @@ export default function InvestmentReturnPage() {
                       error={errors.principal}
                       className="h-11 bg-background/50 border-white/10"
                       placeholder="5000"
+                      disabled={calculating}
                     />
                   </div>
                   
@@ -136,6 +138,7 @@ export default function InvestmentReturnPage() {
                       error={errors.monthly}
                       className="h-11 bg-background/50 border-white/10"
                       placeholder="500"
+                      disabled={calculating}
                     />
                   </div>
 
@@ -150,6 +153,7 @@ export default function InvestmentReturnPage() {
                       error={errors.rate}
                       className="h-11 bg-background/50 border-white/10"
                       placeholder="8"
+                      disabled={calculating}
                     />
                   </div>
 
@@ -163,6 +167,7 @@ export default function InvestmentReturnPage() {
                       error={errors.years}
                       className="h-11 bg-background/50 border-white/10"
                       placeholder="20"
+                      disabled={calculating}
                     />
                   </div>
 
@@ -171,7 +176,7 @@ export default function InvestmentReturnPage() {
                       {calculating ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
                       Analyze Projections
                     </Button>
-                    <Button type="button" variant="ghost" onClick={handleReset} className="h-10 w-full text-muted-foreground hover:text-foreground">
+                    <Button type="button" variant="ghost" onClick={handleReset} className="h-10 w-full text-muted-foreground hover:text-foreground" disabled={calculating}>
                       <RefreshCcw className="mr-2 h-3.5 w-3.5" /> Reset Parameters
                     </Button>
                   </div>
@@ -179,15 +184,24 @@ export default function InvestmentReturnPage() {
               </CardContent>
             </Card>
 
-            {result && !calculating && (
-              <Card className="glass-card border-none bg-primary/5 border-primary/20 animate-in fade-in slide-in-from-left-4 duration-500">
+            {(calculating || result) && (
+              <Card className="glass-card border-none bg-primary/5 border-primary/20 animate-in fade-in duration-500">
                 <CardContent className="p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <Text variant="label" className="text-primary">Summary Value</Text>
-                    <CheckCircle2 className="h-4 w-4 text-emerald-500" />
-                  </div>
-                  <div className="text-3xl font-bold mb-1">{formatCurrency(result)}</div>
-                  <Text variant="caption" className="text-muted-foreground">Projected capital in {years} years.</Text>
+                  {calculating ? (
+                    <div className="space-y-2">
+                      <Skeleton className="h-4 w-24" />
+                      <Skeleton className="h-8 w-32" />
+                    </div>
+                  ) : (
+                    <>
+                      <div className="flex items-center justify-between mb-4">
+                        <Text variant="label" className="text-primary">Summary Value</Text>
+                        <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+                      </div>
+                      <div className="text-3xl font-bold mb-1">{formatCurrency(result || 0)}</div>
+                      <Text variant="caption" className="text-muted-foreground">Projected capital in {years} years.</Text>
+                    </>
+                  )}
                 </CardContent>
               </Card>
             )}
@@ -202,7 +216,9 @@ export default function InvestmentReturnPage() {
                 <CardDescription>Visualizing the power of recurring contributions and compound market yields.</CardDescription>
               </CardHeader>
               <CardContent className="p-8 flex-grow flex flex-col justify-center min-h-[400px]">
-                {chartData.length > 0 && !calculating ? (
+                {calculating ? (
+                  <Skeleton className="h-[350px] w-full" />
+                ) : chartData.length > 0 ? (
                   <div className="h-[350px] w-full pt-4">
                     <ResponsiveContainer width="100%" height="100%">
                       <AreaChart data={chartData}>
@@ -223,10 +239,10 @@ export default function InvestmentReturnPage() {
                 ) : (
                   <div className="text-center space-y-4 opacity-50">
                     <div className="w-20 h-20 bg-muted/20 rounded-full flex items-center justify-center mx-auto">
-                      {calculating ? <Loader2 className="h-10 w-10 text-primary animate-spin" /> : <TrendingUp className="h-10 w-10 text-muted-foreground" />}
+                      <TrendingUp className="h-10 w-10 text-muted-foreground" />
                     </div>
                     <Text variant="bodySmall" className="italic">
-                      {calculating ? "Modeling wealth trajectory..." : "Define your investment goals to generate a visual performance chart."}
+                      Define your investment goals to generate a visual performance chart.
                     </Text>
                   </div>
                 )}

@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Skeleton } from '@/components/ui/skeleton';
 import { 
   Select, 
   SelectContent, 
@@ -114,6 +115,7 @@ export default function CompoundInterestPage() {
                       error={errors.principal}
                       className="h-12 bg-background/50 rounded-xl border-white/10"
                       placeholder="e.g. 10000"
+                      disabled={calculating}
                     />
                   </div>
                   
@@ -128,6 +130,7 @@ export default function CompoundInterestPage() {
                       error={errors.rate}
                       className="h-12 bg-background/50 rounded-xl border-white/10"
                       placeholder="e.g. 7.5"
+                      disabled={calculating}
                     />
                   </div>
 
@@ -141,12 +144,13 @@ export default function CompoundInterestPage() {
                       error={errors.years}
                       className="h-12 bg-background/50 rounded-xl border-white/10"
                       placeholder="e.g. 20"
+                      disabled={calculating}
                     />
                   </div>
 
                   <div className="space-y-3">
                     <Label htmlFor="frequency" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Compounding Frequency</Label>
-                    <Select value={frequency} onValueChange={(val) => updateCompound({ frequency: val })}>
+                    <Select value={frequency} onValueChange={(val) => updateCompound({ frequency: val })} disabled={calculating}>
                       <SelectTrigger className="h-12 bg-background/50 rounded-xl border-white/10">
                         <SelectValue placeholder="Select frequency" />
                       </SelectTrigger>
@@ -162,7 +166,7 @@ export default function CompoundInterestPage() {
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                  <Button type="button" variant="outline" onClick={handleReset} className="h-14 flex-1 rounded-2xl font-bold border-white/10 hover:bg-white/5 transition-all">
+                  <Button type="button" variant="outline" onClick={handleReset} className="h-14 flex-1 rounded-2xl font-bold border-white/10 hover:bg-white/5 transition-all" disabled={calculating}>
                     <RefreshCcw className="mr-2 h-4 w-4" /> Reset Tool
                   </Button>
                   <Button type="submit" disabled={calculating} className="h-14 flex-1 bg-primary hover:bg-primary/90 text-white rounded-2xl font-bold shadow-xl shadow-primary/20 transition-all scale-[1.02] active:scale-100">
@@ -173,6 +177,12 @@ export default function CompoundInterestPage() {
               </form>
             </CardContent>
           </Card>
+
+          {calculating && (
+            <div className="space-y-4">
+              <Skeleton className="h-48 w-full rounded-3xl" />
+            </div>
+          )}
 
           {result && !calculating && (
             <Card className="glass-card border-none shadow-2xl overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-500">

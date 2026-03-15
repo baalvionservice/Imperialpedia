@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Skeleton } from '@/components/ui/skeleton';
 import { calculatorsService } from '@/services/data';
 import { CalculatorResultModal } from '@/modules/calculators/components/CalculatorResultModal';
 import { 
@@ -149,7 +150,7 @@ export default function PortfolioCalculatorPage() {
                     <CardDescription>Define your allocation nodes.</CardDescription>
                   </div>
                 </div>
-                <Button variant="outline" size="sm" onClick={addAsset} className="h-9 rounded-xl border-primary/20 text-primary hover:bg-primary/5 font-bold">
+                <Button variant="outline" size="sm" onClick={addAsset} className="h-9 rounded-xl border-primary/20 text-primary hover:bg-primary/5 font-bold" disabled={calculating}>
                   <Plus className="mr-1.5 h-3.5 w-3.5" /> Node
                 </Button>
               </CardHeader>
@@ -167,6 +168,7 @@ export default function PortfolioCalculatorPage() {
                               placeholder="e.g. Equities"
                               className="bg-background/50 h-10 border-white/5"
                               error={asset.error && asset.error.includes('Name') ? asset.error : undefined}
+                              disabled={calculating}
                             />
                           </div>
                           <div className="sm:col-span-4 space-y-2">
@@ -177,6 +179,7 @@ export default function PortfolioCalculatorPage() {
                               onChange={(e) => updateAsset(asset.id, 'investment', e.target.value)}
                               className="bg-background/50 h-10 border-white/5"
                               error={asset.error && asset.error.includes('Amount') ? asset.error : undefined}
+                              disabled={calculating}
                             />
                           </div>
                           <div className="sm:col-span-3 space-y-2">
@@ -188,6 +191,7 @@ export default function PortfolioCalculatorPage() {
                               onChange={(e) => updateAsset(asset.id, 'returnRate', e.target.value)}
                               className="bg-background/50 h-10 border-white/5"
                               error={asset.error && asset.error.includes('Yield') ? asset.error : undefined}
+                              disabled={calculating}
                             />
                           </div>
                           <div className="sm:col-span-1 flex justify-center">
@@ -197,7 +201,7 @@ export default function PortfolioCalculatorPage() {
                               size="icon" 
                               className="text-muted-foreground hover:text-destructive h-10 w-10 opacity-40 group-hover/node:opacity-100 transition-opacity"
                               onClick={() => removeAsset(asset.id)}
-                              disabled={assets.length === 1}
+                              disabled={assets.length === 1 || calculating}
                             >
                               <Trash2 className="h-4 w-4" />
                             </Button>
@@ -212,13 +216,20 @@ export default function PortfolioCalculatorPage() {
                       {calculating ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
                       Analyze Performance
                     </Button>
-                    <Button type="button" variant="outline" onClick={handleReset} className="h-14 px-8 rounded-2xl border-white/10">
+                    <Button type="button" variant="outline" onClick={handleReset} className="h-14 px-8 rounded-2xl border-white/10" disabled={calculating}>
                       <RefreshCcw className="h-5 w-5" />
                     </Button>
                   </div>
                 </form>
               </CardContent>
             </Card>
+
+            {calculating && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <Skeleton className="h-32 w-full rounded-3xl" />
+                <Skeleton className="h-32 w-full rounded-3xl" />
+              </div>
+            )}
 
             {results && !calculating && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -247,7 +258,9 @@ export default function PortfolioCalculatorPage() {
           </div>
 
           <div className="lg:col-span-5 space-y-8">
-            {results && !calculating ? (
+            {calculating ? (
+              <Skeleton className="h-[450px] w-full rounded-[3rem]" />
+            ) : results ? (
               <Card className="glass-card border-none shadow-2xl overflow-hidden">
                 <CardHeader className="bg-primary/5 border-b border-primary/10">
                   <CardTitle className="text-sm font-bold flex items-center gap-2">
@@ -280,10 +293,10 @@ export default function PortfolioCalculatorPage() {
             ) : (
               <div className="h-full flex flex-col items-center justify-center p-12 border-2 border-dashed rounded-[3rem] opacity-30 text-center space-y-4">
                 <div className="p-6 rounded-full bg-muted/20">
-                  {calculating ? <Loader2 className="h-12 w-12 text-primary animate-spin" /> : <Layers className="h-12 w-12 text-muted-foreground" />}
+                  <Layers className="h-12 w-12 text-muted-foreground" />
                 </div>
                 <div>
-                  <Text variant="h4">{calculating ? "Modeling portfolio performance..." : "Awaiting Node Logic"}</Text>
+                  <Text variant="h4">Awaiting Node Logic</Text>
                   <Text variant="bodySmall">Define your asset allocation matrix to visualize your intelligence nodes.</Text>
                 </div>
               </div>
