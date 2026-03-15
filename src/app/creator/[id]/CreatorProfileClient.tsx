@@ -6,7 +6,7 @@ import { CreatorProfile, CreatorContentItem } from '@/types';
 import { Text } from '@/design-system/typography/text';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   ShieldCheck, 
@@ -24,24 +24,37 @@ import {
   ChevronRight,
   Info,
   Layers,
-  ArrowRight
+  ArrowRight,
+  Award,
+  GraduationCap,
+  Briefcase,
+  Zap,
+  Search,
+  Activity
 } from 'lucide-react';
 import { format } from 'date-fns';
 import Link from 'next/link';
 import { ArticleCard } from '@/modules/content-engine/components/ArticleCard';
 import { getCreatorContent, getCreators } from '@/services/mock-api/creators';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Input } from '@/components/ui/input';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 interface CreatorProfileClientProps {
   creator: CreatorProfile;
 }
 
+/**
+ * Institutional Expert Profile Hub.
+ * Features credential matrix, impact telemetry, and published intelligence registry.
+ */
 export function CreatorProfileClient({ creator }: CreatorProfileClientProps) {
   const [isFollowing, setIsFollowing] = useState(false);
   const [followers, setFollowers] = useState(creator.stats.followersCount);
   const [content, setContent] = useState<CreatorContentItem[]>([]);
   const [relatedCreators, setRelatedCreators] = useState<CreatorProfile[]>([]);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     async function loadExtraData() {
@@ -51,7 +64,6 @@ export function CreatorProfileClient({ creator }: CreatorProfileClientProps) {
           getCreators()
         ]);
         setContent(contentRes.data);
-        // Mock related experts by filtering current out
         setRelatedCreators(creatorsRes.data.filter(c => c.id !== creator.id).slice(0, 4));
       } catch (e) {
         console.error(e);
@@ -81,13 +93,17 @@ export function CreatorProfileClient({ creator }: CreatorProfileClientProps) {
     }
   };
 
+  const filteredContent = content.filter(item => 
+    item.title.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
-    <div className="space-y-12 pb-20">
+    <div className="space-y-12 pb-24">
       {/* Profile Header Card */}
       <Card className="glass-card overflow-hidden border-none shadow-2xl relative">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/10 to-transparent pointer-events-none" />
         <CardContent className="p-8 lg:p-12 relative z-10">
-          <div className="flex flex-col lg:flex-row gap-10 items-start lg:items-center">
+          <div className="flex flex-col lg:flex-row gap-10 items-start">
             <div className="relative w-32 h-32 lg:w-48 lg:h-48 rounded-[2.5rem] overflow-hidden border-4 border-background shadow-2xl ring-1 ring-white/10 shrink-0">
               <Image src={creator.avatar} alt={creator.displayName} fill className="object-cover" priority />
             </div>
@@ -99,32 +115,42 @@ export function CreatorProfileClient({ creator }: CreatorProfileClientProps) {
                     {creator.displayName}
                   </Text>
                   {creator.verified && (
-                    <Badge variant="secondary" className="bg-secondary/20 text-secondary border-secondary/30 h-8 px-3 rounded-xl">
+                    <Badge className="bg-secondary text-secondary-foreground border-none h-8 px-3 rounded-xl font-bold uppercase text-[10px]">
                       <ShieldCheck className="mr-1.5 h-4 w-4" /> Verified Expert
                     </Badge>
                   )}
                 </div>
-                <Text variant="h4" className="text-muted-foreground font-normal">
-                  @{creator.username} • <span className="opacity-70">Joined {format(new Date(creator.joinedDate), 'MMM yyyy')}</span>
-                </Text>
+                <div className="flex items-center gap-3">
+                  <Text variant="h4" className="text-primary font-bold uppercase tracking-widest text-sm">
+                    {creator.title}
+                  </Text>
+                  <span className="text-muted-foreground opacity-40">•</span>
+                  <Text variant="bodySmall" className="text-muted-foreground font-normal">
+                    @{creator.username}
+                  </Text>
+                </div>
               </div>
 
               <div className="flex flex-wrap gap-8 py-2">
                 <div className="flex flex-col">
-                  <span className="text-2xl font-bold">{followers.toLocaleString()}</span>
+                  <span className="text-3xl font-bold tracking-tighter">{followers.toLocaleString()}</span>
                   <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest">Followers</span>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-2xl font-bold">{creator.stats.articlesCount}</span>
+                  <span className="text-3xl font-bold tracking-tighter">{creator.stats.articlesCount}</span>
                   <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest">Insights</span>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-2xl font-bold">{(creator.stats.totalViews / 1000000).toFixed(1)}M</span>
-                  <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest">Organic Reach</span>
+                  <span className="text-3xl font-bold tracking-tighter">{(creator.stats.totalReads || 0).toLocaleString()}</span>
+                  <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest">Total Reads</span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-3xl font-bold tracking-tighter text-primary">{creator.stats.engagementScore || 92}%</span>
+                  <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest">Engagement</span>
                 </div>
               </div>
 
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-wrap gap-4 pt-2">
                 <Button 
                   size="lg" 
                   variant={isFollowing ? "outline" : "default"} 
@@ -155,198 +181,173 @@ export function CreatorProfileClient({ creator }: CreatorProfileClientProps) {
         </CardContent>
       </Card>
 
-      {/* Main Profile Tabs */}
-      <Tabs defaultValue="about" className="space-y-8">
-        <TabsList className="bg-card/30 border border-white/5 p-1 h-14 w-full lg:w-auto justify-start">
-          <TabsTrigger value="about" className="px-8 h-12 gap-2 text-sm font-bold rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-            <Info className="h-4 w-4" /> About
-          </TabsTrigger>
-          <TabsTrigger value="content" className="px-8 h-12 gap-2 text-sm font-bold rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-            <BookOpen className="h-4 w-4" /> Intelligence ({creator.stats.articlesCount})
-          </TabsTrigger>
-          <TabsTrigger value="followers" className="px-8 h-12 gap-2 text-sm font-bold rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-            <Users className="h-4 w-4" /> Network
-          </TabsTrigger>
-        </TabsList>
-
-        {/* ABOUT TAB */}
-        <TabsContent value="about" className="animate-in fade-in duration-500">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            <div className="lg:col-span-8 space-y-8">
-              <Card className="glass-card border-none">
-                <CardHeader>
-                  <CardTitle className="text-xl flex items-center gap-2">
-                    <Info className="h-5 w-5 text-primary" /> Professional Narrative
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <Text variant="body" className="text-lg leading-relaxed text-foreground/80">
-                    {creator.bio}
-                  </Text>
-                  
-                  <div className="mt-10 pt-8 border-t border-white/5 grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div className="space-y-4">
-                      <Text variant="label" className="text-muted-foreground flex items-center gap-2">
-                        <Layers className="h-4 w-4" /> Taxonomy Focus
-                      </Text>
-                      <div className="flex flex-wrap gap-2">
-                        <Badge variant="outline" className="px-4 py-2 border-primary/20 bg-primary/5 text-primary font-bold">
-                          {creator.category}
-                        </Badge>
-                      </div>
-                    </div>
-                    <div className="space-y-4">
-                      <Text variant="label" className="text-muted-foreground flex items-center gap-2">
-                        <TrendingUp className="h-4 w-4" /> Expertise Matrix
-                      </Text>
-                      <div className="flex flex-wrap gap-2">
-                        {creator.specialties.map(spec => (
-                          <Badge key={spec} variant="secondary" className="px-3 py-1 font-medium bg-secondary/10 text-secondary border-none">
-                            {spec}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="glass-card border-none bg-primary/5">
-                <CardHeader>
-                  <CardTitle className="text-lg">Platform Contribution</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <Text variant="bodySmall" className="text-muted-foreground">
-                    Joined the Imperialpedia network on {format(new Date(creator.joinedDate), 'MMMM d, yyyy')}. 
-                    Regularly contributes to the {creator.category} intelligence hubs with deep-dive macro analysis.
-                  </Text>
-                </CardContent>
-              </Card>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        {/* Main Intelligence Column */}
+        <div className="lg:col-span-8 space-y-12">
+          <Tabs defaultValue="published" className="w-full space-y-8">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 border-b border-white/5 pb-4">
+              <TabsList className="bg-card/30 border border-white/5 p-1 h-12 rounded-2xl">
+                <TabsTrigger value="published" className="px-8 h-10 gap-2 rounded-xl font-bold text-xs data-[state=active]:bg-primary">
+                  <BookOpen className="h-4 w-4" /> Published Research
+                </TabsTrigger>
+                <TabsTrigger value="guides" className="px-8 h-10 gap-2 rounded-xl font-bold text-xs data-[state=active]:bg-primary">
+                  <Layers className="h-4 w-4" /> Strategy Guides
+                </TabsTrigger>
+              </TabsList>
+              
+              <div className="relative group w-full sm:w-64">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                <Input 
+                  placeholder="Filter research nodes..." 
+                  className="pl-10 h-10 bg-card/30 border-white/10 rounded-xl text-xs"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
+              </div>
             </div>
 
-            <div className="lg:col-span-4 space-y-6">
-              <Card className="glass-card border-none">
-                <CardHeader>
-                  <CardTitle className="text-lg flex items-center gap-2">
-                    <Globe className="h-5 w-5 text-secondary" /> Expert Context
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex justify-between items-center py-2 border-b border-white/5">
-                    <Text variant="caption" className="text-muted-foreground uppercase tracking-widest font-bold">Primary Region</Text>
-                    <Text variant="bodySmall" weight="bold">{creator.region}</Text>
-                  </div>
-                  <div className="flex justify-between items-center py-2 border-b border-white/5">
-                    <Text variant="caption" className="text-muted-foreground uppercase tracking-widest font-bold">Verification</Text>
-                    <Text variant="bodySmall" weight="bold" className="text-emerald-500">{creator.verified ? 'Vetted' : 'Standard'}</Text>
-                  </div>
-                  <div className="flex justify-between items-center py-2">
-                    <Text variant="caption" className="text-muted-foreground uppercase tracking-widest font-bold">Following</Text>
-                    <Text variant="bodySmall" weight="bold">{creator.stats.followingCount.toLocaleString()}</Text>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <div className="p-8 rounded-[2rem] bg-secondary/10 border border-secondary/20 relative overflow-hidden group">
-                <div className="absolute top-0 right-0 p-4 opacity-20 group-hover:scale-110 transition-transform">
-                  <ArrowUpRight className="h-12 w-12 text-secondary" />
+            <TabsContent value="published" className="mt-0">
+              <Card className="glass-card border-none shadow-2xl overflow-hidden">
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="bg-muted/20 border-b border-white/5">
+                        <TableHead className="pl-8 font-bold text-[10px] uppercase tracking-widest py-6">Intelligence Title</TableHead>
+                        <TableHead className="font-bold text-[10px] uppercase tracking-widest">Taxonomy</TableHead>
+                        <TableHead className="font-bold text-[10px] uppercase tracking-widest text-center">Reads</TableHead>
+                        <TableHead className="font-bold text-[10px] uppercase tracking-widest text-center">Likes</TableHead>
+                        <TableHead className="text-right pr-8 font-bold text-[10px] uppercase tracking-widest">Date</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {filteredContent.map((item) => (
+                        <TableRow key={item.id} className="group hover:bg-white/5 transition-colors border-b border-white/5">
+                          <TableCell className="py-5 pl-8">
+                            <Link href={`/articles/${item.slug}`} className="text-sm font-bold text-foreground/90 leading-tight block group-hover:text-primary transition-colors">
+                              {item.title}
+                            </Link>
+                          </TableCell>
+                          <TableCell>
+                            <Badge variant="outline" className="border-primary/20 bg-primary/5 text-primary text-[8px] font-bold uppercase h-5 px-2">
+                              {item.category}
+                            </Badge>
+                          </TableCell>
+                          <TableCell className="text-center font-mono text-xs font-bold opacity-70">
+                            {(item.reads || 0).toLocaleString()}
+                          </TableCell>
+                          <TableCell className="text-center font-mono text-xs font-bold text-primary">
+                            {(item.likes || 0).toLocaleString()}
+                          </TableCell>
+                          <TableCell className="text-right pr-8">
+                            <span className="text-[10px] font-bold text-muted-foreground uppercase">{format(new Date(item.createdAt), 'MMM d, yyyy')}</span>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
                 </div>
-                <Text variant="label" className="text-secondary mb-2">Collaboration</Text>
-                <Text variant="h3" className="mb-4">Partner with Experts</Text>
-                <Text variant="bodySmall" className="text-muted-foreground leading-relaxed mb-6">
-                  Verified experts like {creator.displayName.split(' ')[0]} are available for strategic research partnerships.
-                </Text>
-                <Button className="w-full bg-secondary hover:bg-secondary/90 text-background font-bold h-12 rounded-xl">Contact Expert</Button>
+                <div className="p-4 bg-muted/10 border-t border-white/5 flex justify-center">
+                  <Button variant="ghost" size="sm" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground hover:text-primary">
+                    Load Full Index <ChevronRight className="ml-1 h-3 w-3" />
+                  </Button>
+                </div>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="guides" className="py-20 text-center bg-card/10 rounded-[3rem] border border-dashed border-white/5">
+              <Layers className="h-12 w-12 text-muted-foreground/20 mx-auto mb-4" />
+              <Text variant="h4" className="text-muted-foreground">No Strategy Guides Published</Text>
+              <Text variant="caption" className="text-muted-foreground/60 mt-2 block">Premium educational nodes will appear here.</Text>
+            </TabsContent>
+          </Tabs>
+        </div>
+
+        {/* Sidebar Context Column */}
+        <div className="lg:col-span-4 space-y-10">
+          {/* Credentials Card */}
+          <Card className="glass-card border-none shadow-xl h-fit">
+            <CardHeader className="p-8 border-b border-white/5">
+              <CardTitle className="text-sm font-bold uppercase tracking-widest flex items-center gap-2">
+                <ShieldCheck className="h-4 w-4 text-primary" /> Credential Matrix
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-8 space-y-8">
+              <div className="space-y-4">
+                <div className="flex items-start gap-4">
+                  <div className="p-2 rounded-lg bg-secondary/10 text-secondary shrink-0">
+                    <Briefcase className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <Text variant="label" className="text-[9px] opacity-50 font-bold uppercase tracking-widest block mb-1">Professional Tenure</Text>
+                    <Text variant="bodySmall" weight="bold">{creator.yearsExperience || 10}+ Years Experience</Text>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="p-2 rounded-lg bg-primary/10 text-primary shrink-0">
+                    <GraduationCap className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <Text variant="label" className="text-[9px] opacity-50 font-bold uppercase tracking-widest block mb-1">Academic Background</Text>
+                    <Text variant="bodySmall" weight="bold">{creator.education || 'Institutional Researcher'}</Text>
+                  </div>
+                </div>
               </div>
+
+              <div className="space-y-4 pt-6 border-t border-white/5">
+                <Text variant="label" className="text-[9px] opacity-50 font-bold uppercase tracking-widest">Authority Badges</Text>
+                <div className="flex flex-wrap gap-2">
+                  {creator.badges?.map(badge => (
+                    <Badge key={badge} className="bg-primary text-white border-none text-[9px] font-bold uppercase h-6 px-3 shadow-lg">
+                      <Award className="w-3 h-3 mr-1.5" /> {badge}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Expert Network Mini-Grid */}
+          <div className="space-y-6">
+            <div className="flex items-center justify-between px-2">
+              <Text variant="h4" className="font-bold text-sm uppercase tracking-widest text-muted-foreground flex items-center gap-2">
+                <Users className="h-4 w-4" /> Expert Network
+              </Text>
+              <Button variant="ghost" size="sm" className="h-7 text-primary text-[10px] font-bold uppercase">View All</Button>
             </div>
-          </div>
-        </TabsContent>
-
-        {/* CONTENT TAB */}
-        <TabsContent value="content" className="animate-in fade-in duration-500">
-          <div className="space-y-8">
-            <div className="flex items-center justify-between border-b border-white/5 pb-6">
-              <Text variant="h3" className="font-bold">Published Intelligence</Text>
-              <Button variant="ghost" size="sm" className="font-bold text-primary gap-1 group" asChild>
-                <Link href={`/creator/${creator.id}/content`}>
-                  Manage Feed <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Link>
-              </Button>
-            </div>
-
-            {content.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {content.map((article) => (
-                  <ArticleCard 
-                    key={article.id} 
-                    article={{
-                      ...article,
-                      description: article.snippet || '',
-                      authorId: creator.displayName,
-                      publishedAt: article.createdAt,
-                      updatedAt: article.createdAt,
-                      status: 'published',
-                      readingTime: 8,
-                      featuredImage: `https://picsum.photos/seed/${article.id}/800/600`,
-                      tags: article.tags
-                    } as any} 
-                  />
-                ))}
-              </div>
-            ) : (
-              <div className="py-24 text-center bg-card/10 rounded-[3rem] border border-dashed border-white/5">
-                <Text variant="body" className="text-muted-foreground">No insights published yet.</Text>
-              </div>
-            )}
-          </div>
-        </TabsContent>
-
-        {/* FOLLOWERS TAB */}
-        <TabsContent value="followers" className="animate-in fade-in duration-500">
-          <div className="space-y-8">
-            <div className="flex items-center justify-between border-b border-white/5 pb-6">
-              <div>
-                <Text variant="h3" className="font-bold">Expert Network</Text>
-                <Text variant="bodySmall" className="text-muted-foreground">Experts and analysts following {creator.displayName}'s research.</Text>
-              </div>
-              <Button variant="ghost" size="sm" className="font-bold text-primary gap-1 group" asChild>
-                <Link href={`/creator/${creator.id}/followers`}>
-                  View All Connections <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Link>
-              </Button>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            
+            <div className="grid grid-cols-2 gap-4">
               {relatedCreators.map((expert) => (
                 <Link key={expert.id} href={`/creator/${expert.id}`} className="group">
-                  <Card className="glass-card hover:border-primary/40 transition-all duration-300">
-                    <CardContent className="p-6">
-                      <div className="flex flex-col items-center text-center space-y-4">
-                        <Avatar className="h-20 w-20 rounded-2xl border-2 border-white/5 group-hover:border-primary/30 transition-colors">
-                          <AvatarImage src={expert.avatar} />
-                          <AvatarFallback>{expert.displayName.charAt(0)}</AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <Text variant="body" weight="bold" className="group-hover:text-primary transition-colors truncate block">
-                            {expert.displayName}
-                          </Text>
-                          <Text variant="caption" className="text-muted-foreground">@{expert.username}</Text>
-                        </div>
-                        <Badge variant="secondary" className="bg-primary/5 text-primary text-[10px] font-bold uppercase">
-                          {expert.category}
-                        </Badge>
-                        <div className="pt-4 flex items-center text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
-                          View Profile <ArrowRight className="ml-1.5 h-3 w-3" />
-                        </div>
-                      </div>
-                    </CardContent>
+                  <Card className="glass-card border-none hover:border-primary/30 transition-all p-4 text-center">
+                    <Avatar className="h-12 w-12 rounded-xl mx-auto mb-3 border border-white/5">
+                      <AvatarImage src={expert.avatar} />
+                      <AvatarFallback>{expert.displayName.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                    <Text variant="caption" weight="bold" className="group-hover:text-primary transition-colors line-clamp-1">{expert.displayName.split(' ')[0]}</Text>
+                    <Text variant="caption" className="text-[8px] text-muted-foreground uppercase font-bold tracking-tighter mt-1">{expert.category}</Text>
                   </Card>
                 </Link>
               ))}
             </div>
           </div>
-        </TabsContent>
-      </Tabs>
+
+          <div className="p-8 rounded-[3rem] bg-secondary/5 border border-secondary/20 space-y-4 relative overflow-hidden group">
+            <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform">
+              <Zap className="h-16 w-16 text-secondary" />
+            </div>
+            <div className="flex items-center gap-2 text-secondary font-bold text-xs uppercase tracking-widest">
+              <Activity className="h-4 w-4" /> Tactical Access
+            </div>
+            <Text variant="caption" className="text-muted-foreground leading-relaxed italic block">
+              "Subscribe to **Pro Intelligence** to access {creator.displayName.split(' ')[0]}'s private research nodes and high-fidelity strategy models."
+            </Text>
+            <Button className="w-full h-11 rounded-2xl bg-secondary hover:bg-secondary/90 text-secondary-foreground font-bold text-xs" asChild>
+              <Link href="/premium/subscribe">Unlock Expert Feed</Link>
+            </Button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

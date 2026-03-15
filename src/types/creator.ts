@@ -9,6 +9,8 @@ export interface CreatorStats {
   followingCount: number;
   articlesCount: number;
   totalViews: number;
+  engagementScore?: number; // 0-100
+  totalReads?: number;
 }
 
 export interface CreatorContent {
@@ -18,6 +20,8 @@ export interface CreatorContent {
     slug: string;
     publishedAt: Timestamp;
     category: string;
+    reads?: number;
+    likes?: number;
   }>;
 }
 
@@ -30,15 +34,19 @@ export interface CreatorProfile {
   id: ID;
   username: string;
   displayName: string;
+  title: string; // Professional title
   bio: string;
   avatar: string;
   joinedDate: Timestamp;
   specialties: string[];
   category: string;
   region: string;
+  verified: boolean;
+  yearsExperience?: number;
+  education?: string;
+  badges?: string[];
   stats: CreatorStats;
   content: CreatorContent;
-  verified: boolean;
   socialLinks: SocialLink[];
 }
 
@@ -57,6 +65,7 @@ export interface CreatorContentItem {
   slug: string;
   snippet?: string;
   scheduledAt?: string;
+  reads?: number;
 }
 
 export interface CreatorDashboardSummary {

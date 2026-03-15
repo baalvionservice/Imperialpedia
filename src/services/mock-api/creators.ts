@@ -4,14 +4,82 @@ import { Notification } from '@/modules/content-engine/types/article';
 
 /**
  * @fileOverview Mock service for managing creator profiles, stats, and discovery data.
- * Expanded with more diverse data for high-scale discovery simulation.
+ * Expanded with Prompt 59 requirements for specific experts and detailed fields.
  */
 
 const mockCreators: CreatorProfile[] = [
   {
+    id: 'creator-sarah',
+    username: 'smitchell',
+    displayName: 'Sarah Mitchell',
+    title: 'Market Strategist',
+    bio: 'Specializing in macro-economic cycles and global interest rate arbitrage. Over 15 years of institutional research experience at leading investment banks.',
+    avatar: 'https://picsum.photos/seed/sarah/200/200',
+    joinedDate: '2023-01-15T00:00:00Z',
+    specialties: ['Macroeconomics', 'Market Analysis', 'Bonds'],
+    category: 'Economics',
+    region: 'North America',
+    verified: true,
+    yearsExperience: 15,
+    education: 'Wharton MBA, CFA',
+    badges: ['Verified Analyst', 'Top Contributor', 'Market Strategist'],
+    stats: {
+      followersCount: 12800,
+      followingCount: 142,
+      articlesCount: 42,
+      totalViews: 850000,
+      totalReads: 452000,
+      engagementScore: 94
+    },
+    content: {
+      recentArticles: [
+        { id: 'art-1', title: 'Understanding Market Cycles', slug: 'understanding-market-cycles', category: 'Market Analysis', publishedAt: '2024-03-01T10:00:00Z', reads: 45200, likes: 3200 },
+        { id: 'art-7', title: 'The Future of Central Banking', slug: 'future-of-central-banking', category: 'Economics', publishedAt: '2024-03-12T08:00:00Z', reads: 12400, likes: 850 },
+      ],
+    },
+    socialLinks: [
+      { platform: 'Twitter', url: 'https://twitter.com/smitchell' },
+      { platform: 'LinkedIn', url: 'https://linkedin.com/in/smitchell' }
+    ],
+  },
+  {
+    id: 'creator-david',
+    username: 'dchen',
+    displayName: 'David Chen',
+    title: 'Crypto Analyst',
+    bio: 'Blockchain researcher and protocol architect. Focused on decentralized liquidity nodes and the transition to algorithmic fiscal policy.',
+    avatar: 'https://picsum.photos/seed/david/200/200',
+    joinedDate: '2023-05-20T00:00:00Z',
+    specialties: ['Cryptocurrency', 'Blockchain', 'DeFi'],
+    category: 'Crypto',
+    region: 'APAC',
+    verified: true,
+    yearsExperience: 8,
+    education: 'Stanford Computer Science, M.S.',
+    badges: ['Crypto Specialist', 'Verified Analyst'],
+    stats: {
+      followersCount: 9500,
+      followingCount: 210,
+      articlesCount: 28,
+      totalViews: 120000,
+      totalReads: 381000,
+      engagementScore: 88
+    },
+    content: {
+      recentArticles: [
+        { id: 'art-4', title: 'Bitcoin Halving Explained', slug: 'bitcoin-halving-explained', category: 'Crypto Education', publishedAt: '2024-03-08T11:00:00Z', reads: 38100, likes: 2800 },
+      ],
+    },
+    socialLinks: [
+      { platform: 'Twitter', url: '#' },
+      { platform: 'Github', url: '#' }
+    ],
+  },
+  {
     id: 'creator-1',
     username: 'marketmaven',
     displayName: 'The Market Maven',
+    title: 'Macro Analyst',
     bio: 'Expert in macro-economic trends and fixed income markets. Former hedge fund analyst focused on interest rate policy.',
     avatar: 'https://picsum.photos/seed/maven/200/200',
     joinedDate: '2023-01-15T00:00:00Z',
@@ -28,69 +96,17 @@ const mockCreators: CreatorProfile[] = [
     content: {
       recentArticles: [
         { id: 'art-1', title: 'Understanding Yield Curve Inversion', slug: 'understanding-yield-curve-inversion', category: 'Economics', publishedAt: '2024-03-01T00:00:00Z' },
-        { id: 'art-sub-1', title: 'The Future of Central Banking', slug: 'future-of-central-banking', category: 'Economics', publishedAt: '2024-03-09T00:00:00Z' },
       ],
     },
     socialLinks: [
-      { platform: 'Twitter', url: 'https://twitter.com/marketmaven' },
-      { platform: 'LinkedIn', url: 'https://linkedin.com/in/marketmaven' },
-      { platform: 'Website', url: 'https://marketmaven.com' }
-    ],
-  },
-  {
-    id: 'creator-2',
-    username: 'wealthbuilder',
-    displayName: 'Julian Wealth',
-    bio: 'Strategic wealth manager specializing in ESG and sustainable long-term portfolios. Focused on private equity and impact investing.',
-    avatar: 'https://picsum.photos/seed/wealth/200/200',
-    joinedDate: '2023-05-20T00:00:00Z',
-    specialties: ['Wealth Management', 'ESG', 'Strategy'],
-    category: 'Investing',
-    region: 'EMEA',
-    verified: true,
-    stats: {
-      followersCount: 8200,
-      followingCount: 210,
-      articlesCount: 15,
-      totalViews: 120000,
-    },
-    content: {
-      recentArticles: [],
-    },
-    socialLinks: [
-      { platform: 'LinkedIn', url: '#' },
       { platform: 'Twitter', url: '#' }
-    ],
-  },
-  {
-    id: 'creator-3',
-    username: 'defianalyst',
-    displayName: 'Sarah Crypto',
-    bio: 'DeFi researcher and smart contract security expert. Helping investors navigate the yield farm landscape and protocol governance.',
-    avatar: 'https://picsum.photos/seed/defi/200/200',
-    joinedDate: '2024-01-10T00:00:00Z',
-    specialties: ['DeFi', 'Web3', 'Ethereum'],
-    category: 'Crypto',
-    region: 'APAC',
-    verified: false,
-    stats: {
-      followersCount: 3500,
-      followingCount: 85,
-      articlesCount: 8,
-      totalViews: 45000,
-    },
-    content: {
-      recentArticles: [],
-    },
-    socialLinks: [
-      { platform: 'Twitter', url: '#' },
-      { platform: 'Github', url: '#' }
     ],
   },
   {
     id: 'creator-4',
     username: 'econvance',
     displayName: 'Eleanor Vance',
+    title: 'Lead Administrator',
     bio: 'Lead Administrator and Content Strategist at Imperialpedia. Focused on platform growth, pSEO integrity, and institutional research.',
     avatar: 'https://picsum.photos/seed/eleanor/200/200',
     joinedDate: '2022-12-01T00:00:00Z',
@@ -114,13 +130,20 @@ const mockCreators: CreatorProfile[] = [
   },
 ];
 
-const mockAdminCreatorAnalytics: AdminCreatorAnalytics[] = [
-  { id: 'creator-1', name: 'The Market Maven', username: 'marketmaven', avatar: 'https://picsum.photos/seed/maven/200/200', contentCount: 42, followers: 15400, engagementRate: 5.8, totalViews: 850000, totalRevenue: 12450.00, lastActive: '2024-03-12T10:30:00Z', verified: true, category: 'Economics' },
-  { id: 'creator-4', name: 'Eleanor Vance', username: 'econvance', avatar: 'https://picsum.photos/seed/eleanor/200/200', contentCount: 120, followers: 25000, engagementRate: 4.2, totalViews: 4500000, totalRevenue: 28900.00, lastActive: '2024-03-12T11:45:00Z', verified: true, category: 'Economics' },
-  { id: 'creator-2', name: 'Julian Wealth', username: 'wealthbuilder', avatar: 'https://picsum.photos/seed/wealth/200/200', contentCount: 15, followers: 8200, engagementRate: 6.4, totalViews: 120000, totalRevenue: 8500.50, lastActive: '2024-03-11T16:20:00Z', verified: true, category: 'Investing' },
-  { id: 'creator-3', name: 'Sarah Crypto', username: 'defianalyst', avatar: 'https://picsum.photos/seed/defi/200/200', contentCount: 8, followers: 3500, engagementRate: 3.9, totalViews: 45000, totalRevenue: 1200.00, lastActive: '2024-03-10T09:15:00Z', verified: false, category: 'Crypto' },
-  { id: 'creator-8', name: 'Dan Income', username: 'dividenddan', avatar: 'https://picsum.photos/seed/dan/200/200', contentCount: 35, followers: 12500, engagementRate: 7.1, totalViews: 420000, totalRevenue: 15600.00, lastActive: '2024-03-12T08:00:00Z', verified: true, category: 'Investing' },
-];
+const mockAdminCreatorAnalytics: AdminCreatorAnalytics[] = mockCreators.map(c => ({
+  id: c.id,
+  name: c.displayName,
+  username: c.username,
+  avatar: c.avatar,
+  contentCount: c.stats.articlesCount,
+  followers: c.stats.followersCount,
+  engagementRate: c.stats.engagementScore || 5.0,
+  totalViews: c.stats.totalViews,
+  totalRevenue: 12450.00,
+  lastActive: '2024-03-12T10:30:00Z',
+  verified: c.verified,
+  category: c.category
+}));
 
 export const getAdminCreatorAnalytics = async (): Promise<ApiResponse<AdminCreatorAnalytics[]>> => {
   await new Promise((resolve) => setTimeout(resolve, 500));
@@ -147,12 +170,17 @@ export const getTopCreators = async (): Promise<ApiResponse<TopCreator[]>> => {
   return { data, status: 200 };
 };
 
-const mockLeaderboard: CreatorLeaderboard[] = [
-  { creatorId: 'creator-1', name: 'The Market Maven', profileImage: 'https://picsum.photos/seed/maven/200/200', category: 'Economics', region: 'North America', verified: true, totalRevenue: 15400.50, totalViews: 850000, totalLikes: 12400 },
-  { creatorId: 'creator-4', name: 'Eleanor Vance', profileImage: 'https://picsum.photos/seed/eleanor/200/200', category: 'Economics', region: 'North America', verified: true, totalRevenue: 28900.00, totalViews: 4500000, totalLikes: 42000 },
-  { creatorId: 'creator-2', name: 'Julian Wealth', profileImage: 'https://picsum.photos/seed/wealth/200/200', category: 'Investing', region: 'EMEA', verified: true, totalRevenue: 12200.75, totalViews: 120000, totalLikes: 5600 },
-  { creatorId: 'creator-3', name: 'Sarah Crypto', profileImage: 'https://picsum.photos/seed/defi/200/200', category: 'Crypto', region: 'APAC', verified: false, totalRevenue: 4500.20, totalViews: 45000, totalLikes: 2100 },
-];
+const mockLeaderboard: CreatorLeaderboard[] = mockCreators.map(c => ({
+  creatorId: c.id,
+  name: c.displayName,
+  profileImage: c.avatar,
+  category: c.category,
+  region: c.region,
+  verified: c.verified,
+  totalRevenue: 15400.50,
+  totalViews: c.stats.totalViews,
+  totalLikes: 12400
+}));
 
 const mockFollowers: Follower[] = [
   { id: 'f-1', name: 'Julian Wealth', username: 'wealthbuilder', profileImage: 'https://picsum.photos/seed/wealth/200/200', followedAt: '2024-03-01T10:00:00Z', status: 'following', category: 'Investing' },
@@ -203,22 +231,26 @@ export const getCreatorDashboardStats = async (creatorId: string): Promise<ApiRe
 
 export const getCreatorContent = async (creatorId: string): Promise<ApiResponse<CreatorContentItem[]>> => {
   await new Promise((resolve) => setTimeout(resolve, 400));
-  const extendedContent: CreatorContentItem[] = [
-    {
-      id: 'c-1',
-      title: 'Quantitative Easing vs Tightening: A 2026 Outlook',
-      snippet: 'Mastering the nuances of central bank liquidity cycles in the next decade.',
-      body: 'Full analysis text content...',
-      category: 'Economics',
-      tags: ['Macro', 'Fed'],
-      status: 'published',
-      createdAt: '2024-03-01T10:00:00Z',
-      views: 12400,
-      likes: 450,
-      comments: 82,
-      slug: 'qe-vs-qt-2026'
-    },
-  ];
+  
+  const creator = mockCreators.find(c => c.id === creatorId || c.username === creatorId);
+  const articles = creator?.content.recentArticles || [];
+
+  const extendedContent: CreatorContentItem[] = articles.map(a => ({
+    id: a.id,
+    title: a.title,
+    snippet: 'Strategic overview of current market dynamics and node transitions.',
+    body: 'Full analysis text content...',
+    category: a.category,
+    tags: ['Macro', 'Alpha'],
+    status: 'published',
+    createdAt: a.publishedAt,
+    views: a.reads || 1200,
+    likes: a.likes || 100,
+    comments: 42,
+    reads: a.reads || 1200,
+    slug: a.slug
+  }));
+
   return {
     data: extendedContent,
     status: 200
