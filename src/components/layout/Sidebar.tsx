@@ -125,7 +125,7 @@ const Sidebar = ({ className }: { className?: string }) => {
     { icon: FileCode, label: 'Admin Activity Log', href: '/admin/control/activity-log' },
     { icon: ShieldEllipsis, label: 'Access Logs', href: '/admin/access-logs' },
     { icon: ShieldAlert, label: 'pSEO Health', href: '/admin/seo-audit' },
-    { icon: RotateCcw, label: 'Backup & Restore', href: '/admin/backup' },
+    { icon: RotateCcw, label: 'Backup & Restore', href: '/admin/control/backups' },
     { icon: Settings, label: 'System Settings', href: '/admin/settings' },
   ];
 
