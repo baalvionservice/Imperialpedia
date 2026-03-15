@@ -1,4 +1,4 @@
-import { CreatorProfile, ApiResponse, CreatorContentItem, CreatorDashboardSummary, CreatorDashboardAnalytics, CreatorVerification, CreatorLeaderboard, ScheduledContent, CreatorSettings, CreatorDashboardStats, Follower } from '@/types';
+import { CreatorProfile, ApiResponse, CreatorContentItem, CreatorDashboardSummary, CreatorDashboardAnalytics, CreatorVerification, CreatorLeaderboard, ScheduledContent, CreatorSettings, CreatorDashboardStats, Follower, CreatorRevenue, CreatorRevenueSummary } from '@/types';
 import { Notification } from '@/modules/content-engine/types/article';
 
 /**
@@ -477,6 +477,47 @@ export const getCreatorVerificationStatus = async (creatorId: string): Promise<A
       status: 'unverified',
       documentsProvided: []
     },
+    status: 200
+  };
+};
+
+export const getCreatorRevenue = async (creatorId: string): Promise<ApiResponse<CreatorRevenueSummary>> => {
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  return {
+    data: {
+      totalRevenue: 28900.00,
+      availableBalance: 12450.75,
+      pendingPayout: 3200.00,
+      lastPayoutDate: '2024-03-01T10:00:00Z',
+      topEarningContent: [
+        { contentId: 'c-1', title: 'Quantitative Easing vs Tightening: A 2026 Outlook', revenue: 448.20 },
+        { contentId: 'c-2', title: 'The Future of Central Banking', revenue: 318.75 },
+        { contentId: 'c-3', title: 'Yield Curve Inversion Deep Dive', revenue: 278.90 },
+      ],
+      revenueTrends: [
+        { date: '2024-03-01', amount: 119.50 },
+        { date: '2024-03-02', amount: 153.20 },
+        { date: '2024-03-03', amount: 111.40 },
+        { date: '2024-03-04', amount: 188.10 },
+        { date: '2024-03-05', amount: 220.30 },
+        { date: '2024-03-06', amount: 204.20 },
+        { date: '2024-03-07', amount: 252.80 },
+      ]
+    },
+    status: 200
+  };
+};
+
+export const getPayoutHistory = async (creatorId: string): Promise<ApiResponse<CreatorRevenue[]>> => {
+  await new Promise((resolve) => setTimeout(resolve, 300));
+  return {
+    data: [
+      { contentId: 'c-1', title: 'Quantitative Easing vs Tightening: A 2026 Outlook', revenue: 124.50, dateEarned: '2024-03-07T10:00:00Z' },
+      { contentId: 'c-4', title: 'Monetary Policy in the 2030s', revenue: 85.20, dateEarned: '2024-03-06T14:30:00Z' },
+      { contentId: 'c-5', title: 'Fixed Income Strategies for High Inflation', revenue: 210.40, dateEarned: '2024-03-05T09:15:00Z' },
+      { contentId: 'c-6', title: 'The Great Wealth Transfer', revenue: 340.00, dateEarned: '2024-03-04T16:45:00Z' },
+      { contentId: 'c-1', title: 'Quantitative Easing vs Tightening: A 2026 Outlook', revenue: 98.10, dateEarned: '2024-03-03T11:00:00Z' },
+    ],
     status: 200
   };
 };

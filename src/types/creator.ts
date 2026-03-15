@@ -169,3 +169,19 @@ export interface Follower {
   status: "following" | "not_following";
   category?: string;
 }
+
+export interface CreatorRevenue {
+  contentId: string;
+  title: string;
+  revenue: number;
+  dateEarned: string;
+}
+
+export interface CreatorRevenueSummary {
+  totalRevenue: number;
+  availableBalance: number;
+  pendingPayout: number;
+  lastPayoutDate: string;
+  topEarningContent: { contentId: string; title: string; revenue: number }[];
+  revenueTrends: { date: string; amount: number }[];
+}

@@ -116,6 +116,7 @@ const Sidebar = ({ className }: { className?: string }) => {
     { icon: CalendarCheck, label: 'Publishing Schedule', href: '/creator/dashboard/schedule' },
     { icon: FileEdit, label: 'Intelligence Drafts', href: '/writer/drafts' },
     { icon: BarChart3, label: 'Insights Analytics', href: '/creator/dashboard/analytics' },
+    { icon: DollarSign, label: 'Monetization', href: '/creator/dashboard/revenue' },
     { icon: Bell, label: 'Activity Feed', href: '/creator/dashboard/notifications', badge: unreadNotifications },
     { icon: UserCog, label: 'Studio Settings', href: '/creator/dashboard/settings' },
     { icon: UserCircle, label: 'Expert Profile', href: '/creators/profile' },
