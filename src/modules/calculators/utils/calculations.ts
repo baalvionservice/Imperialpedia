@@ -50,6 +50,30 @@ export const financialMath = {
   },
 
   /**
+   * Calculates the retirement corpus based on savings and contributions.
+   */
+  calculateRetirementCorpus: (currentSavings: number, monthlyContribution: number, rate: number, currentAge: number, retirementAge: number) => {
+    const years = retirementAge - currentAge;
+    if (years <= 0) return { finalValue: currentSavings, chartData: [{ year: currentAge, balance: currentSavings }] };
+    
+    let total = currentSavings;
+    const chartData = [];
+    chartData.push({ age: currentAge, balance: Math.round(total) });
+
+    for (let y = 1; y <= years; y++) {
+      for (let m = 0; m < 12; m++) {
+        total = total * (1 + rate / 1200) + monthlyContribution;
+      }
+      chartData.push({ age: currentAge + y, balance: Math.round(total) });
+    }
+
+    return {
+      finalValue: total,
+      chartData
+    };
+  },
+
+  /**
    * Calculates monthly loan payment (EMI).
    * Formula: M = P [ i(1 + i)^n ] / [ (1 + i)^n – 1 ]
    */
