@@ -302,3 +302,30 @@ export interface AdminSystemHubData {
   system_monitoring: SystemMonitoringNode[];
   alerts: ThresholdAlert[];
 }
+
+/**
+ * Prompt 44: Security Mock Types
+ */
+export interface AuthMockEntry {
+  user: string;
+  role: 'Admin' | 'Editor' | 'User';
+  login_status: 'success' | 'failed';
+  '2FA_required': boolean;
+}
+
+export interface SecurityFlag {
+  feature: string;
+  status: 'mock_enabled' | 'mock_displayed' | 'mock_disabled';
+}
+
+export interface SecurityAlert {
+  alert_type: string;
+  user: string;
+  status: 'mock_triggered' | 'resolved';
+}
+
+export interface SecurityMockData {
+  auth_mock: AuthMockEntry[];
+  security_flags: SecurityFlag[];
+  alerts: SecurityAlert[];
+}

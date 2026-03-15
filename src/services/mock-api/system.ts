@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog, SecuritySettings, GlobalNotificationSettings, AuditTrailEntry, FeatureSettings, AdminSession, BrandingSettings, SystemAlert, AdminHomeOverview, SecurityDashboardData, AdminSystemHubData } from '@/types/system';
+import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog, SecuritySettings, GlobalNotificationSettings, AuditTrailEntry, FeatureSettings, AdminSession, BrandingSettings, SystemAlert, AdminHomeOverview, SecurityDashboardData, AdminSystemHubData, SecurityMockData } from '@/types/system';
 
 /**
  * @fileOverview Mock service for managing global platform configuration and system notifications.
@@ -184,6 +184,23 @@ const mockAdminSystemHubData: AdminSystemHubData = {
   alerts: [
     { alert_type: "High CPU", server: "Server2", threshold: "75%", current: "78%", status: "mock_triggered" },
     { alert_type: "Low Memory", server: "Server3", threshold: "20%", current: "18%", status: "mock_triggered" }
+  ]
+};
+
+const mockSecurityData: SecurityMockData = {
+  auth_mock: [
+    { user: "User123", role: "Admin", login_status: "success", "2FA_required": true },
+    { user: "User456", role: "Editor", login_status: "failed", "2FA_required": false }
+  ],
+  security_flags: [
+    { feature: "Encryption at Rest", status: "mock_enabled" },
+    { feature: "CSRF Protection", status: "mock_enabled" },
+    { feature: "XSS Protection", status: "mock_enabled" },
+    { feature: "GDPR Compliance Banner", status: "mock_displayed" }
+  ],
+  alerts: [
+    { alert_type: "Rate Limit Exceeded", user: "User789", status: "mock_triggered" },
+    { alert_type: "Account Locked", user: "User456", status: "mock_triggered" }
   ]
 };
 
@@ -483,6 +500,14 @@ export const getAdminSystemHubData = async (): Promise<ApiResponse<AdminSystemHu
   await new Promise((resolve) => setTimeout(resolve, 600));
   return {
     data: mockAdminSystemHubData,
+    status: 200,
+  };
+};
+
+export const getSecurityMockData = async (): Promise<ApiResponse<SecurityMockData>> => {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  return {
+    data: mockSecurityData,
     status: 200,
   };
 };
