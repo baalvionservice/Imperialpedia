@@ -329,3 +329,34 @@ export interface SecurityMockData {
   security_flags: SecurityFlag[];
   alerts: SecurityAlert[];
 }
+
+/**
+ * Prompt 45: Infrastructure & Scale Mock Types
+ */
+export interface InfrastructureNode {
+  cluster: string;
+  nodes: number;
+  cpu_usage: string;
+  memory_usage: string;
+  network_usage: string;
+  auto_scaling: 'mock_active' | 'mock_inactive';
+}
+
+export interface PipelineNode {
+  pipeline_name: string;
+  status: 'mock_success' | 'mock_running' | 'mock_failed';
+  progress: string;
+}
+
+export interface QueueNode {
+  name: string;
+  queue_length: number;
+  processed_jobs: number;
+  error_rate: 'mock_none' | 'mock_low' | 'mock_medium' | 'mock_high';
+}
+
+export interface InfrastructureMockData {
+  infrastructure: InfrastructureNode[];
+  ci_cd: PipelineNode[];
+  caching_queues: QueueNode[];
+}

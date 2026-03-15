@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog, SecuritySettings, GlobalNotificationSettings, AuditTrailEntry, FeatureSettings, AdminSession, BrandingSettings, SystemAlert, AdminHomeOverview, SecurityDashboardData, AdminSystemHubData, SecurityMockData } from '@/types/system';
+import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog, SecuritySettings, GlobalNotificationSettings, AuditTrailEntry, FeatureSettings, AdminSession, BrandingSettings, SystemAlert, AdminHomeOverview, SecurityDashboardData, AdminSystemHubData, SecurityMockData, InfrastructureMockData } from '@/types/system';
 
 /**
  * @fileOverview Mock service for managing global platform configuration and system notifications.
@@ -76,10 +76,10 @@ const mockSecuritySettings: SecuritySettings = {
 };
 
 const mockSecurityDashboard: SecurityDashboardData = {
-  system_health: "Good",
+  system_health: 'Good',
   active_threats: 0,
   failed_logins: 3,
-  rate_limit_status: "Normal",
+  rate_limit_status: 'Normal',
   admin_ip_restriction: ["192.168.1.1", "10.0.0.5"]
 };
 
@@ -201,6 +201,21 @@ const mockSecurityData: SecurityMockData = {
   alerts: [
     { alert_type: "Rate Limit Exceeded", user: "User789", status: "mock_triggered" },
     { alert_type: "Account Locked", user: "User456", status: "mock_triggered" }
+  ]
+};
+
+const mockInfrastructureData: InfrastructureMockData = {
+  infrastructure: [
+    { cluster: "Cluster1", nodes: 5, cpu_usage: "45%", memory_usage: "60%", network_usage: "120Mbps", auto_scaling: "mock_active" },
+    { cluster: "Cluster2", nodes: 3, cpu_usage: "70%", memory_usage: "80%", network_usage: "200Mbps", auto_scaling: "mock_inactive" }
+  ],
+  ci_cd: [
+    { pipeline_name: "Build & Deploy", status: "mock_success", progress: "100%" },
+    { pipeline_name: "Staging Deployment", status: "mock_running", progress: "60%" }
+  ],
+  caching_queues: [
+    { name: "RedisCache1", queue_length: 25, processed_jobs: 120, error_rate: "mock_low" },
+    { name: "MessageQueue1", queue_length: 10, processed_jobs: 90, error_rate: "mock_none" }
   ]
 };
 
@@ -508,6 +523,14 @@ export const getSecurityMockData = async (): Promise<ApiResponse<SecurityMockDat
   await new Promise((resolve) => setTimeout(resolve, 500));
   return {
     data: mockSecurityData,
+    status: 200,
+  };
+};
+
+export const getInfrastructureMockData = async (): Promise<ApiResponse<InfrastructureMockData>> => {
+  await new Promise((resolve) => setTimeout(resolve, 600));
+  return {
+    data: mockInfrastructureData,
     status: 200,
   };
 };
