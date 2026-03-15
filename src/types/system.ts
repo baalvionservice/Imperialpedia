@@ -91,3 +91,13 @@ export interface ErrorLog {
   message: string;
   stackTrace?: string;
 }
+
+export interface FeatureFlag {
+  id: string;
+  name: string;
+  enabled: boolean;
+  description: string;
+  impact: 'low' | 'medium' | 'high';
+  isBeta: boolean;
+  module: string;
+}

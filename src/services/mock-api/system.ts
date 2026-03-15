@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog } from '@/types/system';
+import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag } from '@/types/system';
 
 /**
  * @fileOverview Mock service for managing global platform configuration and system notifications.
@@ -50,22 +50,24 @@ const mockBackups: Backup[] = [
   { id: 'bak-4', timestamp: '2024-03-09T04:00:00Z', status: 'failed', size: '0KB', type: 'automated', checksum: 'N/A' },
 ];
 
+const mockFeatureFlags: FeatureFlag[] = [
+  { id: 'ff-1', name: 'AI Content Outliner', enabled: true, description: 'Generative AI tool for building article structures from topics.', impact: 'low', isBeta: false, module: 'Content Engine' },
+  { id: 'ff-2', name: 'Expert Payout Automations', enabled: false, description: 'Automated 15-day settlement cycles for verified creators.', impact: 'high', isBeta: true, module: 'Monetization' },
+  { id: 'ff-3', name: 'pSEO v2 Scaling', enabled: true, description: 'Next-gen programmatic engine supporting 5M+ indexable nodes.', impact: 'medium', isBeta: false, module: 'Infrastructure' },
+  { id: 'ff-4', name: 'Institutional Portfolio View', enabled: false, description: 'High-fidelity aggregate views for private wealth users.', impact: 'medium', isBeta: true, module: 'Calculators' },
+  { id: 'ff-5', name: 'Real-time Market Data', enabled: true, description: 'Live stock and bond price ingestion for analysis nodes.', impact: 'high', isBeta: false, module: 'Intelligence' },
+  { id: 'ff-6', name: 'Multilingual Glossary', enabled: false, description: 'Automated translation of the financial glossary into 12 languages.', impact: 'low', isBeta: true, module: 'SEO' },
+];
+
 const mockAccessLogs: AccessLog[] = [
   { id: 'acc-1', user: 'eleanor@imperialpedia.com', ip: '192.168.1.42', device: 'Desktop (macOS / Chrome)', timestamp: '2024-03-12T10:30:00Z', status: 'success' },
   { id: 'acc-2', user: 'maven@imperialpedia.com', ip: '10.0.0.15', device: 'Mobile (iOS / Safari)', timestamp: '2024-03-12T09:15:00Z', status: 'success' },
   { id: 'acc-3', user: 'unknown@hacker.net', ip: '45.12.88.2', device: 'Linux / Firefox', timestamp: '2024-03-12T08:45:00Z', status: 'failed' },
-  { id: 'acc-4', user: 'editor@imperialpedia.com', ip: '172.16.0.5', device: 'Tablet (iPadOS / Safari)', timestamp: '2024-03-11T16:20:00Z', status: 'success' },
-  { id: 'acc-5', user: 'wealth@imperialpedia.com', ip: '192.168.1.10', device: 'Desktop (Windows / Edge)', timestamp: '2024-03-11T14:10:00Z', status: 'success' },
-  { id: 'acc-6', user: 'admin@imperialpedia.com', ip: '10.0.0.1', device: 'Desktop (macOS / Chrome)', timestamp: '2024-03-11T12:00:00Z', status: 'failed' },
 ];
 
 const mockErrorLogs: ErrorLog[] = [
   { id: 'err-1', timestamp: '2024-03-12T11:45:00Z', module: 'API Gateway', type: 'critical', message: 'Connection timeout reached while attempting to synchronize search cluster indices.' },
   { id: 'err-2', timestamp: '2024-03-12T10:20:00Z', module: 'Content Engine', type: 'warning', message: 'Failed to generate automated summary for intelligence node art-452. Falling back to default excerpt.' },
-  { id: 'err-3', timestamp: '2024-03-12T09:15:00Z', module: 'pSEO Manager', type: 'info', message: 'Sitemap successfully re-indexed for 1,042,000 programmatic nodes.' },
-  { id: 'err-4', timestamp: '2024-03-11T23:30:00Z', module: 'Auth Provider', type: 'warning', message: 'Rate limit threshold triggered for IP 45.12.88.2 (Security Protocol active).' },
-  { id: 'err-5', timestamp: '2024-03-11T16:45:00Z', module: 'Database Alpha', type: 'critical', message: 'I/O latency spike detected in primary storage cluster. Maintenance cycle initiated.' },
-  { id: 'err-6', timestamp: '2024-03-11T12:00:00Z', module: 'Calculator Engine', type: 'info', message: 'Compound Interest algorithm updated to version 2.4.1.' },
 ];
 
 export const getSystemSettings = async (): Promise<ApiResponse<SystemSettings>> => {
@@ -147,7 +149,7 @@ export const getBackups = async (): Promise<ApiResponse<Backup[]>> => {
 };
 
 export const createBackup = async (): Promise<ApiResponse<Backup>> => {
-  await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulate backup time
+  await new Promise((resolve) => setTimeout(resolve, 2000));
   const newBackup: Backup = {
     id: `bak-${Math.random().toString(36).substr(2, 5)}`,
     timestamp: new Date().toISOString(),
@@ -169,6 +171,23 @@ export const restoreBackup = async (id: string): Promise<ApiResponse<void>> => {
     data: undefined,
     status: 200,
     message: `Platform state successfully reverted to snapshot ${id}.`
+  };
+};
+
+export const getFeatureFlags = async (): Promise<ApiResponse<FeatureFlag[]>> => {
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  return {
+    data: mockFeatureFlags,
+    status: 200,
+  };
+};
+
+export const updateFeatureFlag = async (id: string, enabled: boolean): Promise<ApiResponse<void>> => {
+  await new Promise((resolve) => setTimeout(resolve, 300));
+  return {
+    data: undefined,
+    status: 200,
+    message: `Feature flag status updated successfully.`
   };
 };
 
