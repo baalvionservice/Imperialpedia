@@ -40,3 +40,14 @@ export interface SystemNotification {
   target: SystemNotificationTarget;
   createdAt: string;
 }
+
+export type AdminAlertType = 'content' | 'user' | 'system';
+
+export interface AdminAlert {
+  id: string;
+  type: AdminAlertType;
+  message: string;
+  read: boolean;
+  createdAt: string;
+  priority: 'low' | 'medium' | 'high';
+}

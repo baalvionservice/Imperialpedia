@@ -2,6 +2,7 @@ import React from 'react';
 import Sidebar from '@/components/layout/Sidebar';
 import Header from '@/components/layout/Header';
 import { Container } from '@/design-system/layout/container';
+import { AdminAlertListener } from './AdminAlertListener';
 
 /**
  * Specialized layout for the Admin Dashboard.
@@ -14,6 +15,9 @@ export default function AdminLayout({
 }) {
   return (
     <div className="flex min-h-screen bg-background">
+      {/* Background listener for real-time administrative alerts */}
+      <AdminAlertListener />
+      
       {/* Fixed Sidebar for Admin Navigation */}
       <Sidebar className="hidden lg:flex sticky top-0 h-screen" />
       

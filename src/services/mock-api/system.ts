@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { SystemSettings, SystemNotification } from '@/types/system';
+import { SystemSettings, SystemNotification, AdminAlert } from '@/types/system';
 
 /**
  * @fileOverview Mock service for managing global platform configuration and system notifications.
@@ -35,6 +35,12 @@ const mockNotifications: SystemNotification[] = [
   { id: 'sn-1', title: 'Q1 Performance Grants', message: 'Applications for the Q1 Intelligence Research grants are now open for verified experts.', active: true, type: 'success', target: 'creators', createdAt: '2024-03-10T10:00:00Z' },
   { id: 'sn-2', title: 'System Maintenance', message: 'The pSEO indexing engine will undergo scheduled optimization on Sunday at 02:00 UTC.', active: true, type: 'warning', target: 'all', createdAt: '2024-03-12T08:30:00Z' },
   { id: 'sn-3', title: 'Policy Update', message: 'Expert revenue share benchmarks have been updated in the System Configuration panel.', active: false, type: 'info', target: 'admins', createdAt: '2024-03-05T14:20:00Z' },
+];
+
+const mockAdminAlerts: AdminAlert[] = [
+  { id: 'aa-1', type: 'content', message: 'New high-priority article submission from @marketmaven.', read: false, createdAt: new Date().toISOString(), priority: 'high' },
+  { id: 'aa-2', type: 'user', message: 'Expert verification request pending for User #842.', read: false, createdAt: new Date().toISOString(), priority: 'medium' },
+  { id: 'aa-3', type: 'system', message: 'pSEO Health Audit complete: 14 nodes require metadata optimization.', read: false, createdAt: new Date().toISOString(), priority: 'low' },
 ];
 
 export const getSystemSettings = async (): Promise<ApiResponse<SystemSettings>> => {
@@ -77,5 +83,13 @@ export const deleteSystemNotification = async (id: string): Promise<ApiResponse<
     data: undefined,
     status: 200,
     message: 'Notification purged from index.'
+  };
+};
+
+export const getAdminAlerts = async (): Promise<ApiResponse<AdminAlert[]>> => {
+  await new Promise((resolve) => setTimeout(resolve, 300));
+  return {
+    data: mockAdminAlerts,
+    status: 200,
   };
 };

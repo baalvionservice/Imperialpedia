@@ -1,6 +1,6 @@
 import * as mockApi from '@/services/mock-api/system';
 import { ApiResponse } from '@/types';
-import { SystemSettings, SystemNotification } from '@/types/system';
+import { SystemSettings, SystemNotification, AdminAlert } from '@/types/system';
 import { errorHandler } from '@/lib/errors/error-handler';
 
 /**
@@ -67,6 +67,19 @@ export const systemService = {
       const appError = errorHandler.handleError(error);
       return {
         data: undefined,
+        status: appError.statusCode,
+        error: appError.message,
+      };
+    }
+  },
+
+  async getAlerts(): Promise<ApiResponse<AdminAlert[]>> {
+    try {
+      return await mockApi.getAdminAlerts();
+    } catch (error) {
+      const appError = errorHandler.handleError(error);
+      return {
+        data: [],
         status: appError.statusCode,
         error: appError.message,
       };
