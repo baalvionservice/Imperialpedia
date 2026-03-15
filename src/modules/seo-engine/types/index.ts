@@ -18,3 +18,7 @@ export interface BreadcrumbItem {
   name: string;
   item: string;
 }
+
+export interface Breadcrumb {
+  items: BreadcrumbItem[];
+}

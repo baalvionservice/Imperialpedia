@@ -6,6 +6,8 @@ import { ArticleList, CategoryHeader } from '@/modules/content-engine/components
 import { getCategoryBySlug, getArticlesByCategory } from '@/modules/content-engine/services/category-service';
 import { buildMetadata } from '@/lib/seo';
 import { Metadata } from 'next';
+import { Breadcrumbs } from '@/modules/seo-engine/components/Breadcrumbs';
+import { breadcrumbService } from '@/modules/seo-engine/services/breadcrumb-service';
 
 interface CategoryRouteProps {
   params: Promise<{ slug: string }>;
@@ -34,7 +36,6 @@ export async function generateMetadata({ params }: CategoryRouteProps): Promise<
 
 /**
  * Category Archive Page Component.
- * Displays all articles associated with a specific financial topic.
  */
 export default async function CategoryPage({ params }: CategoryRouteProps) {
   const { slug } = await params;
@@ -51,10 +52,13 @@ export default async function CategoryPage({ params }: CategoryRouteProps) {
     notFound();
   }
 
+  const breadcrumbs = breadcrumbService.generateBreadcrumbForCategory(category);
+
   return (
     <main className="min-h-screen bg-background pt-16">
-      <Section spacing="md">
+      <Section spacing="sm">
         <Container>
+          <Breadcrumbs breadcrumb={breadcrumbs} />
           <CategoryHeader category={category} />
           
           <div className="mt-12">

@@ -10,6 +10,21 @@ import { SEOPageData, BreadcrumbItem } from '../types';
 
 export const seoService = {
   /**
+   * Generates a URL-friendly slug from a string.
+   */
+  generateSlug: (text: string): string => {
+    return text
+      .toString()
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, '-')     // Replace spaces with -
+      .replace(/[^\w-]+/g, '')  // Remove all non-word chars
+      .replace(/--+/g, '-')     // Replace multiple - with single -
+      .replace(/^-+/, '')       // Trim - from start of text
+      .replace(/-+$/, '');      // Trim - from end of text
+  },
+
+  /**
    * Generates dynamic Next.js Metadata for programmatic pages.
    */
   generateMetadata: (data: SEOPageData, pathPrefix: string): Metadata => {
@@ -26,7 +41,7 @@ export const seoService = {
   /**
    * Generates JSON-LD Structured Data for search engines.
    */
-  generateStructuredData: (data: SEOPageData, type: 'article' | 'glossary' | 'tool' | 'breadcrumb') => {
+  generateStructuredData: (data: SEOPageData, type: 'article' | 'glossary' | 'tool' | 'breadcrumb' | 'breadcrumb-list', items?: BreadcrumbItem[]) => {
     switch (type) {
       case 'article':
         return structuredData.article({
@@ -38,9 +53,9 @@ export const seoService = {
           dateModified: data.updatedAt,
         });
       
-      case 'breadcrumb':
-        // Logic for breadcrumbs can be added here
-        return null;
+      case 'breadcrumb-list':
+        if (!items) return null;
+        return structuredData.breadcrumb(items);
 
       default:
         return structuredData.organization();

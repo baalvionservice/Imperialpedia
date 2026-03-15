@@ -10,6 +10,8 @@ import { AlphabetNav } from '@/modules/seo/components/AlphabetNav';
 import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { ArrowRight, ChevronRight, Home } from 'lucide-react';
+import { Breadcrumbs } from '@/modules/seo-engine/components/Breadcrumbs';
+import { breadcrumbService } from '@/modules/seo-engine/services/breadcrumb-service';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -21,7 +23,6 @@ interface PageProps {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   
-  // Case 1: Browse by Letter (single char)
   if (slug.length === 1) {
     const letter = slug.toUpperCase();
     return seoService.generateMetadata({
@@ -33,7 +34,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     }, '/glossary');
   }
 
-  // Case 2: Specific Term
   const response = await glossaryEngineService.getTermBySlug(slug);
   const term = response.data;
 
@@ -72,19 +72,13 @@ export default async function GlossaryRouterPage({ params }: PageProps) {
     slug: term.slug,
   }, 'article');
 
+  const breadcrumbs = breadcrumbService.generateBreadcrumbForGlossary(term);
+
   return (
     <main className="min-h-screen bg-background pt-20">
       <JsonLd data={jsonLd} />
       <Container isNarrow>
-        <nav className="flex items-center gap-2 text-xs text-muted-foreground mb-12">
-          <Link href="/" className="hover:text-primary flex items-center gap-1"><Home className="w-3 h-3" /> Home</Link>
-          <ChevronRight className="w-3 h-3" />
-          <Link href="/glossary" className="hover:text-primary">Glossary</Link>
-          <ChevronRight className="w-3 h-3" />
-          <Link href={`/glossary/${term.term.charAt(0).toLowerCase()}`} className="hover:text-primary uppercase">{term.term.charAt(0)}</Link>
-          <ChevronRight className="w-3 h-3" />
-          <span className="text-foreground font-bold">{term.term}</span>
-        </nav>
+        <Breadcrumbs breadcrumb={breadcrumbs} />
 
         <header className="mb-12">
           <Text variant="label" className="text-primary mb-4">{term.category}</Text>
@@ -150,10 +144,13 @@ export default async function GlossaryRouterPage({ params }: PageProps) {
 async function AlphabetArchive({ letter }: { letter: string }) {
   const response = await glossaryEngineService.getTermsByLetter(letter);
   const terms = response.data;
+  const breadcrumbs = breadcrumbService.generateBreadcrumbForGlossaryLetter(letter);
 
   return (
     <main className="min-h-screen bg-background pt-20">
       <Container>
+        <Breadcrumbs breadcrumb={breadcrumbs} />
+        
         <header className="mb-12 max-w-3xl">
           <Text variant="label" className="text-primary mb-4">A–Z Browse</Text>
           <Text variant="h1" className="mb-6">Terms starting with "{letter.toUpperCase()}"</Text>

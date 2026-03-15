@@ -9,6 +9,8 @@ import { Badge } from '@/components/ui/badge';
 import { Tag as TagIcon } from 'lucide-react';
 import { buildMetadata } from '@/lib/seo';
 import { Metadata } from 'next';
+import { Breadcrumbs } from '@/modules/seo-engine/components/Breadcrumbs';
+import { breadcrumbService } from '@/modules/seo-engine/services/breadcrumb-service';
 
 interface TagRouteProps {
   params: Promise<{ slug: string }>;
@@ -37,7 +39,6 @@ export async function generateMetadata({ params }: TagRouteProps): Promise<Metad
 
 /**
  * Tag Archive Page Component.
- * Displays all articles associated with a specific topic tag.
  */
 export default async function TagPage({ params }: TagRouteProps) {
   const { slug } = await params;
@@ -54,10 +55,14 @@ export default async function TagPage({ params }: TagRouteProps) {
     notFound();
   }
 
+  const breadcrumbs = breadcrumbService.generateBreadcrumbForTag(tag);
+
   return (
     <main className="min-h-screen bg-background pt-16">
-      <Section spacing="md">
+      <Section spacing="sm">
         <Container>
+          <Breadcrumbs breadcrumb={breadcrumbs} />
+          
           <header className="mb-12 max-w-3xl">
             <div className="flex items-center gap-3 mb-6">
               <div className="p-3 rounded-2xl bg-secondary/10 border border-secondary/20 shadow-sm">
