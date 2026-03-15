@@ -2,7 +2,7 @@ import { ApiResponse, SearchResult, SearchSuggestion, AdvancedSearchFilters, Top
 
 /**
  * @fileOverview Mock service for the Global Search System.
- * Expanded with diverse entity types, dates, and view counts for sorting.
+ * Expanded with diverse entity types, dates, and view counts for sorting and pagination.
  */
 
 const mockSearchData: SearchResult[] = [
@@ -29,6 +29,66 @@ const mockSearchData: SearchResult[] = [
     tags: ['Wealth', 'Basics', 'Savings'],
     date: '2024-02-15T09:00:00Z',
     views: 38900
+  },
+  {
+    id: 'art-3',
+    type: 'article',
+    title: 'Macro Trends in 2026',
+    snippet: 'Anticipating the structural shifts in global fiscal policy and the next interest rate super-cycle.',
+    route: '/articles/macro-trends-2026',
+    category: 'Economics',
+    author: 'Eleanor Vance',
+    tags: ['Macro', 'Future', 'Policy'],
+    date: '2024-03-05T14:00:00Z',
+    views: 31200
+  },
+  {
+    id: 'art-4',
+    type: 'article',
+    title: 'DeFi Liquidity Pools Explained',
+    snippet: 'A technical guide to how automated market makers (AMMs) operate in the decentralized landscape.',
+    route: '/articles/defi-liquidity-pools',
+    category: 'Crypto',
+    author: 'Sarah Crypto',
+    tags: ['DeFi', 'Web3', 'Liquidity'],
+    date: '2024-03-08T11:00:00Z',
+    views: 28400
+  },
+  {
+    id: 'art-5',
+    type: 'article',
+    title: 'Passive Income with Dividends',
+    snippet: 'Building a sustainable cash flow engine using high-quality dividend growth stocks.',
+    route: '/articles/dividend-income',
+    category: 'Investing',
+    author: 'Dan Income',
+    tags: ['Dividends', 'Wealth', 'Passive Income'],
+    date: '2024-01-20T09:00:00Z',
+    views: 42500
+  },
+  {
+    id: 'art-6',
+    type: 'article',
+    title: 'ESG Investing Strategies',
+    snippet: 'How to align your portfolio with environmental, social, and governance principles without sacrificing yield.',
+    route: '/articles/esg-strategies',
+    category: 'Investing',
+    author: 'Julian Wealth',
+    tags: ['ESG', 'Strategy', 'Investing'],
+    date: '2024-02-10T10:30:00Z',
+    views: 15600
+  },
+  {
+    id: 'art-7',
+    type: 'article',
+    title: 'The Future of Central Banking',
+    snippet: 'Evaluating the transition to digital currencies and algorithmic monetary policy.',
+    route: '/articles/future-of-central-banking',
+    category: 'Economics',
+    author: 'The Market Maven',
+    tags: ['Macro', 'Banking', 'CBDC'],
+    date: '2024-03-12T08:00:00Z',
+    views: 52000
   },
   {
     id: 'creator-1',
@@ -104,17 +164,6 @@ const mockSearchData: SearchResult[] = [
     tags: ['Macro', 'Taxonomy', 'Economics'],
     date: '2023-05-20T10:00:00Z',
     views: 120000
-  },
-  {
-    id: 'topic-2',
-    type: 'topic',
-    title: 'Fixed Income Intelligence',
-    snippet: 'Knowledge hub covering bonds, yields, and interest rate strategies.',
-    route: '/tags/interest-rates',
-    category: 'Markets',
-    tags: ['Yield Curve', 'Bonds', 'Markets'],
-    date: '2023-06-15T09:00:00Z',
-    views: 95000
   }
 ];
 
@@ -218,4 +267,13 @@ export const getRecommendedTopics = async (query?: string): Promise<ApiResponse<
     data: mockRecommendedTopics,
     status: 200
   };
+};
+
+/**
+ * Slices a result set based on pagination parameters.
+ */
+export const paginateResults = (results: SearchResult[], page: number, pageSize: number): SearchResult[] => {
+  const start = (page - 1) * pageSize;
+  const end = start + pageSize;
+  return results.slice(start, end);
 };

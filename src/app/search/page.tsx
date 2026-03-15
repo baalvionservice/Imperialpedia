@@ -51,17 +51,21 @@ import {
   Flame,
   Landmark,
   ShieldCheck,
-  Star
+  Star,
+  BarChart3
 } from 'lucide-react';
 import { SearchResult, SearchResultType, SearchSuggestion, AdvancedSearchFilters, SearchSortOption, TopicRecommendation } from '@/types';
 import { searchService } from '@/services/data/search-service';
+import { paginateResults } from '@/services/mock-api/search';
+import { Pagination } from '@/components/ui/pagination';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
+const ITEMS_PER_PAGE = 6;
+
 /**
  * Global search page for the Imperialpedia platform.
- * Supports cross-entity discovery with real-time auto-suggestions, category filtering, tag chips, and sorting.
- * Now includes a trending highlights section and topic recommendation engine.
+ * Supports cross-entity discovery with real-time auto-suggestions, category filtering, tag chips, sorting, and pagination.
  */
 export default function SearchPage() {
   const [query, setQuery] = useState('');
@@ -77,6 +81,7 @@ export default function SearchPage() {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [isAdvancedOpen, setIsAdvancedOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
   
   // Advanced Filter & Sort States
   const [selectedAuthor, setSelectedAuthor] = useState('all');
@@ -149,6 +154,7 @@ export default function SearchPage() {
     setIsLoading(true);
     setShowSuggestions(false);
     setSelectedTags([]); // Clear tag filters on new search
+    setCurrentPage(1); // Reset to first page
     
     const filters: AdvancedSearchFilters = {
       author: selectedAuthor,
@@ -184,6 +190,7 @@ export default function SearchPage() {
     setSelectedTags(prev => 
       prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]
     );
+    setCurrentPage(1); // Reset to first page when filtering
   };
 
   const filteredResults = useMemo(() => {
@@ -207,6 +214,13 @@ export default function SearchPage() {
 
     return filtered;
   }, [results, activeTab, selectedTags]);
+
+  // Pagination Logic
+  const paginatedResults = useMemo(() => {
+    return paginateResults(filteredResults, currentPage, ITEMS_PER_PAGE);
+  }, [filteredResults, currentPage]);
+
+  const totalPages = Math.ceil(filteredResults.length / ITEMS_PER_PAGE);
 
   const getResultIcon = (type: SearchResultType | string) => {
     switch (type) {
@@ -246,6 +260,18 @@ export default function SearchPage() {
     setQuery('');
     setResults([]);
     setSelectedTags([]);
+    setCurrentPage(1);
+  };
+
+  const handleTabChange = (val: string) => {
+    setActiveTab(val);
+    setSelectedTags([]);
+    setCurrentPage(1);
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -280,7 +306,7 @@ export default function SearchPage() {
                   {query && (
                     <button 
                       type="button" 
-                      onClick={() => { setQuery(''); setSuggestions([]); setResults([]); setSelectedTags([]); }}
+                      onClick={() => { setQuery(''); setSuggestions([]); setResults([]); setSelectedTags([]); setCurrentPage(1); }}
                       className="p-1 hover:bg-muted rounded-full text-muted-foreground transition-colors"
                     >
                       <X className="h-4 w-4" />
@@ -508,7 +534,7 @@ export default function SearchPage() {
             </div>
           )}
 
-          <Tabs value={activeTab} onValueChange={(val) => { setActiveTab(val); setSelectedTags([]); }} className="w-full">
+          <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
             {(results.length > 0) && (
               <div className="flex justify-center mb-8">
                 <TabsList className="bg-card/30 border border-white/5 p-1 h-12 rounded-xl overflow-x-auto no-scrollbar justify-start sm:justify-center w-full sm:w-auto">
@@ -540,7 +566,7 @@ export default function SearchPage() {
                     </div>
                     {selectedTags.length > 0 && (
                       <button 
-                        onClick={() => setSelectedTags([])}
+                        onClick={() => toggleTag('')} // Passing empty clears all via reset logic
                         className="text-[10px] font-bold text-primary hover:underline w-fit"
                       >
                         Clear Topics
@@ -550,7 +576,7 @@ export default function SearchPage() {
 
                   <div className="flex items-center gap-3 w-full sm:w-auto">
                     <Text variant="label" className="text-[10px] text-muted-foreground shrink-0">Sort By</Text>
-                    <Select value={sortBy} onValueChange={(val) => setSortBy(val as SearchSortOption)}>
+                    <Select value={sortBy} onValueChange={(val) => { setSortBy(val as SearchSortOption); setCurrentPage(1); }}>
                       <SelectTrigger className="h-10 w-full sm:w-[160px] bg-card/30 border-white/5 rounded-xl text-xs font-bold">
                         <SortAsc className="h-3.5 w-3.5 mr-2 text-primary" />
                         <SelectValue />
@@ -612,61 +638,69 @@ export default function SearchPage() {
                     </Card>
                   ))}
                 </div>
-              ) : filteredResults.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {filteredResults.map((result) => (
-                    <Link key={result.id} href={result.route}>
-                      <Card className="glass-card h-full transition-all duration-300 hover:translate-y-[-4px] hover:border-primary/40 hover:shadow-2xl group">
-                        <CardHeader className="p-6 pb-2">
-                          <div className="flex justify-between items-start mb-4">
-                            <div className="flex items-center gap-2">
-                              {getResultIcon(result.type)}
-                              {getResultBadge(result.type)}
-                            </div>
-                            {result.category && (
-                              <Text variant="label" className="text-[10px] text-muted-foreground opacity-50">
-                                {result.category}
-                              </Text>
-                            )}
-                          </div>
-                          <CardTitle className="text-xl group-hover:text-primary transition-colors leading-tight">
-                            {result.title}
-                          </CardTitle>
-                        </CardHeader>
-                        <CardContent className="p-6 pt-2">
-                          <CardDescription className="text-sm line-clamp-2 leading-relaxed text-muted-foreground mb-6">
-                            {result.snippet}
-                          </CardDescription>
-                          
-                          {result.tags && result.tags.length > 0 && (
-                            <div className="flex flex-wrap gap-1.5 mb-6">
-                              {result.tags.slice(0, 3).map(tag => (
-                                <span key={tag} className="text-[9px] font-bold text-primary/60 bg-primary/5 px-1.5 py-0.5 rounded border border-primary/10">
-                                  #{tag}
-                                </span>
-                              ))}
-                            </div>
-                          )}
-                          
-                          <div className="flex items-center justify-between mt-auto pt-4 border-t border-white/5">
-                            {result.author ? (
-                              <div className="flex items-center gap-2 text-xs text-muted-foreground font-medium">
-                                <User className="h-3 w-3" /> {result.author}
+              ) : paginatedResults.length > 0 ? (
+                <div className="space-y-12">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {paginatedResults.map((result) => (
+                      <Link key={result.id} href={result.route}>
+                        <Card className="glass-card h-full transition-all duration-300 hover:translate-y-[-4px] hover:border-primary/40 hover:shadow-2xl group">
+                          <CardHeader className="p-6 pb-2">
+                            <div className="flex justify-between items-start mb-4">
+                              <div className="flex items-center gap-2">
+                                {getResultIcon(result.type)}
+                                {getResultBadge(result.type)}
                               </div>
-                            ) : result.views ? (
-                              <div className="flex items-center gap-2 text-[10px] text-muted-foreground font-bold uppercase tracking-tighter">
-                                <TrendingUp className="h-3 w-3 text-emerald-500" /> {result.views.toLocaleString()} Views
-                              </div>
-                            ) : <div></div>}
+                              {result.category && (
+                                <Text variant="label" className="text-[10px] text-muted-foreground opacity-50">
+                                  {result.category}
+                                </Text>
+                              )}
+                            </div>
+                            <CardTitle className="text-xl group-hover:text-primary transition-colors leading-tight">
+                              {result.title}
+                            </CardTitle>
+                          </CardHeader>
+                          <CardContent className="p-6 pt-2">
+                            <CardDescription className="text-sm line-clamp-2 leading-relaxed text-muted-foreground mb-6">
+                              {result.snippet}
+                            </CardDescription>
                             
-                            <div className="flex items-center gap-1 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
-                              Explore <ArrowRight className="h-3 w-3" />
+                            {result.tags && result.tags.length > 0 && (
+                              <div className="flex flex-wrap gap-1.5 mb-6">
+                                {result.tags.slice(0, 3).map(tag => (
+                                  <span key={tag} className="text-[9px] font-bold text-primary/60 bg-primary/5 px-1.5 py-0.5 rounded border border-primary/10">
+                                    #{tag}
+                                  </span>
+                                ))}
+                              </div>
+                            )}
+                            
+                            <div className="flex items-center justify-between mt-auto pt-4 border-t border-white/5">
+                              {result.author ? (
+                                <div className="flex items-center gap-2 text-xs text-muted-foreground font-medium">
+                                  <User className="h-3 w-3" /> {result.author}
+                                </div>
+                              ) : result.views ? (
+                                <div className="flex items-center gap-2 text-[10px] text-muted-foreground font-bold uppercase tracking-tighter">
+                                  <TrendingUp className="h-3 w-3 text-emerald-500" /> {result.views.toLocaleString()} Views
+                                </div>
+                              ) : <div></div>}
+                              
+                              <div className="flex items-center gap-1 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                                Explore <ArrowRight className="h-3 w-3" />
+                              </div>
                             </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </Link>
-                  ))}
+                          </CardContent>
+                        </Card>
+                      </Link>
+                    ))}
+                  </div>
+
+                  <Pagination 
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={handlePageChange}
+                  />
                 </div>
               ) : (query.trim().length >= 2 || selectedAuthor !== 'all' || selectedCategory !== 'all') && results.length === 0 && !isLoading ? (
                 <div className="py-32 text-center bg-card/10 rounded-[3rem] border-2 border-dashed border-white/5">
