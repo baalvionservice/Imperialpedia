@@ -4,7 +4,7 @@ import { ID, Slug, Timestamp } from '@/types/common';
  * @fileOverview Comprehensive type definition for an Article in the Content Engine.
  */
 
-export type ArticleStatus = 'draft' | 'review' | 'published' | 'archived' | 'changes_requested';
+export type ArticleStatus = 'draft' | 'review' | 'published' | 'archived' | 'changes_requested' | 'submitted';
 
 export interface Article {
   id: ID;
@@ -54,6 +54,25 @@ export interface Comment {
 export interface SubmittedArticle extends Article {
   comments: Comment[];
   submittedAt: string;
+}
+
+export interface ArticleSubmission {
+  id: string;
+  title: string;
+  body: string;
+  authorId: string;
+  status: "submitted" | "approved" | "changes_requested";
+  submittedAt: string;
+  updatedAt?: string;
+}
+
+export interface Notification {
+  id: string;
+  userId: string;
+  message: string;
+  type: "success" | "info" | "warning";
+  createdAt: string;
+  read: boolean;
 }
 
 export interface Writer {

@@ -24,7 +24,9 @@ import {
   Image as ImageIcon,
   Layers,
   Tags,
-  ShieldAlert
+  ShieldAlert,
+  GitPullRequest,
+  Bell
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 import { useAppStore } from '@/lib/state/app-store';
@@ -34,22 +36,33 @@ interface SidebarItemProps {
   label: string;
   href: string;
   isActive: boolean;
+  badge?: number;
 }
 
-const SidebarItem = ({ icon: Icon, label, href, isActive }: SidebarItemProps) => (
+const SidebarItem = ({ icon: Icon, label, href, isActive, badge }: SidebarItemProps) => (
   <Link
     href={href}
     className={cn(
-      'flex items-center space-x-3 px-4 py-2.5 rounded-lg transition-all duration-200 group',
+      'flex items-center justify-between px-4 py-2.5 rounded-lg transition-all duration-200 group',
       isActive 
         ? 'bg-primary text-primary-foreground shadow-md' 
         : 'text-muted-foreground hover:bg-muted hover:text-foreground'
     )}
   >
-    <Icon className={cn('h-5 w-5', isActive ? 'text-white' : 'group-hover:text-primary')} />
-    <Text variant="bodySmall" weight={isActive ? 'bold' : 'medium'}>
-      {label}
-    </Text>
+    <div className="flex items-center space-x-3">
+      <Icon className={cn('h-5 w-5', isActive ? 'text-white' : 'group-hover:text-primary')} />
+      <Text variant="bodySmall" weight={isActive ? 'bold' : 'medium'}>
+        {label}
+      </Text>
+    </div>
+    {badge !== undefined && badge > 0 && (
+      <span className={cn(
+        "px-1.5 py-0.5 rounded-full text-[10px] font-bold",
+        isActive ? "bg-white text-primary" : "bg-primary/20 text-primary"
+      )}>
+        {badge}
+      </span>
+    )}
   </Link>
 );
 
@@ -59,8 +72,10 @@ const SidebarItem = ({ icon: Icon, label, href, isActive }: SidebarItemProps) =>
  */
 const Sidebar = ({ className }: { className?: string }) => {
   const pathname = usePathname();
-  const { currentUser } = useAppStore();
+  const { currentUser, notifications } = useAppStore();
   const role = currentUser?.role || 'guest';
+
+  const unreadNotifications = notifications.filter(n => !n.read).length;
 
   const isAdmin = role === 'admin';
   const isEditor = role === 'editor' || role === 'admin';
@@ -79,6 +94,7 @@ const Sidebar = ({ className }: { className?: string }) => {
 
   const editorItems = [
     { icon: LayoutDashboard, label: 'Editor Home', href: '/editor' },
+    { icon: GitPullRequest, label: 'Editorial Workflow', href: '/editor/workflow' },
     { icon: FileSearch, label: 'Pending Reviews', href: '/editor/pending' },
     { icon: CheckCircle, label: 'Approved Index', href: '/editor/approved' },
     { icon: MessageSquare, label: 'Editorial Chat', href: '/editor/messages' },
@@ -88,6 +104,7 @@ const Sidebar = ({ className }: { className?: string }) => {
     { icon: LayoutDashboard, label: 'Writer Home', href: '/writer' },
     { icon: PlusSquare, label: 'New Article', href: '/writer/new' },
     { icon: FileEdit, label: 'My Drafts', href: '/writer/drafts' },
+    { icon: Bell, label: 'Notifications', href: '/writer/notifications', badge: unreadNotifications },
     { icon: Send, label: 'Submissions', href: '/writer/submissions' },
     { icon: UserCircle, label: 'Creator Profile', href: '/creators/profile' },
   ];
@@ -161,8 +178,8 @@ const Sidebar = ({ className }: { className?: string }) => {
           </div>
         )}
 
-        {/* General Publishing Links */}
-        {!pathname.startsWith('/admin') && !pathname.startsWith('/writer') && !pathname.startsWith('/editor') && (
+        {/* General Knowledge Context */}
+        {(!pathname.startsWith('/admin') && !pathname.startsWith('/writer') && !pathname.startsWith('/editor')) && (
           <div>
             <Text variant="label" className="px-4 mb-3 text-[10px] text-muted-foreground/50 font-bold uppercase tracking-widest">
               Knowledge Hub
