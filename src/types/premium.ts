@@ -123,3 +123,36 @@ export interface PortfolioDeepDiveData {
     asset_correlation: Record<string, string>;
   };
 }
+
+/**
+ * Prompt 56: Advanced Asset Screeners & Strategy Builder Types
+ */
+export interface ScreenerNode {
+  name: string;
+  filters: string[];
+  results: number;
+  last_run?: string;
+}
+
+export interface ScreenerAsset {
+  name: string;
+  symbol: string;
+  price: string;
+  market_cap: string;
+  change_24h: string;
+  volume: string;
+  sentiment: number;
+  momentum: number;
+}
+
+export interface CustomStrategy {
+  strategy_name: string;
+  conditions: string[];
+  status: 'mock_active' | 'mock_inactive';
+}
+
+export interface ScreenerDashboardData {
+  screeners: ScreenerNode[];
+  assets: ScreenerAsset[];
+  strategies: CustomStrategy[];
+}

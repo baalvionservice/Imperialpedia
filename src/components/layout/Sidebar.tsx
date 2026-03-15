@@ -69,7 +69,8 @@ import {
   ShieldWarning,
   Key,
   Languages,
-  PieChart as PieIcon
+  PieChart as PieIcon,
+  Filter
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 import { useAppStore } from '@/lib/state/app-store';
@@ -134,6 +135,7 @@ const Sidebar = ({ className }: { className?: string }) => {
 
   const premiumItems = [
     { icon: CreditCard, label: 'Subscription Hub', href: '/premium/subscribe' },
+    { icon: Filter, label: 'Asset Screener', href: '/premium/screener' },
     { icon: PieIcon, label: 'AI Portfolio Deep-Dive', href: '/premium/deep-dive' },
     { icon: PieIcon, label: 'Business Insights', href: '/premium/dashboard' },
     { icon: FileSearch, label: 'Intelligence Reports', href: '/premium/reports' },

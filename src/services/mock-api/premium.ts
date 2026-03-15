@@ -1,8 +1,8 @@
-import { ApiResponse, SubscriptionTier, PremiumState, PremiumReport, PremiumAnalytics, MockPaymentStatus, BacktestingTool, PremiumDashboardData, PortfolioDeepDiveData } from '@/types/premium';
+import { ApiResponse, SubscriptionTier, PremiumState, PremiumReport, PremiumAnalytics, MockPaymentStatus, BacktestingTool, PremiumDashboardData, PortfolioDeepDiveData, ScreenerDashboardData } from '@/types/premium';
 
 /**
  * @fileOverview Mock service for managing subscription tiers, premium reports, and advanced analytics.
- * Aligned with Prompt 41, 54, and 55 requirements.
+ * Aligned with Prompt 41, 54, 55, and 56 requirements.
  */
 
 const mockSubscriptionPlans = [
@@ -277,6 +277,39 @@ export const getPortfolioDeepDiveData = async (): Promise<ApiResponse<PortfolioD
   await new Promise((resolve) => setTimeout(resolve, 700));
   return {
     data: mockPortfolioDeepDiveData,
+    status: 200,
+  };
+};
+
+/**
+ * Prompt 56: Advanced Asset Screeners & Strategy Builder Mock API
+ */
+const mockScreenerData: ScreenerDashboardData = {
+  screeners: [
+    { name: "High Momentum Stocks", filters: ["Momentum > 80", "Volume > 1M"], results: 42, last_run: "2 hours ago" },
+    { name: "Bullish Social Sentiment", filters: ["Sentiment Score > 75"], results: 28, last_run: "1 hour ago" },
+    { name: "Undervalued Growth", filters: ["P/E < 15", "Revenue Growth > 20%"], results: 15, last_run: "4 hours ago" },
+    { name: "High Dividend Yield", filters: ["Yield > 4%", "Payout Ratio < 60%"], results: 34, last_run: "Yesterday" }
+  ],
+  assets: [
+    { name: "Apple Inc.", symbol: "AAPL", price: "175.20", market_cap: "2.8T", change_24h: "+1.2%", volume: "90M", sentiment: 72, momentum: 85 },
+    { name: "Tesla Inc.", symbol: "TSLA", price: "245.50", market_cap: "780B", change_24h: "+2.4%", volume: "65M", sentiment: 81, momentum: 88 },
+    { name: "NVIDIA Corp", symbol: "NVDA", price: "875.25", market_cap: "2.1T", change_24h: "+5.2%", volume: "45M", sentiment: 92, momentum: 95 },
+    { name: "Microsoft", symbol: "MSFT", price: "415.50", market_cap: "3.1T", change_24h: "+0.8%", volume: "22M", sentiment: 68, momentum: 74 },
+    { name: "Alphabet Inc", symbol: "GOOGL", price: "155.30", market_cap: "1.9T", change_24h: "-1.1%", volume: "18M", sentiment: 55, momentum: 62 },
+    { name: "Amazon.com", symbol: "AMZN", price: "178.40", market_cap: "1.8T", change_24h: "+1.5%", volume: "35M", sentiment: 78, momentum: 81 }
+  ],
+  strategies: [
+    { strategy_name: "Oversold Bounce", conditions: ["RSI < 30", "Sentiment Score > 60"], status: "mock_active" },
+    { strategy_name: "Volume Breakout", conditions: ["Volume > 2x Avg", "Price > 200 EMA"], status: "mock_active" },
+    { strategy_name: "Dividend Fortress", conditions: ["Yield > 3.5%", "Debt/Equity < 0.5"], status: "mock_inactive" }
+  ]
+};
+
+export const getScreenerDashboardData = async (): Promise<ApiResponse<ScreenerDashboardData>> => {
+  await new Promise((resolve) => setTimeout(resolve, 600));
+  return {
+    data: mockScreenerData,
     status: 200,
   };
 };
