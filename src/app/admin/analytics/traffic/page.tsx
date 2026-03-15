@@ -2,7 +2,9 @@
 
 import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { Text } from '@/design-system/typography/text';
 import { 
   Globe, 
@@ -18,11 +20,13 @@ import {
   Loader2,
   TrendingUp,
   MapPin,
-  ChevronRight
+  ChevronRight,
+  MousePointer2,
+  Share2
 } from 'lucide-react';
 import Link from 'next/link';
 import { analyticsService } from '@/services/data/analytics-service';
-import { TrafficAnalytics } from '@/types/analytics';
+import { TrafficAnalyticsReport } from '@/types/analytics';
 import { 
   AreaChart, 
   Area, 
@@ -35,20 +39,26 @@ import {
   Bar,
   Cell,
   PieChart,
-  Pie
+  Pie,
+  LineChart,
+  Line
 } from 'recharts';
 
+/**
+ * Traffic Monitoring Dashboard.
+ * Visualizes visitor trajectory, acquisition channels, and high-velocity entry points.
+ */
 export default function TrafficMonitoringPage() {
-  const [data, setData] = useState<TrafficAnalytics | null>(null);
+  const [data, setData] = useState<TrafficAnalyticsReport | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function loadData() {
       try {
-        const response = await analyticsService.getTrafficAnalytics();
+        const response = await analyticsService.getTrafficAnalyticsReport();
         if (response.data) setData(response.data);
       } catch (e) {
-        console.error(e);
+        console.error('Traffic intelligence sync failure', e);
       } finally {
         setLoading(false);
       }
@@ -61,7 +71,7 @@ export default function TrafficMonitoringPage() {
       <div className="py-40 flex flex-col items-center justify-center space-y-4">
         <Loader2 className="h-12 w-12 text-primary animate-spin" />
         <Text variant="bodySmall" className="text-muted-foreground animate-pulse font-bold uppercase tracking-widest">
-          Syncing Platform Traffic Nodes...
+          Synchronizing Global Traffic Nodes...
         </Text>
       </div>
     );
@@ -69,18 +79,6 @@ export default function TrafficMonitoringPage() {
 
   const formatCompact = (val: number) => 
     new Intl.NumberFormat('en-US', { notation: 'compact' }).format(val);
-
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins}m ${secs}s`;
-  };
-
-  const deviceData = [
-    { name: 'Desktop', value: data.deviceBreakdown.desktop, icon: Monitor, color: '#8272F2' },
-    { name: 'Mobile', value: data.deviceBreakdown.mobile, icon: Smartphone, color: '#69B9FF' },
-    { name: 'Tablet', value: data.deviceBreakdown.tablet, icon: Tablet, color: '#10b981' },
-  ];
 
   const COLORS = ['#8272F2', '#69B9FF', '#10b981', '#f59e0b', '#ef4444'];
 
@@ -94,13 +92,13 @@ export default function TrafficMonitoringPage() {
           <div>
             <div className="flex items-center gap-2 text-secondary mb-1">
               <Activity className="h-4 w-4" />
-              <Text variant="label" className="text-[10px] font-bold tracking-widest uppercase">System Flow</Text>
+              <Text variant="label" className="text-[10px] font-bold tracking-widest uppercase">Network Velocity</Text>
             </div>
             <Text variant="h1" className="text-3xl font-bold">Traffic Monitoring</Text>
           </div>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" size="sm" className="rounded-xl">
+          <Button variant="outline" size="sm" className="rounded-xl border-white/10 bg-card/30">
             <Download className="mr-2 h-4 w-4" /> Export Logs
           </Button>
         </div>
@@ -108,16 +106,15 @@ export default function TrafficMonitoringPage() {
 
       {/* Real-time Pulse Matrix */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card className="glass-card border-none shadow-xl bg-emerald-500/5">
+        <Card className="glass-card border-none shadow-xl bg-primary/5">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Live Pulse</CardTitle>
-            <Users className="h-4 w-4 text-emerald-500" />
+            <CardTitle className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Monthly Sessions</CardTitle>
+            <Users className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{data.activeUsers.toLocaleString()}</div>
+            <div className="text-2xl font-bold">{formatCompact(125400)}</div>
             <div className="flex items-center text-[10px] text-emerald-500 font-bold mt-1">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse mr-2" />
-              Active readers now
+              <TrendingUp className="h-3 w-3 mr-1" /> +12.4% velocity
             </div>
           </CardContent>
         </Card>
@@ -125,196 +122,156 @@ export default function TrafficMonitoringPage() {
         <Card className="glass-card border-none shadow-xl">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
             <CardTitle className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Session Depth</CardTitle>
-            <Clock className="h-4 w-4 text-primary" />
+            <Clock className="h-4 w-4 text-secondary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{formatTime(data.sessionDuration)}</div>
+            <div className="text-2xl font-bold">6m 42s</div>
             <div className="flex items-center text-[10px] text-muted-foreground font-bold mt-1">
-              Avg. persistence per node
+              Stable vs baseline
             </div>
           </CardContent>
         </Card>
 
         <Card className="glass-card border-none shadow-xl">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Node Views</CardTitle>
-            <Eye className="h-4 w-4 text-secondary" />
+            <CardTitle className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Intelligence Reach</CardTitle>
+            <Eye className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{formatCompact(data.pageViews)}</div>
+            <div className="text-2xl font-bold">{formatCompact(425000)}</div>
             <div className="flex items-center text-[10px] text-emerald-500 font-bold mt-1">
-              <TrendingUp className="h-3 w-3 mr-1" /> +18% session volume
+              <TrendingUp className="h-3 w-3 mr-1" /> +18.2% conversion
             </div>
           </CardContent>
         </Card>
 
-        <Card className="glass-card border-none shadow-xl">
+        <Card className="glass-card border-none shadow-xl bg-secondary/5">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Exit Resistance</CardTitle>
-            <Activity className="h-4 w-4 text-primary" />
+            <CardTitle className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Bounce Resistance</CardTitle>
+            <Share2 className="h-4 w-4 text-secondary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{(100 - data.bounceRate).toFixed(1)}%</div>
-            <div className="flex items-center text-[10px] text-muted-foreground font-bold mt-1">
-              Retention efficiency
+            <div className="text-2xl font-bold">67.6%</div>
+            <div className="flex items-center text-[10px] text-emerald-500 font-bold mt-1">
+              High retention efficiency
             </div>
           </CardContent>
         </Card>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Hourly Velocity Chart */}
-        <Card className="lg:col-span-2 glass-card border-none shadow-2xl">
-          <CardHeader>
-            <CardTitle className="text-lg">Network Velocity</CardTitle>
-            <CardDescription>Visualizing request volume across the last 24 hours.</CardDescription>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        {/* Daily Visits Chart */}
+        <Card className="lg:col-span-8 glass-card border-none shadow-2xl">
+          <CardHeader className="bg-card/30 border-b border-white/5 p-6">
+            <div>
+              <CardTitle className="text-lg">Visitor Momentum</CardTitle>
+              <CardDescription>Daily visit volume across the last 7 cycles.</CardDescription>
+            </div>
           </CardHeader>
-          <CardContent className="h-[350px]">
+          <CardContent className="p-8 h-[400px]">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={data.hourlyTraffic}>
-                <defs>
-                  <linearGradient id="colorTraffic" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#8272F2" stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor="#8272F2" stopOpacity={0}/>
-                  </linearGradient>
-                </defs>
+              <LineChart data={data.dailyVisits}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#ffffff05" vertical={false} />
                 <XAxis 
-                  dataKey="hour" 
+                  dataKey="date" 
                   stroke="#888888" 
                   fontSize={10} 
                   tickLine={false} 
                   axisLine={false} 
+                  tickFormatter={(val) => val.split('-')[2]}
                 />
                 <YAxis stroke="#888888" fontSize={10} tickLine={false} axisLine={false} />
                 <Tooltip 
                   contentStyle={{ backgroundColor: '#1C1822', border: '1px solid #ffffff10', borderRadius: '12px' }}
                   itemStyle={{ color: '#8272F2' }}
                 />
-                <Area 
+                <Line 
                   type="monotone" 
-                  dataKey="sessions" 
+                  dataKey="visits" 
                   stroke="#8272F2" 
-                  fillOpacity={1} 
-                  fill="url(#colorTraffic)" 
-                  strokeWidth={3}
+                  strokeWidth={3} 
+                  dot={{ r: 4, fill: '#8272F2', strokeWidth: 2, stroke: '#1C1822' }}
+                  activeDot={{ r: 6, strokeWidth: 0 }}
                 />
-              </AreaChart>
+              </LineChart>
             </ResponsiveContainer>
           </CardContent>
         </Card>
 
-        {/* Device Breakdown */}
-        <Card className="glass-card border-none shadow-2xl">
-          <CardHeader>
-            <CardTitle className="text-lg">Access Layer</CardTitle>
-            <CardDescription>Breakdown by hardware taxonomy.</CardDescription>
+        {/* Traffic Sources Pie */}
+        <Card className="lg:col-span-4 glass-card border-none shadow-2xl">
+          <CardHeader className="bg-card/30 border-b border-white/5 p-6">
+            <CardTitle className="text-lg">Discovery Channels</CardTitle>
+            <CardDescription>Breakdown by acquisition source.</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-8">
-            <div className="h-[200px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={deviceData}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={60}
-                    outerRadius={80}
-                    paddingAngle={5}
-                    dataKey="value"
-                  >
-                    {deviceData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Tooltip 
-                    contentStyle={{ backgroundColor: '#1C1822', border: '1px solid #ffffff10', borderRadius: '12px' }}
-                  />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-            <div className="space-y-4">
-              {deviceData.map((device) => (
-                <div key={device.name} className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-lg" style={{ backgroundColor: `${device.color}15`, color: device.color }}>
-                      <device.icon className="h-4 w-4" />
-                    </div>
-                    <span className="text-sm font-bold">{device.name}</span>
-                  </div>
-                  <span className="font-mono text-sm">{device.value}%</span>
-                </div>
-              ))}
-            </div>
+          <CardContent className="p-8 h-[400px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={data.trafficSources}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={60}
+                  outerRadius={100}
+                  paddingAngle={5}
+                  dataKey="percent"
+                  nameKey="source"
+                >
+                  {data.trafficSources.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip 
+                  contentStyle={{ backgroundColor: '#1C1822', border: '1px solid #ffffff10', borderRadius: '12px' }}
+                />
+              </PieChart>
+            </ResponsiveContainer>
           </CardContent>
         </Card>
       </div>
 
-      {/* Geographic Distribution Matrix */}
+      {/* Top Pages Performance Matrix */}
       <Card className="glass-card border-none shadow-2xl overflow-hidden">
-        <CardHeader className="bg-card/30 border-b border-white/5">
-          <div className="flex items-center justify-between">
-            <div>
-              <CardTitle className="text-xl">Global Market Reach</CardTitle>
-              <CardDescription>Geographic distribution of the intelligence network.</CardDescription>
-            </div>
-            <Badge variant="outline" className="border-secondary/20 bg-secondary/5 text-secondary">
-              <Globe className="mr-2 h-3 w-3" /> Live Data
-            </Badge>
+        <CardHeader className="bg-card/30 border-b border-white/5 p-6 flex flex-row items-center justify-between">
+          <div>
+            <CardTitle className="text-xl">Entry Point Integrity</CardTitle>
+            <CardDescription>Top intelligence nodes by traffic volume and retention.</CardDescription>
           </div>
+          <Badge variant="outline" className="border-secondary/20 bg-secondary/5 text-secondary">LIVE SYNC</Badge>
         </CardHeader>
-        <div className="p-8 grid grid-cols-1 md:grid-cols-2 gap-12">
-          <div className="h-[300px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={data.geoBreakdown} layout="vertical" margin={{ left: 40 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#ffffff05" horizontal={true} vertical={false} />
-                <XAxis type="number" hide />
-                <YAxis 
-                  dataKey="country" 
-                  type="category" 
-                  stroke="#888888" 
-                  fontSize={10} 
-                  tickLine={false} 
-                  axisLine={false} 
-                />
-                <Tooltip 
-                  cursor={{ fill: '#ffffff05' }}
-                  contentStyle={{ backgroundColor: '#1C1822', border: '1px solid #ffffff10', borderRadius: '12px' }}
-                />
-                <Bar dataKey="users" fill="#69B9FF" radius={[0, 4, 4, 0]} barSize={30}>
-                  {data.geoBreakdown.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-          
-          <div className="space-y-6">
-            <div className="p-6 rounded-2xl bg-primary/5 border border-primary/10">
-              <Text variant="bodySmall" weight="bold" className="text-primary flex items-center gap-2 mb-2">
-                <MapPin className="h-4 w-4" /> Market Expansion Tip
-              </Text>
-              <Text variant="caption" className="text-muted-foreground leading-relaxed italic">
-                "Audience growth in **Singapore (APAC)** has exceeded benchmarks by 45% this quarter. The system suggests increasing expert coverage of Asian-Pacific trade flows and digital currency regulations."
-              </Text>
-            </div>
-            
-            <div className="space-y-4">
-              <Text variant="label" className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Growth Nodes</Text>
-              {data.geoBreakdown.slice(0, 3).map((geo) => (
-                <div key={geo.country} className="flex flex-col gap-2">
-                  <div className="flex justify-between text-xs">
-                    <span className="font-bold">{geo.country}</span>
-                    <span className="text-muted-foreground">{geo.percentage}% volume</span>
-                  </div>
-                  <div className="w-full bg-muted/20 h-1.5 rounded-full overflow-hidden">
-                    <div className="bg-secondary h-full transition-all duration-1000" style={{ width: `${geo.percentage}%` }} />
-                  </div>
-                </div>
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow className="bg-muted/20 hover:bg-muted/20 border-b border-white/5">
+                <TableHead className="pl-6 font-bold text-[10px] uppercase tracking-widest">Intelligence Node (URL)</TableHead>
+                <TableHead className="font-bold text-[10px] uppercase tracking-widest text-center">Total Visits</TableHead>
+                <TableHead className="font-bold text-[10px] uppercase tracking-widest text-center">Bounce Rate</TableHead>
+                <TableHead className="text-right pr-6 font-bold text-[10px] uppercase tracking-widest">Status</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {data.topPages.map((item, idx) => (
+                <TableRow key={idx} className="group hover:bg-muted/10 transition-colors border-b border-white/5">
+                  <TableCell className="py-5 pl-6">
+                    <span className="text-xs font-mono font-medium text-primary hover:underline cursor-pointer">
+                      {item.page}
+                    </span>
+                  </TableCell>
+                  <TableCell className="text-center font-mono text-xs font-bold">
+                    {item.visits.toLocaleString()}
+                  </TableCell>
+                  <TableCell className="text-center font-mono text-xs text-muted-foreground">
+                    {item.bounceRate}%
+                  </TableCell>
+                  <TableCell className="text-right pr-6">
+                    <Badge className="bg-emerald-500/10 text-emerald-500 border-none text-[9px] font-bold uppercase h-5">
+                      Healthy
+                    </Badge>
+                  </TableCell>
+                </TableRow>
               ))}
-            </div>
-          </div>
+            </TableBody>
+          </Table>
         </div>
       </Card>
     </div>

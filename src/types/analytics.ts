@@ -24,6 +24,12 @@ export interface TrafficAnalytics {
   }[];
 }
 
+export interface TrafficAnalyticsReport {
+  dailyVisits: { date: string; visits: number }[];
+  trafficSources: { source: string; percent: number }[];
+  topPages: { page: string; visits: number; bounceRate: number }[];
+}
+
 export interface SeoPerformanceItem {
   id: string;
   page: string;

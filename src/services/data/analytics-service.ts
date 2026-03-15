@@ -2,7 +2,7 @@ import * as mockApi from '@/services/mock-api/analytics';
 import { ApiResponse } from '@/types';
 import { TrendingItem } from '@/services/mock-api/analytics';
 import { errorHandler } from '@/lib/errors/error-handler';
-import { TrafficAnalytics, SeoAnalytics, PlatformOverview, ContentAnalyticsReport } from '@/types/analytics';
+import { TrafficAnalytics, SeoAnalytics, PlatformOverview, ContentAnalyticsReport, TrafficAnalyticsReport } from '@/types/analytics';
 
 /**
  * @fileOverview Abstraction layer for analytics and trending data with error handling.
@@ -38,6 +38,19 @@ export const analyticsService = {
   async getTrafficAnalytics(): Promise<ApiResponse<TrafficAnalytics | null>> {
     try {
       return await mockApi.getTrafficAnalytics();
+    } catch (error) {
+      const appError = errorHandler.handleError(error);
+      return {
+        data: null,
+        status: appError.statusCode,
+        error: appError.message,
+      };
+    }
+  },
+
+  async getTrafficAnalyticsReport(): Promise<ApiResponse<TrafficAnalyticsReport | null>> {
+    try {
+      return await mockApi.getTrafficAnalyticsReport();
     } catch (error) {
       const appError = errorHandler.handleError(error);
       return {

@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { TrafficAnalytics, SeoAnalytics, PlatformOverview, SeoPerformanceItem } from '@/types/analytics';
+import { TrafficAnalytics, SeoAnalytics, PlatformOverview, TrafficAnalyticsReport } from '@/types/analytics';
 
 /**
  * @fileOverview Mock service for platform analytics and trending data.
@@ -202,6 +202,37 @@ export const getTrafficAnalytics = async (): Promise<ApiResponse<TrafficAnalytic
         sessions: Math.floor(Math.random() * 500) + 200,
         views: Math.floor(Math.random() * 2000) + 1000
       }))
+    },
+    status: 200
+  };
+};
+
+export const getTrafficAnalyticsReport = async (): Promise<ApiResponse<TrafficAnalyticsReport>> => {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  return {
+    data: {
+      dailyVisits: [
+        { date: '2024-03-01', visits: 12400 },
+        { date: '2024-03-02', visits: 13200 },
+        { date: '2024-03-03', visits: 11800 },
+        { date: '2024-03-04', visits: 14500 },
+        { date: '2024-03-05', visits: 16200 },
+        { date: '2024-03-06', visits: 15800 },
+        { date: '2024-03-07', visits: 17400 },
+      ],
+      trafficSources: [
+        { source: 'Organic Search', percent: 45 },
+        { source: 'Direct', percent: 25 },
+        { source: 'Social Media', percent: 18 },
+        { source: 'Referral', percent: 12 },
+      ],
+      topPages: [
+        { page: '/articles/yield-curve', visits: 45200, bounceRate: 24.5 },
+        { page: '/financial-tools/compound-interest', visits: 38900, bounceRate: 18.2 },
+        { page: '/glossary/bull-market', visits: 28400, bounceRate: 35.1 },
+        { page: '/articles/macro-trends-2026', visits: 22100, bounceRate: 21.8 },
+        { page: '/financial-tools/retirement', visits: 18500, bounceRate: 15.4 },
+      ]
     },
     status: 200
   };
