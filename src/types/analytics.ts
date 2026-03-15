@@ -106,6 +106,16 @@ export interface ContentPerformance {
   category: string;
 }
 
+export interface TopContent {
+  id: string;
+  title: string;
+  views: number;
+  likes: number;
+  shares: number;
+  comments: number;
+  category: string;
+}
+
 export interface TrendingContent {
   id: string;
   title: string;

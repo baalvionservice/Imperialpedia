@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { TrafficAnalytics, SeoAnalytics, PlatformOverview, TrafficAnalyticsReport, ContentAnalytics, EngagementAnalytics, ModerationAnalytics, CreatorEngagement, TrafficSources, TrendingContent, DailyActiveUsers, WeeklyActiveUsers } from '@/types/analytics';
+import { TrafficAnalytics, SeoAnalytics, PlatformOverview, TrafficAnalyticsReport, ContentAnalytics, EngagementAnalytics, ModerationAnalytics, CreatorEngagement, TrafficSources, TrendingContent, DailyActiveUsers, WeeklyActiveUsers, TopContent } from '@/types/analytics';
 
 /**
  * @fileOverview Mock service for platform analytics and trending data.
@@ -102,6 +102,20 @@ export const getWAUData = async (): Promise<ApiResponse<WeeklyActiveUsers[]>> =>
     { week: 'W5', activeUsers: 61200 },
     { week: 'W6', activeUsers: 65800 },
   ];
+  return { data, status: 200 };
+};
+
+export const getTopContent = async (): Promise<ApiResponse<TopContent[]>> => {
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  const data: TopContent[] = [
+    { id: '1', title: 'Understanding Yield Curve Inversion', views: 45200, likes: 1240, shares: 580, comments: 320, category: 'Economics' },
+    { id: '2', title: 'The Power of Compound Interest', views: 38900, likes: 2400, shares: 920, comments: 110, category: 'Investing' },
+    { id: '3', title: 'Macro Trends in 2026', views: 31200, likes: 850, shares: 210, comments: 95, category: 'Economics' },
+    { id: '4', title: 'DeFi Liquidity Pools Explained', views: 28400, likes: 850, shares: 210, comments: 140, category: 'Crypto' },
+    { id: '5', title: 'Passive Income with Dividends', views: 42500, likes: 2100, shares: 920, comments: 450, category: 'Investing' },
+    { id: '6', title: 'ESG Investing Strategies', views: 15600, likes: 420, shares: 120, comments: 85, category: 'Investing' },
+    { id: '7', title: 'The Future of Central Banking', views: 52000, likes: 1540, shares: 430, comments: 210, category: 'Economics' },
+  ].sort((a, b) => b.views - a.views);
   return { data, status: 200 };
 };
 
