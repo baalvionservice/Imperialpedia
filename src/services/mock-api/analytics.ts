@@ -20,7 +20,8 @@ import {
   EngagementTrends, 
   FullAnalyticsOverview, 
   TopCreator,
-  AdminAnalyticsData
+  AdminAnalyticsData,
+  AssetSummary
 } from '@/types/analytics';
 
 /**
@@ -467,6 +468,156 @@ export const getAdminAnalyticsData = async (): Promise<ApiResponse<AdminAnalytic
         { id: '3', type: 'guide', title: 'Retirement Scaling 101', views: 24500, likes: 620 },
         { id: '4', type: 'article', title: 'DeFi Liquidity Audit', views: 18200, likes: 410 },
         { id: '5', type: 'article', title: 'Passive Incomesuper-cycle', views: 15400, likes: 380 },
+      ]
+    },
+    status: 200
+  };
+};
+
+export const getAssetSummaries = async (): Promise<ApiResponse<AssetSummary[]>> => {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  const dates = Array.from({ length: 7 }, (_, i) => {
+    const d = new Date();
+    d.setDate(d.getDate() - (6 - i));
+    return d.toISOString().split('T')[0];
+  });
+
+  return {
+    data: [
+      {
+        asset_name: "NVIDIA Corp",
+        symbol: "NVDA",
+        current_price: 875.25,
+        daily_change_pct: 2.3,
+        market_cap: "2.1T",
+        volume: 45200000,
+        risk_flag: "Moderate",
+        ai_insights: {
+          bull_case: "NVDA is positioned to dominate the AI hardware cycle with its H100 and upcoming Blackwell architecture. Institutional demand remains at a multi-year peak.",
+          bear_case: "Supply chain concentration in Taiwan and high valuation multiples pose significant drawdown risks in a macro downturn or chip-glut scenario.",
+          catalysts: ["Blackwell GPU Mass Shipments", "Q1 FY25 Earnings Call", "CSP Capex Expansion Updates"],
+          social_sentiment: 0.82,
+          confidence_score: 0.88
+        },
+        price_history: dates.map(d => ({ date: d, price: 800 + Math.random() * 100 }))
+      },
+      {
+        asset_name: "Bitcoin",
+        symbol: "BTC",
+        current_price: 64250.00,
+        daily_change_pct: -1.2,
+        market_cap: "1.2T",
+        volume: 2400000000,
+        risk_flag: "High",
+        ai_insights: {
+          bull_case: "Institutional adoption via Spot ETFs and the post-halving supply crunch create a structural demand imbalance that favors long-term upside.",
+          bear_case: "Regulatory headwinds from the SEC and potential macro liquidity tightening (QT) could trigger cascading liquidations in over-leveraged markets.",
+          catalysts: ["Halving Block Reward Realization", "FASB Accounting Rule Implementation", "Global Hashrate Migration"],
+          social_sentiment: 0.65,
+          confidence_score: 0.75
+        },
+        price_history: dates.map(d => ({ date: d, price: 60000 + Math.random() * 5000 }))
+      },
+      {
+        asset_name: "Apple Inc.",
+        symbol: "AAPL",
+        current_price: 182.50,
+        daily_change_pct: 0.45,
+        market_cap: "2.8T",
+        volume: 58000000,
+        risk_flag: "Low",
+        ai_insights: {
+          bull_case: "Services revenue growth and the integration of 'Apple Intelligence' across the hardware ecosystem provide a high-margin floor for the stock.",
+          bear_case: "Decelerating iPhone demand in China and antitrust litigation in the EU could cap multiple expansion in the near-term.",
+          catalysts: ["WWDC Developer Announcements", "iPhone 16 Component Orders", "Stock Buyback Cycle Update"],
+          social_sentiment: 0.58,
+          confidence_score: 0.92
+        },
+        price_history: dates.map(d => ({ date: d, price: 175 + Math.random() * 10 }))
+      }
+    ],
+    status: 200
+  };
+};
+
+export const getTrafficAnalytics = async (): Promise<ApiResponse<TrafficAnalytics | null>> => {
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  return {
+    data: {
+      activeUsers: 1240,
+      pageViews: 45200,
+      sessionDuration: 402,
+      bounceRate: 32.4,
+      deviceBreakdown: { desktop: 58, mobile: 35, tablet: 7 },
+      geoBreakdown: [
+        { country: 'United States', users: 45200, percentage: 45.2 },
+        { country: 'United Kingdom', users: 12400, percentage: 12.4 }
+      ],
+      hourlyTraffic: Array.from({ length: 24 }, (_, i) => ({
+        hour: `${i}:00`,
+        sessions: Math.floor(Math.random() * 500) + 100,
+        views: Math.floor(Math.random() * 1500) + 500
+      }))
+    },
+    status: 200
+  };
+};
+
+export const getTrafficAnalyticsReport = async (): Promise<ApiResponse<TrafficAnalyticsReport | null>> => {
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  return {
+    data: {
+      dailyVisits: Array.from({ length: 7 }, (_, i) => ({
+        date: `2024-03-0${i + 1}`,
+        visits: Math.floor(Math.random() * 2000) + 5000
+      })),
+      trafficSources: [
+        { source: 'Google', percent: 45 },
+        { source: 'Direct', percent: 25 },
+        { source: 'Twitter', percent: 15 },
+        { source: 'Other', percent: 15 }
+      ],
+      topPages: [
+        { page: '/articles/yield-curve', visits: 12400, bounceRate: 24.2 },
+        { page: '/glossary/bull-market', visits: 8500, bounceRate: 31.5 }
+      ]
+    },
+    status: 200
+  };
+};
+
+export const getSeoAnalytics = async (): Promise<ApiResponse<SeoAnalytics | null>> => {
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  return {
+    data: {
+      indexedPages: 1248500,
+      clickThroughRate: 4.2,
+      avgPosition: 12.4,
+      backlinks: 45200,
+      topKeywords: [],
+      trends: [
+        { date: '2024-03-01', clicks: 1200, impressions: 45000 },
+        { date: '2024-03-07', clicks: 1500, impressions: 52000 }
+      ] as any
+    },
+    status: 200
+  };
+};
+
+export const getContentAnalytics = async (): Promise<ApiResponse<any>> => {
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  return {
+    data: {
+      totalViews: 4250000,
+      avgEngagement: 8.4,
+      totalArticles: 1248,
+      topArticles: [
+        { articleId: '1', title: 'Understanding Yield Curve Inversion', views: 45200, likes: 1240, shares: 580, comments: 320, seoScore: 92, category: 'Economics' },
+        { articleId: '2', title: 'The Power of Compound Interest', views: 38900, likes: 2400, shares: 920, comments: 110, seoScore: 88, category: 'Investing' }
+      ],
+      topCategories: [
+        { category: 'Economics', views: 1250000 },
+        { category: 'Investing', views: 980000 }
       ]
     },
     status: 200

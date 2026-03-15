@@ -60,7 +60,8 @@ import {
   Award,
   CreditCard,
   FileSearch,
-  LineChart
+  LineChart,
+  Layout
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 import { useAppStore } from '@/lib/state/app-store';
@@ -194,6 +195,7 @@ const Sidebar = ({ className }: { className?: string }) => {
 
   const publishingItems = [
     { icon: PenTool, label: 'Content Engine', href: '/articles' },
+    { icon: Layout, label: 'AI Asset Summary', href: '/ai-analyst/asset-summary' },
     { icon: Newspaper, label: 'Daily AI Briefing', href: '/ai-analyst/daily-briefing' },
     { icon: CalendarDays, label: 'Weekly AI Digest', href: '/ai-analyst/weekly-digest' },
     { icon: History, label: 'AI Automated Recap', href: '/ai-analyst/automated-recap' },

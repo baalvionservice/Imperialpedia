@@ -248,6 +248,29 @@ export interface FullAnalyticsOverview {
 }
 
 /**
+ * AI Asset Summary Types
+ */
+export interface AssetSummaryAIInsights {
+  bull_case: string;
+  bear_case: string;
+  catalysts: string[];
+  social_sentiment: number;
+  confidence_score: number;
+}
+
+export interface AssetSummary {
+  asset_name: string;
+  symbol: string;
+  current_price: number;
+  daily_change_pct: number;
+  market_cap: string;
+  volume: number;
+  risk_flag: 'Low' | 'Moderate' | 'High' | 'Critical';
+  ai_insights: AssetSummaryAIInsights;
+  price_history?: { date: string; price: number }[];
+}
+
+/**
  * ADMIN ANALYTICS MOCK DATA TYPES (Prompt 28)
  */
 
