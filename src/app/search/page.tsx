@@ -21,17 +21,16 @@ import {
   ArrowRight,
   SearchX,
   TrendingUp,
-  History,
-  X
+  X,
+  Layers
 } from 'lucide-react';
 import { SearchResult, SearchResultType, SearchSuggestion } from '@/types';
 import { searchService } from '@/services/data/search-service';
 import Link from 'next/link';
-import { cn } from '@/lib/utils';
 
 /**
  * Global search page for the Imperialpedia platform.
- * Supports cross-entity discovery with real-time auto-suggestions.
+ * Supports cross-entity discovery with real-time auto-suggestions and category filtering.
  */
 export default function SearchPage() {
   const [query, setQuery] = useState('');
@@ -97,6 +96,10 @@ export default function SearchPage() {
 
   const filteredResults = useMemo(() => {
     if (activeTab === 'all') return results;
+    // Map tab values to entity types
+    if (activeTab === 'topic') {
+      return results.filter(r => r.type === 'topic' || r.type === 'glossary');
+    }
     return results.filter(r => r.type === activeTab);
   }, [results, activeTab]);
 
@@ -112,7 +115,7 @@ export default function SearchPage() {
   };
 
   const getResultBadge = (type: SearchResultType) => {
-    const labels = {
+    const labels: Record<string, string> = {
       article: 'Intelligence',
       author: 'Expert',
       calculator: 'Engine',
@@ -238,16 +241,19 @@ export default function SearchPage() {
 
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <div className="flex justify-center mb-12">
-              <TabsList className="bg-card/30 border border-white/5 p-1 h-12 rounded-xl">
+              <TabsList className="bg-card/30 border border-white/5 p-1 h-12 rounded-xl overflow-x-auto no-scrollbar justify-start sm:justify-center w-full sm:w-auto">
                 <TabsTrigger value="all" className="px-6 rounded-lg font-bold text-xs">All Results</TabsTrigger>
                 <TabsTrigger value="article" className="px-6 rounded-lg font-bold text-xs gap-2">
-                  <BookOpen className="h-3.5 w-3.5" /> Articles
+                  <BookOpen className="h-3.5 w-3.5" /> Intelligence
                 </TabsTrigger>
                 <TabsTrigger value="author" className="px-6 rounded-lg font-bold text-xs gap-2">
                   <User className="h-3.5 w-3.5" /> Experts
                 </TabsTrigger>
                 <TabsTrigger value="calculator" className="px-6 rounded-lg font-bold text-xs gap-2">
-                  <CalcIcon className="h-3.5 w-3.5" /> Tools
+                  <CalcIcon className="h-3.5 w-3.5" /> Engines
+                </TabsTrigger>
+                <TabsTrigger value="topic" className="px-6 rounded-lg font-bold text-xs gap-2">
+                  <Layers className="h-3.5 w-3.5" /> Topics
                 </TabsTrigger>
               </TabsList>
             </div>

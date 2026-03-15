@@ -2,6 +2,7 @@ import { ApiResponse, SearchResult, SearchSuggestion } from '@/types';
 
 /**
  * @fileOverview Mock service for the Global Search System.
+ * Expanded with diverse entity types for filtering verification.
  */
 
 const mockSearchData: SearchResult[] = [
@@ -59,6 +60,30 @@ const mockSearchData: SearchResult[] = [
     title: 'Bull Market',
     snippet: 'A financial market where prices are rising or are expected to rise with widespread optimism.',
     route: '/glossary/bull-market',
+    category: 'Markets'
+  },
+  {
+    id: 'term-2',
+    type: 'glossary',
+    title: 'Quantitative Easing',
+    snippet: 'A form of monetary policy where a central bank purchases at-scale government bonds.',
+    route: '/glossary/quantitative-easing',
+    category: 'Economics'
+  },
+  {
+    id: 'topic-1',
+    type: 'topic',
+    title: 'Macroeconomics Matrix',
+    snippet: 'Primary taxonomy node for global economic trends, fiscal policy, and monetary indicators.',
+    route: '/tags/macro',
+    category: 'Economics'
+  },
+  {
+    id: 'topic-2',
+    type: 'topic',
+    title: 'Fixed Income Intelligence',
+    snippet: 'Knowledge hub covering bonds, yields, and interest rate strategies.',
+    route: '/tags/interest-rates',
     category: 'Markets'
   }
 ];
