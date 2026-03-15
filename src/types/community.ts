@@ -128,6 +128,30 @@ export interface UserSentimentVote {
   currentBullish: number;
 }
 
+/**
+ * Prompt 64: Trending Discussion Types
+ */
+export interface DiscussionNode {
+  id: string;
+  title: string;
+  category: 'Stocks' | 'Cryptocurrency' | 'Macro' | 'Economy' | 'Trading' | 'Personal Finance' | 'Options Trading' | 'Commodities';
+  author: string;
+  authorAvatar?: string;
+  comments: number;
+  likes: number;
+  views: number;
+  timestamp: string;
+  trending_score: number;
+  content: string;
+  asset_tag?: string;
+}
+
+export interface TrendingTopic {
+  name: string;
+  engagement: number;
+  count?: number;
+}
+
 export interface CommunityData {
   comments: Comment[];
   trendingDiscussions: string[];
@@ -137,6 +161,8 @@ export interface CommunityData {
   predictionContests: PredictionContest[];
   reputation_list: ReputationEntry[];
   leaderboards_full: LeaderboardItem[];
+  discussions: DiscussionNode[];
+  topics: TrendingTopic[];
 }
 
 export interface ReputationContribution {

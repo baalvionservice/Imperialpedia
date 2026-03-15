@@ -13,7 +13,9 @@ import {
   ContestLeaderboardEntry,
   UserPrediction,
   AssetSentiment,
-  UserSentimentVote
+  UserSentimentVote,
+  DiscussionNode,
+  TrendingTopic
 } from '@/types/community';
 
 /**
@@ -29,7 +31,7 @@ const mockComments: Comment[] = [
     reputationScore: 1240,
     badge: 'Elite Analyst',
     avatar: 'https://picsum.photos/seed/user1/200/200',
-    timestamp: '2026-03-15 10:00',
+    timestamp: '2h ago',
     content: 'The 2-10 spread inversion is widening. Historical data suggests a 12-18 month lead time to a full fiscal contraction.',
     text: 'The 2-10 spread inversion is widening. Historical data suggests a 12-18 month lead time to a full fiscal contraction.',
     upvotes: 42,
@@ -46,16 +48,99 @@ const mockComments: Comment[] = [
         reputationScore: 8500,
         badge: 'Verified Expert',
         avatar: 'https://picsum.photos/seed/wealth/200/200',
-        timestamp: '2026-03-15 10:05',
-        content: 'Correct, but we should also consider the high consumer cash reserves.',
-        text: 'Correct, but we should also consider the high consumer cash reserves.',
+        timestamp: '1h ago',
+        content: 'Correct, but we should also consider the high consumer cash reserves which might buffer the landing.',
+        text: 'Correct, but we should also consider the high consumer cash reserves which might buffer the landing.',
         upvotes: 12,
         downvotes: 1,
         bullBearVote: 'Neutral',
         bull_bear: 'Neutral',
       }
     ]
+  },
+  {
+    id: 'c-3',
+    comment_id: 3,
+    username: 'AlphaHunter',
+    reputation: 3200,
+    reputationScore: 3200,
+    badge: 'Precision Lead',
+    avatar: 'https://picsum.photos/seed/alpha/200/200',
+    timestamp: '4h ago',
+    content: 'Retail is heavily shorting this level. Liquidity grab to the upside seems inevitable before any real correction.',
+    text: 'Retail is heavily shorting this level. Liquidity grab to the upside seems inevitable before any real correction.',
+    upvotes: 85,
+    downvotes: 12,
+    bullBearVote: 'Bull',
+    bull_bear: 'Bull',
   }
+];
+
+const mockDiscussions: DiscussionNode[] = [
+  {
+    id: 'd-1',
+    title: "Will Bitcoin hit $100k this cycle?",
+    category: "Cryptocurrency",
+    author: "David Kim",
+    authorAvatar: "https://picsum.photos/seed/david/100/100",
+    comments: 284,
+    likes: 1250,
+    views: 18200,
+    timestamp: "2h ago",
+    trending_score: 98,
+    content: "The institutional absorption rate of the Spot ETFs is unprecedented. If we maintain the current daily inflow of $500M, the supply crunch alone could push us past six figures by Q4. What is the community consensus on the next major resistance node?",
+    asset_tag: "BTC"
+  },
+  {
+    id: 'd-2',
+    title: "Are AI stocks in a technical bubble?",
+    category: "Stocks",
+    author: "Sophia Martinez",
+    authorAvatar: "https://picsum.photos/seed/sophia/100/100",
+    comments: 192,
+    likes: 840,
+    views: 13400,
+    timestamp: "5h ago",
+    trending_score: 85,
+    content: "Valuations for NVDA and the secondary chip cluster are reaching 2000-era dotcom levels on a price-to-sales basis. While revenue growth is real, is the forward guidance pricing in too much perfection? Analyzing the historical exit of late-cycle retail buyers.",
+    asset_tag: "NVDA"
+  },
+  {
+    id: 'd-3',
+    title: "Impact of interest rate cuts on emerging market stocks",
+    category: "Macro",
+    author: "Julian Wealth",
+    authorAvatar: "https://picsum.photos/seed/wealth/100/100",
+    comments: 124,
+    likes: 450,
+    views: 9800,
+    timestamp: "Yesterday",
+    trending_score: 72,
+    content: "As the Fed pivots, the carry-trade landscape is shifting. We are seeing significant capital rotation into high-yield emerging nodes. Which regions are best positioned for a weaker USD environment?",
+    asset_tag: "EEM"
+  },
+  {
+    id: 'd-4',
+    title: "Tesla valuation debate: Tech vs Auto",
+    category: "Economy",
+    author: "Eleanor Vance",
+    authorAvatar: "https://picsum.photos/seed/eleanor/100/100",
+    comments: 450,
+    likes: 2100,
+    views: 45000,
+    timestamp: "3h ago",
+    trending_score: 92,
+    content: "The market continues to treat TSLA as an AI/Robotics play, yet core margins are still derived from hardware delivery. If FSD licensing becomes a reality this year, how do we re-calculate the earnings multiple?",
+    asset_tag: "TSLA"
+  }
+];
+
+const mockTopics: TrendingTopic[] = [
+  { name: "Bitcoin ETFs", engagement: 8200, count: 12 },
+  { name: "AI Stocks", engagement: 7600, count: 8 },
+  { name: "Federal Reserve Policy", engagement: 6900, count: 15 },
+  { name: "Recession Risk", engagement: 5400, count: 6 },
+  { name: "Tech Earnings Season", engagement: 4200, count: 9 },
 ];
 
 const mockContests: PredictionContest[] = [
@@ -216,8 +301,8 @@ export const getCommunityData = async (): Promise<ApiResponse<CommunityData>> =>
   return {
     data: {
       comments: mockComments,
-      polls: [],
       trendingDiscussions: ['Yield Curve 2026', 'Fed Liquidity', 'AI Chip Wars'],
+      polls: [],
       userReputation: {
         username: 'User123',
         reputationScore: 120,
@@ -229,7 +314,9 @@ export const getCommunityData = async (): Promise<ApiResponse<CommunityData>> =>
       leaderboard: [],
       predictionContests: mockContests as any[],
       reputation_list: mockReputationList,
-      leaderboards_full: mockLeaderboardsFull
+      leaderboards_full: mockLeaderboardsFull,
+      discussions: mockDiscussions,
+      topics: mockTopics
     },
     status: 200,
   };

@@ -1,5 +1,5 @@
 import * as mockApi from '@/services/mock-api/community';
-import { ApiResponse, CommunityData, CommunityRankingsData, AssetSentiment, UserSentimentVote } from '@/types';
+import { ApiResponse, CommunityData, CommunityRankingsData, AssetSentiment, UserSentimentVote, DiscussionNode } from '@/types';
 import { errorHandler } from '@/lib/errors/error-handler';
 
 /**
@@ -49,6 +49,20 @@ export const communityService = {
   async getUserSentimentHistory(): Promise<ApiResponse<UserSentimentVote[]>> {
     try {
       return await mockApi.getUserSentimentHistory();
+    } catch (error) {
+      const appError = errorHandler.handleError(error);
+      return {
+        data: [],
+        status: appError.statusCode,
+        error: appError.message,
+      };
+    }
+  },
+
+  async getDiscussions(): Promise<ApiResponse<DiscussionNode[]>> {
+    try {
+      const response = await mockApi.getCommunityData();
+      return { data: response.data?.discussions || [], status: 200 };
     } catch (error) {
       const appError = errorHandler.handleError(error);
       return {
