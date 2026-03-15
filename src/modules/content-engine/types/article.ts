@@ -66,13 +66,16 @@ export interface ArticleSubmission {
   updatedAt?: string;
 }
 
+export type NotificationType = "success" | "info" | "warning" | "follower" | "engagement" | "announcement";
+
 export interface Notification {
   id: string;
   userId: string;
   message: string;
-  type: "success" | "info" | "warning";
+  type: NotificationType;
   createdAt: string;
   read: boolean;
+  relatedId?: string;
 }
 
 export interface ReviewAction {

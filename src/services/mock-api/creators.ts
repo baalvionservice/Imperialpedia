@@ -1,4 +1,5 @@
 import { CreatorProfile, ApiResponse, CreatorContentItem, CreatorDashboardSummary, CreatorDashboardAnalytics, CreatorVerification, CreatorLeaderboard } from '@/types';
+import { Notification } from '@/modules/content-engine/types/article';
 
 /**
  * @fileOverview Mock service for managing creator profiles, stats, and discovery data.
@@ -252,6 +253,51 @@ export const getLeaderboardData = async (): Promise<ApiResponse<CreatorLeaderboa
     status: 200
   };
 };
+
+export const getCreatorNotifications = async (creatorId: string): Promise<ApiResponse<Notification[]>> => {
+  await new Promise((resolve) => setTimeout(resolve, 300));
+  return {
+    data: mockNotifications,
+    status: 200
+  };
+};
+
+const mockNotifications: Notification[] = [
+  {
+    id: 'notif-1',
+    userId: 'u-1',
+    type: 'follower',
+    message: 'Ken Macro started following your expert profile.',
+    createdAt: new Date().toISOString(),
+    read: false,
+    relatedId: 'creator-5'
+  },
+  {
+    id: 'notif-2',
+    userId: 'u-1',
+    type: 'engagement',
+    message: 'Your article "Monetary Policy in the 2030s" received 12 new comments.',
+    createdAt: new Date(Date.now() - 3600000).toISOString(),
+    read: false,
+    relatedId: 'c-4'
+  },
+  {
+    id: 'notif-3',
+    userId: 'u-1',
+    type: 'announcement',
+    message: 'Platform Update: New Imagen 4 content tools are now available for verified experts.',
+    createdAt: new Date(Date.now() - 86400000).toISOString(),
+    read: true
+  },
+  {
+    id: 'notif-4',
+    userId: 'u-1',
+    type: 'success',
+    message: 'Verification complete! You are now a recognized Imperialpedia Expert.',
+    createdAt: new Date(Date.now() - 172800000).toISOString(),
+    read: true
+  }
+];
 
 const mockCreatorDashboardContent: CreatorContentItem[] = [
   {

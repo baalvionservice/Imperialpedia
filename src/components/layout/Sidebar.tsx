@@ -113,7 +113,7 @@ const Sidebar = ({ className }: { className?: string }) => {
     { icon: PlusSquare, label: 'Create Insight', href: '/creator/dashboard/create' },
     { icon: FileEdit, label: 'Intelligence Drafts', href: '/writer/drafts' },
     { icon: BarChart3, label: 'Insights Analytics', href: '/creator/dashboard/analytics' },
-    { icon: Bell, label: 'Notifications', href: '/writer/notifications', badge: unreadNotifications },
+    { icon: Bell, label: 'Activity Feed', href: '/creator/dashboard/notifications', badge: unreadNotifications },
     { icon: UserCircle, label: 'Expert Profile', href: '/creators/profile' },
   ];
 

@@ -44,6 +44,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
         type: 'info',
         createdAt: new Date().toISOString(),
         read: false,
+      },
+      {
+        id: 'n-2',
+        userId: 'u-1',
+        message: 'Platform Tip: Complete your Expertise Matrix to increase your visibility in the Leaderboard.',
+        type: 'info',
+        createdAt: new Date(Date.now() - 3600000).toISOString(),
+        read: false,
       }
     ],
   });
