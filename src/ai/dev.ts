@@ -15,3 +15,4 @@ import '@/ai/flows/weekly-digest-flow.ts';
 import '@/ai/flows/asset-comparison-flow.ts';
 import '@/ai/flows/multi-asset-comparison-flow.ts';
 import '@/ai/flows/ai-news-summary-flow.ts';
+import '@/ai/flows/trend-explanation-flow.ts';

@@ -168,6 +168,7 @@ const Sidebar = ({ className }: { className?: string }) => {
     { icon: Newspaper, label: 'Daily AI Briefing', href: '/ai-analyst/daily-briefing' },
     { icon: CalendarDays, label: 'Weekly AI Digest', href: '/ai-analyst/weekly-digest' },
     { icon: Newspaper, label: 'AI News Summary', href: '/ai-analyst/news-summary' },
+    { icon: Activity, label: 'AI Trend Explainer', href: '/ai-analyst/trend-explanation' },
     { icon: Sparkles, label: 'AI Bull Case', href: '/ai-analyst/bull-case' },
     { icon: TrendingDown, label: 'AI Bear Case', href: '/ai-analyst/bear-case' },
     { icon: ShieldAlert, label: 'AI Risk Scanner', href: '/ai-analyst/risk-detection' },
