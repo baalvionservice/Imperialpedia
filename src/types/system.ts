@@ -198,3 +198,15 @@ export interface RolePermissionSet {
   description: string;
   permissions: Permission[];
 }
+
+/**
+ * Interface for Admin Session Management
+ */
+export interface AdminSession {
+  id: string;
+  user: string;
+  role: string;
+  loginTime: string;
+  ip: string;
+  status: 'Active' | 'Inactive';
+}

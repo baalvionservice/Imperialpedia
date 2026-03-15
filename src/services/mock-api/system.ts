@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog, SecuritySettings, GlobalNotificationSettings, AuditTrailEntry, FeatureSettings } from '@/types/system';
+import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog, SecuritySettings, GlobalNotificationSettings, AuditTrailEntry, FeatureSettings, AdminSession } from '@/types/system';
 
 /**
  * @fileOverview Mock service for managing global platform configuration and system notifications.
@@ -128,6 +128,13 @@ const mockAuditTrailEntries: AuditTrailEntry[] = [
   { id: 'at-4', event: 'High-Impact Content Purge', user: 'Expert Editor', module: 'Moderation', date: '2024-03-12T10:00:00Z', status: 'Success' },
   { id: 'at-5', event: 'API Gateway Scaling', user: 'System Bot', module: 'Infrastructure', date: '2024-03-12T09:30:00Z', status: 'Success' },
   { id: 'at-6', event: 'Financial Tool Hot-fix', user: 'Platform Dev', module: 'Calculators', date: '2024-03-11T16:20:00Z', status: 'Success' },
+];
+
+const mockAdminSessions: AdminSession[] = [
+  { id: 'sess-1', user: 'Eleanor Vance', role: 'Administrator', loginTime: '2024-03-12T10:30:00Z', ip: '192.168.1.42', status: 'Active' },
+  { id: 'sess-2', user: 'Expert Editor', role: 'Editor', loginTime: '2024-03-12T09:15:00Z', ip: '10.0.0.15', status: 'Active' },
+  { id: 'sess-3', user: 'The Market Maven', role: 'Administrator', loginTime: '2024-03-11T16:45:00Z', ip: '45.12.88.2', status: 'Inactive' },
+  { id: 'sess-4', user: 'Platform Lead', role: 'Administrator', loginTime: '2024-03-12T14:00:00Z', ip: '172.16.0.1', status: 'Active' },
 ];
 
 export const getPlatformSettings = async (): Promise<ApiResponse<PlatformSettings>> => {
@@ -361,5 +368,22 @@ export const getAuditTrail = async (): Promise<ApiResponse<AuditTrailEntry[]>> =
   return {
     data: mockAuditTrailEntries,
     status: 200,
+  };
+};
+
+export const getActiveSessions = async (): Promise<ApiResponse<AdminSession[]>> => {
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  return {
+    data: mockAdminSessions,
+    status: 200,
+  };
+};
+
+export const terminateSession = async (id: string): Promise<ApiResponse<void>> => {
+  await new Promise((resolve) => setTimeout(resolve, 600));
+  return {
+    data: undefined,
+    status: 200,
+    message: 'Session terminated across production clusters.'
   };
 };

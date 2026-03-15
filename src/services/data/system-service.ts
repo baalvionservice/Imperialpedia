@@ -1,6 +1,6 @@
 import * as mockApi from '@/services/mock-api/system';
 import { ApiResponse } from '@/types';
-import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog, SecuritySettings, GlobalNotificationSettings, AuditTrailEntry, FeatureSettings } from '@/types/system';
+import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog, SecuritySettings, GlobalNotificationSettings, AuditTrailEntry, FeatureSettings, AdminSession } from '@/types/system';
 import { errorHandler } from '@/lib/errors/error-handler';
 
 /**
@@ -327,6 +327,32 @@ export const systemService = {
       const appError = errorHandler.handleError(error);
       return {
         data: [],
+        status: appError.statusCode,
+        error: appError.message,
+      };
+    }
+  },
+
+  async getActiveSessions(): Promise<ApiResponse<AdminSession[]>> {
+    try {
+      return await mockApi.getActiveSessions();
+    } catch (error) {
+      const appError = errorHandler.handleError(error);
+      return {
+        data: [],
+        status: appError.statusCode,
+        error: appError.message,
+      };
+    }
+  },
+
+  async terminateSession(id: string): Promise<ApiResponse<void>> {
+    try {
+      return await mockApi.terminateSession(id);
+    } catch (error) {
+      const appError = errorHandler.handleError(error);
+      return {
+        data: undefined,
         status: appError.statusCode,
         error: appError.message,
       };

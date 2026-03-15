@@ -43,7 +43,8 @@ import {
   TrendingUp,
   Heart,
   FileCode,
-  Shield
+  Shield,
+  Monitor
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 import { useAppStore } from '@/lib/state/app-store';
@@ -104,6 +105,7 @@ const Sidebar = ({ className }: { className?: string }) => {
     { icon: UsersIcon, label: 'User Management', href: '/admin/control/users' },
     { icon: Lock, label: 'Roles & Permissions', href: '/admin/roles' },
     { icon: Shield, label: 'Security Protocols', href: '/admin/control/security' },
+    { icon: Monitor, label: 'Active Sessions', href: '/admin/control/sessions' },
     { icon: Bell, label: 'Notification Settings', href: '/admin/control/notifications' },
     { icon: Zap, label: 'Feature Toggles', href: '/admin/control/features' },
     { icon: ShieldX, label: 'Content Moderation', href: '/admin/moderation' },
