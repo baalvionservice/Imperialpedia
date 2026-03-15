@@ -70,7 +70,8 @@ import {
   Key,
   Languages,
   PieChart as PieIcon,
-  Filter
+  Filter,
+  LineChart
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 import { useAppStore } from '@/lib/state/app-store';
@@ -136,6 +137,7 @@ const Sidebar = ({ className }: { className?: string }) => {
   const premiumItems = [
     { icon: CreditCard, label: 'Subscription Hub', href: '/premium/subscribe' },
     { icon: Filter, label: 'Asset Screener', href: '/premium/screener' },
+    { icon: History, label: 'Backtesting Engine', href: '/premium/backtesting' },
     { icon: PieIcon, label: 'AI Portfolio Deep-Dive', href: '/premium/deep-dive' },
     { icon: PieIcon, label: 'Business Insights', href: '/premium/dashboard' },
     { icon: FileSearch, label: 'Intelligence Reports', href: '/premium/reports' },

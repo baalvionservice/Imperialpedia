@@ -156,3 +156,47 @@ export interface ScreenerDashboardData {
   assets: ScreenerAsset[];
   strategies: CustomStrategy[];
 }
+
+/**
+ * Prompt 57: Backtesting Engine Types
+ */
+export interface BacktestSummary {
+  total_return: string;
+  annual_return: string;
+  max_drawdown: string;
+  win_rate: string;
+  sharpe_ratio: string;
+  total_trades: number;
+  best_trade: string;
+  worst_trade: string;
+  profit_factor: string;
+  long_win_rate: string;
+  short_win_rate: string;
+}
+
+export interface StrategyCondition {
+  indicator: string;
+  operator: string;
+  value: string;
+}
+
+export interface TradeEntry {
+  trade_id: string;
+  asset: string;
+  entry_date: string;
+  exit_date: string;
+  entry_price: number | string;
+  exit_price: number | string;
+  return: string;
+  profit: string;
+}
+
+export interface BacktestDashboardData {
+  backtest_summary: BacktestSummary;
+  strategy_conditions: StrategyCondition[];
+  trade_history: TradeEntry[];
+  equity_curve: { date: string; value: number }[];
+  drawdown_chart: { date: string; value: number }[];
+  monthly_heatmap: { month: string; year: number; return: number }[];
+  saved_backtests: { name: string; last_tested: string; asset: string }[];
+}

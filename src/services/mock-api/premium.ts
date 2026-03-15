@@ -1,8 +1,7 @@
-import { ApiResponse, SubscriptionTier, PremiumState, PremiumReport, PremiumAnalytics, MockPaymentStatus, BacktestingTool, PremiumDashboardData, PortfolioDeepDiveData, ScreenerDashboardData } from '@/types/premium';
+import { ApiResponse, SubscriptionTier, PremiumState, PremiumReport, PremiumAnalytics, MockPaymentStatus, BacktestingTool, PremiumDashboardData, PortfolioDeepDiveData, ScreenerDashboardData, BacktestDashboardData } from '@/types/premium';
 
 /**
  * @fileOverview Mock service for managing subscription tiers, premium reports, and advanced analytics.
- * Aligned with Prompt 41, 54, 55, and 56 requirements.
  */
 
 const mockSubscriptionPlans = [
@@ -310,6 +309,65 @@ export const getScreenerDashboardData = async (): Promise<ApiResponse<ScreenerDa
   await new Promise((resolve) => setTimeout(resolve, 600));
   return {
     data: mockScreenerData,
+    status: 200,
+  };
+};
+
+/**
+ * Prompt 57: Backtesting Engine Mock API
+ */
+const mockBacktestData: BacktestDashboardData = {
+  backtest_summary: {
+    total_return: "42%",
+    annual_return: "18%",
+    max_drawdown: "-12%",
+    win_rate: "61%",
+    sharpe_ratio: "1.45",
+    total_trades: 84,
+    best_trade: "+15.2%",
+    worst_trade: "-8.4%",
+    profit_factor: "1.82",
+    long_win_rate: "65%",
+    short_win_rate: "54%"
+  },
+  strategy_conditions: [
+    { indicator: "RSI", operator: "<", value: "30" },
+    { indicator: "MA50", operator: ">", value: "MA200" }
+  ],
+  trade_history: [
+    { trade_id: "T001", asset: "AAPL", entry_date: "2024-01-10", exit_date: "2024-01-25", entry_price: 150, exit_price: 165, profit: "+$1,500", return: "10%" },
+    { trade_id: "T002", asset: "TSLA", entry_date: "2024-02-05", exit_date: "2024-02-12", entry_price: 220, exit_price: 205, profit: "-$1,200", return: "-6%" },
+    { trade_id: "T003", asset: "NVDA", entry_date: "2024-03-01", exit_date: "2024-03-10", entry_price: 800, exit_price: 875, profit: "+$7,500", return: "9.3%" },
+    { trade_id: "T004", asset: "MSFT", entry_date: "2024-03-12", exit_date: "2024-03-15", entry_price: 410, exit_price: 415, profit: "+$500", return: "1.2%" },
+    { trade_id: "T005", asset: "BTC", entry_date: "2024-02-20", exit_date: "2024-03-05", entry_price: 52000, exit_price: 64000, profit: "+$12,000", return: "23%" }
+  ],
+  equity_curve: Array.from({ length: 30 }, (_, i) => ({
+    date: `Day ${i + 1}`,
+    value: 10000 + (i * 200) + (Math.random() * 1000)
+  })),
+  drawdown_chart: Array.from({ length: 30 }, (_, i) => ({
+    date: `Day ${i + 1}`,
+    value: Math.max(0, Math.random() * -10)
+  })),
+  monthly_heatmap: [
+    { month: 'Jan', year: 2024, return: 4.2 },
+    { month: 'Feb', year: 2024, return: -1.5 },
+    { month: 'Mar', year: 2024, return: 8.4 },
+    { month: 'Apr', year: 2024, return: 2.1 },
+    { month: 'May', year: 2024, return: 0.5 },
+    { month: 'Jun', year: 2024, return: -2.8 }
+  ],
+  saved_backtests: [
+    { name: "RSI Oversold Bounce", last_tested: "2024-03-15", asset: "AAPL" },
+    { name: "MA Crossover Alpha", last_tested: "2024-03-12", asset: "BTC" },
+    { name: "Sentiment Surge", last_tested: "2024-03-10", asset: "TSLA" }
+  ]
+};
+
+export const getBacktestData = async (): Promise<ApiResponse<BacktestDashboardData>> => {
+  await new Promise((resolve) => setTimeout(resolve, 800));
+  return {
+    data: mockBacktestData,
     status: 200,
   };
 };
