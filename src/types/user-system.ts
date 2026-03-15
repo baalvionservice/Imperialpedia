@@ -10,12 +10,33 @@ export interface WatchlistItem {
   change: string;
   isPositive: boolean;
   sentiment: 'Bullish' | 'Bearish' | 'Neutral';
+  volume?: string;
+}
+
+export interface WatchlistGroup {
+  id: string;
+  name: string;
+  assets: WatchlistItem[];
 }
 
 export interface PortfolioAllocation {
   asset: string;
   percentage: number;
   value: number;
+}
+
+export interface PortfolioPerformanceNode {
+  date: string;
+  value: number;
+}
+
+export interface UserAlert {
+  id: string;
+  asset: string;
+  type: 'price' | 'volume' | 'sentiment';
+  threshold: string;
+  triggered: boolean;
+  createdAt: string;
 }
 
 export interface UserDashboardData {
@@ -31,7 +52,7 @@ export interface UserDashboardData {
     gain_loss: string;
     gain_loss_percent: string;
     allocation: PortfolioAllocation[];
-    history: { date: string; value: number }[];
+    history: PortfolioPerformanceNode[];
   };
   saved_articles: { id: string; title: string; route: string; category: string }[];
   saved_calculators: { id: string; name: string; route: string; type: string }[];
@@ -42,4 +63,24 @@ export interface UserDashboardData {
     beta_opt_in: boolean;
     custom_alerts: string[];
   };
+}
+
+export interface UserPortfolioData {
+  watchlists: WatchlistGroup[];
+  portfolio_summary: {
+    total_value: string;
+    total_gain_loss: string;
+    total_gain_loss_percent: string;
+    allocation: PortfolioAllocation[];
+    performance_chart_data: PortfolioPerformanceNode[];
+  };
+  alerts: UserAlert[];
+  trade_history: Array<{
+    id: string;
+    asset: string;
+    type: 'Buy' | 'Sell';
+    price: string;
+    quantity: string;
+    date: string;
+  }>;
 }

@@ -53,7 +53,9 @@ import {
   CalendarDays,
   GitCompare,
   Activity as ActivityIcon,
-  User
+  User,
+  Briefcase,
+  Star
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 import { useAppStore } from '@/lib/state/app-store';
@@ -110,6 +112,7 @@ const Sidebar = ({ className }: { className?: string }) => {
 
   const personalItems = [
     { icon: User, label: 'My Dashboard', href: '/dashboard' },
+    { icon: Briefcase, label: 'Portfolio & Holdings', href: '/dashboard/portfolio' },
     { icon: Search, label: 'Market Search', href: '/search' },
     { icon: Activity, label: 'Intelligence Feed', href: '/dashboard/feed' },
   ];
