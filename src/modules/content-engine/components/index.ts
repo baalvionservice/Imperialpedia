@@ -15,3 +15,7 @@ export * from './RelatedArticles';
 export * from './TableOfContents';
 export * from './TagList';
 export * from './SearchResults';
+export * from './CommentCard';
+export * from './PollCard';
+export * from './TrendingDiscussions';
+export * from './CommunitySection';

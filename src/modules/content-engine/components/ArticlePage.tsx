@@ -8,6 +8,7 @@ import { ArticleHeader } from './ArticleHeader';
 import { ArticleBody } from './ArticleBody';
 import { RelatedArticles } from './RelatedArticles';
 import { TableOfContents } from './TableOfContents';
+import { CommunitySection } from './CommunitySection';
 import { Loader2, AlertCircle, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
@@ -52,7 +53,7 @@ export const ArticlePage = ({ slug }: ArticlePageProps) => {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center space-y-4">
         <Loader2 className="h-12 w-12 text-primary animate-spin" />
-        <p className="text-muted-foreground animate-pulse">Retrieving financial intelligence...</p>
+        <p className="text-muted-foreground animate-pulse font-bold tracking-widest uppercase text-[10px]">Retrieving financial intelligence...</p>
       </div>
     );
   }
@@ -88,30 +89,41 @@ export const ArticlePage = ({ slug }: ArticlePageProps) => {
             <div className="lg:hidden mb-8">
               <Card className="glass-card">
                 <CardContent className="pt-6">
-                  <TableOfContents sections={[]} /> {/* Sections mapping would happen here */}
+                  <TableOfContents sections={[]} /> 
                 </CardContent>
               </Card>
             </div>
 
-            <ArticleBody sections={[]} /> {/* Real data mapping happens in production */}
+            <ArticleBody sections={[]} /> 
             
+            <CommunitySection />
+
             <RelatedArticles currentArticleId={article.id} category={article.category} />
           </div>
 
           {/* Desktop Sidebar TOC */}
           <aside className="hidden lg:block lg:col-span-4">
-            <div className="sticky top-24">
-              <Card className="glass-card">
-                <CardContent className="pt-6">
-                  <TableOfContents sections={[]} /> {/* Real data mapping happens in production */}
+            <div className="sticky top-24 space-y-8">
+              <Card className="glass-card shadow-2xl border-none">
+                <CardContent className="pt-8">
+                  <TableOfContents sections={[]} />
                 </CardContent>
               </Card>
+
+              <div className="p-8 rounded-[2rem] bg-primary/5 border border-primary/20 space-y-4">
+                <div className="flex items-center gap-2 text-primary font-bold text-sm uppercase tracking-widest">
+                  <Zap className="h-4 w-4" /> Expert insight
+                </div>
+                <Text variant="caption" className="text-muted-foreground leading-relaxed">
+                  Join the conversation below to discuss specific tactical executions based on this research node.
+                </Text>
+              </div>
             </div>
           </aside>
         </div>
 
         <div className="mt-20 pt-8 border-t text-center">
-          <Button variant="outline" asChild>
+          <Button variant="outline" className="rounded-xl h-12 px-8 font-bold" asChild>
             <Link href="/glossary">Explore Full Glossary</Link>
           </Button>
         </div>
@@ -119,3 +131,5 @@ export const ArticlePage = ({ slug }: ArticlePageProps) => {
     </article>
   );
 };
+
+import { Zap } from 'lucide-react';
