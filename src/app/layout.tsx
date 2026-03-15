@@ -3,12 +3,24 @@ import './globals.css';
 import {Toaster} from '@/components/ui/toaster';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import { seoConfig } from '@/config/seo';
 
 export const metadata: Metadata = {
-  title: 'Imperialpedia — Scalable Financial Knowledge Platform',
-  description: 'The premier destination for financial knowledge, creator economy tools, and programmatic SEO driven financial insights.',
-  keywords: ['Finance', 'Investing', 'Financial Glossary', 'Creator Economy', 'Market Analytics'],
-  authors: [{ name: 'Imperialpedia Team' }],
+  title: seoConfig.defaultTitle,
+  description: seoConfig.defaultDescription,
+  keywords: seoConfig.defaultKeywords,
+  openGraph: {
+    type: 'website',
+    locale: seoConfig.openGraph.locale,
+    url: seoConfig.openGraph.url,
+    siteName: seoConfig.openGraph.siteName,
+    images: seoConfig.openGraph.images,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    site: seoConfig.twitter.site,
+    creator: seoConfig.twitter.handle,
+  },
   viewport: 'width=device-width, initial-scale=1',
   robots: 'index, follow',
 };
