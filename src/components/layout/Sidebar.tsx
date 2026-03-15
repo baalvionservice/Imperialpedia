@@ -35,7 +35,8 @@ import {
   Activity,
   Database,
   RotateCcw,
-  ShieldEllipsis
+  ShieldEllipsis,
+  Bug
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 import { useAppStore } from '@/lib/state/app-store';
@@ -103,6 +104,7 @@ const Sidebar = ({ className }: { className?: string }) => {
     { icon: Tags, label: 'Topics & Tags', href: '/admin/tags' },
     { icon: BarChart3, label: 'System Analytics', href: '/admin/analytics' },
     { icon: Activity, label: 'System Health', href: '/admin/health' },
+    { icon: Bug, label: 'Error Logs', href: '/admin/errors' },
     { icon: ShieldCheck, label: 'Audit Trail', href: '/admin/audit-logs' },
     { icon: ShieldEllipsis, label: 'Access Logs', href: '/admin/access-logs' },
     { icon: ShieldAlert, label: 'pSEO Health', href: '/admin/seo-audit' },

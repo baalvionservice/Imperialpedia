@@ -82,3 +82,12 @@ export interface AccessLog {
   timestamp: string;
   status: 'success' | 'failed';
 }
+
+export interface ErrorLog {
+  id: string;
+  timestamp: string;
+  module: string;
+  type: 'info' | 'warning' | 'critical';
+  message: string;
+  stackTrace?: string;
+}

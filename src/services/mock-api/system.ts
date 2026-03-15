@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog } from '@/types/system';
+import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog } from '@/types/system';
 
 /**
  * @fileOverview Mock service for managing global platform configuration and system notifications.
@@ -57,6 +57,15 @@ const mockAccessLogs: AccessLog[] = [
   { id: 'acc-4', user: 'editor@imperialpedia.com', ip: '172.16.0.5', device: 'Tablet (iPadOS / Safari)', timestamp: '2024-03-11T16:20:00Z', status: 'success' },
   { id: 'acc-5', user: 'wealth@imperialpedia.com', ip: '192.168.1.10', device: 'Desktop (Windows / Edge)', timestamp: '2024-03-11T14:10:00Z', status: 'success' },
   { id: 'acc-6', user: 'admin@imperialpedia.com', ip: '10.0.0.1', device: 'Desktop (macOS / Chrome)', timestamp: '2024-03-11T12:00:00Z', status: 'failed' },
+];
+
+const mockErrorLogs: ErrorLog[] = [
+  { id: 'err-1', timestamp: '2024-03-12T11:45:00Z', module: 'API Gateway', type: 'critical', message: 'Connection timeout reached while attempting to synchronize search cluster indices.' },
+  { id: 'err-2', timestamp: '2024-03-12T10:20:00Z', module: 'Content Engine', type: 'warning', message: 'Failed to generate automated summary for intelligence node art-452. Falling back to default excerpt.' },
+  { id: 'err-3', timestamp: '2024-03-12T09:15:00Z', module: 'pSEO Manager', type: 'info', message: 'Sitemap successfully re-indexed for 1,042,000 programmatic nodes.' },
+  { id: 'err-4', timestamp: '2024-03-11T23:30:00Z', module: 'Auth Provider', type: 'warning', message: 'Rate limit threshold triggered for IP 45.12.88.2 (Security Protocol active).' },
+  { id: 'err-5', timestamp: '2024-03-11T16:45:00Z', module: 'Database Alpha', type: 'critical', message: 'I/O latency spike detected in primary storage cluster. Maintenance cycle initiated.' },
+  { id: 'err-6', timestamp: '2024-03-11T12:00:00Z', module: 'Calculator Engine', type: 'info', message: 'Compound Interest algorithm updated to version 2.4.1.' },
 ];
 
 export const getSystemSettings = async (): Promise<ApiResponse<SystemSettings>> => {
@@ -167,6 +176,14 @@ export const getAccessLogs = async (): Promise<ApiResponse<AccessLog[]>> => {
   await new Promise((resolve) => setTimeout(resolve, 400));
   return {
     data: mockAccessLogs,
+    status: 200,
+  };
+};
+
+export const getErrorLogs = async (): Promise<ApiResponse<ErrorLog[]>> => {
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  return {
+    data: mockErrorLogs,
     status: 200,
   };
 };
