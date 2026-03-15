@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { TrafficAnalytics, SeoAnalytics, PlatformOverview, TrafficAnalyticsReport, ContentAnalytics, EngagementAnalytics, ModerationAnalytics, CreatorEngagement, TrafficSources, TrendingContent, DailyActiveUsers, WeeklyActiveUsers, TopContent, TopKeyword, GrowthMetrics, EngagementByCategory } from '@/types/analytics';
+import { TrafficAnalytics, SeoAnalytics, PlatformOverview, TrafficAnalyticsReport, ContentAnalytics, EngagementAnalytics, ModerationAnalytics, CreatorEngagement, TrafficSources, TrendingContent, DailyActiveUsers, WeeklyActiveUsers, TopContent, TopKeyword, GrowthMetrics, EngagementByCategory, TrafficTrends } from '@/types/analytics';
 
 /**
  * @fileOverview Mock service for platform analytics and trending data.
@@ -230,6 +230,39 @@ export const getCategoryEngagement = async (): Promise<ApiResponse<EngagementByC
     { category: 'Personal Finance', views: 125000, likes: 4200, comments: 310, shares: 850, engagementRate: 4.5 },
   ].sort((a, b) => b.engagementRate - a.engagementRate);
   return { data, status: 200 };
+};
+
+export const getTrafficTrends = async (): Promise<ApiResponse<TrafficTrends>> => {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  const dates = Array.from({ length: 30 }, (_, i) => {
+    const d = new Date();
+    d.setDate(d.getDate() - (29 - i));
+    return d.toISOString().split('T')[0];
+  });
+
+  return {
+    data: {
+      dailyVisits: dates.map(date => ({
+        date,
+        visits: Math.floor(Math.random() * 5000) + 10000
+      })),
+      deviceBreakdown: [
+        { device: 'Desktop', percent: 58 },
+        { device: 'Mobile', percent: 35 },
+        { device: 'Tablet', percent: 7 }
+      ],
+      countryVisits: [
+        { country: 'United States', visits: 125400, change: 12.4 },
+        { country: 'United Kingdom', visits: 45200, change: 8.2 },
+        { country: 'Canada', visits: 31800, change: -2.1 },
+        { country: 'Germany', visits: 28400, change: 15.6 },
+        { country: 'Australia', visits: 22100, change: 4.5 },
+        { country: 'India', visits: 18500, change: 24.8 },
+        { country: 'Singapore', visits: 12400, change: 11.2 },
+      ]
+    },
+    status: 200
+  };
 };
 
 export const getContentAnalytics = async (): Promise<ApiResponse<ContentAnalytics>> => {

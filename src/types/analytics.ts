@@ -52,6 +52,12 @@ export interface TrafficAnalyticsReport {
   topPages: { page: string; visits: number; bounceRate: number }[];
 }
 
+export interface TrafficTrends {
+  dailyVisits: { date: string; visits: number }[];
+  deviceBreakdown: { device: string; percent: number }[];
+  countryVisits: { country: string; visits: number; change: number }[];
+}
+
 export interface TrafficSources {
   sources: { 
     name: string; 

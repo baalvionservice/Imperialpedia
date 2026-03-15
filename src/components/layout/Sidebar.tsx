@@ -108,6 +108,7 @@ const Sidebar = ({ className }: { className?: string }) => {
     { icon: Layers, label: 'Categories', href: '/admin/categories' },
     { icon: Tags, label: 'Topics & Tags', href: '/admin/tags' },
     { icon: BarChart3, label: 'System Analytics', href: '/admin/analytics' },
+    { icon: Activity, label: 'Traffic Trends', href: '/admin/analytics/traffic-trends' },
     { icon: Sparkles, label: 'Network Engagement', href: '/admin/analytics/creator-engagement' },
     { icon: ShieldAlert, label: 'Moderation Audit', href: '/admin/analytics/moderation' },
     { icon: Activity, label: 'System Health', href: '/admin/health' },
