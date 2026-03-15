@@ -29,7 +29,7 @@ export const financialMath = {
   },
 
   /**
-   * Calculates monthly loan payment.
+   * Calculates monthly loan payment (EMI).
    * Formula: M = P [ i(1 + i)^n ] / [ (1 + i)^n – 1 ]
    */
   calculateMonthlyLoanPayment: (
@@ -41,9 +41,25 @@ export const financialMath = {
     const n = years * 12;
     
     if (i === 0) return principal / n;
+    if (n === 0) return principal;
     
     const factor = Math.pow(1 + i, n);
     return principal * (i * factor) / (factor - 1);
+  },
+
+  /**
+   * Provides a full breakdown of loan costs.
+   */
+  getLoanSummary: (principal: number, annualRate: number, years: number) => {
+    const monthlyPayment = financialMath.calculateMonthlyLoanPayment(principal, annualRate, years);
+    const totalRepayment = monthlyPayment * (years * 12);
+    const totalInterest = totalRepayment - principal;
+    
+    return {
+      monthlyPayment,
+      totalRepayment,
+      totalInterest
+    };
   },
 
   /**
