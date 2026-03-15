@@ -1,4 +1,4 @@
- 'use client';
+'use client';
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
@@ -15,7 +15,7 @@ import {
   CheckCircle,
   MessageSquare,
   Calendar,
-  Image as ImageIcon,
+  ImageIcon,
   Layers,
   Tags,
   ShieldAlert,
@@ -47,7 +47,8 @@ import {
   Monitor,
   Palette,
   TrendingDown,
-  PieChart
+  PieChart,
+  Globe
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 import { useAppStore } from '@/lib/state/app-store';
@@ -166,6 +167,7 @@ const Sidebar = ({ className }: { className?: string }) => {
     { icon: ShieldAlert, label: 'AI Risk Scanner', href: '/ai-analyst/risk-detection' },
     { icon: Zap, label: 'AI Catalyst Scanner', href: '/ai-analyst/catalyst-detection' },
     { icon: PieChart, label: 'AI Earnings Summary', href: '/ai-analyst/earnings-summary' },
+    { icon: Globe, label: 'AI Macro Summary', href: '/ai-analyst/macro-summary' },
     { icon: Search, label: 'Internal Search', href: '/search' },
     { icon: UsersIcon, label: 'Creator Network', href: '/creators' },
     { icon: CalcIcon, label: 'Financial Tools', href: '/financial-tools' },
