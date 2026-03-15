@@ -69,6 +69,24 @@ export const getRolePermissions = async (): Promise<ApiResponse<RolePermissionSe
   };
 };
 
+export const assignPermissions = async (roleId: string, permissions: string[]): Promise<ApiResponse<RoleControl>> => {
+  await new Promise((resolve) => setTimeout(resolve, 800));
+  const index = mockControlRoles.findIndex(r => r.id === roleId);
+  if (index !== -1) {
+    mockControlRoles[index].permissions = permissions;
+    return {
+      data: mockControlRoles[index],
+      status: 200,
+      message: 'Capability map synchronized.'
+    };
+  }
+  return {
+    data: null as any,
+    status: 404,
+    message: 'Role not found.'
+  };
+};
+
 export const createOrUpdateRole = async (role: Partial<RoleControl>): Promise<ApiResponse<RoleControl[]>> => {
   await new Promise((resolve) => setTimeout(resolve, 1000));
   

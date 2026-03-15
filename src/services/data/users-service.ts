@@ -73,6 +73,19 @@ export const usersService = {
     }
   },
 
+  async assignPermissions(roleId: string, permissions: string[]): Promise<ApiResponse<RoleControl>> {
+    try {
+      return await roleApi.assignPermissions(roleId, permissions);
+    } catch (error) {
+      const appError = errorHandler.handleError(error);
+      return {
+        data: null as any,
+        status: appError.statusCode,
+        error: appError.message,
+      };
+    }
+  },
+
   async createOrUpdateRole(role: Partial<RoleControl>): Promise<ApiResponse<RoleControl[]>> {
     try {
       return await roleApi.createOrUpdateRole(role);
