@@ -1,4 +1,4 @@
-import { CreatorProfile, ApiResponse, CreatorContentItem, CreatorDashboardSummary, CreatorDashboardAnalytics, CreatorVerification, CreatorLeaderboard, ScheduledContent, CreatorSettings, CreatorDashboardStats } from '@/types';
+import { CreatorProfile, ApiResponse, CreatorContentItem, CreatorDashboardSummary, CreatorDashboardAnalytics, CreatorVerification, CreatorLeaderboard, ScheduledContent, CreatorSettings, CreatorDashboardStats, Follower } from '@/types';
 import { Notification } from '@/modules/content-engine/types/article';
 
 /**
@@ -144,6 +144,13 @@ const mockLeaderboard: CreatorLeaderboard[] = [
   { creatorId: 'creator-5', name: 'Ken Macro', profileImage: 'https://picsum.photos/seed/ken/200/200', category: 'Markets', region: 'North America', verified: false, totalRevenue: 2100.00, totalViews: 12000, totalLikes: 850 },
   { creatorId: 'u-7', name: 'Bull Analyst', profileImage: 'https://picsum.photos/seed/bull/200/200', category: 'Markets', region: 'North America', verified: true, totalRevenue: 9800.40, totalViews: 95000, totalLikes: 4300 },
   { creatorId: 'u-8', name: 'ESG Expert', profileImage: 'https://picsum.photos/seed/esg/200/200', category: 'Investing', region: 'EMEA', verified: false, totalRevenue: 3400.10, totalViews: 32000, totalLikes: 1500 },
+];
+
+const mockFollowers: Follower[] = [
+  { id: 'f-1', name: 'Julian Wealth', username: 'wealthbuilder', profileImage: 'https://picsum.photos/seed/wealth/200/200', followedAt: '2024-03-01T10:00:00Z', status: 'following', category: 'Investing' },
+  { id: 'f-2', name: 'Sarah Crypto', username: 'defianalyst', profileImage: 'https://picsum.photos/seed/defi/200/200', followedAt: '2024-03-05T14:30:00Z', status: 'not_following', category: 'Crypto' },
+  { id: 'f-3', name: 'Ken Macro', username: 'macroken', profileImage: 'https://picsum.photos/seed/ken/200/200', followedAt: '2024-03-10T09:15:00Z', status: 'following', category: 'Markets' },
+  { id: 'f-4', name: 'Eleanor Vance', username: 'econvance', profileImage: 'https://picsum.photos/seed/eleanor/200/200', followedAt: '2024-02-20T16:45:00Z', status: 'following', category: 'Economics' },
 ];
 
 export const getCreators = async (): Promise<ApiResponse<CreatorProfile[]>> => {
@@ -305,6 +312,23 @@ export const getCreatorSettings = async (creatorId: string): Promise<ApiResponse
   await new Promise((resolve) => setTimeout(resolve, 300));
   return {
     data: mockCreatorSettings,
+    status: 200
+  };
+};
+
+export const getFollowers = async (creatorId: string): Promise<ApiResponse<Follower[]>> => {
+  await new Promise((resolve) => setTimeout(resolve, 300));
+  return {
+    data: mockFollowers,
+    status: 200
+  };
+};
+
+export const getFollowing = async (creatorId: string): Promise<ApiResponse<Follower[]>> => {
+  await new Promise((resolve) => setTimeout(resolve, 300));
+  // Reuse same mock but reversed for variety
+  return {
+    data: [...mockFollowers].reverse(),
     status: 200
   };
 };

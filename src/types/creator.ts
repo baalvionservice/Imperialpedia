@@ -158,3 +158,13 @@ export interface CreatorSettings {
     url: string;
   }[];
 }
+
+export interface Follower {
+  id: string;
+  name: string;
+  username: string;
+  profileImage: string;
+  followedAt: string;
+  status: "following" | "not_following";
+  category?: string;
+}
