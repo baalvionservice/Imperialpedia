@@ -105,6 +105,14 @@ export interface AdminAlert {
   priority: 'low' | 'medium' | 'high';
 }
 
+export interface SystemAlert {
+  id: string;
+  message: string;
+  type: 'Info' | 'Warning' | 'Critical';
+  status: 'Active' | 'Inactive';
+  date: string;
+}
+
 export interface SystemHealth {
   uptimePercentage: number;
   errorCountLast24h: number;

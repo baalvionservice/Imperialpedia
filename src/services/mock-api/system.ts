@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog, SecuritySettings, GlobalNotificationSettings, AuditTrailEntry, FeatureSettings, AdminSession, BrandingSettings } from '@/types/system';
+import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog, SecuritySettings, GlobalNotificationSettings, AuditTrailEntry, FeatureSettings, AdminSession, BrandingSettings, SystemAlert } from '@/types/system';
 
 /**
  * @fileOverview Mock service for managing global platform configuration and system notifications.
@@ -79,6 +79,13 @@ const mockNotifications: SystemNotification[] = [
   { id: 'sn-1', title: 'Q1 Performance Grants', message: 'Applications for the Q1 Intelligence Research grants are now open for verified experts.', active: true, type: 'success', target: 'creators', createdAt: '2024-03-10T10:00:00Z' },
   { id: 'sn-2', title: 'System Maintenance', message: 'The pSEO indexing engine will undergo scheduled optimization on Sunday at 02:00 UTC.', active: true, type: 'warning', target: 'all', createdAt: '2024-03-12T08:30:00Z' },
   { id: 'sn-3', title: 'Policy Update', message: 'Expert revenue share benchmarks have been updated in the System Configuration panel.', active: false, type: 'info', target: 'admins', createdAt: '2024-03-05T14:20:00Z' },
+];
+
+const mockSystemAlerts: SystemAlert[] = [
+  { id: 'sal-1', message: 'API Gateway Alpha experiencing intermittent latency spikes.', type: 'Warning', status: 'Active', date: '2024-03-12T14:30:00Z' },
+  { id: 'sal-2', message: 'pSEO Ingestion Node successfully re-sharded for Q2 capacity.', type: 'Info', status: 'Active', date: '2024-03-12T13:15:00Z' },
+  { id: 'sal-3', message: 'Critical security patch deployed to Auth Kernel v4.2.0.', type: 'Critical', status: 'Active', date: '2024-03-12T11:45:00Z' },
+  { id: 'sal-4', message: 'Legacy Analytics Node sunsetting process initiated.', type: 'Info', status: 'Inactive', date: '2024-03-11T16:20:00Z' },
 ];
 
 const mockNotificationLogs: NotificationLog[] = [
@@ -272,6 +279,14 @@ export const deleteSystemNotification = async (id: string): Promise<ApiResponse<
     data: undefined,
     status: 200,
     message: 'Notification purged from index.'
+  };
+};
+
+export const getSystemAlerts = async (): Promise<ApiResponse<SystemAlert[]>> => {
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  return {
+    data: mockSystemAlerts,
+    status: 200,
   };
 };
 

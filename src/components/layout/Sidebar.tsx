@@ -53,8 +53,8 @@ import { useAppStore } from '@/lib/state/app-store';
 interface SidebarItemProps {
   icon: React.ElementType;
   label: string;
-  href: string;
   isActive: boolean;
+  href: string;
   badge?: number;
 }
 
@@ -110,6 +110,7 @@ const Sidebar = ({ className }: { className?: string }) => {
     { icon: Bell, label: 'Notification Settings', href: '/admin/control/notifications' },
     { icon: Zap, label: 'Feature Toggles', href: '/admin/control/features' },
     { icon: Palette, label: 'Theme & Branding', href: '/admin/control/branding' },
+    { icon: Megaphone, label: 'System Alerts', href: '/admin/control/alerts' },
     { icon: ShieldX, label: 'Content Moderation', href: '/admin/moderation' },
     { icon: Megaphone, label: 'System Notifications', href: '/admin/notifications' },
     { icon: History, label: 'Broadcast Logs', href: '/admin/notification-logs' },
