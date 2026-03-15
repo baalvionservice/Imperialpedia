@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { TrafficAnalytics } from '@/types/analytics';
+import { TrafficAnalytics, SeoAnalytics } from '@/types/analytics';
 
 /**
  * @fileOverview Mock service for platform analytics and trending data.
@@ -202,6 +202,35 @@ export const getTrafficAnalytics = async (): Promise<ApiResponse<TrafficAnalytic
         sessions: Math.floor(Math.random() * 500) + 200,
         views: Math.floor(Math.random() * 2000) + 1000
       }))
+    },
+    status: 200
+  };
+};
+
+export const getSeoAnalytics = async (): Promise<ApiResponse<SeoAnalytics>> => {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  return {
+    data: {
+      indexedPages: 1042000,
+      clickThroughRate: 4.2,
+      avgPosition: 12.4,
+      backlinks: 85400,
+      topKeywords: [
+        { keyword: 'Yield Curve Inversion', position: 1.2, clicks: 12400, impressions: 45000, trend: 'up' },
+        { keyword: 'Compound Interest Calculator', position: 2.4, clicks: 8200, impressions: 32000, trend: 'up' },
+        { keyword: 'Macro Economics Trends', position: 4.8, clicks: 5100, impressions: 28000, trend: 'stable' },
+        { keyword: 'Inflation Impact', position: 3.1, clicks: 4800, impressions: 15000, trend: 'up' },
+        { keyword: 'Retirement Savings Strategy', position: 8.5, clicks: 2400, impressions: 12000, trend: 'down' },
+      ],
+      trends: [
+        { date: '2024-03-01', clicks: 4200, impressions: 120000 },
+        { date: '2024-03-02', clicks: 4500, impressions: 125000 },
+        { date: '2024-03-03', clicks: 3800, impressions: 110000 },
+        { date: '2024-03-04', clicks: 5200, impressions: 140000 },
+        { date: '2024-03-05', clicks: 6100, impressions: 165000 },
+        { date: '2024-03-06', clicks: 5800, impressions: 155000 },
+        { date: '2024-03-07', clicks: 6500, impressions: 180000 },
+      ]
     },
     status: 200
   };

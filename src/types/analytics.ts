@@ -23,3 +23,22 @@ export interface TrafficAnalytics {
     views: number;
   }[];
 }
+
+export interface SeoAnalytics {
+  indexedPages: number;
+  clickThroughRate: number;
+  avgPosition: number;
+  backlinks: number;
+  topKeywords: { 
+    keyword: string; 
+    position: number; 
+    clicks: number; 
+    impressions: number;
+    trend: 'up' | 'down' | 'stable';
+  }[];
+  trends: { 
+    date: string; 
+    clicks: number; 
+    impressions: number;
+  }[];
+}
