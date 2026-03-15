@@ -32,7 +32,9 @@ import {
   ShieldX,
   Lock,
   Megaphone,
-  Activity
+  Activity,
+  Database,
+  RotateCcw
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 import { useAppStore } from '@/lib/state/app-store';
@@ -102,6 +104,7 @@ const Sidebar = ({ className }: { className?: string }) => {
     { icon: Activity, label: 'System Health', href: '/admin/health' },
     { icon: ShieldCheck, label: 'Audit Trail', href: '/admin/audit-logs' },
     { icon: ShieldAlert, label: 'pSEO Health', href: '/admin/seo-audit' },
+    { icon: RotateCcw, label: 'Backup & Restore', href: '/admin/backup' },
     { icon: Settings, label: 'System Settings', href: '/admin/settings' },
   ];
 

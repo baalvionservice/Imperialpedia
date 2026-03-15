@@ -64,3 +64,12 @@ export interface SystemHealth {
     errors: number;
   }[];
 }
+
+export interface Backup {
+  id: string;
+  timestamp: string;
+  status: 'completed' | 'failed' | 'in-progress';
+  size: string;
+  type: 'automated' | 'manual';
+  checksum: string;
+}

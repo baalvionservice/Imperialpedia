@@ -1,6 +1,6 @@
 import * as mockApi from '@/services/mock-api/system';
 import { ApiResponse } from '@/types';
-import { SystemSettings, SystemNotification, AdminAlert, SystemHealth } from '@/types/system';
+import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup } from '@/types/system';
 import { errorHandler } from '@/lib/errors/error-handler';
 
 /**
@@ -93,6 +93,45 @@ export const systemService = {
       const appError = errorHandler.handleError(error);
       return {
         data: null,
+        status: appError.statusCode,
+        error: appError.message,
+      };
+    }
+  },
+
+  async getBackups(): Promise<ApiResponse<Backup[]>> {
+    try {
+      return await mockApi.getBackups();
+    } catch (error) {
+      const appError = errorHandler.handleError(error);
+      return {
+        data: [],
+        status: appError.statusCode,
+        error: appError.message,
+      };
+    }
+  },
+
+  async createBackup(): Promise<ApiResponse<Backup | null>> {
+    try {
+      return await mockApi.createBackup();
+    } catch (error) {
+      const appError = errorHandler.handleError(error);
+      return {
+        data: null,
+        status: appError.statusCode,
+        error: appError.message,
+      };
+    }
+  },
+
+  async restoreBackup(id: string): Promise<ApiResponse<void>> {
+    try {
+      return await mockApi.restoreBackup(id);
+    } catch (error) {
+      const appError = errorHandler.handleError(error);
+      return {
+        data: undefined,
         status: appError.statusCode,
         error: appError.message,
       };

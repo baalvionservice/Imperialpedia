@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { SystemSettings, SystemNotification, AdminAlert, SystemHealth } from '@/types/system';
+import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup } from '@/types/system';
 
 /**
  * @fileOverview Mock service for managing global platform configuration and system notifications.
@@ -41,6 +41,13 @@ const mockAdminAlerts: AdminAlert[] = [
   { id: 'aa-1', type: 'content', message: 'New high-priority article submission from @marketmaven.', read: false, createdAt: new Date().toISOString(), priority: 'high' },
   { id: 'aa-2', type: 'user', message: 'Expert verification request pending for User #842.', read: false, createdAt: new Date().toISOString(), priority: 'medium' },
   { id: 'aa-3', type: 'system', message: 'pSEO Health Audit complete: 14 nodes require metadata optimization.', read: false, createdAt: new Date().toISOString(), priority: 'low' },
+];
+
+const mockBackups: Backup[] = [
+  { id: 'bak-1', timestamp: '2024-03-12T04:00:00Z', status: 'completed', size: '1.4GB', type: 'automated', checksum: 'sha256:8f2d...' },
+  { id: 'bak-2', timestamp: '2024-03-11T04:00:00Z', status: 'completed', size: '1.38GB', type: 'automated', checksum: 'sha256:4a1c...' },
+  { id: 'bak-3', timestamp: '2024-03-10T15:30:00Z', status: 'completed', size: '1.35GB', type: 'manual', checksum: 'sha256:9e0b...' },
+  { id: 'bak-4', timestamp: '2024-03-09T04:00:00Z', status: 'failed', size: '0KB', type: 'automated', checksum: 'N/A' },
 ];
 
 export const getSystemSettings = async (): Promise<ApiResponse<SystemSettings>> => {
@@ -110,5 +117,39 @@ export const getSystemHealth = async (): Promise<ApiResponse<SystemHealth>> => {
       }))
     },
     status: 200
+  };
+};
+
+export const getBackups = async (): Promise<ApiResponse<Backup[]>> => {
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  return {
+    data: mockBackups,
+    status: 200
+  };
+};
+
+export const createBackup = async (): Promise<ApiResponse<Backup>> => {
+  await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulate backup time
+  const newBackup: Backup = {
+    id: `bak-${Math.random().toString(36).substr(2, 5)}`,
+    timestamp: new Date().toISOString(),
+    status: 'completed',
+    size: '1.42GB',
+    type: 'manual',
+    checksum: `sha256:${Math.random().toString(36).substr(2, 10)}`
+  };
+  return {
+    data: newBackup,
+    status: 200,
+    message: 'System snapshot created and mirrored to off-site vault.'
+  };
+};
+
+export const restoreBackup = async (id: string): Promise<ApiResponse<void>> => {
+  await new Promise((resolve) => setTimeout(resolve, 1500));
+  return {
+    data: undefined,
+    status: 200,
+    message: `Platform state successfully reverted to snapshot ${id}.`
   };
 };
