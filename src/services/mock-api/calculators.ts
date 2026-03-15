@@ -46,10 +46,10 @@ export const mockCalculators: Calculator[] = [
   },
   {
     id: 'calc-portfolio',
-    name: 'Portfolio Rebalancer',
+    name: 'Portfolio ROI Architect',
     slug: 'portfolio',
     type: 'portfolio',
-    description: 'Analyze your asset allocation and determine necessary trades to return to your target risk profile.',
+    description: 'Architect a diversified portfolio and analyze aggregate returns across multiple asset classes.',
     category: 'Investing',
     icon: 'Layers'
   },
