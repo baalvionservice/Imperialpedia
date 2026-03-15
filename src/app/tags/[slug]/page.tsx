@@ -6,11 +6,13 @@ import { ArticleList } from '@/modules/content-engine/components';
 import { getTagBySlug, getArticlesByTag } from '@/modules/content-engine/services/tag-service';
 import { Text } from '@/design-system/typography/text';
 import { Badge } from '@/components/ui/badge';
-import { Tag as TagIcon } from 'lucide-react';
+import { Tag as TagIcon, Sparkles } from 'lucide-react';
 import { buildMetadata } from '@/lib/seo';
 import { Metadata } from 'next';
 import { Breadcrumbs } from '@/modules/seo-engine/components/Breadcrumbs';
 import { breadcrumbService } from '@/modules/seo-engine/services/breadcrumb-service';
+import { linkService } from '@/modules/seo/services/link-service';
+import Link from 'next/link';
 
 interface TagRouteProps {
   params: Promise<{ slug: string }>;
@@ -43,9 +45,10 @@ export async function generateMetadata({ params }: TagRouteProps): Promise<Metad
 export default async function TagPage({ params }: TagRouteProps) {
   const { slug } = await params;
 
-  const [tagResponse, articlesResponse] = await Promise.all([
+  const [tagResponse, articlesResponse, relatedTopics] = await Promise.all([
     getTagBySlug(slug),
     getArticlesByTag(slug),
+    linkService.getRelatedTopics(slug)
   ]);
 
   const tag = tagResponse.data;
@@ -92,6 +95,22 @@ export default async function TagPage({ params }: TagRouteProps) {
           <div className="mt-12">
             <ArticleList articles={articles} />
           </div>
+
+          <footer className="mt-24 pt-12 border-t">
+            <div className="flex items-center gap-2 text-secondary mb-8">
+              <Sparkles className="h-5 w-5" />
+              <Text variant="h4">Explore Adjacent Topics</Text>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              {relatedTopics.map((topic) => (
+                <Link key={topic.slug} href={`/tags/${topic.slug}`}>
+                  <Badge variant="outline" className="px-4 py-2 hover:bg-secondary/10 hover:text-secondary transition-colors text-sm border-secondary/20">
+                    {topic.name}
+                  </Badge>
+                </Link>
+              ))}
+            </div>
+          </footer>
         </Container>
       </Section>
     </main>

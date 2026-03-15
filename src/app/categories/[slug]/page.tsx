@@ -8,6 +8,11 @@ import { buildMetadata } from '@/lib/seo';
 import { Metadata } from 'next';
 import { Breadcrumbs } from '@/modules/seo-engine/components/Breadcrumbs';
 import { breadcrumbService } from '@/modules/seo-engine/services/breadcrumb-service';
+import { linkService } from '@/modules/seo/services/link-service';
+import { Text } from '@/design-system/typography/text';
+import Link from 'next/link';
+import { Card } from '@/components/ui/card';
+import { Grid as GridIcon } from 'lucide-react';
 
 interface CategoryRouteProps {
   params: Promise<{ slug: string }>;
@@ -40,9 +45,10 @@ export async function generateMetadata({ params }: CategoryRouteProps): Promise<
 export default async function CategoryPage({ params }: CategoryRouteProps) {
   const { slug } = await params;
 
-  const [categoryResponse, articlesResponse] = await Promise.all([
+  const [categoryResponse, articlesResponse, relatedCategories] = await Promise.all([
     getCategoryBySlug(slug),
     getArticlesByCategory(slug),
+    linkService.getRelatedCategories(slug)
   ]);
 
   const category = categoryResponse.data;
@@ -64,6 +70,23 @@ export default async function CategoryPage({ params }: CategoryRouteProps) {
           <div className="mt-12">
             <ArticleList articles={articles} />
           </div>
+
+          <footer className="mt-24 pt-12 border-t">
+            <div className="flex items-center gap-2 text-primary mb-8">
+              <GridIcon className="h-5 w-5" />
+              <Text variant="h4">Related Intelligence Hubs</Text>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {relatedCategories.map((cat) => (
+                <Link key={cat.slug} href={`/categories/${cat.slug}`}>
+                  <Card className="glass-card hover:border-primary/50 transition-all p-6 group">
+                    <Text variant="body" className="font-bold group-hover:text-primary transition-colors mb-2 block">{cat.name}</Text>
+                    <Text variant="caption" className="text-muted-foreground line-clamp-2">{cat.description}</Text>
+                  </Card>
+                </Link>
+              ))}
+            </div>
+          </footer>
         </Container>
       </Section>
     </main>
