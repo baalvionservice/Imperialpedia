@@ -18,7 +18,8 @@ import {
   Twitter,
   Linkedin,
   Calendar,
-  ArrowUpRight
+  ArrowUpRight,
+  ChevronRight
 } from 'lucide-react';
 import { format } from 'date-fns';
 import Link from 'next/link';
@@ -160,7 +161,11 @@ export function CreatorProfileClient({ creator }: CreatorProfileClientProps) {
               <BookOpen className="h-6 w-6" />
               <Text variant="h2" className="text-3xl font-bold">Expert Intelligence</Text>
             </div>
-            <Text variant="bodySmall" className="text-muted-foreground font-bold">Showing {creator.content.recentArticles.length} recent insights</Text>
+            <Button variant="ghost" size="sm" className="font-bold text-primary gap-1 group" asChild>
+              <Link href={`/creator/${creator.id}/content`}>
+                View all content <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Link>
+            </Button>
           </div>
 
           {creator.content.recentArticles.length > 0 ? (

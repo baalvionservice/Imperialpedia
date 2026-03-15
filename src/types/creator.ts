@@ -54,6 +54,7 @@ export interface CreatorContentItem {
   likes: number;
   comments: number;
   slug: string;
+  snippet?: string;
 }
 
 export interface CreatorDashboardSummary {

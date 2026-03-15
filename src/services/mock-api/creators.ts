@@ -157,8 +157,54 @@ export const getCreatorDashboardStats = async (creatorId: string): Promise<ApiRe
 
 export const getCreatorContent = async (creatorId: string): Promise<ApiResponse<CreatorContentItem[]>> => {
   await new Promise((resolve) => setTimeout(resolve, 400));
+  // Generate a larger set for pagination testing
+  const extendedContent: CreatorContentItem[] = [
+    ...mockCreatorDashboardContent,
+    {
+      id: 'c-4',
+      title: 'Monetary Policy in the 2030s',
+      snippet: 'Predicting the shift from quantitative easing to structural digital currency adoption.',
+      body: 'Long analysis...',
+      category: 'Economics',
+      tags: ['Future', 'Central Banks'],
+      status: 'published',
+      createdAt: '2024-02-15T10:00:00Z',
+      views: 8500,
+      likes: 230,
+      comments: 45,
+      slug: 'monetary-policy-2030s'
+    },
+    {
+      id: 'c-5',
+      title: 'Fixed Income Strategies for High Inflation',
+      snippet: 'How to protect your portfolio as purchasing power erodes.',
+      body: 'Long analysis...',
+      category: 'Investing',
+      tags: ['Bonds', 'Inflation'],
+      status: 'published',
+      createdAt: '2024-01-20T10:00:00Z',
+      views: 15200,
+      likes: 540,
+      comments: 92,
+      slug: 'fixed-income-inflation'
+    },
+    {
+      id: 'c-6',
+      title: 'The Great Wealth Transfer',
+      snippet: 'Analyzing the multi-trillion dollar shift in generational assets.',
+      body: 'Long analysis...',
+      category: 'Investing',
+      tags: ['Wealth', 'Demographics'],
+      status: 'published',
+      createdAt: '2023-12-05T10:00:00Z',
+      views: 24500,
+      likes: 1100,
+      comments: 210,
+      slug: 'great-wealth-transfer'
+    }
+  ];
   return {
-    data: mockCreatorDashboardContent,
+    data: extendedContent,
     status: 200
   };
 };
@@ -211,6 +257,7 @@ const mockCreatorDashboardContent: CreatorContentItem[] = [
   {
     id: 'c-1',
     title: 'Quantitative Easing vs Tightening: A 2026 Outlook',
+    snippet: 'Mastering the nuances of central bank liquidity cycles in the next decade.',
     body: 'Full analysis text content...',
     category: 'Economics',
     tags: ['Macro', 'Fed'],
@@ -224,6 +271,7 @@ const mockCreatorDashboardContent: CreatorContentItem[] = [
   {
     id: 'c-2',
     title: 'The Rise of Algorithmic Stablecoins',
+    snippet: 'Evaluating the stability and risks of decentralized dollar pegs.',
     body: 'In-progress research...',
     category: 'Crypto',
     tags: ['DeFi', 'Stablecoins'],
@@ -237,6 +285,7 @@ const mockCreatorDashboardContent: CreatorContentItem[] = [
   {
     id: 'c-3',
     title: 'Yield Curve Dynamics in Emerging Markets',
+    snippet: 'Understanding global risk-off signals from secondary debt markets.',
     body: 'Scheduled content text...',
     category: 'Markets',
     tags: ['Emerging Markets', 'Yield Curve'],
