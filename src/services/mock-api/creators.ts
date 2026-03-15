@@ -1,7 +1,7 @@
 import { CreatorProfile, ApiResponse, CreatorContentItem, CreatorDashboardSummary, CreatorDashboardAnalytics, CreatorVerification } from '@/types';
 
 /**
- * @fileOverview Mock service for managing creator profiles, stats, and dashboard content.
+ * @fileOverview Mock service for managing creator profiles, stats, and discovery data.
  */
 
 const mockCreators: CreatorProfile[] = [
@@ -13,6 +13,8 @@ const mockCreators: CreatorProfile[] = [
     avatar: 'https://picsum.photos/seed/maven/200/200',
     joinedDate: '2023-01-15T00:00:00Z',
     specialties: ['Economics', 'Bonds', 'Macro'],
+    category: 'Economics',
+    region: 'North America',
     verified: true,
     stats: {
       followersCount: 15400,
@@ -28,6 +30,48 @@ const mockCreators: CreatorProfile[] = [
     },
   },
   {
+    id: 'creator-2',
+    username: 'wealthbuilder',
+    displayName: 'Julian Wealth',
+    bio: 'Strategic wealth manager specializing in ESG and sustainable long-term portfolios.',
+    avatar: 'https://picsum.photos/seed/wealth/200/200',
+    joinedDate: '2023-05-20T00:00:00Z',
+    specialties: ['Wealth Management', 'ESG', 'Strategy'],
+    category: 'Investing',
+    region: 'EMEA',
+    verified: true,
+    stats: {
+      followersCount: 8200,
+      followingCount: 210,
+      articlesCount: 15,
+      totalViews: 120000,
+    },
+    content: {
+      recentArticles: [],
+    },
+  },
+  {
+    id: 'creator-3',
+    username: 'defianalyst',
+    displayName: 'Sarah Crypto',
+    bio: 'DeFi researcher and smart contract security expert. Helping investors navigate the yield farm landscape.',
+    avatar: 'https://picsum.photos/seed/defi/200/200',
+    joinedDate: '2024-01-10T00:00:00Z',
+    specialties: ['DeFi', 'Web3', 'Ethereum'],
+    category: 'Crypto',
+    region: 'APAC',
+    verified: false,
+    stats: {
+      followersCount: 3500,
+      followingCount: 85,
+      articlesCount: 8,
+      totalViews: 45000,
+    },
+    content: {
+      recentArticles: [],
+    },
+  },
+  {
     id: 'creator-4',
     username: 'econvance',
     displayName: 'Eleanor Vance',
@@ -35,12 +79,35 @@ const mockCreators: CreatorProfile[] = [
     avatar: 'https://picsum.photos/seed/eleanor/200/200',
     joinedDate: '2022-12-01T00:00:00Z',
     specialties: ['Economics', 'Growth', 'Strategy'],
+    category: 'Economics',
+    region: 'North America',
     verified: true,
     stats: {
       followersCount: 25000,
       followingCount: 500,
       articlesCount: 120,
       totalViews: 4500000,
+    },
+    content: {
+      recentArticles: [],
+    },
+  },
+  {
+    id: 'creator-5',
+    username: 'macroken',
+    displayName: 'Ken Macro',
+    bio: 'Global macro analyst with 20 years experience in treasury markets and gold cycles.',
+    avatar: 'https://picsum.photos/seed/ken/200/200',
+    joinedDate: '2023-02-15T00:00:00Z',
+    specialties: ['Gold', 'Macro', 'Treasuries'],
+    category: 'Markets',
+    region: 'North America',
+    verified: false,
+    stats: {
+      followersCount: 1200,
+      followingCount: 45,
+      articlesCount: 5,
+      totalViews: 12000,
     },
     content: {
       recentArticles: [],

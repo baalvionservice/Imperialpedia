@@ -29,6 +29,8 @@ export interface CreatorProfile {
   avatar: string;
   joinedDate: Timestamp;
   specialties: string[];
+  category: string;
+  region: string;
   stats: CreatorStats;
   content: CreatorContent;
   verified: boolean;
