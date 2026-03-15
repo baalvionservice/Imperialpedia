@@ -27,9 +27,9 @@ export default function LoanCalculatorPage() {
     const r = Number(rate);
     const y = Number(years);
 
-    if (!principal || p <= 0) newErrors.principal = "Required (> 0)";
-    if (!rate || r < 0 || r > 100) newErrors.rate = "Required (0-100%)";
-    if (!years || y <= 0) newErrors.years = "Required (> 0)";
+    if (!principal || isNaN(p) || p <= 0) newErrors.principal = "Required (> 0)";
+    if (!rate || isNaN(r) || r < 0 || r > 100) newErrors.rate = "Required (0-100%)";
+    if (!years || isNaN(y) || y <= 0) newErrors.years = "Required (> 0)";
     
     updateLoan({ errors: newErrors });
     return Object.keys(newErrors).length === 0;
@@ -110,7 +110,7 @@ export default function LoanCalculatorPage() {
                       id="principal" 
                       type="number" 
                       value={principal} 
-                      onChange={(e) => updateLoan({ principal: e.target.value })}
+                      onChange={(e) => updateLoan({ principal: e.target.value, errors: { ...errors, principal: '' } })}
                       error={errors.principal}
                       className="h-12 bg-background/50 rounded-xl border-white/10"
                       placeholder="e.g. 250000"
@@ -124,7 +124,7 @@ export default function LoanCalculatorPage() {
                       type="number" 
                       step="0.01"
                       value={rate} 
-                      onChange={(e) => updateLoan({ rate: e.target.value })}
+                      onChange={(e) => updateLoan({ rate: e.target.value, errors: { ...errors, rate: '' } })}
                       error={errors.rate}
                       className="h-12 bg-background/50 rounded-xl border-white/10"
                       placeholder="e.g. 6.5"
@@ -137,7 +137,7 @@ export default function LoanCalculatorPage() {
                       id="years" 
                       type="number" 
                       value={years} 
-                      onChange={(e) => updateLoan({ years: e.target.value })}
+                      onChange={(e) => updateLoan({ years: e.target.value, errors: { ...errors, years: '' } })}
                       error={errors.years}
                       className="h-12 bg-background/50 rounded-xl border-white/10"
                       placeholder="e.g. 30"

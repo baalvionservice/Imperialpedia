@@ -27,9 +27,9 @@ export default function InflationCalculatorPage() {
     const r = Number(rate);
     const y = Number(years);
 
-    if (!amount || a <= 0) newErrors.amount = "Required (> 0)";
-    if (!rate || r < 0 || r > 100) newErrors.rate = "Required (0-100%)";
-    if (!years || y <= 0) newErrors.years = "Required (> 0)";
+    if (!amount || isNaN(a) || a <= 0) newErrors.amount = "Required (> 0)";
+    if (!rate || isNaN(r) || r < 0 || r > 100) newErrors.rate = "Required (0-100%)";
+    if (!years || isNaN(y) || y <= 0) newErrors.years = "Required (> 0)";
     
     updateInflation({ errors: newErrors });
     return Object.keys(newErrors).length === 0;
@@ -104,7 +104,7 @@ export default function InflationCalculatorPage() {
                       id="amount" 
                       type="number" 
                       value={amount} 
-                      onChange={(e) => updateInflation({ amount: e.target.value })}
+                      onChange={(e) => updateInflation({ amount: e.target.value, errors: { ...errors, amount: '' } })}
                       error={errors.amount}
                       className="h-12 bg-background/50 rounded-xl border-white/10"
                       placeholder="e.g. 5000"
@@ -118,7 +118,7 @@ export default function InflationCalculatorPage() {
                       type="number" 
                       step="0.1"
                       value={rate} 
-                      onChange={(e) => updateInflation({ rate: e.target.value })}
+                      onChange={(e) => updateInflation({ rate: e.target.value, errors: { ...errors, rate: '' } })}
                       error={errors.rate}
                       className="h-12 bg-background/50 rounded-xl border-white/10"
                       placeholder="e.g. 3.2"
@@ -131,7 +131,7 @@ export default function InflationCalculatorPage() {
                       id="years" 
                       type="number" 
                       value={years} 
-                      onChange={(e) => updateInflation({ years: e.target.value })}
+                      onChange={(e) => updateInflation({ years: e.target.value, errors: { ...errors, years: '' } })}
                       error={errors.years}
                       className="h-12 bg-background/50 rounded-xl border-white/10"
                       placeholder="e.g. 10"

@@ -35,7 +35,7 @@ import {
 
 export default function PortfolioCalculatorPage() {
   const { portfolio, updatePortfolio, resetCalculator } = useCalculatorStore();
-  const { assets, result: results, errors } = portfolio;
+  const { assets, result: results } = portfolio;
   
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [calculating, setCalculating] = useState(false);
@@ -56,7 +56,7 @@ export default function PortfolioCalculatorPage() {
 
   const updateAsset = (id: string, field: keyof PortfolioAsset, value: string) => {
     updatePortfolio({ 
-      assets: assets.map(a => a.id === id ? { ...a, [field]: value } : a) 
+      assets: assets.map(a => a.id === id ? { ...a, [field]: value, error: '' } : a) 
     });
   };
 
@@ -67,9 +67,9 @@ export default function PortfolioCalculatorPage() {
       const inv = Number(asset.investment);
       const ret = Number(asset.returnRate);
 
-      if (!asset.name) error = "Required";
-      if (isNaN(inv) || inv < 0) error = "Invalid Amt";
-      if (isNaN(ret) || ret < 0 || ret > 100) error = "Invalid (0-100%)";
+      if (!asset.name.trim()) error = "Name Required";
+      else if (isNaN(inv) || inv < 0) error = "Amount >= 0";
+      else if (isNaN(ret) || ret < 0 || ret > 100) error = "Yield 0-100%";
       
       if (error) isValid = false;
       return { ...asset, error };
@@ -166,6 +166,7 @@ export default function PortfolioCalculatorPage() {
                               onChange={(e) => updateAsset(asset.id, 'name', e.target.value)}
                               placeholder="e.g. Equities"
                               className="bg-background/50 h-10 border-white/5"
+                              error={asset.error && asset.error.includes('Name') ? asset.error : undefined}
                             />
                           </div>
                           <div className="sm:col-span-4 space-y-2">
@@ -175,6 +176,7 @@ export default function PortfolioCalculatorPage() {
                               value={asset.investment} 
                               onChange={(e) => updateAsset(asset.id, 'investment', e.target.value)}
                               className="bg-background/50 h-10 border-white/5"
+                              error={asset.error && asset.error.includes('Amount') ? asset.error : undefined}
                             />
                           </div>
                           <div className="sm:col-span-3 space-y-2">
@@ -185,6 +187,7 @@ export default function PortfolioCalculatorPage() {
                               value={asset.returnRate} 
                               onChange={(e) => updateAsset(asset.id, 'returnRate', e.target.value)}
                               className="bg-background/50 h-10 border-white/5"
+                              error={asset.error && asset.error.includes('Yield') ? asset.error : undefined}
                             />
                           </div>
                           <div className="sm:col-span-1 flex justify-center">
@@ -200,7 +203,6 @@ export default function PortfolioCalculatorPage() {
                             </Button>
                           </div>
                         </div>
-                        {asset.error && <p className="text-[10px] font-bold text-destructive uppercase tracking-tighter">{asset.error}</p>}
                       </div>
                     ))}
                   </div>

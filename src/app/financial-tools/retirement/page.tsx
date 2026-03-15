@@ -38,11 +38,11 @@ export default function RetirementCalculatorPage() {
     const m = Number(monthly);
     const r = Number(rate);
 
-    if (!currentAge || ca <= 0) newErrors.currentAge = "Required (> 0)";
-    if (!retirementAge || ra <= ca) newErrors.retirementAge = "Must exceed current age";
-    if (!savings || s < 0) newErrors.savings = "Required (>= 0)";
-    if (!monthly || m < 0) newErrors.monthly = "Required (>= 0)";
-    if (!rate || r < 0 || r > 100) newErrors.rate = "Required (0-100%)";
+    if (!currentAge || isNaN(ca) || ca <= 0) newErrors.currentAge = "Required (> 0)";
+    if (!retirementAge || isNaN(ra) || ra <= ca) newErrors.retirementAge = "Must exceed current age";
+    if (!savings || isNaN(s) || s < 0) newErrors.savings = "Required (>= 0)";
+    if (!monthly || isNaN(m) || m < 0) newErrors.monthly = "Required (>= 0)";
+    if (!rate || isNaN(r) || r < 0 || r > 100) newErrors.rate = "Required (0-100%)";
     
     updateRetirement({ errors: newErrors });
     return Object.keys(newErrors).length === 0;
@@ -123,7 +123,7 @@ export default function RetirementCalculatorPage() {
                         id="currentAge" 
                         type="number" 
                         value={currentAge} 
-                        onChange={(e) => updateRetirement({ currentAge: e.target.value })}
+                        onChange={(e) => updateRetirement({ currentAge: e.target.value, errors: { ...errors, currentAge: '' } })}
                         error={errors.currentAge}
                         className="h-11 bg-background/50 border-white/10"
                       />
@@ -134,7 +134,7 @@ export default function RetirementCalculatorPage() {
                         id="retirementAge" 
                         type="number" 
                         value={retirementAge} 
-                        onChange={(e) => updateRetirement({ retirementAge: e.target.value })}
+                        onChange={(e) => updateRetirement({ retirementAge: e.target.value, errors: { ...errors, retirementAge: '' } })}
                         error={errors.retirementAge}
                         className="h-11 bg-background/50 border-white/10"
                       />
@@ -147,7 +147,7 @@ export default function RetirementCalculatorPage() {
                       id="savings" 
                       type="number" 
                       value={savings} 
-                      onChange={(e) => updateRetirement({ savings: e.target.value })}
+                      onChange={(e) => updateRetirement({ savings: e.target.value, errors: { ...errors, savings: '' } })}
                       error={errors.savings}
                       className="h-11 bg-background/50 border-white/10"
                       placeholder="50000"
@@ -160,7 +160,7 @@ export default function RetirementCalculatorPage() {
                       id="monthly" 
                       type="number" 
                       value={monthly} 
-                      onChange={(e) => updateRetirement({ monthly: e.target.value })}
+                      onChange={(e) => updateRetirement({ monthly: e.target.value, errors: { ...errors, monthly: '' } })}
                       error={errors.monthly}
                       className="h-11 bg-background/50 border-white/10"
                       placeholder="1000"
@@ -174,7 +174,7 @@ export default function RetirementCalculatorPage() {
                       type="number" 
                       step="0.1"
                       value={rate} 
-                      onChange={(e) => updateRetirement({ rate: e.target.value })}
+                      onChange={(e) => updateRetirement({ rate: e.target.value, errors: { ...errors, rate: '' } })}
                       error={errors.rate}
                       className="h-11 bg-background/50 border-white/10"
                       placeholder="7"

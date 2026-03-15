@@ -37,10 +37,10 @@ export default function InvestmentReturnPage() {
     const r = Number(rate);
     const y = Number(years);
 
-    if (!principal || p < 0) newErrors.principal = "Required (>= 0)";
-    if (!monthly || m < 0) newErrors.monthly = "Required (>= 0)";
-    if (!rate || r < 0 || r > 100) newErrors.rate = "Required (0-100%)";
-    if (!years || y <= 0) newErrors.years = "Required (> 0)";
+    if (!principal || isNaN(p) || p < 0) newErrors.principal = "Required (>= 0)";
+    if (!monthly || isNaN(m) || m < 0) newErrors.monthly = "Required (>= 0)";
+    if (!rate || isNaN(r) || r < 0 || r > 100) newErrors.rate = "Required (0-100%)";
+    if (!years || isNaN(y) || y <= 0) newErrors.years = "Required (> 0)";
     
     updateInvestment({ errors: newErrors });
     return Object.keys(newErrors).length === 0;
@@ -119,7 +119,7 @@ export default function InvestmentReturnPage() {
                       id="principal" 
                       type="number" 
                       value={principal} 
-                      onChange={(e) => updateInvestment({ principal: e.target.value })}
+                      onChange={(e) => updateInvestment({ principal: e.target.value, errors: { ...errors, principal: '' } })}
                       error={errors.principal}
                       className="h-11 bg-background/50 border-white/10"
                       placeholder="5000"
@@ -132,7 +132,7 @@ export default function InvestmentReturnPage() {
                       id="monthly" 
                       type="number" 
                       value={monthly} 
-                      onChange={(e) => updateInvestment({ monthly: e.target.value })}
+                      onChange={(e) => updateInvestment({ monthly: e.target.value, errors: { ...errors, monthly: '' } })}
                       error={errors.monthly}
                       className="h-11 bg-background/50 border-white/10"
                       placeholder="500"
@@ -146,7 +146,7 @@ export default function InvestmentReturnPage() {
                       type="number" 
                       step="0.1"
                       value={rate} 
-                      onChange={(e) => updateInvestment({ rate: e.target.value })}
+                      onChange={(e) => updateInvestment({ rate: e.target.value, errors: { ...errors, rate: '' } })}
                       error={errors.rate}
                       className="h-11 bg-background/50 border-white/10"
                       placeholder="8"
@@ -159,7 +159,7 @@ export default function InvestmentReturnPage() {
                       id="years" 
                       type="number" 
                       value={years} 
-                      onChange={(e) => updateInvestment({ years: e.target.value })}
+                      onChange={(e) => updateInvestment({ years: e.target.value, errors: { ...errors, years: '' } })}
                       error={errors.years}
                       className="h-11 bg-background/50 border-white/10"
                       placeholder="20"
