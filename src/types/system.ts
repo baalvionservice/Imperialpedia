@@ -13,6 +13,13 @@ export interface PlatformSettings {
   };
 }
 
+export interface FeatureSettings {
+  seo: boolean;
+  analytics: boolean;
+  payments: boolean;
+  contentModeration: boolean;
+}
+
 export interface SystemSettings {
   platform: {
     siteName: string;

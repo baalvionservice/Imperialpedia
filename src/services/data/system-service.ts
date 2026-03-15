@@ -1,6 +1,6 @@
 import * as mockApi from '@/services/mock-api/system';
 import { ApiResponse } from '@/types';
-import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog, SecuritySettings, GlobalNotificationSettings, AuditTrailEntry } from '@/types/system';
+import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog, SecuritySettings, GlobalNotificationSettings, AuditTrailEntry, FeatureSettings } from '@/types/system';
 import { errorHandler } from '@/lib/errors/error-handler';
 
 /**
@@ -24,6 +24,32 @@ export const systemService = {
   async updatePlatformSettings(settings: PlatformSettings): Promise<ApiResponse<PlatformSettings | null>> {
     try {
       return await mockApi.updatePlatformSettings(settings);
+    } catch (error) {
+      const appError = errorHandler.handleError(error);
+      return {
+        data: null,
+        status: appError.statusCode,
+        error: appError.message,
+      };
+    }
+  },
+
+  async getFeatureSettings(): Promise<ApiResponse<FeatureSettings | null>> {
+    try {
+      return await mockApi.getFeatureSettings();
+    } catch (error) {
+      const appError = errorHandler.handleError(error);
+      return {
+        data: null,
+        status: appError.statusCode,
+        error: appError.message,
+      };
+    }
+  },
+
+  async updateFeatureSettings(settings: FeatureSettings): Promise<ApiResponse<FeatureSettings | null>> {
+    try {
+      return await mockApi.updateFeatureSettings(settings);
     } catch (error) {
       const appError = errorHandler.handleError(error);
       return {

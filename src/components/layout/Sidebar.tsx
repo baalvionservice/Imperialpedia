@@ -105,6 +105,7 @@ const Sidebar = ({ className }: { className?: string }) => {
     { icon: Lock, label: 'Roles & Permissions', href: '/admin/roles' },
     { icon: Shield, label: 'Security Protocols', href: '/admin/control/security' },
     { icon: Bell, label: 'Notification Settings', href: '/admin/control/notifications' },
+    { icon: Zap, label: 'Feature Toggles', href: '/admin/control/features' },
     { icon: ShieldX, label: 'Content Moderation', href: '/admin/moderation' },
     { icon: Megaphone, label: 'System Notifications', href: '/admin/notifications' },
     { icon: History, label: 'Broadcast Logs', href: '/admin/notification-logs' },

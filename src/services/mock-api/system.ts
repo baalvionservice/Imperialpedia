@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog, SecuritySettings, GlobalNotificationSettings, AuditTrailEntry } from '@/types/system';
+import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog, SecuritySettings, GlobalNotificationSettings, AuditTrailEntry, FeatureSettings } from '@/types/system';
 
 /**
  * @fileOverview Mock service for managing global platform configuration and system notifications.
@@ -14,6 +14,13 @@ const mockPlatformSettings: PlatformSettings = {
     analytics: true,
     payments: false
   }
+};
+
+const mockFeatureSettings: FeatureSettings = {
+  seo: true,
+  analytics: true,
+  payments: false,
+  contentModeration: true
 };
 
 const mockSettings: SystemSettings = {
@@ -137,6 +144,23 @@ export const updatePlatformSettings = async (settings: PlatformSettings): Promis
     data: settings,
     status: 200,
     message: 'Global configuration synchronized.'
+  };
+};
+
+export const getFeatureSettings = async (): Promise<ApiResponse<FeatureSettings>> => {
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  return {
+    data: mockFeatureSettings,
+    status: 200,
+  };
+};
+
+export const updateFeatureSettings = async (settings: FeatureSettings): Promise<ApiResponse<FeatureSettings>> => {
+  await new Promise((resolve) => setTimeout(resolve, 800));
+  return {
+    data: settings,
+    status: 200,
+    message: 'Functional gateways synchronized successfully.'
   };
 };
 
