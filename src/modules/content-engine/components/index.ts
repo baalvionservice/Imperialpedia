@@ -10,3 +10,4 @@ export * from './ArticleSection';
 export * from './ContentBlockRenderer';
 export * from './ArticleList';
 export * from './ArticleCard';
+export * from './CategoryHeader';
