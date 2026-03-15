@@ -42,7 +42,8 @@ import {
   Target,
   TrendingUp,
   Heart,
-  FileCode
+  FileCode,
+  Shield
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 import { useAppStore } from '@/lib/state/app-store';
@@ -102,6 +103,7 @@ const Sidebar = ({ className }: { className?: string }) => {
     { icon: BarChart3, label: 'Analytics Overview', href: '/admin/analytics/full-overview' },
     { icon: UsersIcon, label: 'User Management', href: '/admin/users' },
     { icon: Lock, label: 'Roles & Permissions', href: '/admin/roles' },
+    { icon: Shield, label: 'Security Protocols', href: '/admin/control/security' },
     { icon: ShieldX, label: 'Content Moderation', href: '/admin/moderation' },
     { icon: Megaphone, label: 'System Notifications', href: '/admin/notifications' },
     { icon: History, label: 'Broadcast Logs', href: '/admin/notification-logs' },

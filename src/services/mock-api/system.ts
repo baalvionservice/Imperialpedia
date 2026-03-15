@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog } from '@/types/system';
+import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog, SecuritySettings } from '@/types/system';
 
 /**
  * @fileOverview Mock service for managing global platform configuration and system notifications.
@@ -40,6 +40,16 @@ const mockSettings: SystemSettings = {
     allowSelfOnboarding: true,
     autoModerateComments: false
   }
+};
+
+const mockSecuritySettings: SecuritySettings = {
+  twoFactorAuth: true,
+  passwordPolicy: {
+    minLength: 12,
+    requireSpecialChar: true,
+    requireNumber: true
+  },
+  sessionTimeoutMinutes: 120
 };
 
 const mockNotifications: SystemNotification[] = [
@@ -129,6 +139,23 @@ export const updateSystemSettings = async (settings: SystemSettings): Promise<Ap
     data: settings,
     status: 200,
     message: 'System configuration synchronized successfully.'
+  };
+};
+
+export const getSecuritySettings = async (): Promise<ApiResponse<SecuritySettings>> => {
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  return {
+    data: mockSecuritySettings,
+    status: 200,
+  };
+};
+
+export const updateSecuritySettings = async (settings: SecuritySettings): Promise<ApiResponse<SecuritySettings>> => {
+  await new Promise((resolve) => setTimeout(resolve, 800));
+  return {
+    data: settings,
+    status: 200,
+    message: 'Security protocols updated and broadcast to all nodes.'
   };
 };
 

@@ -1,6 +1,6 @@
 import * as mockApi from '@/services/mock-api/system';
 import { ApiResponse } from '@/types';
-import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog } from '@/types/system';
+import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog, SecuritySettings } from '@/types/system';
 import { errorHandler } from '@/lib/errors/error-handler';
 
 /**
@@ -50,6 +50,32 @@ export const systemService = {
   async updateSettings(settings: SystemSettings): Promise<ApiResponse<SystemSettings | null>> {
     try {
       return await mockApi.updateSystemSettings(settings);
+    } catch (error) {
+      const appError = errorHandler.handleError(error);
+      return {
+        data: null,
+        status: appError.statusCode,
+        error: appError.message,
+      };
+    }
+  },
+
+  async getSecuritySettings(): Promise<ApiResponse<SecuritySettings | null>> {
+    try {
+      return await mockApi.getSecuritySettings();
+    } catch (error) {
+      const appError = errorHandler.handleError(error);
+      return {
+        data: null,
+        status: appError.statusCode,
+        error: appError.message,
+      };
+    }
+  },
+
+  async updateSecuritySettings(settings: SecuritySettings): Promise<ApiResponse<SecuritySettings | null>> {
+    try {
+      return await mockApi.updateSecuritySettings(settings);
     } catch (error) {
       const appError = errorHandler.handleError(error);
       return {

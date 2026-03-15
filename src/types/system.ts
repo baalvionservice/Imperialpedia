@@ -39,6 +39,16 @@ export interface SystemSettings {
   };
 }
 
+export interface SecuritySettings {
+  twoFactorAuth: boolean;
+  passwordPolicy: {
+    minLength: number;
+    requireSpecialChar: boolean;
+    requireNumber: boolean;
+  };
+  sessionTimeoutMinutes: number;
+}
+
 export type SystemNotificationType = 'info' | 'success' | 'warning' | 'error';
 export type SystemNotificationTarget = 'all' | 'creators' | 'admins';
 
