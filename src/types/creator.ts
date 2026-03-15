@@ -107,6 +107,23 @@ export interface CreatorDashboardAnalytics {
   }>;
 }
 
+/**
+ * Admin-specific analytical data for tracking platform-wide creator performance.
+ */
+export interface AdminCreatorAnalytics {
+  id: string;
+  name: string;
+  username: string;
+  avatar: string;
+  contentCount: number;
+  followers: number;
+  engagementRate: number;
+  totalViews: number;
+  lastActive: string;
+  verified: boolean;
+  category: string;
+}
+
 export interface CreatorVerification {
   creatorId: string;
   creatorName: string;

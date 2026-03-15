@@ -1,4 +1,4 @@
-import { CreatorProfile, ApiResponse, CreatorContentItem, CreatorDashboardSummary, CreatorDashboardAnalytics, CreatorVerification, CreatorLeaderboard, ScheduledContent, CreatorSettings, CreatorDashboardStats, Follower, CreatorRevenue, CreatorRevenueSummary } from '@/types';
+import { CreatorProfile, ApiResponse, CreatorContentItem, CreatorDashboardSummary, CreatorDashboardAnalytics, CreatorVerification, CreatorLeaderboard, ScheduledContent, CreatorSettings, CreatorDashboardStats, Follower, CreatorRevenue, CreatorRevenueSummary, AdminCreatorAnalytics } from '@/types';
 import { Notification } from '@/modules/content-engine/types/article';
 
 /**
@@ -111,119 +111,34 @@ const mockCreators: CreatorProfile[] = [
       { platform: 'LinkedIn', url: 'https://linkedin.com/in/eleanorvance' }
     ],
   },
-  {
-    id: 'creator-5',
-    username: 'macroken',
-    displayName: 'Ken Macro',
-    bio: 'Global macro analyst with 20 years experience in treasury markets and gold cycles. Author of the "Yield Hunter" newsletter.',
-    avatar: 'https://picsum.photos/seed/ken/200/200',
-    joinedDate: '2023-02-15T00:00:00Z',
-    specialties: ['Gold', 'Macro', 'Treasuries'],
-    category: 'Markets',
-    region: 'North America',
-    verified: false,
-    stats: {
-      followersCount: 1200,
-      followingCount: 45,
-      articlesCount: 5,
-      totalViews: 12000,
-    },
-    content: {
-      recentArticles: [],
-    },
-    socialLinks: [
-      { platform: 'Twitter', url: '#' }
-    ],
-  },
-  {
-    id: 'creator-6',
-    username: 'fintechqueen',
-    displayName: 'Elena Tech',
-    bio: 'FinTech innovator and payments analyst. Exploring the intersection of traditional banking and AI-driven fiscal tools.',
-    avatar: 'https://picsum.photos/seed/queen/200/200',
-    joinedDate: '2024-02-01T00:00:00Z',
-    specialties: ['FinTech', 'AI', 'Banking'],
-    category: 'Personal Finance',
-    region: 'EMEA',
-    verified: true,
-    stats: {
-      followersCount: 5600,
-      followingCount: 120,
-      articlesCount: 12,
-      totalViews: 85000,
-    },
-    content: {
-      recentArticles: [],
-    },
-    socialLinks: [
-      { platform: 'Twitter', url: '#' }
-    ],
-  },
-  {
-    id: 'creator-7',
-    username: 'realestateron',
-    displayName: 'Ron Property',
-    bio: 'Commercial real estate strategist and REIT specialist. Providing deep insights into global property markets and urban cycles.',
-    avatar: 'https://picsum.photos/seed/ron/200/200',
-    joinedDate: '2023-08-10T00:00:00Z',
-    specialties: ['Real Estate', 'REITs', 'Commercial'],
-    category: 'Investing',
-    region: 'North America',
-    verified: false,
-    stats: {
-      followersCount: 2100,
-      followingCount: 30,
-      articlesCount: 4,
-      totalViews: 15000,
-    },
-    content: {
-      recentArticles: [],
-    },
-    socialLinks: [
-      { platform: 'LinkedIn', url: '#' }
-    ],
-  },
-  {
-    id: 'creator-8',
-    username: 'dividenddan',
-    displayName: 'Dan Income',
-    bio: 'Dividend growth investor and cash flow specialist. Helping readers build sustainable passive income through high-quality yield.',
-    avatar: 'https://picsum.photos/seed/dan/200/200',
-    joinedDate: '2023-11-15T00:00:00Z',
-    specialties: ['Dividends', 'Passive Income', 'Equities'],
-    category: 'Investing',
-    region: 'North America',
-    verified: true,
-    stats: {
-      followersCount: 12500,
-      followingCount: 85,
-      articlesCount: 35,
-      totalViews: 420000,
-    },
-    content: {
-      recentArticles: [],
-    },
-    socialLinks: [
-      { platform: 'YouTube', url: '#' }
-    ],
-  }
 ];
+
+const mockAdminCreatorAnalytics: AdminCreatorAnalytics[] = [
+  { id: 'creator-1', name: 'The Market Maven', username: 'marketmaven', avatar: 'https://picsum.photos/seed/maven/200/200', contentCount: 42, followers: 15400, engagementRate: 5.8, totalViews: 850000, lastActive: '2024-03-12T10:30:00Z', verified: true, category: 'Economics' },
+  { id: 'creator-4', name: 'Eleanor Vance', username: 'econvance', avatar: 'https://picsum.photos/seed/eleanor/200/200', contentCount: 120, followers: 25000, engagementRate: 4.2, totalViews: 4500000, lastActive: '2024-03-12T11:45:00Z', verified: true, category: 'Economics' },
+  { id: 'creator-2', name: 'Julian Wealth', username: 'wealthbuilder', avatar: 'https://picsum.photos/seed/wealth/200/200', contentCount: 15, followers: 8200, engagementRate: 6.4, totalViews: 120000, lastActive: '2024-03-11T16:20:00Z', verified: true, category: 'Investing' },
+  { id: 'creator-3', name: 'Sarah Crypto', username: 'defianalyst', avatar: 'https://picsum.photos/seed/defi/200/200', contentCount: 8, followers: 3500, engagementRate: 3.9, totalViews: 45000, lastActive: '2024-03-10T09:15:00Z', verified: false, category: 'Crypto' },
+  { id: 'creator-8', name: 'Dan Income', username: 'dividenddan', avatar: 'https://picsum.photos/seed/dan/200/200', contentCount: 35, followers: 12500, engagementRate: 7.1, totalViews: 420000, lastActive: '2024-03-12T08:00:00Z', verified: true, category: 'Investing' },
+];
+
+export const getAdminCreatorAnalytics = async (): Promise<ApiResponse<AdminCreatorAnalytics[]>> => {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  return {
+    data: mockAdminCreatorAnalytics,
+    status: 200,
+  };
+};
 
 const mockLeaderboard: CreatorLeaderboard[] = [
   { creatorId: 'creator-1', name: 'The Market Maven', profileImage: 'https://picsum.photos/seed/maven/200/200', category: 'Economics', region: 'North America', verified: true, totalRevenue: 15400.50, totalViews: 850000, totalLikes: 12400 },
   { creatorId: 'creator-4', name: 'Eleanor Vance', profileImage: 'https://picsum.photos/seed/eleanor/200/200', category: 'Economics', region: 'North America', verified: true, totalRevenue: 28900.00, totalViews: 4500000, totalLikes: 42000 },
   { creatorId: 'creator-2', name: 'Julian Wealth', profileImage: 'https://picsum.photos/seed/wealth/200/200', category: 'Investing', region: 'EMEA', verified: true, totalRevenue: 12200.75, totalViews: 120000, totalLikes: 5600 },
   { creatorId: 'creator-3', name: 'Sarah Crypto', profileImage: 'https://picsum.photos/seed/defi/200/200', category: 'Crypto', region: 'APAC', verified: false, totalRevenue: 4500.20, totalViews: 45000, totalLikes: 2100 },
-  { creatorId: 'creator-5', name: 'Ken Macro', profileImage: 'https://picsum.photos/seed/ken/200/200', category: 'Markets', region: 'North America', verified: false, totalRevenue: 2100.00, totalViews: 12000, totalLikes: 850 },
-  { creatorId: 'u-7', name: 'Bull Analyst', profileImage: 'https://picsum.photos/seed/bull/200/200', category: 'Markets', region: 'North America', verified: true, totalRevenue: 9800.40, totalViews: 95000, totalLikes: 4300 },
-  { creatorId: 'u-8', name: 'ESG Expert', profileImage: 'https://picsum.photos/seed/esg/200/200', category: 'Investing', region: 'EMEA', verified: false, totalRevenue: 3400.10, totalViews: 32000, totalLikes: 1500 },
 ];
 
 const mockFollowers: Follower[] = [
   { id: 'f-1', name: 'Julian Wealth', username: 'wealthbuilder', profileImage: 'https://picsum.photos/seed/wealth/200/200', followedAt: '2024-03-01T10:00:00Z', status: 'following', category: 'Investing' },
   { id: 'f-2', name: 'Sarah Crypto', username: 'defianalyst', profileImage: 'https://picsum.photos/seed/defi/200/200', followedAt: '2024-03-05T14:30:00Z', status: 'not_following', category: 'Crypto' },
-  { id: 'f-3', name: 'Ken Macro', username: 'macroken', profileImage: 'https://picsum.photos/seed/ken/200/200', followedAt: '2024-03-10T09:15:00Z', status: 'following', category: 'Markets' },
-  { id: 'f-4', name: 'Eleanor Vance', username: 'econvance', profileImage: 'https://picsum.photos/seed/eleanor/200/200', followedAt: '2024-02-20T16:45:00Z', status: 'following', category: 'Economics' },
 ];
 
 export const getCreators = async (): Promise<ApiResponse<CreatorProfile[]>> => {
@@ -285,76 +200,6 @@ export const getCreatorContent = async (creatorId: string): Promise<ApiResponse<
       comments: 82,
       slug: 'qe-vs-qt-2026'
     },
-    {
-      id: 'c-2',
-      title: 'The Rise of Algorithmic Stablecoins',
-      snippet: 'Evaluating the stability and risks of decentralized dollar pegs.',
-      body: 'In-progress research...',
-      category: 'Crypto',
-      tags: ['DeFi', 'Stablecoins'],
-      status: 'draft',
-      createdAt: '2024-03-10T14:30:00Z',
-      views: 0,
-      likes: 0,
-      comments: 0,
-      slug: 'algorithmic-stablecoins'
-    },
-    {
-      id: 'c-3',
-      title: 'Yield Curve Dynamics in Emerging Markets',
-      snippet: 'Understanding global risk-off signals from secondary debt markets.',
-      body: 'Scheduled content text...',
-      category: 'Markets',
-      tags: ['Emerging Markets', 'Yield Curve'],
-      status: 'scheduled',
-      createdAt: '2024-03-05T09:00:00Z',
-      views: 0,
-      likes: 0,
-      comments: 0,
-      slug: 'yield-curve-emerging-markets'
-    },
-    {
-      id: 'c-4',
-      title: 'Monetary Policy in the 2030s',
-      snippet: 'Predicting the shift from quantitative easing to structural digital currency adoption.',
-      body: 'Long analysis...',
-      category: 'Economics',
-      tags: ['Future', 'Central Banks'],
-      status: 'published',
-      createdAt: '2024-02-15T10:00:00Z',
-      views: 8500,
-      likes: 230,
-      comments: 45,
-      slug: 'monetary-policy-2030s'
-    },
-    {
-      id: 'c-5',
-      title: 'Fixed Income Strategies for High Inflation',
-      snippet: 'How to protect your portfolio as purchasing power erodes.',
-      body: 'Long analysis...',
-      category: 'Investing',
-      tags: ['Bonds', 'Inflation'],
-      status: 'published',
-      createdAt: '2024-01-20T10:00:00Z',
-      views: 15200,
-      likes: 540,
-      comments: 92,
-      slug: 'fixed-income-inflation'
-    },
-    {
-      id: 'c-6',
-      title: 'The Great Wealth Transfer',
-      snippet: 'Analyzing the multi-trillion dollar shift in generational assets.',
-      body: 'Long analysis...',
-      category: 'Investing',
-      tags: ['Wealth', 'Demographics'],
-      status: 'published',
-      createdAt: '2023-12-05T10:00:00Z',
-      views: 24500,
-      likes: 1100,
-      comments: 210,
-      slug: 'great-wealth-transfer'
-    }
   ];
   return {
     data: extendedContent,
@@ -372,18 +217,10 @@ export const getCreatorAnalytics = async (creatorId: string): Promise<ApiRespons
       avgRpm: 9.96,
       topContent: [
         { contentId: 'c-1', title: 'Quantitative Easing vs Tightening: A 2026 Outlook', views: 45000, likes: 1200, comments: 240, shares: 350, revenue: 448.20, createdAt: '2024-03-01T10:00:00Z' },
-        { contentId: 'c-2', title: 'The Future of Central Banking', views: 32000, likes: 850, comments: 120, shares: 180, revenue: 318.75, createdAt: '2024-03-02T10:00:00Z' },
-        { contentId: 'c-3', title: 'Yield Curve Inversion Deep Dive', views: 28000, likes: 1100, comments: 310, shares: 420, revenue: 278.90, createdAt: '2024-03-03T10:00:00Z' },
-        { contentId: 'c-4', title: 'DeFi Liquidity Pools Explained', views: 22000, likes: 640, comments: 95, shares: 110, revenue: 219.10, createdAt: '2024-03-04T10:00:00Z' }
       ],
       dailyMetrics: [
         { date: '2024-03-01', views: 12000, revenue: 119.50, engagement: 450, followers: 12 },
         { date: '2024-03-02', views: 15400, revenue: 153.20, engagement: 580, followers: 24 },
-        { date: '2024-03-03', views: 11200, revenue: 111.40, engagement: 410, followers: 18 },
-        { date: '2024-03-04', views: 18900, revenue: 188.10, engagement: 720, followers: 35 },
-        { date: '2024-03-05', views: 22100, revenue: 220.30, engagement: 840, followers: 42 },
-        { date: '2024-03-06', views: 20500, revenue: 204.20, engagement: 790, followers: 38 },
-        { date: '2024-03-07', views: 25400, revenue: 252.80, engagement: 960, followers: 51 }
       ]
     },
     status: 200
@@ -440,7 +277,6 @@ export const getFollowers = async (creatorId: string): Promise<ApiResponse<Follo
 
 export const getFollowing = async (creatorId: string): Promise<ApiResponse<Follower[]>> => {
   await new Promise((resolve) => setTimeout(resolve, 300));
-  // Reuse same mock but reversed for variety
   return {
     data: [...mockFollowers].reverse(),
     status: 200
@@ -450,7 +286,6 @@ export const getFollowing = async (creatorId: string): Promise<ApiResponse<Follo
 export const getCreatorVerificationStatus = async (creatorId: string): Promise<ApiResponse<CreatorVerification>> => {
   await new Promise((resolve) => setTimeout(resolve, 300));
   
-  // Eleanor Vance is already verified
   if (creatorId === 'u-1' || creatorId === 'creator-4') {
     return {
       data: {
@@ -467,7 +302,6 @@ export const getCreatorVerificationStatus = async (creatorId: string): Promise<A
     };
   }
 
-  // Default to unverified for others in this mock
   return {
     data: {
       creatorId,
@@ -491,17 +325,9 @@ export const getCreatorRevenue = async (creatorId: string): Promise<ApiResponse<
       lastPayoutDate: '2024-03-01T10:00:00Z',
       topEarningContent: [
         { contentId: 'c-1', title: 'Quantitative Easing vs Tightening: A 2026 Outlook', revenue: 448.20 },
-        { contentId: 'c-2', title: 'The Future of Central Banking', revenue: 318.75 },
-        { contentId: 'c-3', title: 'Yield Curve Inversion Deep Dive', revenue: 278.90 },
       ],
       revenueTrends: [
         { date: '2024-03-01', amount: 119.50 },
-        { date: '2024-03-02', amount: 153.20 },
-        { date: '2024-03-03', amount: 111.40 },
-        { date: '2024-03-04', amount: 188.10 },
-        { date: '2024-03-05', amount: 220.30 },
-        { date: '2024-03-06', amount: 204.20 },
-        { date: '2024-03-07', amount: 252.80 },
       ]
     },
     status: 200
@@ -513,10 +339,6 @@ export const getPayoutHistory = async (creatorId: string): Promise<ApiResponse<C
   return {
     data: [
       { contentId: 'c-1', title: 'Quantitative Easing vs Tightening: A 2026 Outlook', revenue: 124.50, dateEarned: '2024-03-07T10:00:00Z' },
-      { contentId: 'c-4', title: 'Monetary Policy in the 2030s', revenue: 85.20, dateEarned: '2024-03-06T14:30:00Z' },
-      { contentId: 'c-5', title: 'Fixed Income Strategies for High Inflation', revenue: 210.40, dateEarned: '2024-03-05T09:15:00Z' },
-      { contentId: 'c-6', title: 'The Great Wealth Transfer', revenue: 340.00, dateEarned: '2024-03-04T16:45:00Z' },
-      { contentId: 'c-1', title: 'Quantitative Easing vs Tightening: A 2026 Outlook', revenue: 98.10, dateEarned: '2024-03-03T11:00:00Z' },
     ],
     status: 200
   };
@@ -543,9 +365,6 @@ const mockCreatorSettings: CreatorSettings = {
 
 const mockScheduledContent: ScheduledContent[] = [
   { id: 'sc-1', title: 'Macro Trends in 2026', scheduledAt: '2024-04-10T10:00:00Z', status: 'scheduled', category: 'Economics', tags: ['Macro', 'Future'] },
-  { id: 'sc-2', title: 'Quantitative Easing vs Tightening', scheduledAt: '2024-04-12T14:30:00Z', status: 'scheduled', category: 'Markets', tags: ['Bonds', 'Fed'] },
-  { id: 'sc-3', title: 'The Future of DeFi', scheduledAt: '2024-04-15T09:00:00Z', status: 'scheduled', category: 'Crypto', tags: ['Web3', 'Ethereum'] },
-  { id: 'sc-4', title: 'Passive Income Strategies', scheduledAt: '', status: 'draft', category: 'Investing', tags: ['Wealth', 'Dividends'] },
 ];
 
 const mockNotifications: Notification[] = [
@@ -558,29 +377,6 @@ const mockNotifications: Notification[] = [
     read: false,
     relatedId: 'creator-5'
   },
-  {
-    id: 'notif-2',
-    userId: 'u-1',
-    type: 'engagement',
-    message: 'Your article "Monetary Policy in the 2030s" received 12 new comments.',
-    createdAt: new Date(Date.now() - 3600000).toISOString(), read: false, relatedId: 'c-4'
-  },
-  {
-    id: 'notif-3',
-    userId: 'u-1',
-    type: 'announcement',
-    message: 'Platform Update: New Imagen 4 content tools are now available for verified experts.',
-    createdAt: new Date(Date.now() - 86400000).toISOString(),
-    read: true
-  },
-  {
-    id: 'notif-4',
-    userId: 'u-1',
-    type: 'success',
-    message: 'Verification complete! You are now a recognized Imperialpedia Expert.',
-    createdAt: new Date(Date.now() - 172800000).toISOString(),
-    read: true
-  }
 ];
 
 const mockPendingVerifications: CreatorVerification[] = [
@@ -593,13 +389,4 @@ const mockPendingVerifications: CreatorVerification[] = [
     status: 'pending',
     documentsProvided: ['LinkedIn Profile', 'FINRA Certification']
   },
-  {
-    creatorId: 'u-6',
-    creatorName: 'DeFi Analyst',
-    creatorAvatar: 'https://picsum.photos/seed/defi/200/200',
-    verified: false,
-    requestedAt: '2024-03-11T14:20:00Z',
-    status: 'pending',
-    documentsProvided: ['Whitepaper Authorship', 'Github Repository']
-  }
 ];
