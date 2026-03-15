@@ -51,3 +51,16 @@ export interface AdminAlert {
   createdAt: string;
   priority: 'low' | 'medium' | 'high';
 }
+
+export interface SystemHealth {
+  apiUptime: number;
+  dbStatus: 'healthy' | 'warning' | 'critical';
+  serverLoad: number;
+  errorRate: number;
+  latency: number;
+  history: {
+    timestamp: string;
+    load: number;
+    errors: number;
+  }[];
+}

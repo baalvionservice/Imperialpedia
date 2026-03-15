@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { SystemSettings, SystemNotification, AdminAlert } from '@/types/system';
+import { SystemSettings, SystemNotification, AdminAlert, SystemHealth } from '@/types/system';
 
 /**
  * @fileOverview Mock service for managing global platform configuration and system notifications.
@@ -91,5 +91,24 @@ export const getAdminAlerts = async (): Promise<ApiResponse<AdminAlert[]>> => {
   return {
     data: mockAdminAlerts,
     status: 200,
+  };
+};
+
+export const getSystemHealth = async (): Promise<ApiResponse<SystemHealth>> => {
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  return {
+    data: {
+      apiUptime: 99.98,
+      dbStatus: 'healthy',
+      serverLoad: 42,
+      errorRate: 0.04,
+      latency: 42,
+      history: Array.from({ length: 24 }, (_, i) => ({
+        timestamp: `${i}:00`,
+        load: Math.floor(Math.random() * 30) + 20,
+        errors: Math.random() * 0.1
+      }))
+    },
+    status: 200
   };
 };
