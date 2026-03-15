@@ -58,3 +58,23 @@ export interface PlatformOverview {
     status: string;
   }>;
 }
+
+export interface ContentPerformance {
+  id: string;
+  title: string;
+  views: number;
+  likes: number;
+  shares: number;
+  comments: number;
+  seoScore: number;
+  category: string;
+}
+
+export interface ContentAnalyticsReport {
+  totalViews: number;
+  avgEngagement: number;
+  totalArticles: number;
+  avgReadTime: number;
+  topContent: ContentPerformance[];
+  categoryBreakdown: { category: string; views: number }[];
+}
