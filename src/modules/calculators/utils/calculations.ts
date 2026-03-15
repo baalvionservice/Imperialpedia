@@ -116,5 +116,32 @@ export const financialMath = {
     years: number
   ): number => {
     return currentValue * Math.pow(1 + (inflationRate / 100), years);
+  },
+
+  /**
+   * Calculates multi-asset portfolio performance.
+   */
+  calculatePortfolioSummary: (assets: { name: string; investment: number; returnRate: number }[]) => {
+    const totalInvestment = assets.reduce((acc, a) => acc + a.investment, 0);
+    const breakdown = assets.map(a => {
+      const finalValue = a.investment * (1 + a.returnRate / 100);
+      return {
+        ...a,
+        finalValue,
+        profit: finalValue - a.investment
+      };
+    });
+    
+    const totalValue = breakdown.reduce((acc, a) => acc + a.finalValue, 0);
+    const totalProfit = totalValue - totalInvestment;
+    const weightedReturn = totalInvestment > 0 ? (totalProfit / totalInvestment) * 100 : 0;
+
+    return {
+      totalInvestment,
+      totalValue,
+      totalProfit,
+      weightedReturn,
+      breakdown
+    };
   }
 };
