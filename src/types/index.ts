@@ -12,3 +12,4 @@ export * from './seo';
 export * from './financial-tools';
 export * from './search';
 export * from './analytics';
+export * from './moderation';

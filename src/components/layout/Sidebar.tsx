@@ -28,7 +28,8 @@ import {
   UserCog,
   UserCircle,
   PenTool,
-  Calculator as CalcIcon
+  Calculator as CalcIcon,
+  ShieldX
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 import { useAppStore } from '@/lib/state/app-store';
@@ -86,6 +87,7 @@ const Sidebar = ({ className }: { className?: string }) => {
   const adminItems = [
     { icon: LayoutDashboard, label: 'Admin Home', href: '/admin' },
     { icon: UsersIcon, label: 'User Management', href: '/admin/users' },
+    { icon: ShieldX, label: 'Content Moderation', href: '/admin/moderation' },
     { icon: ShieldCheck, label: 'Expert Verifications', href: '/admin/creators/verification' },
     { icon: Calendar, label: 'Publisher Scheduler', href: '/admin/scheduler' },
     { icon: ImageIcon, label: 'Media Library', href: '/admin/media' },
@@ -99,7 +101,7 @@ const Sidebar = ({ className }: { className?: string }) => {
   const editorItems = [
     { icon: LayoutDashboard, label: 'Editor Home', href: '/editor' },
     { icon: GitPullRequest, label: 'Editorial Workflow', href: '/editor/workflow' },
-    { icon: FileSearch, label: 'Pending Reviews', href: '/editor/pending' },
+    { icon: Search, label: 'Pending Reviews', href: '/editor/pending' },
     { icon: History, label: 'Review History', href: '/editor/history' },
     { icon: CheckCircle, label: 'Approved Index', href: '/editor/approved' },
     { icon: MessageSquare, label: 'Editorial Chat', href: '/editor/messages' },

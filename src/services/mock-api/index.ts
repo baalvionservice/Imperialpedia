@@ -7,3 +7,4 @@ export * from './glossary';
 export * from './creators';
 export * from './calculators';
 export * from './analytics';
+export * from './moderation';
