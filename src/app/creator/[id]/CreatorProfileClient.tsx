@@ -30,7 +30,9 @@ import {
   Briefcase,
   Zap,
   Search,
-  Activity
+  Activity,
+  Bell,
+  BellOff
 } from 'lucide-react';
 import { format } from 'date-fns';
 import Link from 'next/link';
@@ -39,6 +41,13 @@ import { getCreatorContent, getCreators } from '@/services/mock-api/creators';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { AnalystPerformanceDashboard } from '@/modules/creators/components/AnalystPerformanceDashboard';
+import { 
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface CreatorProfileClientProps {
   creator: CreatorProfile;
@@ -50,6 +59,7 @@ interface CreatorProfileClientProps {
  */
 export function CreatorProfileClient({ creator }: CreatorProfileClientProps) {
   const [isFollowing, setIsFollowing] = useState(false);
+  const [notifsActive, setNotifsActive] = useState(true);
   const [followers, setFollowers] = useState(creator.stats.followersCount);
   const [content, setContent] = useState<CreatorContentItem[]>([]);
   const [relatedCreators, setRelatedCreators] = useState<CreatorProfile[]>([]);
@@ -97,8 +107,17 @@ export function CreatorProfileClient({ creator }: CreatorProfileClientProps) {
     item.title.toLowerCase().includes(search.toLowerCase())
   );
 
+  const mockPerformanceHistory = [
+    { month: 'Oct', articles: 4, engagement: 12400 },
+    { month: 'Nov', articles: 5, engagement: 15200 },
+    { month: 'Dec', articles: 3, engagement: 11800 },
+    { month: 'Jan', articles: 6, engagement: 18400 },
+    { month: 'Feb', articles: 4, engagement: 14200 },
+    { month: 'Mar', articles: 2, engagement: 8500 },
+  ];
+
   return (
-    <div className="space-y-12 pb-24">
+    <div className="space-y-12 pb-24 animate-in fade-in duration-1000">
       {/* Profile Header Card */}
       <Card className="glass-card overflow-hidden border-none shadow-2xl relative">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/10 to-transparent pointer-events-none" />
@@ -108,26 +127,63 @@ export function CreatorProfileClient({ creator }: CreatorProfileClientProps) {
               <Image src={creator.avatar} alt={creator.displayName} fill className="object-cover" priority />
             </div>
 
-            <div className="flex-1 space-y-6">
-              <div>
-                <div className="flex flex-wrap items-center gap-3 mb-2">
-                  <Text variant="h1" className="text-4xl lg:text-6xl font-bold tracking-tight">
-                    {creator.displayName}
-                  </Text>
-                  {creator.verified && (
-                    <Badge className="bg-secondary text-secondary-foreground border-none h-8 px-3 rounded-xl font-bold uppercase text-[10px]">
-                      <ShieldCheck className="mr-1.5 h-4 w-4" /> Verified Expert
-                    </Badge>
-                  )}
+            <div className="flex-1 space-y-6 w-full">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div>
+                  <div className="flex flex-wrap items-center gap-3 mb-2">
+                    <Text variant="h1" className="text-4xl lg:text-6xl font-bold tracking-tight">
+                      {creator.displayName}
+                    </Text>
+                    {creator.verified && (
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Badge className="bg-secondary text-secondary-foreground border-none h-8 px-3 rounded-xl font-bold uppercase text-[10px] cursor-help">
+                              <ShieldCheck className="mr-1.5 h-4 w-4" /> Verified Expert
+                            </Badge>
+                          </TooltipTrigger>
+                          <TooltipContent className="glass-card border-secondary/20 p-4 max-w-xs">
+                            <Text variant="bodySmall" weight="bold" className="text-secondary mb-1">Verification Matrix Complete</Text>
+                            <Text variant="caption" className="text-muted-foreground leading-relaxed">
+                              This expert has provided verifiable proof of industry credentials, academic research, and institutional affiliation.
+                            </Text>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    )}
+                  </div>
+                  <div className="flex flex-wrap items-center gap-3">
+                    <Text variant="h4" className="text-primary font-bold uppercase tracking-widest text-sm">
+                      {creator.title}
+                    </Text>
+                    <span className="text-muted-foreground opacity-40">•</span>
+                    <Text variant="bodySmall" className="text-muted-foreground font-bold">
+                      {creator.company || 'Independent Institutional Analyst'}
+                    </Text>
+                  </div>
                 </div>
+
                 <div className="flex items-center gap-3">
-                  <Text variant="h4" className="text-primary font-bold uppercase tracking-widest text-sm">
-                    {creator.title}
-                  </Text>
-                  <span className="text-muted-foreground opacity-40">•</span>
-                  <Text variant="bodySmall" className="text-muted-foreground font-normal">
-                    @{creator.username}
-                  </Text>
+                  <Button 
+                    size="lg" 
+                    variant={isFollowing ? "outline" : "default"} 
+                    className={`h-12 px-8 rounded-2xl font-bold transition-all ${!isFollowing ? 'shadow-lg shadow-primary/20 bg-primary hover:bg-primary/90' : 'border-white/10'}`}
+                    onClick={toggleFollow}
+                  >
+                    {isFollowing ? (
+                      <><UserMinus className="mr-2 h-4 w-4" /> Unfollow</>
+                    ) : (
+                      <><UserPlus className="mr-2 h-4 w-4" /> Follow Expert</>
+                    )}
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="icon" 
+                    className={cn("h-12 w-12 rounded-2xl border-white/10 transition-colors", notifsActive ? "text-primary bg-primary/5 border-primary/20" : "text-muted-foreground")}
+                    onClick={() => setNotifsActive(!notifsActive)}
+                  >
+                    {notifsActive ? <Bell className="h-5 w-5" /> : <BellOff className="h-5 w-5" />}
+                  </Button>
                 </div>
               </div>
 
@@ -146,28 +202,15 @@ export function CreatorProfileClient({ creator }: CreatorProfileClientProps) {
                 </div>
                 <div className="flex flex-col">
                   <span className="text-3xl font-bold tracking-tighter text-primary">{creator.stats.engagementScore || 92}%</span>
-                  <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest">Engagement</span>
+                  <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest">Credibility</span>
                 </div>
               </div>
 
-              <div className="flex flex-wrap gap-4 pt-2">
-                <Button 
-                  size="lg" 
-                  variant={isFollowing ? "outline" : "default"} 
-                  className={`h-14 px-10 rounded-2xl font-bold text-base transition-all ${!isFollowing ? 'shadow-lg shadow-primary/20 bg-primary hover:bg-primary/90' : ''}`}
-                  onClick={toggleFollow}
-                >
-                  {isFollowing ? (
-                    <><UserMinus className="mr-2 h-5 w-5" /> Unfollow</>
-                  ) : (
-                    <><UserPlus className="mr-2 h-5 w-5" /> Follow Expert</>
-                  )}
-                </Button>
-                
+              <div className="flex flex-wrap items-center gap-4 pt-2">
                 {creator.socialLinks && creator.socialLinks.length > 0 && (
-                  <div className="flex items-center gap-2 px-4 bg-white/5 rounded-2xl border border-white/5 h-14">
+                  <div className="flex items-center gap-2 px-4 bg-white/5 rounded-2xl border border-white/5 h-12">
                     {creator.socialLinks.map((link, idx) => (
-                      <Button key={idx} variant="ghost" size="icon" className="hover:text-primary transition-colors" asChild>
+                      <Button key={idx} variant="ghost" size="icon" className="h-8 w-8 hover:text-primary transition-colors" asChild>
                         <a href={link.url} target="_blank" rel="noopener noreferrer" title={link.platform}>
                           {getSocialIcon(link.platform)}
                         </a>
@@ -175,6 +218,10 @@ export function CreatorProfileClient({ creator }: CreatorProfileClientProps) {
                     ))}
                   </div>
                 )}
+                <div className="h-1 w-1 rounded-full bg-muted-foreground/30" />
+                <Text variant="caption" className="text-muted-foreground font-mono uppercase tracking-widest">
+                  @{creator.username} • Joined {format(new Date(creator.joinedDate), 'MMM yyyy')}
+                </Text>
               </div>
             </div>
           </div>
@@ -184,21 +231,21 @@ export function CreatorProfileClient({ creator }: CreatorProfileClientProps) {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
         {/* Main Intelligence Column */}
         <div className="lg:col-span-8 space-y-12">
-          <Tabs defaultValue="published" className="w-full space-y-8">
+          <Tabs defaultValue="performance" className="w-full space-y-10">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 border-b border-white/5 pb-4">
               <TabsList className="bg-card/30 border border-white/5 p-1 h-12 rounded-2xl">
-                <TabsTrigger value="published" className="px-8 h-10 gap-2 rounded-xl font-bold text-xs data-[state=active]:bg-primary">
-                  <BookOpen className="h-4 w-4" /> Published Research
+                <TabsTrigger value="performance" className="px-8 h-10 gap-2 rounded-xl font-bold text-xs data-[state=active]:bg-primary">
+                  <Activity className="h-4 w-4" /> Performance Audit
                 </TabsTrigger>
-                <TabsTrigger value="guides" className="px-8 h-10 gap-2 rounded-xl font-bold text-xs data-[state=active]:bg-primary">
-                  <Layers className="h-4 w-4" /> Strategy Guides
+                <TabsTrigger value="published" className="px-8 h-10 gap-2 rounded-xl font-bold text-xs data-[state=active]:bg-primary">
+                  <BookOpen className="h-4 w-4" /> Research Archive
                 </TabsTrigger>
               </TabsList>
               
               <div className="relative group w-full sm:w-64">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
                 <Input 
-                  placeholder="Filter research nodes..." 
+                  placeholder="Filter intelligence nodes..." 
                   className="pl-10 h-10 bg-card/30 border-white/10 rounded-xl text-xs"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
@@ -206,6 +253,20 @@ export function CreatorProfileClient({ creator }: CreatorProfileClientProps) {
               </div>
             </div>
 
+            {/* PERFORMANCE TAB */}
+            <TabsContent value="performance" className="mt-0">
+              <AnalystPerformanceDashboard 
+                stats={{
+                  engagementScore: creator.stats.engagementScore || 0,
+                  accuracyScore: creator.stats.accuracyScore || 0,
+                  credibilityScore: creator.stats.credibilityScore || 0,
+                  totalReads: creator.stats.totalReads || 0
+                }} 
+                performanceHistory={mockPerformanceHistory} 
+              />
+            </TabsContent>
+
+            {/* RESEARCH ARCHIVE TAB */}
             <TabsContent value="published" className="mt-0">
               <Card className="glass-card border-none shadow-2xl overflow-hidden">
                 <div className="overflow-x-auto">
@@ -216,7 +277,7 @@ export function CreatorProfileClient({ creator }: CreatorProfileClientProps) {
                         <TableHead className="font-bold text-[10px] uppercase tracking-widest">Taxonomy</TableHead>
                         <TableHead className="font-bold text-[10px] uppercase tracking-widest text-center">Reads</TableHead>
                         <TableHead className="font-bold text-[10px] uppercase tracking-widest text-center">Likes</TableHead>
-                        <TableHead className="text-right pr-8 font-bold text-[10px] uppercase tracking-widest">Date</TableHead>
+                        <TableHead className="text-right pr-8 font-bold text-[10px] uppercase tracking-widest">Handshake</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -239,7 +300,10 @@ export function CreatorProfileClient({ creator }: CreatorProfileClientProps) {
                             {(item.likes || 0).toLocaleString()}
                           </TableCell>
                           <TableCell className="text-right pr-8">
-                            <span className="text-[10px] font-bold text-muted-foreground uppercase">{format(new Date(item.createdAt), 'MMM d, yyyy')}</span>
+                            <div className="flex flex-col items-end">
+                              <span className="text-[10px] font-bold text-muted-foreground uppercase">{format(new Date(item.createdAt), 'MMM d, yyyy')}</span>
+                              <span className="text-[8px] text-emerald-500 font-bold uppercase tracking-widest">Verified Index</span>
+                            </div>
                           </TableCell>
                         </TableRow>
                       ))}
@@ -248,16 +312,10 @@ export function CreatorProfileClient({ creator }: CreatorProfileClientProps) {
                 </div>
                 <div className="p-4 bg-muted/10 border-t border-white/5 flex justify-center">
                   <Button variant="ghost" size="sm" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground hover:text-primary">
-                    Load Full Index <ChevronRight className="ml-1 h-3 w-3" />
+                    Full Chronological Matrix <ChevronRight className="ml-1 h-3 w-3" />
                   </Button>
                 </div>
               </Card>
-            </TabsContent>
-
-            <TabsContent value="guides" className="py-20 text-center bg-card/10 rounded-[3rem] border border-dashed border-white/5">
-              <Layers className="h-12 w-12 text-muted-foreground/20 mx-auto mb-4" />
-              <Text variant="h4" className="text-muted-foreground">No Strategy Guides Published</Text>
-              <Text variant="caption" className="text-muted-foreground/60 mt-2 block">Premium educational nodes will appear here.</Text>
             </TabsContent>
           </Tabs>
         </div>
@@ -266,40 +324,40 @@ export function CreatorProfileClient({ creator }: CreatorProfileClientProps) {
         <div className="lg:col-span-4 space-y-10">
           {/* Credentials Card */}
           <Card className="glass-card border-none shadow-xl h-fit">
-            <CardHeader className="p-8 border-b border-white/5">
+            <CardHeader className="p-8 border-b border-white/5 bg-card/30">
               <CardTitle className="text-sm font-bold uppercase tracking-widest flex items-center gap-2">
                 <ShieldCheck className="h-4 w-4 text-primary" /> Credential Matrix
               </CardTitle>
             </CardHeader>
             <CardContent className="p-8 space-y-8">
-              <div className="space-y-4">
+              <div className="space-y-6">
                 <div className="flex items-start gap-4">
-                  <div className="p-2 rounded-lg bg-secondary/10 text-secondary shrink-0">
+                  <div className="p-2.5 rounded-xl bg-secondary/10 text-secondary shrink-0">
                     <Briefcase className="h-4 w-4" />
                   </div>
                   <div>
-                    <Text variant="label" className="text-[9px] opacity-50 font-bold uppercase tracking-widest block mb-1">Professional Tenure</Text>
-                    <Text variant="bodySmall" weight="bold">{creator.yearsExperience || 10}+ Years Experience</Text>
+                    <Text variant="label" className="text-[9px] opacity-50 font-bold uppercase tracking-widest block mb-1">Tenure</Text>
+                    <Text variant="bodySmall" weight="bold">{creator.yearsExperience || 10}+ Years Institutional Experience</Text>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="p-2 rounded-lg bg-primary/10 text-primary shrink-0">
+                  <div className="p-2.5 rounded-xl bg-primary/10 text-primary shrink-0">
                     <GraduationCap className="h-4 w-4" />
                   </div>
                   <div>
-                    <Text variant="label" className="text-[9px] opacity-50 font-bold uppercase tracking-widest block mb-1">Academic Background</Text>
+                    <Text variant="label" className="text-[9px] opacity-50 font-bold uppercase tracking-widest block mb-1">Academy</Text>
                     <Text variant="bodySmall" weight="bold">{creator.education || 'Institutional Researcher'}</Text>
                   </div>
                 </div>
               </div>
 
               <div className="space-y-4 pt-6 border-t border-white/5">
-                <Text variant="label" className="text-[9px] opacity-50 font-bold uppercase tracking-widest">Authority Badges</Text>
+                <Text variant="label" className="text-[9px] opacity-50 font-bold uppercase tracking-widest">Authority Nodes</Text>
                 <div className="flex flex-wrap gap-2">
                   {creator.badges?.map(badge => (
-                    <Badge key={badge} className="bg-primary text-white border-none text-[9px] font-bold uppercase h-6 px-3 shadow-lg">
-                      <Award className="w-3 h-3 mr-1.5" /> {badge}
+                    <Badge key={badge} className="bg-background/50 text-foreground border-white/10 text-[9px] font-bold uppercase h-6 px-3 shadow-inner">
+                      {badge}
                     </Badge>
                   ))}
                 </div>
@@ -307,43 +365,36 @@ export function CreatorProfileClient({ creator }: CreatorProfileClientProps) {
             </CardContent>
           </Card>
 
-          {/* Expert Network Mini-Grid */}
+          {/* Expertise Taxonomy */}
           <div className="space-y-6">
-            <div className="flex items-center justify-between px-2">
-              <Text variant="h4" className="font-bold text-sm uppercase tracking-widest text-muted-foreground flex items-center gap-2">
-                <Users className="h-4 w-4" /> Expert Network
-              </Text>
-              <Button variant="ghost" size="sm" className="h-7 text-primary text-[10px] font-bold uppercase">View All</Button>
+            <div className="flex items-center gap-3 px-2">
+              <div className="p-2 rounded-xl bg-secondary/10 text-secondary">
+                <Layers className="h-4 w-4" />
+              </div>
+              <Text variant="h4" className="font-bold text-sm uppercase tracking-widest">Expertise Taxonomy</Text>
             </div>
             
-            <div className="grid grid-cols-2 gap-4">
-              {relatedCreators.map((expert) => (
-                <Link key={expert.id} href={`/creator/${expert.id}`} className="group">
-                  <Card className="glass-card border-none hover:border-primary/30 transition-all p-4 text-center">
-                    <Avatar className="h-12 w-12 rounded-xl mx-auto mb-3 border border-white/5">
-                      <AvatarImage src={expert.avatar} />
-                      <AvatarFallback>{expert.displayName.charAt(0)}</AvatarFallback>
-                    </Avatar>
-                    <Text variant="caption" weight="bold" className="group-hover:text-primary transition-colors line-clamp-1">{expert.displayName.split(' ')[0]}</Text>
-                    <Text variant="caption" className="text-[8px] text-muted-foreground uppercase font-bold tracking-tighter mt-1">{expert.category}</Text>
-                  </Card>
-                </Link>
+            <div className="flex flex-wrap gap-2">
+              {creator.specialties.map((spec) => (
+                <Badge key={spec} variant="secondary" className="px-4 py-2 bg-card/50 border-white/5 hover:border-primary/30 hover:text-primary transition-all cursor-pointer rounded-xl font-bold text-xs">
+                  {spec}
+                </Badge>
               ))}
             </div>
           </div>
 
-          <div className="p-8 rounded-[3rem] bg-secondary/5 border border-secondary/20 space-y-4 relative overflow-hidden group">
+          <div className="p-8 rounded-[3rem] bg-primary/5 border border-primary/20 space-y-4 relative overflow-hidden group">
             <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform">
-              <Zap className="h-16 w-16 text-secondary" />
+              <Flame className="h-16 w-16 text-primary" />
             </div>
-            <div className="flex items-center gap-2 text-secondary font-bold text-xs uppercase tracking-widest">
-              <Activity className="h-4 w-4" /> Tactical Access
+            <div className="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-widest">
+              <Zap className="h-4 w-4" /> Strategy Access
             </div>
             <Text variant="caption" className="text-muted-foreground leading-relaxed italic block">
-              "Subscribe to **Pro Intelligence** to access {creator.displayName.split(' ')[0]}'s private research nodes and high-fidelity strategy models."
+              "Upgrade to **Institutional Pro** to access {creator.displayName.split(' ')[0]}'s real-time model portolios and trade signals."
             </Text>
-            <Button className="w-full h-11 rounded-2xl bg-secondary hover:bg-secondary/90 text-secondary-foreground font-bold text-xs" asChild>
-              <Link href="/premium/subscribe">Unlock Expert Feed</Link>
+            <Button className="w-full h-12 rounded-2xl bg-primary hover:bg-primary/90 text-white font-bold text-xs shadow-lg shadow-primary/20" asChild>
+              <Link href="/premium/subscribe">Launch Pro Intelligence</Link>
             </Button>
           </div>
         </div>
@@ -351,3 +402,5 @@ export function CreatorProfileClient({ creator }: CreatorProfileClientProps) {
     </div>
   );
 }
+
+import { Flame } from 'lucide-react';

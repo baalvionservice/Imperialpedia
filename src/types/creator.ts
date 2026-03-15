@@ -11,6 +11,8 @@ export interface CreatorStats {
   totalViews: number;
   engagementScore?: number; // 0-100
   totalReads?: number;
+  credibilityScore?: number; // 0-100
+  accuracyScore?: number;    // 0-100
 }
 
 export interface CreatorContent {
@@ -22,6 +24,7 @@ export interface CreatorContent {
     category: string;
     reads?: number;
     likes?: number;
+    comments?: number;
   }>;
 }
 
@@ -35,6 +38,7 @@ export interface CreatorProfile {
   username: string;
   displayName: string;
   title: string; // Professional title
+  company?: string;
   bio: string;
   avatar: string;
   joinedDate: Timestamp;

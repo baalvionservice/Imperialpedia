@@ -4,16 +4,88 @@ import { Notification } from '@/modules/content-engine/types/article';
 
 /**
  * @fileOverview Mock service for managing creator profiles, stats, and discovery data.
- * Expanded with Prompt 59 requirements for specific experts and detailed fields.
  */
 
 const mockCreators: CreatorProfile[] = [
+  {
+    id: 'creator-michael',
+    username: 'mroberts',
+    displayName: 'Michael Roberts',
+    title: 'Senior Market Analyst',
+    company: 'Roberts Asset Management',
+    bio: 'Specializing in equity research and macro-economic cycles. Over 12 years of institutional experience. Focused on identifying asymmetric yield opportunities.',
+    avatar: 'https://picsum.photos/seed/michael/200/200',
+    joinedDate: '2022-10-15T00:00:00Z',
+    specialties: ['Equity Research', 'Macroeconomics', 'Portfolio Management'],
+    category: 'Economics',
+    region: 'North America',
+    verified: true,
+    yearsExperience: 12,
+    education: 'London School of Economics',
+    badges: ['Verified Analyst', 'Senior Analyst', 'CFA Certified'],
+    stats: {
+      followersCount: 15400,
+      followingCount: 85,
+      articlesCount: 56,
+      totalViews: 1250000,
+      totalReads: 502000,
+      engagementScore: 92,
+      credibilityScore: 92,
+      accuracyScore: 88
+    },
+    content: {
+      recentArticles: [
+        { id: 'art-m1', title: 'Global Liquidity and Stock Market Cycles', slug: 'global-liquidity-cycles', category: 'Macro Analysis', publishedAt: '2024-03-10T10:00:00Z', reads: 50200, likes: 4200, comments: 124 },
+        { id: 'art-m2', title: 'Equity Valuation in a High-Interest Environment', slug: 'equity-valuation-trends', category: 'Equity Research', publishedAt: '2024-03-05T08:00:00Z', reads: 28400, likes: 1500, comments: 85 },
+      ],
+    },
+    socialLinks: [
+      { platform: 'Twitter', url: '#' },
+      { platform: 'LinkedIn', url: '#' }
+    ],
+  },
+  {
+    id: 'creator-elena',
+    username: 'egarcia',
+    displayName: 'Elena Garcia',
+    title: 'Crypto Research Analyst',
+    company: 'Independent Analyst',
+    bio: 'Focused on blockchain protocol architecture and the transition to algorithmic fiscal policy. Analyzing the intersection of DeFi and institutional finance.',
+    avatar: 'https://picsum.photos/seed/elena/200/200',
+    joinedDate: '2023-03-20T00:00:00Z',
+    specialties: ['Cryptocurrency', 'Blockchain', 'Risk Management'],
+    category: 'Crypto',
+    region: 'Europe',
+    verified: true,
+    yearsExperience: 8,
+    education: 'MIT Sloan',
+    badges: ['Verified Analyst', 'Crypto Market Specialist'],
+    stats: {
+      followersCount: 9800,
+      followingCount: 120,
+      articlesCount: 34,
+      totalViews: 850000,
+      totalReads: 384000,
+      engagementScore: 88,
+      credibilityScore: 88,
+      accuracyScore: 94
+    },
+    content: {
+      recentArticles: [
+        { id: 'art-e1', title: 'Ethereum ETF Impact Explained', slug: 'ethereum-etf-impact', category: 'Crypto Analysis', publishedAt: '2024-03-12T11:00:00Z', reads: 38400, likes: 3100, comments: 240 },
+      ],
+    },
+    socialLinks: [
+      { platform: 'Twitter', url: '#' },
+      { platform: 'Github', url: '#' }
+    ],
+  },
   {
     id: 'creator-sarah',
     username: 'smitchell',
     displayName: 'Sarah Mitchell',
     title: 'Market Strategist',
-    bio: 'Specializing in macro-economic cycles and global interest rate arbitrage. Over 15 years of institutional research experience at leading investment banks.',
+    bio: 'Specializing in macro-economic cycles and global interest rate arbitrage. Over 15 years of institutional research experience.',
     avatar: 'https://picsum.photos/seed/sarah/200/200',
     joinedDate: '2023-01-15T00:00:00Z',
     specialties: ['Macroeconomics', 'Market Analysis', 'Bonds'],
@@ -29,77 +101,18 @@ const mockCreators: CreatorProfile[] = [
       articlesCount: 42,
       totalViews: 850000,
       totalReads: 452000,
-      engagementScore: 94
+      engagementScore: 94,
+      credibilityScore: 95,
+      accuracyScore: 91
     },
     content: {
       recentArticles: [
         { id: 'art-1', title: 'Understanding Market Cycles', slug: 'understanding-market-cycles', category: 'Market Analysis', publishedAt: '2024-03-01T10:00:00Z', reads: 45200, likes: 3200 },
-        { id: 'art-7', title: 'The Future of Central Banking', slug: 'future-of-central-banking', category: 'Economics', publishedAt: '2024-03-12T08:00:00Z', reads: 12400, likes: 850 },
-      ],
-    },
-    socialLinks: [
-      { platform: 'Twitter', url: 'https://twitter.com/smitchell' },
-      { platform: 'LinkedIn', url: 'https://linkedin.com/in/smitchell' }
-    ],
-  },
-  {
-    id: 'creator-david',
-    username: 'dchen',
-    displayName: 'David Chen',
-    title: 'Crypto Analyst',
-    bio: 'Blockchain researcher and protocol architect. Focused on decentralized liquidity nodes and the transition to algorithmic fiscal policy.',
-    avatar: 'https://picsum.photos/seed/david/200/200',
-    joinedDate: '2023-05-20T00:00:00Z',
-    specialties: ['Cryptocurrency', 'Blockchain', 'DeFi'],
-    category: 'Crypto',
-    region: 'APAC',
-    verified: true,
-    yearsExperience: 8,
-    education: 'Stanford Computer Science, M.S.',
-    badges: ['Crypto Specialist', 'Verified Analyst'],
-    stats: {
-      followersCount: 9500,
-      followingCount: 210,
-      articlesCount: 28,
-      totalViews: 120000,
-      totalReads: 381000,
-      engagementScore: 88
-    },
-    content: {
-      recentArticles: [
-        { id: 'art-4', title: 'Bitcoin Halving Explained', slug: 'bitcoin-halving-explained', category: 'Crypto Education', publishedAt: '2024-03-08T11:00:00Z', reads: 38100, likes: 2800 },
       ],
     },
     socialLinks: [
       { platform: 'Twitter', url: '#' },
-      { platform: 'Github', url: '#' }
-    ],
-  },
-  {
-    id: 'creator-1',
-    username: 'marketmaven',
-    displayName: 'The Market Maven',
-    title: 'Macro Analyst',
-    bio: 'Expert in macro-economic trends and fixed income markets. Former hedge fund analyst focused on interest rate policy.',
-    avatar: 'https://picsum.photos/seed/maven/200/200',
-    joinedDate: '2023-01-15T00:00:00Z',
-    specialties: ['Economics', 'Bonds', 'Macro'],
-    category: 'Economics',
-    region: 'North America',
-    verified: true,
-    stats: {
-      followersCount: 15400,
-      followingCount: 142,
-      articlesCount: 42,
-      totalViews: 850000,
-    },
-    content: {
-      recentArticles: [
-        { id: 'art-1', title: 'Understanding Yield Curve Inversion', slug: 'understanding-yield-curve-inversion', category: 'Economics', publishedAt: '2024-03-01T00:00:00Z' },
-      ],
-    },
-    socialLinks: [
-      { platform: 'Twitter', url: '#' }
+      { platform: 'LinkedIn', url: '#' }
     ],
   },
   {
@@ -107,7 +120,7 @@ const mockCreators: CreatorProfile[] = [
     username: 'econvance',
     displayName: 'Eleanor Vance',
     title: 'Lead Administrator',
-    bio: 'Lead Administrator and Content Strategist at Imperialpedia. Focused on platform growth, pSEO integrity, and institutional research.',
+    bio: 'Lead Administrator and Content Strategist at Imperialpedia. Focused on platform growth and institutional research.',
     avatar: 'https://picsum.photos/seed/eleanor/200/200',
     joinedDate: '2022-12-01T00:00:00Z',
     specialties: ['Economics', 'Growth', 'Strategy'],
@@ -119,13 +132,16 @@ const mockCreators: CreatorProfile[] = [
       followingCount: 500,
       articlesCount: 120,
       totalViews: 4500000,
+      engagementScore: 96,
+      credibilityScore: 98,
+      accuracyScore: 92
     },
     content: {
       recentArticles: [],
     },
     socialLinks: [
-      { platform: 'Twitter', url: 'https://twitter.com/eleanorvance' },
-      { platform: 'LinkedIn', url: 'https://linkedin.com/in/eleanorvance' }
+      { platform: 'Twitter', url: '#' },
+      { platform: 'LinkedIn', url: '#' }
     ],
   },
 ];
@@ -169,23 +185,6 @@ export const getTopCreators = async (): Promise<ApiResponse<TopCreator[]>> => {
   
   return { data, status: 200 };
 };
-
-const mockLeaderboard: CreatorLeaderboard[] = mockCreators.map(c => ({
-  creatorId: c.id,
-  name: c.displayName,
-  profileImage: c.avatar,
-  category: c.category,
-  region: c.region,
-  verified: c.verified,
-  totalRevenue: 15400.50,
-  totalViews: c.stats.totalViews,
-  totalLikes: 12400
-}));
-
-const mockFollowers: Follower[] = [
-  { id: 'f-1', name: 'Julian Wealth', username: 'wealthbuilder', profileImage: 'https://picsum.photos/seed/wealth/200/200', followedAt: '2024-03-01T10:00:00Z', status: 'following', category: 'Investing' },
-  { id: 'f-2', name: 'Sarah Crypto', username: 'defianalyst', profileImage: 'https://picsum.photos/seed/defi/200/200', followedAt: '2024-03-05T14:30:00Z', status: 'not_following', category: 'Crypto' },
-];
 
 export const getCreators = async (): Promise<ApiResponse<CreatorProfile[]>> => {
   await new Promise((resolve) => setTimeout(resolve, 300));
@@ -246,7 +245,7 @@ export const getCreatorContent = async (creatorId: string): Promise<ApiResponse<
     createdAt: a.publishedAt,
     views: a.reads || 1200,
     likes: a.likes || 100,
-    comments: 42,
+    comments: a.comments || 42,
     reads: a.reads || 1200,
     slug: a.slug
   }));
@@ -287,6 +286,17 @@ export const getPendingVerifications = async (): Promise<ApiResponse<CreatorVeri
 
 export const getLeaderboardData = async (): Promise<ApiResponse<CreatorLeaderboard[]>> => {
   await new Promise((resolve) => setTimeout(resolve, 400));
+  const mockLeaderboard: CreatorLeaderboard[] = mockCreators.map(c => ({
+    creatorId: c.id,
+    name: c.displayName,
+    profileImage: c.avatar,
+    category: c.category,
+    region: c.region,
+    verified: c.verified,
+    totalRevenue: 15400.50,
+    totalViews: c.stats.totalViews,
+    totalLikes: 12400
+  }));
   return {
     data: mockLeaderboard,
     status: 200
@@ -311,6 +321,24 @@ export const getScheduledContent = async (creatorId: string): Promise<ApiRespons
 
 export const getCreatorSettings = async (creatorId: string): Promise<ApiResponse<CreatorSettings>> => {
   await new Promise((resolve) => setTimeout(resolve, 300));
+  const mockCreatorSettings: CreatorSettings = {
+    creatorId: 'u-1',
+    name: 'Eleanor Vance',
+    displayName: 'Eleanor Vance',
+    bio: 'Lead Administrator and Content Strategist at Imperialpedia.',
+    profileImage: 'https://picsum.photos/seed/eleanor/200/200',
+    email: 'eleanor@imperialpedia.com',
+    notifications: {
+      engagement: true,
+      followers: true,
+      announcements: false
+    },
+    categories: ['Economics', 'Growth', 'Strategy'],
+    socialLinks: [
+      { platform: 'Twitter', url: '#' },
+      { platform: 'LinkedIn', url: '#' }
+    ]
+  };
   return {
     data: mockCreatorSettings,
     status: 200
@@ -319,6 +347,10 @@ export const getCreatorSettings = async (creatorId: string): Promise<ApiResponse
 
 export const getFollowers = async (creatorId: string): Promise<ApiResponse<Follower[]>> => {
   await new Promise((resolve) => setTimeout(resolve, 300));
+  const mockFollowers: Follower[] = [
+    { id: 'f-1', name: 'Julian Wealth', username: 'wealthbuilder', profileImage: 'https://picsum.photos/seed/wealth/200/200', followedAt: '2024-03-01T10:00:00Z', status: 'following', category: 'Investing' },
+    { id: 'f-2', name: 'Sarah Crypto', username: 'defianalyst', profileImage: 'https://picsum.photos/seed/defi/200/200', followedAt: '2024-03-05T14:30:00Z', status: 'not_following', category: 'Crypto' },
+  ];
   return {
     data: mockFollowers,
     status: 200
@@ -327,8 +359,11 @@ export const getFollowers = async (creatorId: string): Promise<ApiResponse<Follo
 
 export const getFollowing = async (creatorId: string): Promise<ApiResponse<Follower[]>> => {
   await new Promise((resolve) => setTimeout(resolve, 300));
+  const mockFollowers: Follower[] = [
+    { id: 'f-1', name: 'Julian Wealth', username: 'wealthbuilder', profileImage: 'https://picsum.photos/seed/wealth/200/200', followedAt: '2024-03-01T10:00:00Z', status: 'following', category: 'Investing' },
+  ];
   return {
-    data: [...mockFollowers].reverse(),
+    data: mockFollowers,
     status: 200
   };
 };
@@ -336,12 +371,12 @@ export const getFollowing = async (creatorId: string): Promise<ApiResponse<Follo
 export const getCreatorVerificationStatus = async (creatorId: string): Promise<ApiResponse<CreatorVerification>> => {
   await new Promise((resolve) => setTimeout(resolve, 300));
   
-  if (creatorId === 'u-1' || creatorId === 'creator-4') {
+  if (creatorId === 'u-1' || creatorId === 'creator-4' || creatorId.includes('michael') || creatorId.includes('elena')) {
     return {
       data: {
         creatorId,
-        creatorName: 'Eleanor Vance',
-        creatorAvatar: 'https://picsum.photos/seed/eleanor/200/200',
+        creatorName: 'Verified Expert',
+        creatorAvatar: '',
         verified: true,
         status: 'verified',
         requestedAt: '2023-12-01T10:00:00Z',
@@ -374,7 +409,7 @@ export const getCreatorRevenue = async (creatorId: string): Promise<ApiResponse<
       pendingPayout: 3200.00,
       lastPayoutDate: '2024-03-01T10:00:00Z',
       topEarningContent: [
-        { contentId: 'c-1', title: 'Quantitative Easing vs Tightening: A 2026 Outlook', revenue: 448.20 },
+        { contentId: 'c-1', title: 'Quantitative Easing vs Tightening', revenue: 448.20 },
       ],
       revenueTrends: [
         { date: '2024-03-01', amount: 119.50 },
@@ -388,29 +423,10 @@ export const getPayoutHistory = async (creatorId: string): Promise<ApiResponse<C
   await new Promise((resolve) => setTimeout(resolve, 300));
   return {
     data: [
-      { contentId: 'c-1', title: 'Quantitative Easing vs Tightening: A 2026 Outlook', revenue: 124.50, dateEarned: '2024-03-07T10:00:00Z' },
+      { contentId: 'c-1', title: 'Quantitative Easing vs Tightening', revenue: 124.50, dateEarned: '2024-03-07T10:00:00Z' },
     ],
     status: 200
   };
-};
-
-const mockCreatorSettings: CreatorSettings = {
-  creatorId: 'u-1',
-  name: 'Eleanor Vance',
-  displayName: 'Eleanor Vance',
-  bio: 'Lead Administrator and Content Strategist at Imperialpedia. Focused on platform growth and pSEO integrity.',
-  profileImage: 'https://picsum.photos/seed/eleanor/200/200',
-  email: 'eleanor@imperialpedia.com',
-  notifications: {
-    engagement: true,
-    followers: true,
-    announcements: false
-  },
-  categories: ['Economics', 'Growth', 'Strategy'],
-  socialLinks: [
-    { platform: 'Twitter', url: 'https://twitter.com/eleanorvance' },
-    { platform: 'LinkedIn', url: 'https://linkedin.com/in/eleanorvance' }
-  ]
 };
 
 const mockScheduledContent: ScheduledContent[] = [
