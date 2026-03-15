@@ -8,7 +8,7 @@ export type Timestamp = string; // ISO 8601 format
 
 export type Status = 'active' | 'inactive' | 'development' | 'planned' | 'archived';
 
-export type Role = 'admin' | 'creator' | 'reader' | 'guest';
+export type Role = 'admin' | 'writer' | 'editor' | 'creator' | 'reader' | 'guest';
 
 export interface User {
   id: ID;
@@ -23,4 +23,15 @@ export interface BaseModule {
   name: string;
   description: string;
   status: Status;
+}
+
+export interface DashboardWidget {
+  title: string;
+  value: string | number;
+  description?: string;
+  icon?: React.ReactNode;
+  trend?: {
+    value: number;
+    isUp: boolean;
+  };
 }
