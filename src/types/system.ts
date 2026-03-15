@@ -123,6 +123,18 @@ export interface FeatureFlag {
 }
 
 /**
+ * Interface for the Admin Activity Log
+ */
+export interface AdminActivityLog {
+  id: string;
+  admin: string;
+  action: string;
+  target: string;
+  date: string;
+  status: 'Success' | 'Failed';
+}
+
+/**
  * Interface for the Role Control Matrix
  */
 export interface RoleControl {

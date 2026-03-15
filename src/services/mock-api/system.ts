@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings } from '@/types/system';
+import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog } from '@/types/system';
 
 /**
  * @fileOverview Mock service for managing global platform configuration and system notifications.
@@ -87,6 +87,15 @@ const mockAccessLogs: AccessLog[] = [
 const mockErrorLogs: ErrorLog[] = [
   { id: 'err-1', timestamp: '2024-03-12T11:45:00Z', module: 'API Gateway', type: 'critical', message: 'Connection timeout reached while attempting to synchronize search cluster indices.' },
   { id: 'err-2', timestamp: '2024-03-12T10:20:00Z', module: 'Content Engine', type: 'warning', message: 'Failed to generate automated summary for intelligence node art-452. Falling back to default excerpt.' },
+];
+
+const mockAdminActivityLogs: AdminActivityLog[] = [
+  { id: 'al-1', admin: 'Eleanor Vance', action: 'User Suspension', target: 'Wealth Builder (u-4)', date: '2024-03-12T14:30:00Z', status: 'Success' },
+  { id: 'al-2', admin: 'Platform Lead', action: 'System Config Update', target: 'pSEO Ingestion Engine', date: '2024-03-12T13:15:00Z', status: 'Success' },
+  { id: 'al-3', admin: 'Eleanor Vance', action: 'Permission Override', target: 'Editor Cohort (role-2)', date: '2024-03-12T11:45:00Z', status: 'Failed' },
+  { id: 'al-4', admin: 'Expert Editor', action: 'Content Purge', target: 'Article Node: Yield Scam 101', date: '2024-03-12T10:00:00Z', status: 'Success' },
+  { id: 'al-5', admin: 'Platform Lead', action: 'Global Alert Dispatch', target: 'System Notification Hub', date: '2024-03-12T09:30:00Z', status: 'Success' },
+  { id: 'al-6', admin: 'Eleanor Vance', action: 'Expert Verification', target: 'Sarah Crypto (u-6)', date: '2024-03-11T16:20:00Z', status: 'Success' },
 ];
 
 export const getPlatformSettings = async (): Promise<ApiResponse<PlatformSettings>> => {
@@ -247,6 +256,14 @@ export const getErrorLogs = async (): Promise<ApiResponse<ErrorLog[]>> => {
   await new Promise((resolve) => setTimeout(resolve, 400));
   return {
     data: mockErrorLogs,
+    status: 200,
+  };
+};
+
+export const getAdminLogs = async (): Promise<ApiResponse<AdminActivityLog[]>> => {
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  return {
+    data: mockAdminActivityLogs,
     status: 200,
   };
 };
