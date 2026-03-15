@@ -13,6 +13,16 @@ export interface PlatformSettings {
   };
 }
 
+export interface BrandingSettings {
+  logoUrl: string;
+  platformName: string;
+  description: string;
+  colors: {
+    primary: string;
+    secondary: string;
+  };
+}
+
 export interface FeatureSettings {
   seo: boolean;
   analytics: boolean;

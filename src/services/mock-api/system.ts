@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog, SecuritySettings, GlobalNotificationSettings, AuditTrailEntry, FeatureSettings, AdminSession } from '@/types/system';
+import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog, SecuritySettings, GlobalNotificationSettings, AuditTrailEntry, FeatureSettings, AdminSession, BrandingSettings } from '@/types/system';
 
 /**
  * @fileOverview Mock service for managing global platform configuration and system notifications.
@@ -13,6 +13,16 @@ const mockPlatformSettings: PlatformSettings = {
     seo: true,
     analytics: true,
     payments: false
+  }
+};
+
+const mockBrandingSettings: BrandingSettings = {
+  platformName: 'Imperialpedia',
+  logoUrl: 'https://imperialpedia.com/logo.png',
+  description: 'World-class financial intelligence at scale.',
+  colors: {
+    primary: '#8272F2',
+    secondary: '#69B9FF'
   }
 };
 
@@ -151,6 +161,23 @@ export const updatePlatformSettings = async (settings: PlatformSettings): Promis
     data: settings,
     status: 200,
     message: 'Global configuration synchronized.'
+  };
+};
+
+export const getBrandingSettings = async (): Promise<ApiResponse<BrandingSettings>> => {
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  return {
+    data: mockBrandingSettings,
+    status: 200,
+  };
+};
+
+export const updateBrandingSettings = async (settings: BrandingSettings): Promise<ApiResponse<BrandingSettings>> => {
+  await new Promise((resolve) => setTimeout(resolve, 800));
+  return {
+    data: settings,
+    status: 200,
+    message: 'Visual identity synchronized across the cluster.'
   };
 };
 

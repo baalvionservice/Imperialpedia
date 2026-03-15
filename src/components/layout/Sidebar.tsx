@@ -44,7 +44,8 @@ import {
   Heart,
   FileCode,
   Shield,
-  Monitor
+  Monitor,
+  Palette
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 import { useAppStore } from '@/lib/state/app-store';
@@ -108,6 +109,7 @@ const Sidebar = ({ className }: { className?: string }) => {
     { icon: Monitor, label: 'Active Sessions', href: '/admin/control/sessions' },
     { icon: Bell, label: 'Notification Settings', href: '/admin/control/notifications' },
     { icon: Zap, label: 'Feature Toggles', href: '/admin/control/features' },
+    { icon: Palette, label: 'Theme & Branding', href: '/admin/control/branding' },
     { icon: ShieldX, label: 'Content Moderation', href: '/admin/moderation' },
     { icon: Megaphone, label: 'System Notifications', href: '/admin/notifications' },
     { icon: History, label: 'Broadcast Logs', href: '/admin/notification-logs' },
