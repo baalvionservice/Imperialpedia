@@ -98,6 +98,7 @@ const Sidebar = ({ className }: { className?: string }) => {
     { icon: BarChart3, label: 'Analytics', href: '/admin/analytics' },
     { icon: ShieldCheck, label: 'Audit Trail', href: '/admin/audit' },
     { icon: ShieldAlert, label: 'pSEO Health', href: '/admin/seo-audit' },
+    { icon: Settings, label: 'System Settings', href: '/admin/settings' },
   ];
 
   const editorItems = [
