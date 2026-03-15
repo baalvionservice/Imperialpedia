@@ -4,6 +4,8 @@
 
 export type SearchResultType = 'article' | 'author' | 'calculator' | 'topic' | 'glossary';
 
+export type SearchSortOption = 'relevance' | 'latest' | 'popular';
+
 export interface SearchResult {
   id: string;
   type: SearchResultType;
@@ -13,6 +15,8 @@ export interface SearchResult {
   category?: string;
   author?: string;
   tags?: string[];
+  date?: string; // ISO timestamp
+  views?: number;
 }
 
 export interface SearchSuggestion {
@@ -27,6 +31,7 @@ export interface SearchFilters {
   category?: string;
   author?: string;
   tags?: string[];
+  sortBy?: SearchSortOption;
 }
 
 export interface AdvancedSearchFilters extends SearchFilters {

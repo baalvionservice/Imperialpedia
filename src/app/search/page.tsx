@@ -39,16 +39,17 @@ import {
   Tag as TagIcon,
   ChevronDown,
   ChevronUp,
-  RotateCcw
+  RotateCcw,
+  SortAsc
 } from 'lucide-react';
-import { SearchResult, SearchResultType, SearchSuggestion, AdvancedSearchFilters } from '@/types';
+import { SearchResult, SearchResultType, SearchSuggestion, AdvancedSearchFilters, SearchSortOption } from '@/types';
 import { searchService } from '@/services/data/search-service';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
 /**
  * Global search page for the Imperialpedia platform.
- * Supports cross-entity discovery with real-time auto-suggestions, category filtering, and tag chips.
+ * Supports cross-entity discovery with real-time auto-suggestions, category filtering, tag chips, and sorting.
  */
 export default function SearchPage() {
   const [query, setQuery] = useState('');
@@ -61,9 +62,10 @@ export default function SearchPage() {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [isAdvancedOpen, setIsAdvancedOpen] = useState(false);
   
-  // Advanced Filter States
+  // Advanced Filter & Sort States
   const [selectedAuthor, setSelectedAuthor] = useState('all');
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [sortBy, setSortBy] = useState<SearchSortOption>('relevance');
 
   const searchContainerRef = useRef<HTMLDivElement>(null);
 
@@ -112,7 +114,8 @@ export default function SearchPage() {
     
     const filters: AdvancedSearchFilters = {
       author: selectedAuthor,
-      category: selectedCategory
+      category: selectedCategory,
+      sortBy: sortBy
     };
 
     try {
@@ -124,6 +127,13 @@ export default function SearchPage() {
       setIsLoading(false);
     }
   };
+
+  // Re-trigger search when sorting changes
+  useEffect(() => {
+    if (results.length > 0) {
+      handlePerformSearch();
+    }
+  }, [sortBy]);
 
   // Extract unique tags from current results
   const availableTags = useMemo(() => {
@@ -189,6 +199,7 @@ export default function SearchPage() {
   const handleResetFilters = () => {
     setSelectedAuthor('all');
     setSelectedCategory('all');
+    setSortBy('relevance');
     setQuery('');
     setResults([]);
     setSelectedTags([]);
@@ -375,41 +386,61 @@ export default function SearchPage() {
               </TabsList>
             </div>
 
-            {/* Tag Filtering Section */}
-            {results.length > 0 && availableTags.length > 0 && (
-              <div className="max-w-4xl mx-auto mb-12 space-y-4 animate-in fade-in duration-500">
-                <div className="flex items-center justify-between px-2">
-                  <div className="flex items-center gap-2 text-muted-foreground">
-                    <Filter className="h-3.5 w-3.5" />
-                    <Text variant="label" className="text-[10px]">Filter by Topic Node</Text>
+            {/* Tag Filtering & Sorting Section */}
+            {results.length > 0 && (
+              <div className="max-w-4xl mx-auto mb-12 space-y-6 animate-in fade-in duration-500">
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-2">
+                  <div className="flex flex-col gap-2 w-full sm:w-auto">
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                      <Filter className="h-3.5 w-3.5" />
+                      <Text variant="label" className="text-[10px]">Filter by Topic Node</Text>
+                    </div>
+                    {selectedTags.length > 0 && (
+                      <button 
+                        onClick={() => setSelectedTags([])}
+                        className="text-[10px] font-bold text-primary hover:underline w-fit"
+                      >
+                        Clear Topics
+                      </button>
+                    )}
                   </div>
-                  {selectedTags.length > 0 && (
-                    <button 
-                      onClick={() => setSelectedTags([])}
-                      className="text-[10px] font-bold text-primary hover:underline"
-                    >
-                      Clear Topics
-                    </button>
-                  )}
+
+                  <div className="flex items-center gap-3 w-full sm:w-auto">
+                    <Text variant="label" className="text-[10px] text-muted-foreground shrink-0">Sort By</Text>
+                    <Select value={sortBy} onValueChange={(val) => setSortBy(val as SearchSortOption)}>
+                      <SelectTrigger className="h-10 w-full sm:w-[160px] bg-card/30 border-white/5 rounded-xl text-xs font-bold">
+                        <SortAsc className="h-3.5 w-3.5 mr-2 text-primary" />
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="relevance">Relevance</SelectItem>
+                        <SelectItem value="latest">Latest Discovery</SelectItem>
+                        <SelectItem value="popular">Popularity</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
-                <div className="flex flex-wrap gap-2">
-                  {availableTags.map(tag => (
-                    <Badge
-                      key={tag}
-                      variant={selectedTags.includes(tag) ? "default" : "outline"}
-                      className={cn(
-                        "cursor-pointer transition-all px-3 py-1 rounded-lg text-[10px] font-bold border-white/10",
-                        selectedTags.includes(tag) 
-                          ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20 scale-105" 
-                          : "bg-card/30 hover:bg-primary/10 hover:border-primary/30"
-                      )}
-                      onClick={() => toggleTag(tag)}
-                    >
-                      <TagIcon className="h-2.5 w-2.5 mr-1.5" />
-                      {tag}
-                    </Badge>
-                  ))}
-                </div>
+
+                {availableTags.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {availableTags.map(tag => (
+                      <Badge
+                        key={tag}
+                        variant={selectedTags.includes(tag) ? "default" : "outline"}
+                        className={cn(
+                          "cursor-pointer transition-all px-3 py-1 rounded-lg text-[10px] font-bold border-white/10",
+                          selectedTags.includes(tag) 
+                            ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20 scale-105" 
+                            : "bg-card/30 hover:bg-primary/10 hover:border-primary/30"
+                        )}
+                        onClick={() => toggleTag(tag)}
+                      >
+                        <TagIcon className="h-2.5 w-2.5 mr-1.5" />
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
 
@@ -476,6 +507,10 @@ export default function SearchPage() {
                             {result.author ? (
                               <div className="flex items-center gap-2 text-xs text-muted-foreground font-medium">
                                 <User className="h-3 w-3" /> {result.author}
+                              </div>
+                            ) : result.views ? (
+                              <div className="flex items-center gap-2 text-[10px] text-muted-foreground font-bold uppercase tracking-tighter">
+                                <TrendingUp className="h-3 w-3 text-emerald-500" /> {result.views.toLocaleString()} Views
                               </div>
                             ) : <div></div>}
                             
