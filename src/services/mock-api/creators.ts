@@ -29,6 +29,11 @@ const mockCreators: CreatorProfile[] = [
         { id: 'art-sub-1', title: 'The Future of Central Banking', slug: 'future-of-central-banking', category: 'Economics', publishedAt: '2024-03-09T00:00:00Z' },
       ],
     },
+    socialLinks: [
+      { platform: 'Twitter', url: 'https://twitter.com/marketmaven' },
+      { platform: 'LinkedIn', url: 'https://linkedin.com/in/marketmaven' },
+      { platform: 'Website', url: 'https://marketmaven.com' }
+    ],
   },
   {
     id: 'creator-2',
@@ -50,6 +55,10 @@ const mockCreators: CreatorProfile[] = [
     content: {
       recentArticles: [],
     },
+    socialLinks: [
+      { platform: 'LinkedIn', url: '#' },
+      { platform: 'Twitter', url: '#' }
+    ],
   },
   {
     id: 'creator-3',
@@ -71,6 +80,10 @@ const mockCreators: CreatorProfile[] = [
     content: {
       recentArticles: [],
     },
+    socialLinks: [
+      { platform: 'Twitter', url: '#' },
+      { platform: 'Github', url: '#' }
+    ],
   },
   {
     id: 'creator-4',
@@ -92,6 +105,10 @@ const mockCreators: CreatorProfile[] = [
     content: {
       recentArticles: [],
     },
+    socialLinks: [
+      { platform: 'Twitter', url: 'https://twitter.com/eleanorvance' },
+      { platform: 'LinkedIn', url: 'https://linkedin.com/in/eleanorvance' }
+    ],
   },
   {
     id: 'creator-5',
@@ -113,6 +130,9 @@ const mockCreators: CreatorProfile[] = [
     content: {
       recentArticles: [],
     },
+    socialLinks: [
+      { platform: 'Twitter', url: '#' }
+    ],
   }
 ];
 

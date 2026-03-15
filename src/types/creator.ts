@@ -21,6 +21,11 @@ export interface CreatorContent {
   }>;
 }
 
+export interface SocialLink {
+  platform: 'Twitter' | 'LinkedIn' | 'Website' | 'Github' | 'YouTube';
+  url: string;
+}
+
 export interface CreatorProfile {
   id: ID;
   username: string;
@@ -34,11 +39,7 @@ export interface CreatorProfile {
   stats: CreatorStats;
   content: CreatorContent;
   verified: boolean;
-  socialLinks?: {
-    twitter?: string;
-    linkedin?: string;
-    website?: string;
-  };
+  socialLinks: SocialLink[];
 }
 
 export interface CreatorContentItem {
