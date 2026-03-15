@@ -30,7 +30,8 @@ import {
   ShieldCheck,
   History,
   TrendingUp,
-  Briefcase
+  Briefcase,
+  DollarSign
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 import { useAppStore } from '@/lib/state/app-store';
@@ -110,8 +111,8 @@ const Sidebar = ({ className }: { className?: string }) => {
     { icon: LayoutDashboard, label: 'Expert Dashboard', href: '/creator/dashboard' },
     { icon: PlusSquare, label: 'Create Insight', href: '/creator/dashboard/create' },
     { icon: FileEdit, label: 'Intelligence Drafts', href: '/writer/drafts' },
+    { icon: BarChart3, label: 'Insights Analytics', href: '/creator/dashboard/analytics' },
     { icon: Bell, label: 'Notifications', href: '/writer/notifications', badge: unreadNotifications },
-    { icon: TrendingUp, label: 'Reach Analytics', href: '/admin/analytics' },
     { icon: UserCircle, label: 'Expert Profile', href: '/creators/profile' },
   ];
 

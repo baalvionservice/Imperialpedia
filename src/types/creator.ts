@@ -60,3 +60,27 @@ export interface CreatorDashboardSummary {
   totalViews: number;
   engagementRate: number;
 }
+
+export interface CreatorAnalytics {
+  contentId: string;
+  title: string;
+  views: number;
+  likes: number;
+  comments: number;
+  shares: number;
+  revenue: number;
+}
+
+export interface CreatorDashboardAnalytics {
+  totalRevenue: number;
+  totalViews: number;
+  totalEngagement: number;
+  avgRpm: number;
+  topContent: CreatorAnalytics[];
+  dailyMetrics: Array<{
+    date: string;
+    views: number;
+    revenue: number;
+    engagement: number;
+  }>;
+}

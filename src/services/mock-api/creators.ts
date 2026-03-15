@@ -1,4 +1,4 @@
-import { CreatorProfile, ApiResponse, CreatorContentItem, CreatorDashboardSummary } from '@/types';
+import { CreatorProfile, ApiResponse, CreatorContentItem, CreatorDashboardSummary, CreatorDashboardAnalytics } from '@/types';
 
 /**
  * @fileOverview Mock service for managing creator profiles, stats, and dashboard content.
@@ -124,6 +124,34 @@ export const getCreatorContent = async (creatorId: string): Promise<ApiResponse<
   await new Promise((resolve) => setTimeout(resolve, 400));
   return {
     data: mockCreatorDashboardContent,
+    status: 200
+  };
+};
+
+export const getCreatorAnalytics = async (creatorId: string): Promise<ApiResponse<CreatorDashboardAnalytics>> => {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  return {
+    data: {
+      totalRevenue: 12450.75,
+      totalViews: 1250000,
+      totalEngagement: 45800,
+      avgRpm: 9.96,
+      topContent: [
+        { contentId: 'c-1', title: 'Quantitative Easing vs Tightening: A 2026 Outlook', views: 45000, likes: 1200, comments: 240, shares: 350, revenue: 448.20 },
+        { contentId: 'c-2', title: 'The Future of Central Banking', views: 32000, likes: 850, comments: 120, shares: 180, revenue: 318.75 },
+        { contentId: 'c-3', title: 'Yield Curve Inversion Deep Dive', views: 28000, likes: 1100, comments: 310, shares: 420, revenue: 278.90 },
+        { contentId: 'c-4', title: 'DeFi Liquidity Pools Explained', views: 22000, likes: 640, comments: 95, shares: 110, revenue: 219.10 }
+      ],
+      dailyMetrics: [
+        { date: '2024-03-01', views: 12000, revenue: 119.50, engagement: 450 },
+        { date: '2024-03-02', views: 15400, revenue: 153.20, engagement: 580 },
+        { date: '2024-03-03', views: 11200, revenue: 111.40, engagement: 410 },
+        { date: '2024-03-04', views: 18900, revenue: 188.10, engagement: 720 },
+        { date: '2024-03-05', views: 22100, revenue: 220.30, engagement: 840 },
+        { date: '2024-03-06', views: 20500, revenue: 204.20, engagement: 790 },
+        { date: '2024-03-07', views: 25400, revenue: 252.80, engagement: 960 }
+      ]
+    },
     status: 200
   };
 };
