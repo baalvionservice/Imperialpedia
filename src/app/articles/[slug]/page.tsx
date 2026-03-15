@@ -8,6 +8,8 @@ import { Metadata } from 'next';
 import { Breadcrumbs } from '@/modules/seo-engine/components/Breadcrumbs';
 import { breadcrumbService } from '@/modules/seo-engine/services/breadcrumb-service';
 import { Article } from '@/modules/content-engine/types';
+import { JsonLd } from '@/modules/seo-engine/components/JsonLd';
+import { schemaService } from '@/modules/seo/services/schema-service';
 
 interface ArticleRouteProps {
   params: Promise<{ slug: string }>;
@@ -62,9 +64,11 @@ export default async function Page({ params }: ArticleRouteProps) {
   }
 
   const breadcrumbs = breadcrumbService.generateBreadcrumbForArticle(article);
+  const articleSchema = schemaService.generateArticleSchema(article);
 
   return (
     <div className="bg-background min-h-screen">
+      <JsonLd data={articleSchema} />
       <Container className="py-8">
         <Breadcrumbs breadcrumb={breadcrumbs} />
         <ArticlePage slug={slug} />

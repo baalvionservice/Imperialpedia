@@ -5,6 +5,8 @@ import { Container } from '@/design-system/layout/container';
 import { Text } from '@/design-system/typography/text';
 import { calculatorsService } from '@/services/data';
 import { seoService } from '@/modules/seo-engine/services/seo-service';
+import { JsonLd } from '@/modules/seo-engine/components/JsonLd';
+import { schemaService } from '@/modules/seo/services/schema-service';
 
 interface CalculatorPageProps {
   params: Promise<{ slug: string }>;
@@ -40,8 +42,11 @@ export default async function Page({ params }: CalculatorPageProps) {
     notFound();
   }
 
+  const toolSchema = schemaService.generateToolSchema(calculator);
+
   return (
     <main className="min-h-screen bg-background pt-20">
+      <JsonLd data={toolSchema} />
       <Container>
         <header className="mb-12 max-w-3xl">
           <Text variant="label" className="text-secondary mb-4">{calculator.category}</Text>

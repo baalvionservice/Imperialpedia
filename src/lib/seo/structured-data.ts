@@ -2,7 +2,7 @@ import { StructuredData } from '@/types';
 
 /**
  * Utility to generate JSON-LD structured data for various content types.
- * Supports Articles, FAQs, Breadcrumbs, and Organization schemas.
+ * Supports Articles, FAQs, Breadcrumbs, Organization, and SoftwareApplication schemas.
  */
 export const structuredData = {
   organization: (): StructuredData => ({
@@ -62,5 +62,19 @@ export const structuredData = {
         text: q.answer,
       },
     })),
+  }),
+
+  softwareApp: (data: { name: string; description: string; url: string; category?: string }): StructuredData => ({
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: data.name,
+    description: data.description,
+    applicationCategory: data.category || 'FinanceApplication',
+    operatingSystem: 'Web',
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD',
+    },
   }),
 };
