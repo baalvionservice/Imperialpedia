@@ -7,9 +7,10 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { financialMath } from '@/modules/calculators/utils/calculations';
 import { CalculatorResultModal } from '@/modules/calculators/components/CalculatorResultModal';
-import { Sunrise, RefreshCcw, ArrowLeft, Info, TrendingUp, Wallet } from 'lucide-react';
+import { Sunrise, RefreshCcw, ArrowLeft, Info, TrendingUp, Wallet, CheckCircle2 } from 'lucide-react';
 import Link from 'next/link';
 import { 
   AreaChart, 
@@ -35,11 +36,18 @@ export default function RetirementCalculatorPage() {
 
   const validate = () => {
     const newErrors: Record<string, string> = {};
-    if (!currentAge || Number(currentAge) <= 0) newErrors.currentAge = "Age must be > 0";
-    if (!retirementAge || Number(retirementAge) <= Number(currentAge)) newErrors.retirementAge = "Must be older than current age";
-    if (!savings || Number(savings) < 0) newErrors.savings = "Must be 0 or greater";
-    if (!monthly || Number(monthly) < 0) newErrors.monthly = "Must be 0 or greater";
-    if (!rate || Number(rate) < 0 || Number(rate) > 100) newErrors.rate = "Rate must be 0-100%";
+    const ca = Number(currentAge);
+    const ra = Number(retirementAge);
+    const s = Number(savings);
+    const m = Number(monthly);
+    const r = Number(rate);
+
+    if (!currentAge || ca <= 0) newErrors.currentAge = "Age must be > 0";
+    if (!retirementAge || ra <= ca) newErrors.retirementAge = "Must be older than current age";
+    if (!savings || s < 0) newErrors.savings = "Must be 0 or greater";
+    if (!monthly || m < 0) newErrors.monthly = "Must be 0 or greater";
+    if (!rate || r < 0 || r > 100) newErrors.rate = "Rate must be 0-100%";
+    
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -97,8 +105,8 @@ export default function RetirementCalculatorPage() {
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          <div className="lg:col-span-4">
-            <Card className="glass-card border-none shadow-2xl h-full">
+          <div className="lg:col-span-4 space-y-8">
+            <Card className="glass-card border-none shadow-2xl h-fit">
               <div className="bg-secondary/5 px-6 py-4 border-b border-white/5 flex items-center gap-2">
                 <Wallet className="h-4 w-4 text-secondary" />
                 <Text variant="caption" className="text-secondary font-bold uppercase tracking-widest">Financial Inputs</Text>
@@ -181,6 +189,19 @@ export default function RetirementCalculatorPage() {
                 </form>
               </CardContent>
             </Card>
+
+            {result && (
+              <Card className="glass-card border-none bg-secondary/5 border-secondary/20 animate-in fade-in slide-in-from-left-4 duration-500">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <Text variant="label" className="text-secondary">Corpus Analysis</Text>
+                    <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-500 border-none">Ready</Badge>
+                  </div>
+                  <div className="text-3xl font-bold mb-1">{formatCurrency(result)}</div>
+                  <Text variant="caption" className="text-muted-foreground">Wealth at age {retirementAge}.</Text>
+                </CardContent>
+              </Card>
+            )}
           </div>
 
           <div className="lg:col-span-8">
@@ -203,7 +224,7 @@ export default function RetirementCalculatorPage() {
                           </linearGradient>
                         </defs>
                         <CartesianGrid strokeDasharray="3 3" stroke="#ffffff05" vertical={false} />
-                        <XAxis dataKey="age" stroke="#888888" fontSize={10} tickLine={false} axisLine={false} />
+                        <XAxis dataKey="age" stroke="#888888" fontSize={10} tickLine={false} axisLine={false} label={{ value: 'Age', position: 'insideBottom', offset: -5, fontSize: 10 }} />
                         <YAxis stroke="#888888" fontSize={10} tickLine={false} axisLine={false} tickFormatter={(val) => `$${val / 1000}k`} />
                         <Tooltip contentStyle={{ backgroundColor: '#1C1822', border: '1px solid #ffffff10', borderRadius: '12px' }} formatter={(value: number) => [formatCurrency(value), 'Projected Corpus']} />
                         <Area type="monotone" dataKey="balance" stroke="#69B9FF" fillOpacity={1} fill="url(#colorCorpus)" strokeWidth={3} />
@@ -230,7 +251,7 @@ export default function RetirementCalculatorPage() {
             onReset={handleReset}
             title="Projected Retirement Corpus"
             result={formatCurrency(result)}
-            description={`Based on your inputs, you are on track to have a total nest egg of ${formatCurrency(result)} by age ${retirementAge}.`}
+            description={`Based on your inputs, you are on track to have a total nest egg of ${formatCurrency(result)} by age ${retirementAge}. This accounts for your current ${formatCurrency(Number(savings))} and monthly ${formatCurrency(Number(monthly))} contributions.`}
           />
         )}
       </Container>

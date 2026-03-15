@@ -7,9 +7,10 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { financialMath } from '@/modules/calculators/utils/calculations';
 import { CalculatorResultModal } from '@/modules/calculators/components/CalculatorResultModal';
-import { PieChart, RefreshCcw, ArrowLeft, Info, TrendingUp } from 'lucide-react';
+import { PieChart, RefreshCcw, ArrowLeft, Info, TrendingUp, CheckCircle2 } from 'lucide-react';
 import Link from 'next/link';
 import { 
   AreaChart, 
@@ -34,10 +35,16 @@ export default function InvestmentReturnPage() {
 
   const validate = () => {
     const newErrors: Record<string, string> = {};
-    if (!principal || Number(principal) < 0) newErrors.principal = "Must be 0 or greater";
-    if (!monthly || Number(monthly) < 0) newErrors.monthly = "Must be 0 or greater";
-    if (!rate || Number(rate) < 0 || Number(rate) > 100) newErrors.rate = "Rate must be 0-100%";
-    if (!years || Number(years) <= 0) newErrors.years = "Horizon must be greater than 0";
+    const p = Number(principal);
+    const m = Number(monthly);
+    const r = Number(rate);
+    const y = Number(years);
+
+    if (!principal || p < 0) newErrors.principal = "Must be 0 or greater";
+    if (!monthly || m < 0) newErrors.monthly = "Must be 0 or greater";
+    if (!rate || r < 0 || r > 100) newErrors.rate = "Rate must be 0-100%";
+    if (!years || y <= 0) newErrors.years = "Horizon must be greater than 0";
+    
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -93,8 +100,8 @@ export default function InvestmentReturnPage() {
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          <div className="lg:col-span-4">
-            <Card className="glass-card border-none shadow-2xl h-full">
+          <div className="lg:col-span-4 space-y-8">
+            <Card className="glass-card border-none shadow-2xl h-fit">
               <div className="bg-primary/5 px-6 py-4 border-b border-white/5 flex items-center gap-2">
                 <Info className="h-4 w-4 text-primary" />
                 <Text variant="caption" className="text-primary font-bold uppercase tracking-widest">Growth Inputs</Text>
@@ -165,6 +172,19 @@ export default function InvestmentReturnPage() {
                 </form>
               </CardContent>
             </Card>
+
+            {result && (
+              <Card className="glass-card border-none bg-primary/5 border-primary/20 animate-in fade-in slide-in-from-left-4 duration-500">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <Text variant="label" className="text-primary">Summary Growth</Text>
+                    <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+                  </div>
+                  <div className="text-3xl font-bold mb-1">{formatCurrency(result)}</div>
+                  <Text variant="caption" className="text-muted-foreground">Total estimated value in {years} years.</Text>
+                </CardContent>
+              </Card>
+            )}
           </div>
 
           <div className="lg:col-span-8">
@@ -187,7 +207,7 @@ export default function InvestmentReturnPage() {
                           </linearGradient>
                         </defs>
                         <CartesianGrid strokeDasharray="3 3" stroke="#ffffff05" vertical={false} />
-                        <XAxis dataKey="year" stroke="#888888" fontSize={10} tickLine={false} axisLine={false} />
+                        <XAxis dataKey="year" stroke="#888888" fontSize={10} tickLine={false} axisLine={false} label={{ value: 'Years', position: 'insideBottom', offset: -5, fontSize: 10 }} />
                         <YAxis stroke="#888888" fontSize={10} tickLine={false} axisLine={false} tickFormatter={(val) => `$${val / 1000}k`} />
                         <Tooltip contentStyle={{ backgroundColor: '#1C1822', border: '1px solid #ffffff10', borderRadius: '12px' }} formatter={(value: number) => [formatCurrency(value), 'Portfolio Balance']} />
                         <Area type="monotone" dataKey="balance" stroke="#8272F2" fillOpacity={1} fill="url(#colorBalance)" strokeWidth={3} />
@@ -214,7 +234,7 @@ export default function InvestmentReturnPage() {
             onReset={handleReset}
             title="Estimated Future Value"
             result={formatCurrency(result)}
-            description={`Starting with ${formatCurrency(Number(principal))} and contributing ${formatCurrency(Number(monthly))} monthly, your portfolio is projected to reach ${formatCurrency(result)}.`}
+            description={`Starting with ${formatCurrency(Number(principal))} and contributing ${formatCurrency(Number(monthly))} monthly, your portfolio is projected to reach ${formatCurrency(result)} in ${years} years.`}
           />
         )}
       </Container>

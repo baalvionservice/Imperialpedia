@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { financialMath } from '@/modules/calculators/utils/calculations';
 import { CalculatorResultModal } from '@/modules/calculators/components/CalculatorResultModal';
 import { 
@@ -15,7 +16,9 @@ import {
   ArrowLeft, 
   Plus, 
   Trash2, 
-  PieChart as PieChartIcon, 
+  PieChart as PieChartIcon,
+  TrendingUp,
+  CheckCircle2
 } from 'lucide-react';
 import Link from 'next/link';
 import { 
@@ -63,9 +66,12 @@ export default function PortfolioCalculatorPage() {
     let isValid = true;
     const newAssets = assets.map(asset => {
       let error = "";
+      const inv = Number(asset.investment);
+      const ret = Number(asset.returnRate);
+
       if (!asset.name) error = "Name required";
-      if (Number(asset.investment) < 0) error = "Invalid investment";
-      if (Number(asset.returnRate) < 0 || Number(asset.returnRate) > 100) error = "Invalid return (0-100%)";
+      if (isNaN(inv) || inv < 0) error = "Invalid investment";
+      if (isNaN(ret) || ret < 0 || ret > 100) error = "Invalid return (0-100%)";
       
       if (error) isValid = false;
       return { ...asset, error };
@@ -126,7 +132,7 @@ export default function PortfolioCalculatorPage() {
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          <div className="lg:col-span-7">
+          <div className="lg:col-span-7 space-y-8">
             <Card className="glass-card border-none shadow-2xl">
               <CardHeader className="bg-card/30 border-b border-white/5 flex flex-row items-center justify-between">
                 <div>
@@ -200,6 +206,31 @@ export default function PortfolioCalculatorPage() {
                 </form>
               </CardContent>
             </Card>
+
+            {results && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <Card className="glass-card border-none bg-emerald-500/5 border-emerald-500/20">
+                  <CardContent className="p-6">
+                    <div className="flex items-center justify-between mb-2">
+                      <Text variant="label" className="text-emerald-500">Aggregate Value</Text>
+                      <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+                    </div>
+                    <div className="text-3xl font-bold">{formatCurrency(results.totalValue)}</div>
+                    <Text variant="caption" className="text-muted-foreground">Combined asset maturity.</Text>
+                  </CardContent>
+                </Card>
+                <Card className="glass-card border-none">
+                  <CardContent className="p-6">
+                    <div className="flex items-center justify-between mb-2">
+                      <Text variant="label" className="text-primary">Weighted Return</Text>
+                      <TrendingUp className="h-4 w-4 text-primary" />
+                    </div>
+                    <div className="text-3xl font-bold">{results.weightedReturn.toFixed(2)}%</div>
+                    <Text variant="caption" className="text-muted-foreground">Portfolio-wide ROI velocity.</Text>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
           </div>
 
           <div className="lg:col-span-5 space-y-8">
@@ -210,7 +241,7 @@ export default function PortfolioCalculatorPage() {
                     <PieChartIcon className="h-4 w-4 text-primary" /> Allocation Distribution
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="p-6 h-[300px]">
+                <CardContent className="p-6 h-[350px]">
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                       <Pie
@@ -252,7 +283,7 @@ export default function PortfolioCalculatorPage() {
             onReset={handleReset}
             title="Projected Portfolio Value"
             result={formatCurrency(results.totalValue)}
-            description={`Your diversified portfolio is projected to grow by ${formatCurrency(results.totalProfit)} (+${results.weightedReturn.toFixed(2)}%) based on your asset allocation.`}
+            description={`Your diversified portfolio is projected to grow by ${formatCurrency(results.totalProfit)} (+${results.weightedReturn.toFixed(2)}%) based on your asset allocation. The Stocks and Real Estate nodes are providing the primary growth momentum.`}
           />
         )}
       </Container>
