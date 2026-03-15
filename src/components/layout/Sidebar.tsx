@@ -1,6 +1,6 @@
-'use client';
+ 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
@@ -34,7 +34,8 @@ import {
   Megaphone,
   Activity,
   Database,
-  RotateCcw
+  RotateCcw,
+  ShieldEllipsis
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 import { useAppStore } from '@/lib/state/app-store';
@@ -103,6 +104,7 @@ const Sidebar = ({ className }: { className?: string }) => {
     { icon: BarChart3, label: 'System Analytics', href: '/admin/analytics' },
     { icon: Activity, label: 'System Health', href: '/admin/health' },
     { icon: ShieldCheck, label: 'Audit Trail', href: '/admin/audit-logs' },
+    { icon: ShieldEllipsis, label: 'Access Logs', href: '/admin/access-logs' },
     { icon: ShieldAlert, label: 'pSEO Health', href: '/admin/seo-audit' },
     { icon: RotateCcw, label: 'Backup & Restore', href: '/admin/backup' },
     { icon: Settings, label: 'System Settings', href: '/admin/settings' },

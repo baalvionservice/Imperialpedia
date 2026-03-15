@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup } from '@/types/system';
+import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog } from '@/types/system';
 
 /**
  * @fileOverview Mock service for managing global platform configuration and system notifications.
@@ -48,6 +48,15 @@ const mockBackups: Backup[] = [
   { id: 'bak-2', timestamp: '2024-03-11T04:00:00Z', status: 'completed', size: '1.38GB', type: 'automated', checksum: 'sha256:4a1c...' },
   { id: 'bak-3', timestamp: '2024-03-10T15:30:00Z', status: 'completed', size: '1.35GB', type: 'manual', checksum: 'sha256:9e0b...' },
   { id: 'bak-4', timestamp: '2024-03-09T04:00:00Z', status: 'failed', size: '0KB', type: 'automated', checksum: 'N/A' },
+];
+
+const mockAccessLogs: AccessLog[] = [
+  { id: 'acc-1', user: 'eleanor@imperialpedia.com', ip: '192.168.1.42', device: 'Desktop (macOS / Chrome)', timestamp: '2024-03-12T10:30:00Z', status: 'success' },
+  { id: 'acc-2', user: 'maven@imperialpedia.com', ip: '10.0.0.15', device: 'Mobile (iOS / Safari)', timestamp: '2024-03-12T09:15:00Z', status: 'success' },
+  { id: 'acc-3', user: 'unknown@hacker.net', ip: '45.12.88.2', device: 'Linux / Firefox', timestamp: '2024-03-12T08:45:00Z', status: 'failed' },
+  { id: 'acc-4', user: 'editor@imperialpedia.com', ip: '172.16.0.5', device: 'Tablet (iPadOS / Safari)', timestamp: '2024-03-11T16:20:00Z', status: 'success' },
+  { id: 'acc-5', user: 'wealth@imperialpedia.com', ip: '192.168.1.10', device: 'Desktop (Windows / Edge)', timestamp: '2024-03-11T14:10:00Z', status: 'success' },
+  { id: 'acc-6', user: 'admin@imperialpedia.com', ip: '10.0.0.1', device: 'Desktop (macOS / Chrome)', timestamp: '2024-03-11T12:00:00Z', status: 'failed' },
 ];
 
 export const getSystemSettings = async (): Promise<ApiResponse<SystemSettings>> => {
@@ -124,7 +133,7 @@ export const getBackups = async (): Promise<ApiResponse<Backup[]>> => {
   await new Promise((resolve) => setTimeout(resolve, 400));
   return {
     data: mockBackups,
-    status: 200
+    status: 200,
   };
 };
 
@@ -151,5 +160,13 @@ export const restoreBackup = async (id: string): Promise<ApiResponse<void>> => {
     data: undefined,
     status: 200,
     message: `Platform state successfully reverted to snapshot ${id}.`
+  };
+};
+
+export const getAccessLogs = async (): Promise<ApiResponse<AccessLog[]>> => {
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  return {
+    data: mockAccessLogs,
+    status: 200,
   };
 };

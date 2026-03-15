@@ -73,3 +73,12 @@ export interface Backup {
   type: 'automated' | 'manual';
   checksum: string;
 }
+
+export interface AccessLog {
+  id: string;
+  user: string;
+  ip: string;
+  device: string;
+  timestamp: string;
+  status: 'success' | 'failed';
+}
