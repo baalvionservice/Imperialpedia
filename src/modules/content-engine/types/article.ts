@@ -91,12 +91,11 @@ export interface ReviewAction {
 
 export interface AuditLog {
   id: string;
-  userId: string;
-  userName: string;
-  action: string;
-  target: string;
   timestamp: string;
-  type: 'content' | 'user' | 'system';
+  action: string;
+  actor: string;
+  details: string;
+  type: 'content' | 'user' | 'system' | 'security';
 }
 
 export interface Writer {

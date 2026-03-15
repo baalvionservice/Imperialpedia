@@ -98,7 +98,7 @@ const Sidebar = ({ className }: { className?: string }) => {
     { icon: Layers, label: 'Categories', href: '/admin/categories' },
     { icon: Tags, label: 'Topics & Tags', href: '/admin/tags' },
     { icon: BarChart3, label: 'System Analytics', href: '/admin/analytics' },
-    { icon: ShieldCheck, label: 'Audit Trail', href: '/admin/audit' },
+    { icon: ShieldCheck, label: 'Audit Trail', href: '/admin/audit-logs' },
     { icon: ShieldAlert, label: 'pSEO Health', href: '/admin/seo-audit' },
     { icon: Settings, label: 'System Settings', href: '/admin/settings' },
   ];
