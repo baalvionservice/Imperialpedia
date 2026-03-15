@@ -121,7 +121,7 @@ const Sidebar = ({ className }: { className?: string }) => {
     { icon: ShieldAlert, label: 'Moderation Audit', href: '/admin/analytics/moderation' },
     { icon: Activity, label: 'System Health', href: '/admin/control/health' },
     { icon: Bug, label: 'Error Logs', href: '/admin/errors' },
-    { icon: ShieldCheck, label: 'Audit Trail', href: '/admin/audit-logs' },
+    { icon: ShieldCheck, label: 'Audit Trail', href: '/admin/control/audit-trail' },
     { icon: FileCode, label: 'Admin Activity Log', href: '/admin/control/activity-log' },
     { icon: ShieldEllipsis, label: 'Access Logs', href: '/admin/access-logs' },
     { icon: ShieldAlert, label: 'pSEO Health', href: '/admin/seo-audit' },

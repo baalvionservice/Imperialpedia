@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog, SecuritySettings, GlobalNotificationSettings } from '@/types/system';
+import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog, SecuritySettings, GlobalNotificationSettings, AuditTrailEntry } from '@/types/system';
 
 /**
  * @fileOverview Mock service for managing global platform configuration and system notifications.
@@ -112,6 +112,15 @@ const mockAdminActivityLogs: AdminActivityLog[] = [
   { id: 'al-4', admin: 'Expert Editor', action: 'Content Purge', target: 'Article Node: Yield Scam 101', date: '2024-03-12T10:00:00Z', status: 'Success' },
   { id: 'al-5', admin: 'Platform Lead', action: 'Global Alert Dispatch', target: 'System Notification Hub', date: '2024-03-12T09:30:00Z', status: 'Success' },
   { id: 'al-6', admin: 'Eleanor Vance', action: 'Expert Verification', target: 'Sarah Crypto (u-6)', date: '2024-03-11T16:20:00Z', status: 'Success' },
+];
+
+const mockAuditTrailEntries: AuditTrailEntry[] = [
+  { id: 'at-1', event: 'Global SEO Re-index', user: 'Eleanor Vance', module: 'pSEO Engine', date: '2024-03-12T14:30:00Z', status: 'Success' },
+  { id: 'at-2', event: 'User Permission Shift', user: 'Platform Lead', module: 'Auth Kernel', date: '2024-03-12T13:15:00Z', status: 'Success' },
+  { id: 'at-3', event: 'Backup Restoration Attempt', user: 'Eleanor Vance', module: 'Resilience Hub', date: '2024-03-12T11:45:00Z', status: 'Failed' },
+  { id: 'at-4', event: 'High-Impact Content Purge', user: 'Expert Editor', module: 'Moderation', date: '2024-03-12T10:00:00Z', status: 'Success' },
+  { id: 'at-5', event: 'API Gateway Scaling', user: 'System Bot', module: 'Infrastructure', date: '2024-03-12T09:30:00Z', status: 'Success' },
+  { id: 'at-6', event: 'Financial Tool Hot-fix', user: 'Platform Dev', module: 'Calculators', date: '2024-03-11T16:20:00Z', status: 'Success' },
 ];
 
 export const getPlatformSettings = async (): Promise<ApiResponse<PlatformSettings>> => {
@@ -319,6 +328,14 @@ export const getAdminLogs = async (): Promise<ApiResponse<AdminActivityLog[]>> =
   await new Promise((resolve) => setTimeout(resolve, 400));
   return {
     data: mockAdminActivityLogs,
+    status: 200,
+  };
+};
+
+export const getAuditTrail = async (): Promise<ApiResponse<AuditTrailEntry[]>> => {
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  return {
+    data: mockAuditTrailEntries,
     status: 200,
   };
 };

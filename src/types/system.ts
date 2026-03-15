@@ -155,6 +155,18 @@ export interface AdminActivityLog {
 }
 
 /**
+ * Interface for the Platform Audit Trail
+ */
+export interface AuditTrailEntry {
+  id: string;
+  event: string;
+  user: string;
+  module: string;
+  date: string;
+  status: 'Success' | 'Failed';
+}
+
+/**
  * Interface for the Role Control Matrix
  */
 export interface RoleControl {
