@@ -190,3 +190,16 @@ export const getSearchSuggestions = async (query: string): Promise<ApiResponse<S
     status: 200
   };
 };
+
+export const getPopularContent = async (): Promise<ApiResponse<SearchResult[]>> => {
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  // Sort by views and take top 6
+  const popular = [...mockSearchData]
+    .sort((a, b) => (b.views || 0) - (a.views || 0))
+    .slice(0, 6);
+    
+  return {
+    data: popular,
+    status: 200
+  };
+};

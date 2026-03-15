@@ -31,5 +31,18 @@ export const searchService = {
         error: appError.message,
       };
     }
+  },
+
+  async getPopularContent(): Promise<ApiResponse<SearchResult[]>> {
+    try {
+      return await mockApi.getPopularContent();
+    } catch (error) {
+      const appError = errorHandler.handleError(error);
+      return {
+        data: [],
+        status: appError.statusCode,
+        error: appError.message,
+      };
+    }
   }
 };

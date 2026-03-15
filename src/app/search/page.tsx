@@ -22,6 +22,13 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 import { 
   Search as SearchIcon, 
   Loader2, 
@@ -40,7 +47,8 @@ import {
   ChevronDown,
   ChevronUp,
   RotateCcw,
-  SortAsc
+  SortAsc,
+  Flame
 } from 'lucide-react';
 import { SearchResult, SearchResultType, SearchSuggestion, AdvancedSearchFilters, SearchSortOption } from '@/types';
 import { searchService } from '@/services/data/search-service';
@@ -50,12 +58,15 @@ import { cn } from '@/lib/utils';
 /**
  * Global search page for the Imperialpedia platform.
  * Supports cross-entity discovery with real-time auto-suggestions, category filtering, tag chips, and sorting.
+ * Now includes a trending highlights section for popular discovery.
  */
 export default function SearchPage() {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<SearchResult[]>([]);
+  const [popularContent, setPopularContent] = useState<SearchResult[]>([]);
   const [suggestions, setSuggestions] = useState<SearchSuggestion[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isPopularLoading, setIsPopularLoading] = useState(true);
   const [isSuggestionsLoading, setIsSuggestionsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<string>('all');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
@@ -68,6 +79,22 @@ export default function SearchPage() {
   const [sortBy, setSortBy] = useState<SearchSortOption>('relevance');
 
   const searchContainerRef = useRef<HTMLDivElement>(null);
+
+  // Fetch Popular Content on Mount
+  useEffect(() => {
+    async function loadPopular() {
+      setIsPopularLoading(true);
+      try {
+        const response = await searchService.getPopularContent();
+        setPopularContent(response.data);
+      } catch (e) {
+        console.error('Popular content fetch failed', e);
+      } finally {
+        setIsPopularLoading(false);
+      }
+    }
+    loadPopular();
+  }, []);
 
   // Handle clicking outside to close suggestions
   useEffect(() => {
@@ -367,6 +394,63 @@ export default function SearchPage() {
             </Collapsible>
           </div>
 
+          {/* Popular Content Discovery (Hot Nodes) */}
+          {!query && results.length === 0 && (
+            <div className="mb-16 animate-in fade-in slide-in-from-bottom-2 duration-700">
+              <div className="flex items-center gap-2 mb-6 px-2">
+                <Flame className="h-5 w-5 text-amber-500" />
+                <Text variant="h4" className="font-bold">Trending Intelligence</Text>
+              </div>
+              
+              <Carousel className="w-full">
+                <CarouselContent className="-ml-4">
+                  {isPopularLoading ? (
+                    [1, 2, 3].map(i => (
+                      <CarouselItem key={i} className="pl-4 basis-full md:basis-1/2 lg:basis-1/3">
+                        <Skeleton className="h-48 w-full rounded-2xl" />
+                      </CarouselItem>
+                    ))
+                  ) : popularContent.map((item) => (
+                    <CarouselItem key={item.id} className="pl-4 basis-full md:basis-1/2 lg:basis-1/3">
+                      <Link href={item.route}>
+                        <Card className="glass-card h-full transition-all hover:border-primary/40 group relative overflow-hidden">
+                          <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                            {getResultIcon(item.type)}
+                          </div>
+                          <CardHeader className="p-6 pb-2">
+                            <div className="flex justify-between items-start mb-2">
+                              {getResultBadge(item.type)}
+                              {item.views && (
+                                <Text variant="label" className="text-[8px] text-emerald-500 font-bold">
+                                  {(item.views / 1000).toFixed(1)}k Views
+                                </Text>
+                              )}
+                            </div>
+                            <CardTitle className="text-lg line-clamp-1 group-hover:text-primary transition-colors">
+                              {item.title}
+                            </CardTitle>
+                          </CardHeader>
+                          <CardContent className="p-6 pt-2">
+                            <CardDescription className="text-xs line-clamp-2 text-muted-foreground leading-relaxed">
+                              {item.snippet}
+                            </CardDescription>
+                            <div className="mt-4 flex items-center text-[10px] font-bold text-primary opacity-0 group-hover:opacity-100 transition-all translate-x-[-4px] group-hover:translate-x-0">
+                              View Intelligence <ArrowRight className="ml-1 h-3 w-3" />
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </Link>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <div className="hidden md:block">
+                  <CarouselPrevious className="absolute -left-12 top-1/2" />
+                  <CarouselNext className="absolute -right-12 top-1/2" />
+                </div>
+              </Carousel>
+            </div>
+          )}
+
           <Tabs value={activeTab} onValueChange={(val) => { setActiveTab(val); setSelectedTags([]); }} className="w-full">
             <div className="flex justify-center mb-8">
               <TabsList className="bg-card/30 border border-white/5 p-1 h-12 rounded-xl overflow-x-auto no-scrollbar justify-start sm:justify-center w-full sm:w-auto">
@@ -445,14 +529,16 @@ export default function SearchPage() {
             )}
 
             <TabsContent value={activeTab} className="animate-in fade-in duration-500">
-              <div className="mb-6 flex items-center justify-between px-2">
-                <Text variant="bodySmall" className="text-muted-foreground font-bold italic">
-                  Discovery Engine: <span className="text-foreground">{filteredResults.length} intelligence nodes</span> localized
-                  {(selectedAuthor !== 'all' || selectedCategory !== 'all') && (
-                    <span className="text-primary ml-2"> (Filtered)</span>
-                  )}
-                </Text>
-              </div>
+              {results.length > 0 && (
+                <div className="mb-6 flex items-center justify-between px-2">
+                  <Text variant="bodySmall" className="text-muted-foreground font-bold italic">
+                    Discovery Engine: <span className="text-foreground">{filteredResults.length} intelligence nodes</span> localized
+                    {(selectedAuthor !== 'all' || selectedCategory !== 'all') && (
+                      <span className="text-primary ml-2"> (Filtered)</span>
+                    )}
+                  </Text>
+                </div>
+              )}
 
               {isLoading ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -536,7 +622,7 @@ export default function SearchPage() {
                     Reset all parameters
                   </Button>
                 </div>
-              ) : (
+              ) : !query && (
                 <div className="py-32 text-center opacity-30">
                   <div className="w-20 h-20 bg-muted/20 rounded-full flex items-center justify-center mx-auto mb-6">
                     <SearchIcon className="h-10 w-10 text-muted-foreground" />
