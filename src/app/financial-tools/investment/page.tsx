@@ -9,9 +9,14 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
+import { 
+  Tooltip, 
+  TooltipContent, 
+  TooltipTrigger 
+} from '@/components/ui/tooltip';
 import { calculatorsService } from '@/services/data';
 import { CalculatorResultModal } from '@/modules/calculators/components/CalculatorResultModal';
-import { PieChart as PieIcon, RefreshCcw, ArrowLeft, Info, TrendingUp, CheckCircle2, Loader2 } from 'lucide-react';
+import { PieChart as PieIcon, RefreshCcw, ArrowLeft, Info, TrendingUp, CheckCircle2, Loader2, HelpCircle } from 'lucide-react';
 import Link from 'next/link';
 import { useCalculatorStore } from '@/lib/state/calculator-store';
 import { 
@@ -20,7 +25,7 @@ import {
   XAxis, 
   YAxis, 
   CartesianGrid, 
-  Tooltip, 
+  Tooltip as RechartsTooltip, 
   ResponsiveContainer 
 } from 'recharts';
 
@@ -115,7 +120,17 @@ export default function InvestmentReturnPage() {
               <CardContent className="p-6">
                 <form onSubmit={handleCalculate} className="space-y-6">
                   <div className="space-y-2">
-                    <Label htmlFor="principal" className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Initial Principal ($)</Label>
+                    <div className="flex items-center gap-1.5">
+                      <Label htmlFor="principal" className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Initial Principal ($)</Label>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <HelpCircle className="h-3.5 w-3.5 text-muted-foreground cursor-help" />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p className="w-64">The initial sum of money you are starting with in your investment account.</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
                     <Input 
                       id="principal" 
                       type="number" 
@@ -129,7 +144,17 @@ export default function InvestmentReturnPage() {
                   </div>
                   
                   <div className="space-y-2">
-                    <Label htmlFor="monthly" className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Monthly Contribution ($)</Label>
+                    <div className="flex items-center gap-1.5">
+                      <Label htmlFor="monthly" className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Monthly Contribution ($)</Label>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <HelpCircle className="h-3.5 w-3.5 text-muted-foreground cursor-help" />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p className="w-64">The amount you plan to add to your investment every month (Dollar-Cost Averaging).</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
                     <Input 
                       id="monthly" 
                       type="number" 
@@ -143,7 +168,17 @@ export default function InvestmentReturnPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="rate" className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Expected Annual Return (%)</Label>
+                    <div className="flex items-center gap-1.5">
+                      <Label htmlFor="rate" className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Expected Annual Return (%)</Label>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <HelpCircle className="h-3.5 w-3.5 text-muted-foreground cursor-help" />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p className="w-64">Your targeted or expected average yearly growth rate (e.g., S&P 500 historic average is ~10%).</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
                     <Input 
                       id="rate" 
                       type="number" 
@@ -158,7 +193,17 @@ export default function InvestmentReturnPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="years" className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Time Horizon (Years)</Label>
+                    <div className="flex items-center gap-1.5">
+                      <Label htmlFor="years" className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Time Horizon (Years)</Label>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <HelpCircle className="h-3.5 w-3.5 text-muted-foreground cursor-help" />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p className="w-64">The total number of years you plan to keep this money invested.</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
                     <Input 
                       id="years" 
                       type="number" 
@@ -231,7 +276,7 @@ export default function InvestmentReturnPage() {
                         <CartesianGrid strokeDasharray="3 3" stroke="#ffffff05" vertical={false} />
                         <XAxis dataKey="year" stroke="#888888" fontSize={10} tickLine={false} axisLine={false} label={{ value: 'Years', position: 'insideBottom', offset: -5, fontSize: 10 }} />
                         <YAxis stroke="#888888" fontSize={10} tickLine={false} axisLine={false} tickFormatter={(val) => `$${val / 1000}k`} />
-                        <Tooltip contentStyle={{ backgroundColor: '#1C1822', border: '1px solid #ffffff10', borderRadius: '12px' }} formatter={(value: number) => [formatCurrency(value), 'Capital Maturity']} />
+                        <RechartsTooltip contentStyle={{ backgroundColor: '#1C1822', border: '1px solid #ffffff10', borderRadius: '12px' }} formatter={(value: number) => [formatCurrency(value), 'Capital Maturity']} />
                         <Area type="monotone" dataKey="balance" stroke="#8272F2" fillOpacity={1} fill="url(#colorBalance)" strokeWidth={3} />
                       </AreaChart>
                     </ResponsiveContainer>

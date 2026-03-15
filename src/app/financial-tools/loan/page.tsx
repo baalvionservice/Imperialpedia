@@ -9,9 +9,14 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
+import { 
+  Tooltip, 
+  TooltipContent, 
+  TooltipTrigger 
+} from '@/components/ui/tooltip';
 import { calculatorsService } from '@/services/data';
 import { CalculatorResultModal } from '@/modules/calculators/components/CalculatorResultModal';
-import { RefreshCcw, ArrowLeft, Info, Landmark, CheckCircle2, Loader2 } from 'lucide-react';
+import { RefreshCcw, ArrowLeft, Info, Landmark, CheckCircle2, Loader2, HelpCircle } from 'lucide-react';
 import Link from 'next/link';
 import { useCalculatorStore } from '@/lib/state/calculator-store';
 
@@ -106,7 +111,17 @@ export default function LoanCalculatorPage() {
               <form onSubmit={handleCalculate} className="space-y-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div className="space-y-3">
-                    <Label htmlFor="principal" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Loan Amount ($)</Label>
+                    <div className="flex items-center gap-1.5">
+                      <Label htmlFor="principal" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Loan Amount ($)</Label>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <HelpCircle className="h-3.5 w-3.5 text-muted-foreground cursor-help" />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p className="w-64">The total amount of money you are borrowing (Principal).</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
                     <Input 
                       id="principal" 
                       type="number" 
@@ -120,7 +135,17 @@ export default function LoanCalculatorPage() {
                   </div>
                   
                   <div className="space-y-3">
-                    <Label htmlFor="rate" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Annual Interest Rate (%)</Label>
+                    <div className="flex items-center gap-1.5">
+                      <Label htmlFor="rate" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Annual Interest Rate (%)</Label>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <HelpCircle className="h-3.5 w-3.5 text-muted-foreground cursor-help" />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p className="w-64">The annual percentage rate (APR) charged by the lender for the loan.</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
                     <Input 
                       id="rate" 
                       type="number" 
@@ -135,7 +160,17 @@ export default function LoanCalculatorPage() {
                   </div>
 
                   <div className="space-y-3">
-                    <Label htmlFor="years" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Loan Tenure (Years)</Label>
+                    <div className="flex items-center gap-1.5">
+                      <Label htmlFor="years" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Loan Tenure (Years)</Label>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <HelpCircle className="h-3.5 w-3.5 text-muted-foreground cursor-help" />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p className="w-64">The total duration of the loan agreement, usually expressed in years (e.g., 30 for a standard mortgage).</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
                     <Input 
                       id="years" 
                       type="number" 

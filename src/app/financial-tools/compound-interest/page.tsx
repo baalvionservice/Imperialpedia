@@ -16,9 +16,14 @@ import {
   SelectTrigger, 
   SelectValue 
 } from '@/components/ui/select';
+import { 
+  Tooltip, 
+  TooltipContent, 
+  TooltipTrigger 
+} from '@/components/ui/tooltip';
 import { calculatorsService } from '@/services/data';
 import { CalculatorResultModal } from '@/modules/calculators/components/CalculatorResultModal';
-import { TrendingUp, RefreshCcw, ArrowLeft, Info, CheckCircle2, Loader2 } from 'lucide-react';
+import { TrendingUp, RefreshCcw, ArrowLeft, Info, CheckCircle2, Loader2, HelpCircle } from 'lucide-react';
 import Link from 'next/link';
 import { useCalculatorStore } from '@/lib/state/calculator-store';
 
@@ -106,7 +111,17 @@ export default function CompoundInterestPage() {
               <form onSubmit={handleCalculate} className="space-y-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div className="space-y-3">
-                    <Label htmlFor="principal" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Initial Principal ($)</Label>
+                    <div className="flex items-center gap-1.5">
+                      <Label htmlFor="principal" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Initial Principal ($)</Label>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <HelpCircle className="h-3.5 w-3.5 text-muted-foreground cursor-help" />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p className="w-64">The starting amount of capital you are investing or saving before interest begins to accrue.</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
                     <Input 
                       id="principal" 
                       type="number" 
@@ -120,7 +135,17 @@ export default function CompoundInterestPage() {
                   </div>
                   
                   <div className="space-y-3">
-                    <Label htmlFor="rate" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Annual Interest Rate (%)</Label>
+                    <div className="flex items-center gap-1.5">
+                      <Label htmlFor="rate" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Annual Interest Rate (%)</Label>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <HelpCircle className="h-3.5 w-3.5 text-muted-foreground cursor-help" />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p className="w-64">The nominal annual growth rate. This should be expressed as a percentage (e.g., 7.5 for 7.5%).</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
                     <Input 
                       id="rate" 
                       type="number" 
@@ -135,7 +160,17 @@ export default function CompoundInterestPage() {
                   </div>
 
                   <div className="space-y-3">
-                    <Label htmlFor="years" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Time Horizon (Years)</Label>
+                    <div className="flex items-center gap-1.5">
+                      <Label htmlFor="years" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Time Horizon (Years)</Label>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <HelpCircle className="h-3.5 w-3.5 text-muted-foreground cursor-help" />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p className="w-64">The duration in years that your investment will be allowed to grow.</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
                     <Input 
                       id="years" 
                       type="number" 
@@ -149,7 +184,17 @@ export default function CompoundInterestPage() {
                   </div>
 
                   <div className="space-y-3">
-                    <Label htmlFor="frequency" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Compounding Frequency</Label>
+                    <div className="flex items-center gap-1.5">
+                      <Label htmlFor="frequency" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Compounding Frequency</Label>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <HelpCircle className="h-3.5 w-3.5 text-muted-foreground cursor-help" />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p className="w-64">Determines how often the accumulated interest is added back into the principal to earn more interest.</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
                     <Select value={frequency} onValueChange={(val) => updateCompound({ frequency: val })} disabled={calculating}>
                       <SelectTrigger className="h-12 bg-background/50 rounded-xl border-white/10">
                         <SelectValue placeholder="Select frequency" />

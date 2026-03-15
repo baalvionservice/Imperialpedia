@@ -9,9 +9,14 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
+import { 
+  Tooltip, 
+  TooltipContent, 
+  TooltipTrigger 
+} from '@/components/ui/tooltip';
 import { calculatorsService } from '@/services/data';
 import { CalculatorResultModal } from '@/modules/calculators/components/CalculatorResultModal';
-import { Sunrise, RefreshCcw, ArrowLeft, Info, TrendingUp, Wallet, CheckCircle2, Loader2 } from 'lucide-react';
+import { Sunrise, RefreshCcw, ArrowLeft, Info, TrendingUp, Wallet, CheckCircle2, Loader2, HelpCircle } from 'lucide-react';
 import Link from 'next/link';
 import { useCalculatorStore } from '@/lib/state/calculator-store';
 import { 
@@ -20,7 +25,7 @@ import {
   XAxis, 
   YAxis, 
   CartesianGrid, 
-  Tooltip, 
+  Tooltip as RechartsTooltip, 
   ResponsiveContainer 
 } from 'recharts';
 
@@ -119,7 +124,17 @@ export default function RetirementCalculatorPage() {
                 <form onSubmit={handleCalculate} className="space-y-6">
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="currentAge" className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Current Age</Label>
+                      <div className="flex items-center gap-1.5">
+                        <Label htmlFor="currentAge" className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Current Age</Label>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <HelpCircle className="h-3 w-3 text-muted-foreground cursor-help" />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p className="w-48 text-[10px]">Your current chronological age today.</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </div>
                       <Input 
                         id="currentAge" 
                         type="number" 
@@ -131,7 +146,17 @@ export default function RetirementCalculatorPage() {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="retirementAge" className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Target Age</Label>
+                      <div className="flex items-center gap-1.5">
+                        <Label htmlFor="retirementAge" className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Target Age</Label>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <HelpCircle className="h-3 w-3 text-muted-foreground cursor-help" />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p className="w-48 text-[10px]">The age you aim to achieve financial independence or retirement.</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </div>
                       <Input 
                         id="retirementAge" 
                         type="number" 
@@ -145,7 +170,17 @@ export default function RetirementCalculatorPage() {
                   </div>
                   
                   <div className="space-y-2">
-                    <Label htmlFor="savings" className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Current Savings ($)</Label>
+                    <div className="flex items-center gap-1.5">
+                      <Label htmlFor="savings" className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Current Savings ($)</Label>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <HelpCircle className="h-3 w-3 text-muted-foreground cursor-help" />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p className="w-48 text-[10px]">Total capital currently held in retirement-specific vehicles (401k, IRA, etc.).</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
                     <Input 
                       id="savings" 
                       type="number" 
@@ -159,7 +194,17 @@ export default function RetirementCalculatorPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="monthly" className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Monthly Contribution ($)</Label>
+                    <div className="flex items-center gap-1.5">
+                      <Label htmlFor="monthly" className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Monthly Contribution ($)</Label>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <HelpCircle className="h-3 w-3 text-muted-foreground cursor-help" />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p className="w-48 text-[10px]">Total amount contributed to retirement accounts every month.</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
                     <Input 
                       id="monthly" 
                       type="number" 
@@ -173,7 +218,17 @@ export default function RetirementCalculatorPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="rate" className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Exp. Market Return (%)</Label>
+                    <div className="flex items-center gap-1.5">
+                      <Label htmlFor="rate" className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Exp. Market Return (%)</Label>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <HelpCircle className="h-3 w-3 text-muted-foreground cursor-help" />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p className="w-48 text-[10px]">The projected average annual return on your retirement assets.</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
                     <Input 
                       id="rate" 
                       type="number" 
@@ -247,7 +302,7 @@ export default function RetirementCalculatorPage() {
                         <CartesianGrid strokeDasharray="3 3" stroke="#ffffff05" vertical={false} />
                         <XAxis dataKey="age" stroke="#888888" fontSize={10} tickLine={false} axisLine={false} label={{ value: 'Target Age', position: 'insideBottom', offset: -5, fontSize: 10 }} />
                         <YAxis stroke="#888888" fontSize={10} tickLine={false} axisLine={false} tickFormatter={(val) => `$${val / 1000}k`} />
-                        <Tooltip contentStyle={{ backgroundColor: '#1C1822', border: '1px solid #ffffff10', borderRadius: '12px' }} formatter={(value: number) => [formatCurrency(value), 'Projected Corpus']} />
+                        <RechartsTooltip contentStyle={{ backgroundColor: '#1C1822', border: '1px solid #ffffff10', borderRadius: '12px' }} formatter={(value: number) => [formatCurrency(value), 'Projected Corpus']} />
                         <Area type="monotone" dataKey="balance" stroke="#69B9FF" fillOpacity={1} fill="url(#colorCorpus)" strokeWidth={3} />
                       </AreaChart>
                     </ResponsiveContainer>

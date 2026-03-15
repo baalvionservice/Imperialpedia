@@ -9,6 +9,11 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
+import { 
+  Tooltip, 
+  TooltipContent, 
+  TooltipTrigger 
+} from '@/components/ui/tooltip';
 import { calculatorsService } from '@/services/data';
 import { CalculatorResultModal } from '@/modules/calculators/components/CalculatorResultModal';
 import { 
@@ -21,7 +26,8 @@ import {
   TrendingUp,
   CheckCircle2,
   Database,
-  Loader2
+  Loader2,
+  HelpCircle
 } from 'lucide-react';
 import Link from 'next/link';
 import { useCalculatorStore, PortfolioAsset } from '@/lib/state/calculator-store';
@@ -31,7 +37,7 @@ import {
   Cell, 
   ResponsiveContainer, 
   Legend, 
-  Tooltip,
+  Tooltip as RechartsTooltip,
 } from 'recharts';
 
 export default function PortfolioCalculatorPage() {
@@ -161,7 +167,17 @@ export default function PortfolioCalculatorPage() {
                       <div key={asset.id} className="p-4 rounded-xl bg-background/40 border border-white/5 space-y-4 hover:border-primary/20 transition-colors group/node">
                         <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-end">
                           <div className="sm:col-span-4 space-y-2">
-                            <Label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Node Label</Label>
+                            <div className="flex items-center gap-1.5">
+                              <Label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Node Label</Label>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <HelpCircle className="h-3 w-3 text-muted-foreground cursor-help" />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  <p className="w-48 text-[10px]">The name of the asset class or specific security (e.g., Growth Stocks, BTC).</p>
+                                </TooltipContent>
+                              </Tooltip>
+                            </div>
                             <Input 
                               value={asset.name} 
                               onChange={(e) => updateAsset(asset.id, 'name', e.target.value)}
@@ -172,7 +188,17 @@ export default function PortfolioCalculatorPage() {
                             />
                           </div>
                           <div className="sm:col-span-4 space-y-2">
-                            <Label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Investment ($)</Label>
+                            <div className="flex items-center gap-1.5">
+                              <Label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Investment ($)</Label>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <HelpCircle className="h-3 w-3 text-muted-foreground cursor-help" />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  <p className="w-48 text-[10px]">Capital amount allocated specifically to this portfolio node.</p>
+                                </TooltipContent>
+                              </Tooltip>
+                            </div>
                             <Input 
                               type="number"
                               value={asset.investment} 
@@ -183,7 +209,17 @@ export default function PortfolioCalculatorPage() {
                             />
                           </div>
                           <div className="sm:col-span-3 space-y-2">
-                            <Label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Yield (%)</Label>
+                            <div className="flex items-center gap-1.5">
+                              <Label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Yield (%)</Label>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <HelpCircle className="h-3 w-3 text-muted-foreground cursor-help" />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  <p className="w-48 text-[10px]">The expected annual growth rate for this specific asset.</p>
+                                </TooltipContent>
+                              </Tooltip>
+                            </div>
                             <Input 
                               type="number"
                               step="0.1"
@@ -284,7 +320,7 @@ export default function PortfolioCalculatorPage() {
                           <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                         ))}
                       </Pie>
-                      <Tooltip contentStyle={{ backgroundColor: '#1C1822', border: '1px solid #ffffff10', borderRadius: '12px' }} formatter={(value: number) => formatCurrency(value)} />
+                      <RechartsTooltip contentStyle={{ backgroundColor: '#1C1822', border: '1px solid #ffffff10', borderRadius: '12px' }} formatter={(value: number) => formatCurrency(value)} />
                       <Legend verticalAlign="bottom" />
                     </PieChart>
                   </ResponsiveContainer>

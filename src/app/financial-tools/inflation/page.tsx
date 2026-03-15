@@ -9,9 +9,14 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
+import { 
+  Tooltip, 
+  TooltipContent, 
+  TooltipTrigger 
+} from '@/components/ui/tooltip';
 import { calculatorsService } from '@/services/data';
 import { CalculatorResultModal } from '@/modules/calculators/components/CalculatorResultModal';
-import { ArrowUpRight, RefreshCcw, ArrowLeft, Info, Gauge, CheckCircle2, Loader2 } from 'lucide-react';
+import { ArrowUpRight, RefreshCcw, ArrowLeft, Info, Gauge, CheckCircle2, Loader2, HelpCircle } from 'lucide-react';
 import Link from 'next/link';
 import { useCalculatorStore } from '@/lib/state/calculator-store';
 
@@ -100,7 +105,17 @@ export default function InflationCalculatorPage() {
               <form onSubmit={handleCalculate} className="space-y-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div className="space-y-3">
-                    <Label htmlFor="amount" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Present Value ($)</Label>
+                    <div className="flex items-center gap-1.5">
+                      <Label htmlFor="amount" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Present Value ($)</Label>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <HelpCircle className="h-3.5 w-3.5 text-muted-foreground cursor-help" />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p className="w-64">The current amount of money you want to evaluate for future purchasing power.</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
                     <Input 
                       id="amount" 
                       type="number" 
@@ -114,7 +129,17 @@ export default function InflationCalculatorPage() {
                   </div>
                   
                   <div className="space-y-3">
-                    <Label htmlFor="rate" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Inflation Benchmark (%)</Label>
+                    <div className="flex items-center gap-1.5">
+                      <Label htmlFor="rate" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Inflation Benchmark (%)</Label>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <HelpCircle className="h-3.5 w-3.5 text-muted-foreground cursor-help" />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p className="w-64">The expected average annual inflation rate (e.g., target 2% or recent 3.5%).</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
                     <Input 
                       id="rate" 
                       type="number" 
@@ -129,7 +154,17 @@ export default function InflationCalculatorPage() {
                   </div>
 
                   <div className="space-y-3">
-                    <Label htmlFor="years" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Time Horizon (Years)</Label>
+                    <div className="flex items-center gap-1.5">
+                      <Label htmlFor="years" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Time Horizon (Years)</Label>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <HelpCircle className="h-3.5 w-3.5 text-muted-foreground cursor-help" />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p className="w-64">The number of years into the future you are projecting.</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
                     <Input 
                       id="years" 
                       type="number" 

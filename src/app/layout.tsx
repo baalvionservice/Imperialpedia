@@ -6,6 +6,7 @@ import Footer from '@/components/layout/Footer';
 import { GlobalStoreProvider } from '@/lib/state';
 import { buildMetadata } from '@/lib/seo';
 import { ThemeProvider } from '@/design-system/themes/theme-provider';
+import { TooltipProvider } from '@/components/ui/tooltip';
 
 export const metadata: Metadata = buildMetadata();
 
@@ -24,12 +25,14 @@ export default function RootLayout({
       <body className="font-body bg-background text-foreground antialiased min-h-screen flex flex-col">
         <GlobalStoreProvider>
           <ThemeProvider>
-            <Header />
-            <main className="flex-grow">
-              {children}
-            </main>
-            <Footer />
-            <Toaster />
+            <TooltipProvider>
+              <Header />
+              <main className="flex-grow">
+                {children}
+              </main>
+              <Footer />
+              <Toaster />
+            </TooltipProvider>
           </ThemeProvider>
         </GlobalStoreProvider>
       </body>
