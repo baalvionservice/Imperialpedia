@@ -32,7 +32,8 @@ import {
   TrendingUp,
   Briefcase,
   DollarSign,
-  CalendarCheck
+  CalendarCheck,
+  UserCog
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 import { useAppStore } from '@/lib/state/app-store';
@@ -116,6 +117,7 @@ const Sidebar = ({ className }: { className?: string }) => {
     { icon: FileEdit, label: 'Intelligence Drafts', href: '/writer/drafts' },
     { icon: BarChart3, label: 'Insights Analytics', href: '/creator/dashboard/analytics' },
     { icon: Bell, label: 'Activity Feed', href: '/creator/dashboard/notifications', badge: unreadNotifications },
+    { icon: UserCog, label: 'Studio Settings', href: '/creator/dashboard/settings' },
     { icon: UserCircle, label: 'Expert Profile', href: '/creators/profile' },
   ];
 

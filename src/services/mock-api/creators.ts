@@ -1,4 +1,4 @@
-import { CreatorProfile, ApiResponse, CreatorContentItem, CreatorDashboardSummary, CreatorDashboardAnalytics, CreatorVerification, CreatorLeaderboard, ScheduledContent } from '@/types';
+import { CreatorProfile, ApiResponse, CreatorContentItem, CreatorDashboardSummary, CreatorDashboardAnalytics, CreatorVerification, CreatorLeaderboard, ScheduledContent, CreatorSettings } from '@/types';
 import { Notification } from '@/modules/content-engine/types/article';
 
 /**
@@ -268,6 +268,33 @@ export const getScheduledContent = async (creatorId: string): Promise<ApiRespons
     data: mockScheduledContent,
     status: 200
   };
+};
+
+export const getCreatorSettings = async (creatorId: string): Promise<ApiResponse<CreatorSettings>> => {
+  await new Promise((resolve) => setTimeout(resolve, 300));
+  return {
+    data: mockCreatorSettings,
+    status: 200
+  };
+};
+
+const mockCreatorSettings: CreatorSettings = {
+  creatorId: 'u-1',
+  name: 'Eleanor Vance',
+  displayName: 'Eleanor Vance',
+  bio: 'Lead Administrator and Content Strategist at Imperialpedia. Focused on platform growth and pSEO integrity.',
+  profileImage: 'https://picsum.photos/seed/eleanor/200/200',
+  email: 'eleanor@imperialpedia.com',
+  notifications: {
+    engagement: true,
+    followers: true,
+    announcements: false
+  },
+  categories: ['Economics', 'Growth', 'Strategy'],
+  socialLinks: [
+    { platform: 'Twitter', url: 'https://twitter.com/eleanorvance' },
+    { platform: 'LinkedIn', url: 'https://linkedin.com/in/eleanorvance' }
+  ]
 };
 
 const mockScheduledContent: ScheduledContent[] = [

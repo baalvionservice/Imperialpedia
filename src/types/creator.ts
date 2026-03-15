@@ -121,3 +121,22 @@ export interface ScheduledContent {
   category: string;
   tags: string[];
 }
+
+export interface CreatorSettings {
+  creatorId: string;
+  name: string;
+  displayName: string;
+  bio: string;
+  profileImage: string;
+  email: string;
+  notifications: {
+    engagement: boolean;
+    followers: boolean;
+    announcements: boolean;
+  };
+  categories: string[];
+  socialLinks: {
+    platform: string;
+    url: string;
+  }[];
+}
