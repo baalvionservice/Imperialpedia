@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -21,7 +21,9 @@ import {
   ShieldAlert,
   ChevronRight,
   Info,
-  CheckCircle2
+  CheckCircle2,
+  ArrowLeft,
+  RotateCcw
 } from 'lucide-react';
 import { 
   Dialog, 
@@ -35,10 +37,11 @@ import { usersService } from '@/services/data/users-service';
 import { RoleControl } from '@/types/system';
 import { ALL_PERMISSIONS } from '@/services/mock-api/roles';
 import { toast } from '@/hooks/use-toast';
+import Link from 'next/link';
 
 /**
- * Role Governance and Permissions Hub.
- * Specialized control Matrix for managing platform personas and capability nodes.
+ * Role Governance & Persona Architect.
+ * Specialized suite for defining system capabilities and access boundaries.
  */
 export default function RoleControlMatrixPage() {
   const [roles, setRoles] = useState<RoleControl[]>([]);
@@ -80,12 +83,12 @@ export default function RoleControlMatrixPage() {
     e.preventDefault();
     if (!currentRole) return;
 
-    // Simulate persistence
+    // Simulate persistence logic
     setRoles(prev => prev.map(r => r.id === currentRole.id ? currentRole : r));
     
     toast({
-      title: "Role Configuration Synchronized",
-      description: `Access parameters for "${currentRole.roleName}" have been updated in the cryptographic index.`,
+      title: "Persona Synchronized",
+      description: `Access parameters for "${currentRole.roleName}" have been pushed to the security index.`,
     });
     setIsEditing(false);
   };
@@ -94,40 +97,48 @@ export default function RoleControlMatrixPage() {
     setRoles(prev => prev.filter(r => r.id !== id));
     toast({
       title: "Role Purged",
-      description: `Persona "${name}" has been removed from the governance matrix.`,
+      description: `Persona "${name}" has been removed from the governance buffer.`,
       variant: "destructive"
     });
   };
 
   return (
-    <div className="space-y-8 pb-20 animate-in fade-in duration-700">
-      <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-2 text-primary mb-1">
-            <Lock className="h-4 w-4" />
-            <Text variant="label" className="text-[10px] font-bold tracking-widest uppercase">Security Governance</Text>
+    <div className="space-y-8 pb-24 animate-in fade-in duration-700">
+      <header className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="flex items-center gap-4">
+          <Button variant="ghost" size="icon" className="rounded-full h-12 w-12" asChild>
+            <Link href="/admin"><ArrowLeft className="h-6 w-6" /></Link>
+          </Button>
+          <div>
+            <div className="flex items-center gap-2 text-primary mb-1">
+              <Lock className="h-4 w-4" />
+              <Text variant="label" className="text-[10px] font-bold tracking-widest uppercase">Persona Studio</Text>
+            </div>
+            <Text variant="h1" className="text-3xl font-bold tracking-tight">Role Governance</Text>
           </div>
-          <Text variant="h1" className="text-3xl font-bold">Role Control Matrix</Text>
-          <Text variant="bodySmall" className="text-muted-foreground mt-1">
-            Define system personas and assign functional nodes across the expert ecosystem.
-          </Text>
         </div>
-        <Button className="bg-primary hover:bg-primary/90 rounded-xl h-11 px-6 shadow-lg shadow-primary/20 font-bold">
-          <Plus className="mr-2 h-4 w-4" /> Create Custom Role
+        
+        <Button className="bg-primary hover:bg-primary/90 rounded-xl h-12 px-8 shadow-xl shadow-primary/20 font-bold transition-all scale-105 active:scale-95">
+          <Plus className="mr-2 h-4 w-4" /> Architect New Persona
         </Button>
       </header>
 
       {/* Toolbar */}
-      <div className="flex flex-col md:flex-row gap-4 bg-card/30 p-4 rounded-xl border border-white/5 backdrop-blur-sm">
+      <div className="flex flex-col md:flex-row gap-4 bg-card/30 p-4 rounded-2xl border border-white/5 backdrop-blur-sm sticky top-20 z-30">
         <div className="relative flex-1 group">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
           <Input 
-            placeholder="Search roles by label or identifier..." 
-            className="pl-10 bg-background/50 h-11 border-white/10 rounded-xl" 
+            placeholder="Search roles by label or capability node..." 
+            className="pl-12 bg-background/50 h-12 border-white/10 rounded-xl text-sm" 
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
+        <Button variant="outline" className="h-12 px-6 rounded-xl border-white/10 bg-background/30 gap-2 font-bold text-xs" asChild>
+          <Link href="/admin/control/audit-trail">
+            <ShieldAlert className="h-4 w-4 text-primary" /> View Security Log
+          </Link>
+        </Button>
       </div>
 
       <Card className="glass-card border-none shadow-2xl overflow-hidden">
@@ -135,10 +146,10 @@ export default function RoleControlMatrixPage() {
           <Table>
             <TableHeader>
               <TableRow className="bg-muted/20 hover:bg-muted/20 border-b border-white/5">
-                <TableHead className="pl-6 font-bold text-[10px] uppercase tracking-widest py-4">Role Identity</TableHead>
-                <TableHead className="font-bold text-[10px] uppercase tracking-widest text-center">Users Assigned</TableHead>
-                <TableHead className="font-bold text-[10px] uppercase tracking-widest">Active Capability Nodes</TableHead>
-                <TableHead className="text-right pr-6 font-bold text-[10px] uppercase tracking-widest">Governance Actions</TableHead>
+                <TableHead className="pl-8 font-bold text-[10px] uppercase tracking-widest py-6">Persona Identity</TableHead>
+                <TableHead className="font-bold text-[10px] uppercase tracking-widest text-center">Identity Nodes</TableHead>
+                <TableHead className="font-bold text-[10px] uppercase tracking-widest">Active Capability Matrix</TableHead>
+                <TableHead className="text-right pr-8 font-bold text-[10px] uppercase tracking-widest">Governance Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -157,13 +168,13 @@ export default function RoleControlMatrixPage() {
                 </TableRow>
               ) : filteredRoles.map((role) => (
                 <TableRow key={role.id} className="group hover:bg-muted/10 transition-colors border-b border-white/5">
-                  <TableCell className="py-5 pl-6">
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 rounded-lg bg-primary/10 text-primary">
-                        <ShieldCheck className="h-4 w-4" />
+                  <TableCell className="py-6 pl-8">
+                    <div className="flex items-center gap-4">
+                      <div className="p-3 rounded-2xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-all">
+                        <ShieldCheck className="h-5 w-5" />
                       </div>
                       <div>
-                        <span className="text-sm font-bold uppercase tracking-tight block">{role.roleName}</span>
+                        <span className="text-sm font-bold uppercase tracking-tight block group-hover:text-primary transition-colors">{role.roleName}</span>
                         <span className="text-[9px] text-muted-foreground font-mono">ID: {role.id}</span>
                       </div>
                     </div>
@@ -171,38 +182,35 @@ export default function RoleControlMatrixPage() {
                   <TableCell>
                     <div className="flex flex-col items-center">
                       <span className="text-sm font-bold">{role.usersAssigned.toLocaleString()}</span>
-                      <span className="text-[9px] text-muted-foreground uppercase">Accounts</span>
+                      <span className="text-[9px] text-muted-foreground uppercase font-bold tracking-tighter">Nodes</span>
                     </div>
                   </TableCell>
-                  <TableCell className="max-w-xs">
-                    <div className="flex flex-wrap gap-1">
-                      {role.permissions.slice(0, 3).map(p => (
-                        <Badge key={p} variant="secondary" className="bg-primary/5 text-primary border-none text-[8px] font-bold py-0 h-4">
+                  <TableCell className="max-w-md">
+                    <div className="flex flex-wrap gap-1.5">
+                      {role.permissions.map(p => (
+                        <Badge key={p} variant="secondary" className="bg-primary/5 text-primary border-none text-[8px] font-bold uppercase py-0.5 px-2 h-5">
                           {p.replace('_', ' ')}
                         </Badge>
                       ))}
-                      {role.permissions.length > 3 && (
-                        <span className="text-[10px] text-muted-foreground font-bold ml-1">+{role.permissions.length - 3} more</span>
-                      )}
                     </div>
                   </TableCell>
-                  <TableCell className="text-right pr-6">
+                  <TableCell className="text-right pr-8">
                     <div className="flex justify-end gap-2">
                       <Button 
                         variant="ghost" 
                         size="sm" 
-                        className="h-9 px-3 text-xs font-bold gap-2 text-muted-foreground hover:text-primary transition-colors"
+                        className="h-9 px-4 text-xs font-bold gap-2 text-muted-foreground hover:text-primary transition-all rounded-xl"
                         onClick={() => {
                           setCurrentRole(role);
                           setIsEditing(true);
                         }}
                       >
-                        <Settings2 className="h-3.5 w-3.5" /> Configure
+                        <Settings2 className="h-3.5 w-3.5" /> Refine Matrix
                       </Button>
                       <Button 
                         variant="ghost" 
                         size="icon" 
-                        className="h-9 w-9 text-muted-foreground hover:text-destructive transition-colors"
+                        className="h-9 w-9 text-muted-foreground hover:text-destructive transition-colors rounded-xl"
                         onClick={() => handleDelete(role.id, role.roleName)}
                       >
                         <Trash2 className="h-4 w-4" />
@@ -216,63 +224,101 @@ export default function RoleControlMatrixPage() {
         </div>
       </Card>
 
-      {/* Governance Context Grid */}
+      {/* Governance Insight Footer */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card className="glass-card bg-primary/5 border-primary/20 p-6 flex flex-col gap-4">
-          <div className="p-3 rounded-2xl bg-primary/10 w-fit text-primary">
+        <Card className="glass-card bg-primary/5 border-primary/20 p-8 flex flex-col gap-4 group">
+          <div className="p-3 rounded-2xl bg-primary/10 w-fit text-primary group-hover:scale-110 transition-transform">
             <Lock className="h-6 w-6" />
           </div>
           <div>
             <Text variant="bodySmall" weight="bold">Principle of Least Privilege</Text>
-            <Text variant="caption" className="text-muted-foreground mt-1 leading-relaxed">
-              Personas should only be assigned functional nodes required for their specific platform duties. This limits vertical traversal risk during account audits.
+            <Text variant="caption" className="text-muted-foreground mt-2 leading-relaxed">
+              Capabilities are denied by default. Only explicitly enabled nodes in the Persona Architect will allow vertical traversal of platform functions.
             </Text>
           </div>
         </Card>
         
-        <Card className="glass-card border-secondary/20 p-6 flex flex-col gap-4">
+        <Card className="glass-card border-secondary/20 p-8 flex flex-col gap-4 relative overflow-hidden">
+          <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
+            <RotateCcw className="h-24 w-24 text-secondary rotate-12" />
+          </div>
           <div className="p-3 rounded-2xl bg-secondary/10 w-fit text-secondary">
             <ShieldAlert className="h-6 w-6" />
           </div>
           <div>
-            <Text variant="bodySmall" weight="bold">Capability Inheritance</Text>
-            <Text variant="caption" className="text-muted-foreground mt-1 leading-relaxed">
-              Custom roles inherit the base 'Reader' nodes by default. Ensure high-impact nodes like `system_config` are restricted to Super-Admin cohorts only.
+            <Text variant="bodySmall" weight="bold">Audited Sync Cycle</Text>
+            <Text variant="caption" className="text-muted-foreground mt-2 leading-relaxed">
+              Every modification to the Persona Matrix is cryptographically sealed and logged in the immutable **Audit Trail** for compliance oversight.
             </Text>
           </div>
         </Card>
 
-        <Card className="glass-card border-emerald-500/20 p-6 flex flex-col gap-4 relative overflow-hidden">
+        <Card className="glass-card border-emerald-500/20 p-8 flex flex-col gap-4">
           <div className="p-3 rounded-2xl bg-emerald-500/10 w-fit text-emerald-500">
             <CheckCircle2 className="h-6 w-6" />
           </div>
           <div>
-            <Text variant="bodySmall" weight="bold">Audit Trace Active</Text>
-            <Text variant="caption" className="text-muted-foreground mt-1 leading-relaxed">
-              Every modification to the Role Control Matrix is cryptographically logged in the System Audit Trail, attributing changes to the initiating administrator.
+            <Text variant="bodySmall" weight="bold">Inheritance Engine</Text>
+            <Text variant="caption" className="text-muted-foreground mt-2 leading-relaxed">
+              Personas utilizing high-impact nodes are automatically subjected to mandatory biometric MFA challenges during active administrative sessions.
             </Text>
           </div>
         </Card>
       </div>
 
-      {/* Role Edit Dialog */}
+      {/* Role Configuration Dialog */}
       <Dialog open={isEditing} onOpenChange={setIsEditing}>
-        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto bg-card border-white/10 p-0">
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto bg-card border-white/10 p-0 overflow-hidden">
           <form onSubmit={handleSave}>
             <DialogHeader className="p-8 bg-primary/5 border-b border-white/5">
-              <DialogTitle className="text-2xl font-bold flex items-center gap-3">
-                <Settings2 className="h-6 w-6 text-primary" /> 
+              <div className="flex items-center justify-between mb-4">
+                <Badge variant="outline" className="border-primary/20 bg-primary/5 text-primary text-[10px] font-bold uppercase tracking-widest px-3">
+                  Persona Architect
+                </Badge>
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <ShieldCheck className="h-3 w-3" />
+                  <span className="text-[9px] font-bold uppercase">Security Sealed</span>
+                </div>
+              </div>
+              <DialogTitle className="text-3xl font-bold flex items-center gap-3">
+                <Settings2 className="h-8 w-8 text-primary" /> 
                 Refine Persona: {currentRole?.roleName}
               </DialogTitle>
               <DialogDescription className="text-muted-foreground pt-2">
-                Toggle functional nodes to modify access parameters for this system persona.
+                Configure the specific capability nodes for this system persona.
               </DialogDescription>
             </DialogHeader>
             
             <div className="p-8 space-y-8">
-              <div className="space-y-4">
-                <div className="flex items-center gap-2 text-primary font-bold text-sm uppercase tracking-widest">
-                  <ShieldAlert className="h-4 w-4" /> Functional Node Matrix
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-8 border-b border-white/5">
+                <div className="space-y-2">
+                  <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Role Label</Label>
+                  <Input 
+                    value={currentRole?.roleName || ''} 
+                    onChange={(e) => setCurrentRole(prev => prev ? { ...prev, roleName: e.target.value } : null)}
+                    placeholder="e.g. Moderator" 
+                    className="bg-background/50 border-white/5 h-12 font-bold"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Internal Narrative</Label>
+                  <Input 
+                    value={currentRole?.description || ''} 
+                    onChange={(e) => setCurrentRole(prev => prev ? { ...prev, description: e.target.value } : null)}
+                    placeholder="Briefly explain this role's purpose..." 
+                    className="bg-background/50 border-white/5 h-12"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-primary font-bold text-sm uppercase tracking-widest">
+                    <ShieldAlert className="h-4 w-4" /> Capability Node Matrix
+                  </div>
+                  <Button type="button" variant="ghost" className="text-[10px] font-bold text-muted-foreground hover:text-primary" onClick={() => setCurrentRole(prev => prev ? {...prev, permissions: ALL_PERMISSIONS.map(p => p.id)} : null)}>
+                    Assign All Nodes
+                  </Button>
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -293,8 +339,8 @@ export default function RoleControlMatrixPage() {
                         className="mt-1"
                       />
                       <div className="space-y-1">
-                        <Label htmlFor={perm.id} className="text-sm font-bold cursor-pointer">{perm.label}</Label>
-                        <p className="text-[10px] text-muted-foreground leading-relaxed">{perm.description}</p>
+                        <Label htmlFor={perm.id} className="text-sm font-bold cursor-pointer transition-colors group-hover:text-primary">{perm.label}</Label>
+                        <p className="text-[10px] text-muted-foreground leading-relaxed italic">{perm.description}</p>
                       </div>
                     </div>
                   ))}
@@ -303,9 +349,9 @@ export default function RoleControlMatrixPage() {
             </div>
 
             <DialogFooter className="p-8 bg-muted/20 border-t border-white/5 gap-3">
-              <Button type="button" variant="ghost" onClick={() => setIsEditing(false)} className="h-12 px-6 rounded-xl font-bold">Cancel Reversion</Button>
-              <Button type="submit" className="h-12 px-10 rounded-xl font-bold bg-primary hover:bg-primary/90 shadow-xl shadow-primary/20">
-                Synchronize Capability
+              <Button type="button" variant="ghost" onClick={() => setIsEditing(false)} className="h-12 px-6 rounded-xl font-bold">Discard Shifts</Button>
+              <Button type="submit" className="h-12 px-10 rounded-xl font-bold bg-primary hover:bg-primary/90 shadow-xl shadow-primary/20 transition-all">
+                Synchronize Persona
               </Button>
             </DialogFooter>
           </form>

@@ -1,7 +1,8 @@
 import { User, ApiResponse, UserStatus } from '@/types';
 
 /**
- * @fileOverview Mock service for managing CMS user accounts and roles.
+ * @fileOverview Mock service for managing platform identities and access states.
+ * Aligned with Prompt 27 requirements for Admin Control.
  */
 
 export const mockUsers: User[] = [

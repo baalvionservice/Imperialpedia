@@ -1,32 +1,28 @@
 import { ApiResponse, RoleDefinition, RoleControl, RolePermissionSet } from '@/types';
 
 /**
- * @fileOverview Mock service for managing platform roles and permissions.
+ * @fileOverview Mock service for managing platform roles and capability nodes.
+ * Aligned with Prompt 27 requirements for Persona orchestration.
  */
 
 export let mockControlRoles: RoleControl[] = [
-  { id: 'role-1', roleName: 'Administrator', usersAssigned: 5, description: 'Full system oversight and security governance.', permissions: ['user_manage', 'role_manage', 'content_moderate', 'content_publish', 'analytics_view_global', 'system_config', 'vetted_experts', 'media_manage'] },
-  { id: 'role-2', roleName: 'Editor', usersAssigned: 12, description: 'Editorial workflow management and fact-checking.', permissions: ['content_moderate', 'content_publish', 'analytics_view_global', 'media_manage'] },
-  { id: 'role-3', roleName: 'Creator', usersAssigned: 156, description: 'Expert analysis publication and audience engagement.', permissions: ['content_create', 'content_edit_own', 'analytics_view_own', 'monetization_access'] },
-  { id: 'role-4', roleName: 'Viewer', usersAssigned: 142500, description: 'General audience with read and tool access.', permissions: ['content_read', 'tools_use', 'comment_create'] },
+  { id: 'role-1', roleName: 'Admin', usersAssigned: 5, description: 'Full system oversight and security governance.', permissions: ['edit_content', 'publish_content', 'delete_content', 'manage_users', 'system_config'] },
+  { id: 'role-2', roleName: 'Editor', usersAssigned: 12, description: 'Editorial workflow management and fact-checking.', permissions: ['edit_content', 'publish_content', 'content_moderate'] },
+  { id: 'role-3', roleName: 'Creator', usersAssigned: 156, description: 'Expert analysis publication and audience engagement.', permissions: ['content_create', 'content_edit_own', 'analytics_view_own'] },
+  { id: 'role-4', roleName: 'Viewer', usersAssigned: 142500, description: 'General audience with read and tool access.', permissions: ['content_read', 'tools_use'] },
 ];
 
 export const ALL_PERMISSIONS = [
-  { id: 'user_manage', label: 'User Directory Control', description: 'Suspend or purge user identities.' },
-  { id: 'role_manage', label: 'Role & Permissions', description: 'Modify system access levels.' },
-  { id: 'content_moderate', label: 'Content Moderation', description: 'Flag and remove community input.' },
-  { id: 'content_publish', label: 'Intelligence Publishing', description: 'Commit articles to the live index.' },
-  { id: 'analytics_view_global', label: 'Global Intelligence', description: 'View platform-wide growth data.' },
-  { id: 'system_config', label: 'System Taxonomy', description: 'Manage categories and topic tags.' },
-  { id: 'vetted_experts', label: 'Expert Authentication', description: 'Validate and verify expert candidates.' },
-  { id: 'media_manage', label: 'Media Library', description: 'Manage global visual assets.' },
+  { id: 'manage_users', label: 'Manage Users', description: 'Suspend or purge user identities.' },
+  { id: 'role_manage', label: 'Manage Roles', description: 'Modify system access levels.' },
+  { id: 'content_moderate', label: 'Moderate Content', description: 'Flag and remove community input.' },
+  { id: 'publish_content', label: 'Publish Content', description: 'Commit articles to the live index.' },
+  { id: 'edit_content', label: 'Edit Content', description: 'Refine any intelligence node.' },
+  { id: 'delete_content', label: 'Delete Content', description: 'Permanently remove nodes from index.' },
+  { id: 'system_config', label: 'System Config', description: 'Manage categories and global logic.' },
   { id: 'content_create', label: 'Create Content', description: 'Draft new research insights.' },
-  { id: 'content_edit_own', label: 'Edit Own Content', description: 'Refine previously published insights.' },
-  { id: 'analytics_view_own', label: 'Personal Analytics', description: 'View performance data for own nodes.' },
-  { id: 'monetization_access', label: 'Monetization Hub', description: 'Access revenue and payout logistics.' },
-  { id: 'content_read', label: 'Read Content', description: 'Access all published intelligence nodes.' },
-  { id: 'tools_use', label: 'Interactive Tools', description: 'Utilize financial calculators and engines.' },
-  { id: 'comment_create', label: 'Community Input', description: 'Post comments on research insights.' },
+  { id: 'content_read', label: 'Read Content', description: 'Access all published nodes.' },
+  { id: 'tools_use', label: 'Use Tools', description: 'Utilize financial engines.' },
 ];
 
 export const getRoles = async (): Promise<ApiResponse<RoleDefinition[]>> => {
