@@ -2,11 +2,18 @@ import { Article } from '@/modules/content-engine/types';
 import { GlossaryTerm } from '@/modules/seo/models/glossary-term';
 import { Category } from '@/modules/content-engine/types/category';
 import { Tag } from '@/modules/content-engine/types/tag';
-import { Breadcrumb } from '../types';
+import { Breadcrumb, BreadcrumbItem } from '../types';
+import { env } from '@/config/env';
 
 /**
- * @fileOverview Service for generating hierarchical breadcrumb paths for all platform routes.
+ * @fileOverview Service for generating hierarchical breadcrumb paths and schema for all platform routes.
  */
+
+const getAbsoluteUrl = (path: string) => {
+  const baseUrl = env.siteUrl.endsWith('/') ? env.siteUrl.slice(0, -1) : env.siteUrl;
+  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+  return `${baseUrl}${cleanPath}`;
+};
 
 export const breadcrumbService = {
   /**
@@ -74,6 +81,22 @@ export const breadcrumbService = {
         { name: 'Glossary', item: '/glossary' },
         { name: `Letter ${letter.toUpperCase()}`, item: `/glossary/${letter.toLowerCase()}` },
       ],
+    };
+  },
+
+  /**
+   * Generates JSON-LD schema for a breadcrumb.
+   */
+  generateBreadcrumbSchema: (breadcrumb: Breadcrumb) => {
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: breadcrumb.items.map((item, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        name: item.name,
+        item: getAbsoluteUrl(item.item),
+      })),
     };
   },
 };

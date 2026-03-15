@@ -17,6 +17,7 @@ export interface SEOPageData {
 export interface BreadcrumbItem {
   name: string;
   item: string;
+  position?: number;
 }
 
 export interface Breadcrumb {
