@@ -15,11 +15,31 @@ import {
   ArrowLeft,
   Search,
   Filter,
-  ArrowUpRight
+  ArrowUpRight,
+  Edit,
+  Trash2,
+  Tag as TagIcon,
+  Layers,
+  MoreVertical,
+  Clock
 } from 'lucide-react';
 import { format } from 'date-fns';
 import Link from 'next/link';
 import { Input } from '@/components/ui/input';
+import { 
+  Select, 
+  SelectContent, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue 
+} from '@/components/ui/select';
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuTrigger 
+} from '@/components/ui/dropdown-menu';
+import { toast } from '@/hooks/use-toast';
 
 const ITEMS_PER_PAGE = 6;
 
@@ -29,21 +49,34 @@ interface CreatorContentClientProps {
 }
 
 /**
- * Interactive content archive for an individual creator.
- * Supports pagination, real-time filtering, and status visualization.
+ * Enhanced content discovery and management archive for an individual expert.
+ * Supports multi-factor filtering, pagination, and mock administrative actions.
  */
 export function CreatorContentClient({ creator, initialContent }: CreatorContentClientProps) {
   const [search, setSearch] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [currentPage, setCurrentPage] = useState(1);
+  const [content, setContent] = useState<CreatorContentItem[]>(initialContent);
+
+  // Derive unique categories for filtering
+  const categories = useMemo(() => 
+    ['all', ...Array.from(new Set(initialContent.map(item => item.category)))],
+    [initialContent]
+  );
 
   // Filter & Search Logic
   const filteredContent = useMemo(() => {
-    return initialContent.filter(item => 
-      item.title.toLowerCase().includes(search.toLowerCase()) ||
-      item.snippet?.toLowerCase().includes(search.toLowerCase()) ||
-      item.category.toLowerCase().includes(search.toLowerCase())
-    );
-  }, [initialContent, search]);
+    return content.filter(item => {
+      const matchesSearch = 
+        item.title.toLowerCase().includes(search.toLowerCase()) ||
+        item.snippet?.toLowerCase().includes(search.toLowerCase()) ||
+        item.tags.some(t => t.toLowerCase().includes(search.toLowerCase()));
+      
+      const matchesCategory = selectedCategory === 'all' || item.category === selectedCategory;
+
+      return matchesSearch && matchesCategory;
+    });
+  }, [content, search, selectedCategory]);
 
   // Pagination Logic
   const totalPages = Math.ceil(filteredContent.length / ITEMS_PER_PAGE);
@@ -51,6 +84,15 @@ export function CreatorContentClient({ creator, initialContent }: CreatorContent
     (currentPage - 1) * ITEMS_PER_PAGE,
     currentPage * ITEMS_PER_PAGE
   );
+
+  const handleDelete = (id: string, title: string) => {
+    setContent(prev => prev.filter(item => item.id !== id));
+    toast({
+      title: "Insight Removed",
+      description: `"${title}" has been purged from the Intelligence Index.`,
+      variant: "destructive",
+    });
+  };
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -62,7 +104,7 @@ export function CreatorContentClient({ creator, initialContent }: CreatorContent
 
   return (
     <div className="space-y-10 pb-20">
-      {/* Header & Back Action */}
+      {/* Header & Context */}
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div className="flex items-center gap-4">
           <Button variant="ghost" size="icon" className="rounded-full h-12 w-12" asChild>
@@ -77,31 +119,66 @@ export function CreatorContentClient({ creator, initialContent }: CreatorContent
           </div>
         </div>
         
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           <div className="relative w-full md:w-64 group">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
             <Input 
-              placeholder="Search archive..." 
-              className="pl-10 bg-card/30 border-white/10 h-11" 
+              placeholder="Search research..." 
+              className="pl-10 bg-card/30 border-white/10 h-11 rounded-xl" 
               value={search}
               onChange={(e) => { setSearch(e.target.value); setCurrentPage(1); }}
             />
           </div>
-          <Button variant="outline" size="icon" className="h-11 w-11 shrink-0"><Filter className="h-4 w-4" /></Button>
+
+          <Select value={selectedCategory} onValueChange={(val) => { setSelectedCategory(val); setCurrentPage(1); }}>
+            <SelectTrigger className="w-[160px] h-11 bg-card/30 border-white/10 rounded-xl">
+              <Layers className="mr-2 h-3.5 w-3.5 text-primary" />
+              <SelectValue placeholder="Taxonomy" />
+            </SelectTrigger>
+            <SelectContent>
+              {categories.map(cat => (
+                <SelectItem key={cat} value={cat}>{cat.charAt(0).toUpperCase() + cat.slice(1)}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          <Button variant="outline" size="icon" className="h-11 w-11 shrink-0 rounded-xl border-white/10 bg-card/30">
+            <Filter className="h-4 w-4" />
+          </Button>
         </div>
       </header>
 
-      {/* Content Grid */}
+      {/* Content Discovery Matrix */}
       {paginatedResults.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {paginatedResults.map((item) => (
-            <Card key={item.id} className="glass-card flex flex-col group overflow-hidden transition-all hover:translate-y-[-4px] hover:border-primary/40 h-full">
+            <Card key={item.id} className="glass-card flex flex-col group overflow-hidden transition-all hover:translate-y-[-4px] hover:border-primary/40 h-full relative">
               <CardHeader className="p-6 pb-2">
                 <div className="flex justify-between items-start mb-4">
                   <Badge variant="outline" className="text-[10px] font-bold border-primary/20 bg-primary/5 text-primary">
                     {item.category}
                   </Badge>
-                  {getStatusBadge(item.status)}
+                  <div className="flex items-center gap-2">
+                    {getStatusBadge(item.status)}
+                    
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="icon" className="h-7 w-7 p-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <MoreVertical className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem asChild>
+                          <Link href={`/creator/dashboard/editor?id=${item.id}`} className="cursor-pointer">
+                            <Edit className="mr-2 h-4 w-4" /> Edit Analysis
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="text-destructive" onClick={() => handleDelete(item.id, item.title)}>
+                          <Trash2 className="mr-2 h-4 w-4" /> Delete Insight
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
                 </div>
                 <CardTitle className="text-xl line-clamp-2 leading-tight group-hover:text-primary transition-colors">
                   {item.title}
@@ -115,26 +192,29 @@ export function CreatorContentClient({ creator, initialContent }: CreatorContent
                 
                 <div className="flex flex-wrap gap-1">
                   {item.tags.map(tag => (
-                    <span key={tag} className="text-[9px] font-bold text-muted-foreground uppercase tracking-tighter">#{tag}</span>
+                    <Badge key={tag} variant="secondary" className="bg-secondary/5 text-secondary text-[9px] font-bold border-none px-2">
+                      #{tag}
+                    </Badge>
                   ))}
                 </div>
               </CardContent>
 
-              <CardFooter className="p-6 pt-0 border-t border-white/5 flex items-center justify-between">
+              <CardFooter className="p-6 pt-0 border-t border-white/5 flex items-center justify-between bg-card/10">
                 <div className="flex items-center gap-4 text-muted-foreground">
                   <div className="flex items-center gap-1.5">
-                    <Eye className="h-3.5 w-3.5" />
+                    <Eye className="h-3.5 w-3.5 text-primary" />
                     <Text variant="caption">{(item.views / 1000).toFixed(1)}k</Text>
                   </div>
                   <div className="flex items-center gap-1.5">
-                    <Calendar className="h-3.5 w-3.5" />
-                    <Text variant="caption">{format(new Date(item.createdAt), 'MMM d, yyyy')}</Text>
+                    <Clock className="h-3.5 w-3.5" />
+                    <Text variant="caption">8m read</Text>
                   </div>
                 </div>
                 
-                <Button variant="ghost" size="sm" className="h-8 px-2 text-primary font-bold text-xs" asChild>
+                <Button variant="ghost" size="sm" className="h-8 px-2 text-primary font-bold text-xs group/btn" asChild>
                   <Link href={item.status === 'published' ? `/articles/${item.slug}` : '#'}>
-                    {item.status === 'published' ? 'Read Full' : 'Resume'} <ArrowUpRight className="ml-1 h-3 w-3" />
+                    {item.status === 'published' ? 'Read Full' : 'Resume Draft'} 
+                    <ArrowUpRight className="ml-1 h-3 w-3 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
                   </Link>
                 </Button>
               </CardFooter>
@@ -143,12 +223,20 @@ export function CreatorContentClient({ creator, initialContent }: CreatorContent
         </div>
       ) : (
         <div className="py-32 text-center bg-card/10 rounded-[3rem] border-2 border-dashed border-white/5">
-          <Text variant="h3" className="mb-2">No intelligence found</Text>
-          <Text variant="bodySmall" className="text-muted-foreground">Try adjusting your search terms or filter criteria.</Text>
+          <div className="w-20 h-20 bg-muted/20 rounded-full flex items-center justify-center mx-auto mb-6">
+            <Search className="h-10 w-10 text-muted-foreground opacity-50" />
+          </div>
+          <Text variant="h3" className="mb-2">No research found</Text>
+          <Text variant="bodySmall" className="text-muted-foreground max-w-sm mx-auto">
+            Try adjusting your search terms or taxonomy filters to expand your results.
+          </Text>
+          <Button variant="link" className="mt-4 text-primary font-bold" onClick={() => { setSearch(''); setSelectedCategory('all'); }}>
+            Clear all active filters
+          </Button>
         </div>
       )}
 
-      {/* Pagination Controls */}
+      {/* Discovery Pagination */}
       {totalPages > 1 && (
         <div className="flex items-center justify-center gap-4 pt-10">
           <Button 

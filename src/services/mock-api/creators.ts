@@ -198,7 +198,48 @@ export const getCreatorDashboardStats = async (creatorId: string): Promise<ApiRe
 export const getCreatorContent = async (creatorId: string): Promise<ApiResponse<CreatorContentItem[]>> => {
   await new Promise((resolve) => setTimeout(resolve, 400));
   const extendedContent: CreatorContentItem[] = [
-    ...mockCreatorDashboardContent,
+    {
+      id: 'c-1',
+      title: 'Quantitative Easing vs Tightening: A 2026 Outlook',
+      snippet: 'Mastering the nuances of central bank liquidity cycles in the next decade.',
+      body: 'Full analysis text content...',
+      category: 'Economics',
+      tags: ['Macro', 'Fed'],
+      status: 'published',
+      createdAt: '2024-03-01T10:00:00Z',
+      views: 12400,
+      likes: 450,
+      comments: 82,
+      slug: 'qe-vs-qt-2026'
+    },
+    {
+      id: 'c-2',
+      title: 'The Rise of Algorithmic Stablecoins',
+      snippet: 'Evaluating the stability and risks of decentralized dollar pegs.',
+      body: 'In-progress research...',
+      category: 'Crypto',
+      tags: ['DeFi', 'Stablecoins'],
+      status: 'draft',
+      createdAt: '2024-03-10T14:30:00Z',
+      views: 0,
+      likes: 0,
+      comments: 0,
+      slug: 'algorithmic-stablecoins'
+    },
+    {
+      id: 'c-3',
+      title: 'Yield Curve Dynamics in Emerging Markets',
+      snippet: 'Understanding global risk-off signals from secondary debt markets.',
+      body: 'Scheduled content text...',
+      category: 'Markets',
+      tags: ['Emerging Markets', 'Yield Curve'],
+      status: 'scheduled',
+      createdAt: '2024-03-05T09:00:00Z',
+      views: 0,
+      likes: 0,
+      comments: 0,
+      slug: 'yield-curve-emerging-markets'
+    },
     {
       id: 'c-4',
       title: 'Monetary Policy in the 2030s',
@@ -391,51 +432,6 @@ const mockNotifications: Notification[] = [
     message: 'Verification complete! You are now a recognized Imperialpedia Expert.',
     createdAt: new Date(Date.now() - 172800000).toISOString(),
     read: true
-  }
-];
-
-const mockCreatorDashboardContent: CreatorContentItem[] = [
-  {
-    id: 'c-1',
-    title: 'Quantitative Easing vs Tightening: A 2026 Outlook',
-    snippet: 'Mastering the nuances of central bank liquidity cycles in the next decade.',
-    body: 'Full analysis text content...',
-    category: 'Economics',
-    tags: ['Macro', 'Fed'],
-    status: 'published',
-    createdAt: '2024-03-01T10:00:00Z',
-    views: 12400,
-    likes: 450,
-    comments: 82,
-    slug: 'qe-vs-qt-2026'
-  },
-  {
-    id: 'c-2',
-    title: 'The Rise of Algorithmic Stablecoins',
-    snippet: 'Evaluating the stability and risks of decentralized dollar pegs.',
-    body: 'In-progress research...',
-    category: 'Crypto',
-    tags: ['DeFi', 'Stablecoins'],
-    status: 'draft',
-    createdAt: '2024-03-10T14:30:00Z',
-    views: 0,
-    likes: 0,
-    comments: 0,
-    slug: 'algorithmic-stablecoins'
-  },
-  {
-    id: 'c-3',
-    title: 'Yield Curve Dynamics in Emerging Markets',
-    snippet: 'Understanding global risk-off signals from secondary debt markets.',
-    body: 'Scheduled content text...',
-    category: 'Markets',
-    tags: ['Emerging Markets', 'Yield Curve'],
-    status: 'scheduled',
-    createdAt: '2024-03-05T09:00:00Z',
-    views: 0,
-    likes: 0,
-    comments: 0,
-    slug: 'yield-curve-emerging-markets'
   }
 ];
 
