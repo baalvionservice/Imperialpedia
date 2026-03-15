@@ -12,6 +12,18 @@ export interface WeeklyActiveUsers {
   activeUsers: number;
 }
 
+export interface GrowthMetrics {
+  newUsers: number;
+  newCreators: number;
+  newContent: number;
+  growthOverTime: { 
+    date: string; 
+    users: number; 
+    creators: number; 
+    content: number; 
+  }[];
+}
+
 export interface TrafficAnalytics {
   activeUsers: number;
   pageViews: number;

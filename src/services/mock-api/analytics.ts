@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { TrafficAnalytics, SeoAnalytics, PlatformOverview, TrafficAnalyticsReport, ContentAnalytics, EngagementAnalytics, ModerationAnalytics, CreatorEngagement, TrafficSources, TrendingContent, DailyActiveUsers, WeeklyActiveUsers, TopContent, TopKeyword } from '@/types/analytics';
+import { TrafficAnalytics, SeoAnalytics, PlatformOverview, TrafficAnalyticsReport, ContentAnalytics, EngagementAnalytics, ModerationAnalytics, CreatorEngagement, TrafficSources, TrendingContent, DailyActiveUsers, WeeklyActiveUsers, TopContent, TopKeyword, GrowthMetrics } from '@/types/analytics';
 
 /**
  * @fileOverview Mock service for platform analytics and trending data.
@@ -103,6 +103,27 @@ export const getWAUData = async (): Promise<ApiResponse<WeeklyActiveUsers[]>> =>
     { week: 'W6', activeUsers: 65800 },
   ];
   return { data, status: 200 };
+};
+
+export const getGrowthMetrics = async (): Promise<ApiResponse<GrowthMetrics>> => {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  return {
+    data: {
+      newUsers: 1240,
+      newCreators: 12,
+      newContent: 85,
+      growthOverTime: [
+        { date: '2024-03-01', users: 100, creators: 1, content: 5 },
+        { date: '2024-03-02', users: 150, creators: 2, content: 8 },
+        { date: '2024-03-03', users: 120, creators: 1, content: 4 },
+        { date: '2024-03-04', users: 200, creators: 3, content: 12 },
+        { date: '2024-03-05', users: 250, creators: 2, content: 15 },
+        { date: '2024-03-06', users: 220, creators: 1, content: 10 },
+        { date: '2024-03-07', users: 300, creators: 2, content: 20 },
+      ]
+    },
+    status: 200
+  };
 };
 
 export const getTopContent = async (): Promise<ApiResponse<TopContent[]>> => {
