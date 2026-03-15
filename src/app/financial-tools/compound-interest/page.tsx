@@ -3,34 +3,44 @@
 import React, { useState } from 'react';
 import { Container } from '@/design-system/layout/container';
 import { Text } from '@/design-system/typography/text';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
+import { 
+  Select, 
+  SelectContent, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue 
+} from '@/components/ui/select';
 import { financialMath } from '@/modules/calculators/utils/calculations';
 import { CalculatorResultModal } from '@/modules/calculators/components/CalculatorResultModal';
-import { TrendingUp, RefreshCcw, ArrowLeft } from 'lucide-react';
+import { TrendingUp, RefreshCcw, ArrowLeft, Info } from 'lucide-react';
 import Link from 'next/link';
 
 /**
  * High-fidelity Compound Interest Calculator.
+ * Supports principal, rates, time periods, and compounding frequency.
  */
 export default function CompoundInterestPage() {
   const [principal, setPrincipal] = useState<string>('10000');
   const [rate, setRate] = useState<string>('7');
   const [years, setYears] = useState<string>('10');
-  const [monthly, setMonthly] = useState<string>('500');
+  const [frequency, setFrequency] = useState<string>('12'); // Default to Monthly
   
   const [result, setResult] = useState<number | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleCalculate = (e: React.FormEvent) => {
     e.preventDefault();
+    // Using the refined calculation logic with frequency
     const final = financialMath.calculateCompoundInterest(
       Number(principal),
       Number(rate),
       Number(years),
-      Number(monthly)
+      0, // Monthly contribution set to 0 for this simplified prompt request
+      Number(frequency)
     );
     setResult(final);
     setIsModalOpen(true);
@@ -40,12 +50,23 @@ export default function CompoundInterestPage() {
     setPrincipal('10000');
     setRate('7');
     setYears('10');
-    setMonthly('500');
+    setFrequency('12');
     setResult(null);
     setIsModalOpen(false);
   };
 
   const formattedResult = result ? new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(result) : '';
+
+  const getFrequencyLabel = (val: string) => {
+    switch (val) {
+      case '1': return 'Annually';
+      case '2': return 'Semi-Annually';
+      case '4': return 'Quarterly';
+      case '12': return 'Monthly';
+      case '365': return 'Daily';
+      default: return 'Monthly';
+    }
+  };
 
   return (
     <main className="min-h-screen bg-background pt-20 pb-32">
@@ -57,82 +78,95 @@ export default function CompoundInterestPage() {
         <header className="mb-12">
           <div className="flex items-center gap-3 text-primary mb-4">
             <TrendingUp className="h-6 w-6" />
-            <Text variant="label" className="font-bold">Wealth Building Tool</Text>
+            <Text variant="label" className="font-bold tracking-widest">Financial Intelligence</Text>
           </div>
-          <Text variant="h1" className="text-4xl lg:text-6xl font-bold mb-4">Compound Interest Engine</Text>
-          <Text variant="body" className="text-muted-foreground text-lg">
-            Understand the power of time and consistent contributions on your portfolio growth.
+          <Text variant="h1" className="text-4xl lg:text-6xl font-bold mb-4 tracking-tight">Compound Interest Engine</Text>
+          <Text variant="body" className="text-muted-foreground text-lg leading-relaxed">
+            Determine the future value of your investments by analyzing the power of time and compounding frequency.
           </Text>
         </header>
 
         <Card className="glass-card border-none shadow-2xl overflow-hidden">
-          <div className="bg-primary/5 px-8 py-4 border-b border-white/5">
-            <Text variant="caption" className="text-primary font-bold uppercase tracking-widest">Input Parameters</Text>
+          <div className="bg-primary/5 px-8 py-4 border-b border-white/5 flex items-center gap-2">
+            <Info className="h-4 w-4 text-primary" />
+            <Text variant="caption" className="text-primary font-bold uppercase tracking-widest">Growth Parameters</Text>
           </div>
           <CardContent className="p-8">
             <form onSubmit={handleCalculate} className="space-y-8">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-3">
-                  <Label htmlFor="principal">Initial Principal ($)</Label>
+                  <Label htmlFor="principal" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Initial Principal ($)</Label>
                   <Input 
                     id="principal" 
                     type="number" 
                     value={principal} 
                     onChange={(e) => setPrincipal(e.target.value)}
-                    className="h-12 bg-background/50 rounded-xl"
+                    className="h-12 bg-background/50 rounded-xl border-white/10 focus:ring-primary"
+                    placeholder="e.g. 10000"
                     required
                   />
                 </div>
+                
                 <div className="space-y-3">
-                  <Label htmlFor="rate">Annual Interest Rate (%)</Label>
+                  <Label htmlFor="rate" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Annual Interest Rate (%)</Label>
                   <Input 
                     id="rate" 
                     type="number" 
                     step="0.1"
                     value={rate} 
                     onChange={(e) => setRate(e.target.value)}
-                    className="h-12 bg-background/50 rounded-xl"
+                    className="h-12 bg-background/50 rounded-xl border-white/10 focus:ring-primary"
+                    placeholder="e.g. 7.5"
                     required
                   />
                 </div>
+
                 <div className="space-y-3">
-                  <Label htmlFor="years">Time Horizon (Years)</Label>
+                  <Label htmlFor="years" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Time Horizon (Years)</Label>
                   <Input 
                     id="years" 
                     type="number" 
                     value={years} 
                     onChange={(e) => setYears(e.target.value)}
-                    className="h-12 bg-background/50 rounded-xl"
+                    className="h-12 bg-background/50 rounded-xl border-white/10 focus:ring-primary"
+                    placeholder="e.g. 20"
                     required
                   />
                 </div>
+
                 <div className="space-y-3">
-                  <Label htmlFor="monthly">Monthly Contribution ($)</Label>
-                  <Input 
-                    id="monthly" 
-                    type="number" 
-                    value={monthly} 
-                    onChange={(e) => setMonthly(e.target.value)}
-                    className="h-12 bg-background/50 rounded-xl"
-                  />
+                  <Label htmlFor="frequency" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Compounding Frequency</Label>
+                  <Select value={frequency} onValueChange={setFrequency}>
+                    <SelectTrigger className="h-12 bg-background/50 rounded-xl border-white/10">
+                      <SelectValue placeholder="Select frequency" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="1">Annually</SelectItem>
+                      <SelectItem value="2">Semi-Annually</SelectItem>
+                      <SelectItem value="4">Quarterly</SelectItem>
+                      <SelectItem value="12">Monthly</SelectItem>
+                      <SelectItem value="365">Daily</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
 
-              <div className="flex gap-4 pt-4">
-                <Button type="button" variant="outline" onClick={handleReset} className="h-14 flex-1 rounded-2xl font-bold">
-                  <RefreshCcw className="mr-2 h-4 w-4" /> Reset
+              <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                <Button type="button" variant="outline" onClick={handleReset} className="h-14 flex-1 rounded-2xl font-bold border-white/10 hover:bg-white/5 transition-all">
+                  <RefreshCcw className="mr-2 h-4 w-4" /> Reset Tool
                 </Button>
-                <Button type="submit" className="h-14 flex-1 bg-primary hover:bg-primary/90 rounded-2xl font-bold shadow-xl shadow-primary/20">
-                  Run Projection
+                <Button type="submit" className="h-14 flex-1 bg-primary hover:bg-primary/90 text-white rounded-2xl font-bold shadow-xl shadow-primary/20 transition-all scale-[1.02] active:scale-100">
+                  Calculate Projections
                 </Button>
               </div>
             </form>
           </CardContent>
         </Card>
 
-        <div className="mt-12 p-8 rounded-3xl bg-secondary/5 border border-secondary/20">
-          <Text variant="bodySmall" className="text-muted-foreground leading-relaxed italic">
-            "Compound interest is the eighth wonder of the world. He who understands it, earns it... he who doesn't... pays it." — Albert Einstein
+        <div className="mt-12 p-8 rounded-[2.5rem] bg-secondary/5 border border-secondary/20 relative overflow-hidden">
+          <div className="absolute -top-4 -right-4 w-24 h-24 bg-secondary/10 rounded-full blur-2xl" />
+          <Text variant="bodySmall" className="text-muted-foreground leading-relaxed italic relative z-10">
+            "Compound interest is the engine of wealth. By reinvesting your returns, you allow your capital to grow at an accelerating rate over time." — Financial Intelligence Index
           </Text>
         </div>
 
@@ -140,9 +174,9 @@ export default function CompoundInterestPage() {
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           onReset={handleReset}
-          title="Projected Future Value"
+          title="Projected Growth"
           result={formattedResult}
-          description={`With an initial investment of ${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(Number(principal))} and monthly contributions of ${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(Number(monthly))}, your portfolio is projected to grow to ${formattedResult} over ${years} years at a ${rate}% annual rate.`}
+          description={`With an initial investment of ${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(Number(principal))}, your portfolio is projected to grow to ${formattedResult} over ${years} years at a ${rate}% annual rate, compounding ${getFrequencyLabel(frequency).toLowerCase()}.`}
         />
       </Container>
     </main>
