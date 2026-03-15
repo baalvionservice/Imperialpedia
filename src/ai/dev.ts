@@ -17,3 +17,4 @@ import '@/ai/flows/multi-asset-comparison-flow.ts';
 import '@/ai/flows/ai-news-summary-flow.ts';
 import '@/ai/flows/trend-explanation-flow.ts';
 import '@/ai/flows/automated-recap-flow.ts';
+import '@/ai/flows/model-performance-flow.ts';

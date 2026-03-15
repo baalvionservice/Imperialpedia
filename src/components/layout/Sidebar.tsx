@@ -51,7 +51,8 @@ import {
   Globe,
   Newspaper,
   CalendarDays,
-  GitCompare
+  GitCompare,
+  Activity as ActivityIcon
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 import { useAppStore } from '@/lib/state/app-store';
@@ -180,6 +181,7 @@ const Sidebar = ({ className }: { className?: string }) => {
     { icon: Globe, label: 'AI Macro Summary', href: '/ai-analyst/macro-summary' },
     { icon: Layers, label: 'AI Sector Overview', href: '/ai-analyst/sector-overview' },
     { icon: MessageSquare, label: 'AI Social Sentiment', href: '/ai-analyst/social-sentiment' },
+    { icon: ActivityIcon, label: 'AI Model Integrity', href: '/ai-analyst/model-performance' },
     { icon: Search, label: 'Internal Search', href: '/search' },
     { icon: UsersIcon, label: 'Creator Network', href: '/creators' },
     { icon: CalcIcon, label: 'Financial Tools', href: '/financial-tools' },
