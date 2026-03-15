@@ -1,3 +1,4 @@
+
 'use client';
 
 import React from 'react';
@@ -86,7 +87,7 @@ const Sidebar = ({ className }: { className?: string }) => {
   const isWriter = role === 'writer' || role === 'admin';
 
   const adminItems = [
-    { icon: LayoutDashboard, label: 'Admin Home', href: '/admin' },
+    { icon: LayoutDashboard, label: 'Admin Dashboard', href: '/admin/dashboard' },
     { icon: UsersIcon, label: 'User Management', href: '/admin/users' },
     { icon: Lock, label: 'Roles & Permissions', href: '/admin/roles' },
     { icon: ShieldX, label: 'Content Moderation', href: '/admin/moderation' },
@@ -95,7 +96,7 @@ const Sidebar = ({ className }: { className?: string }) => {
     { icon: ImageIcon, label: 'Media Library', href: '/admin/media' },
     { icon: Layers, label: 'Categories', href: '/admin/categories' },
     { icon: Tags, label: 'Topics & Tags', href: '/admin/tags' },
-    { icon: BarChart3, label: 'Analytics', href: '/admin/analytics' },
+    { icon: BarChart3, label: 'System Analytics', href: '/admin/analytics' },
     { icon: ShieldCheck, label: 'Audit Trail', href: '/admin/audit' },
     { icon: ShieldAlert, label: 'pSEO Health', href: '/admin/seo-audit' },
     { icon: Settings, label: 'System Settings', href: '/admin/settings' },
