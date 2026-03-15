@@ -236,3 +236,13 @@ export interface EngagementTrends {
   shares: TrendNode[];
   combined: (TrendNode & { likes: number; comments: number; shares: number })[];
 }
+
+export interface FullAnalyticsOverview {
+  platformOverview: PlatformOverview;
+  dailyActiveUsers: DailyActiveUsers[];
+  weeklyActiveUsers: WeeklyActiveUsers[];
+  topContent: TopContent[];
+  topCreators: TopCreator[];
+  trafficTrends: TrafficTrends;
+  engagementTrends: EngagementTrends;
+}

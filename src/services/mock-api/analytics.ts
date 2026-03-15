@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { TrafficAnalytics, SeoAnalytics, PlatformOverview, TrafficAnalyticsReport, ContentAnalytics, EngagementAnalytics, ModerationAnalytics, CreatorEngagement, TrafficSources, TrendingContent, DailyActiveUsers, WeeklyActiveUsers, TopContent, TopKeyword, GrowthMetrics, EngagementByCategory, TrafficTrends, EngagementTrends } from '@/types/analytics';
+import { TrafficAnalytics, SeoAnalytics, PlatformOverview, TrafficAnalyticsReport, ContentAnalytics, EngagementAnalytics, ModerationAnalytics, CreatorEngagement, TrafficSources, TrendingContent, DailyActiveUsers, WeeklyActiveUsers, TopContent, TopKeyword, GrowthMetrics, EngagementByCategory, TrafficTrends, EngagementTrends, FullAnalyticsOverview, TopCreator } from '@/types/analytics';
 
 /**
  * @fileOverview Mock service for platform analytics and trending data.
@@ -291,158 +291,28 @@ export const getEngagementTrends = async (): Promise<ApiResponse<EngagementTrend
   };
 };
 
-export const getContentAnalytics = async (): Promise<ApiResponse<ContentAnalytics>> => {
-  await new Promise((resolve) => setTimeout(resolve, 500));
-  return {
-    data: {
-      totalViews: 1254000,
-      totalArticles: 1248,
-      avgEngagement: 4.8,
-      topArticles: [
-        {
-          articleId: 'art-1',
-          title: 'Understanding Yield Curve Inversion',
-          category: 'Economics',
-          tags: ['Macro', 'Recession'],
-          views: 45200,
-          likes: 1240,
-          comments: 320,
-          shares: 580,
-          avgReadTime: 485,
-          seoScore: 98
-        },
-        {
-          articleId: 'art-2',
-          title: 'The Power of Compound Interest',
-          category: 'Investing',
-          tags: ['Basics', 'Wealth'],
-          views: 38900,
-          likes: 2400,
-          comments: 110,
-          shares: 920,
-          avgReadTime: 320,
-          seoScore: 95
-        },
-        {
-          articleId: 'art-3',
-          title: 'Macro Trends in 2026',
-          category: 'Economics',
-          tags: ['Macro', 'Future'],
-          views: 31200,
-          likes: 850,
-          comments: 95,
-          shares: 210,
-          avgReadTime: 640,
-          seoScore: 92
-        }
-      ],
-      topCategories: [
-        { category: 'Economics', views: 450000, articleCount: 320 },
-        { category: 'Investing', views: 380000, articleCount: 450 },
-        { category: 'Markets', views: 220000, articleCount: 280 }
-      ],
-      topTags: [
-        { tag: 'Macro', views: 120000 },
-        { tag: 'Recession', views: 95000 }
-      ],
-      dailyViews: [
-        { date: '2024-03-01', views: 42000 },
-        { date: '2024-03-02', views: 45000 }
-      ]
-    },
-    status: 200
-  };
-};
+export const getFullAnalyticsOverview = async (): Promise<ApiResponse<FullAnalyticsOverview>> => {
+  await new Promise((resolve) => setTimeout(resolve, 800));
+  
+  const [platform, dau, wau, content, creators, traffic, engagement] = await Promise.all([
+    getPlatformOverview(),
+    getDAUData(),
+    getWAUData(),
+    getTopContent(),
+    getTopCreators(),
+    getTrafficTrends(),
+    getEngagementTrends()
+  ]);
 
-export const getTrafficAnalytics = async (): Promise<ApiResponse<TrafficAnalytics>> => {
-  await new Promise((resolve) => setTimeout(resolve, 500));
   return {
     data: {
-      activeUsers: 1420,
-      pageViews: 425000,
-      sessionDuration: 402,
-      bounceRate: 32.4,
-      deviceBreakdown: { desktop: 58, mobile: 35, tablet: 7 },
-      geoBreakdown: [
-        { country: 'United States', users: 125000, percentage: 42 }
-      ],
-      hourlyTraffic: Array.from({ length: 24 }, (_, i) => ({
-        hour: `${i}:00`,
-        sessions: Math.floor(Math.random() * 500) + 200,
-        views: Math.floor(Math.random() * 2000) + 1000
-      }))
-    },
-    status: 200
-  };
-};
-
-export const getTrafficAnalyticsReport = async (): Promise<ApiResponse<TrafficAnalyticsReport>> => {
-  await new Promise((resolve) => setTimeout(resolve, 500));
-  return {
-    data: {
-      dailyVisits: [
-        { date: '2024-03-01', visits: 12400 },
-        { date: '2024-03-02', visits: 13200 },
-        { date: '2024-03-03', visits: 11800 },
-        { date: '2024-03-04', visits: 14500 },
-        { date: '2024-03-05', visits: 16200 },
-        { date: '2024-03-06', visits: 15800 },
-        { date: '2024-03-07', visits: 17400 },
-      ],
-      trafficSources: [
-        { source: 'Organic Search', percent: 45 },
-        { source: 'Direct', percent: 25 },
-        { source: 'Social Media', percent: 18 },
-        { source: 'Referral', percent: 12 },
-      ],
-      topPages: [
-        { page: '/articles/yield-curve', visits: 45200, bounceRate: 24.5 },
-        { page: '/financial-tools/compound-interest', visits: 38900, bounceRate: 18.2 },
-        { page: '/glossary/bull-market', visits: 28400, bounceRate: 35.1 },
-      ]
-    },
-    status: 200
-  };
-};
-
-export const getTrafficSources = async (): Promise<ApiResponse<TrafficSources>> => {
-  await new Promise((resolve) => setTimeout(resolve, 500));
-  return {
-    data: {
-      sources: [
-        { name: 'Organic Search', percent: 45.2, trend: 'Up', count: 56400 },
-        { name: 'Direct', percent: 24.8, trend: 'Stable', count: 31000 },
-        { name: 'Social Media', percent: 18.5, trend: 'Up', count: 23100 },
-        { name: 'Referral', percent: 11.5, trend: 'Down', count: 14300 },
-      ],
-      topReferrers: [
-        { source: 'google.com', visits: 42500, conversion: 4.2, trend: 'Up' },
-        { source: 'twitter.com', visits: 15400, conversion: 6.8, trend: 'Up' },
-        { source: 'linkedin.com', visits: 8200, conversion: 8.4, trend: 'Stable' },
-        { source: 'bing.com', visits: 4100, conversion: 2.1, trend: 'Down' },
-        { source: 'duckduckgo.com', visits: 2800, conversion: 3.5, trend: 'Up' },
-      ]
-    },
-    status: 200
-  };
-};
-
-export const getSeoAnalytics = async (): Promise<ApiResponse<SeoAnalytics>> => {
-  await new Promise((resolve) => setTimeout(resolve, 500));
-  return {
-    data: {
-      indexedPages: 1042000,
-      clickThroughRate: 4.2,
-      avgPosition: 12.4,
-      backlinks: 85400,
-      topKeywords: [
-        { id: '1', page: '/articles/yield-curve', keyword: 'Yield Curve Inversion', rank: 1.2, clicks: 12400, impressions: 45000, ctr: 27.5, trend: 'up' },
-        { id: '2', page: '/financial-tools/compound-interest', keyword: 'Compound Interest Calculator', rank: 2.4, clicks: 8200, impressions: 32000, ctr: 25.6, trend: 'up' },
-      ],
-      trends: [
-        { date: '2024-03-01', clicks: 4200, impressions: 120000 },
-        { date: '2024-03-02', clicks: 4500, impressions: 125000 },
-      ]
+      platformOverview: platform.data!,
+      dailyActiveUsers: dau.data!,
+      weeklyActiveUsers: wau.data!,
+      topContent: content.data!,
+      topCreators: creators.data!,
+      trafficTrends: traffic.data!,
+      engagementTrends: engagement.data!
     },
     status: 200
   };
@@ -536,3 +406,28 @@ export const getCreatorEngagement = async (): Promise<ApiResponse<CreatorEngagem
     status: 200
   };
 };
+
+export const getTopCreators = async (): Promise<ApiResponse<TopCreator[]>> => {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  const data: TopCreator[] = mockAdminCreatorAnalytics.map(c => ({
+    id: c.id,
+    name: c.name,
+    avatar: c.avatar,
+    totalContent: c.contentCount,
+    followers: c.followers,
+    engagementRate: c.engagementRate,
+    revenue: c.totalRevenue,
+    verified: c.verified,
+    category: c.category
+  })).sort((a, b) => b.revenue - a.revenue);
+  
+  return { data, status: 200 };
+};
+
+const mockAdminCreatorAnalytics: AdminCreatorAnalytics[] = [
+  { id: 'creator-1', name: 'The Market Maven', username: 'marketmaven', avatar: 'https://picsum.photos/seed/maven/200/200', contentCount: 42, followers: 15400, engagementRate: 5.8, totalViews: 850000, totalRevenue: 12450.00, lastActive: '2024-03-12T10:30:00Z', verified: true, category: 'Economics' },
+  { id: 'creator-4', name: 'Eleanor Vance', username: 'econvance', avatar: 'https://picsum.photos/seed/eleanor/200/200', contentCount: 120, followers: 25000, engagementRate: 4.2, totalViews: 4500000, totalRevenue: 28900.00, lastActive: '2024-03-12T11:45:00Z', verified: true, category: 'Economics' },
+  { id: 'creator-2', name: 'Julian Wealth', username: 'wealthbuilder', avatar: 'https://picsum.photos/seed/wealth/200/200', contentCount: 15, followers: 8200, engagementRate: 6.4, totalViews: 120000, totalRevenue: 8500.50, lastActive: '2024-03-11T16:20:00Z', verified: true, category: 'Investing' },
+  { id: 'creator-3', name: 'Sarah Crypto', username: 'defianalyst', avatar: 'https://picsum.photos/seed/defi/200/200', contentCount: 8, followers: 3500, engagementRate: 3.9, totalViews: 45000, totalRevenue: 1200.00, lastActive: '2024-03-10T09:15:00Z', verified: false, category: 'Crypto' },
+  { id: 'creator-8', name: 'Dan Income', username: 'dividenddan', avatar: 'https://picsum.photos/seed/dan/200/200', contentCount: 35, followers: 12500, engagementRate: 7.1, totalViews: 420000, totalRevenue: 15600.00, lastActive: '2024-03-12T08:00:00Z', verified: true, category: 'Investing' },
+];

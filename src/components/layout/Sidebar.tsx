@@ -98,6 +98,7 @@ const Sidebar = ({ className }: { className?: string }) => {
 
   const adminItems = [
     { icon: LayoutDashboard, label: 'Admin Dashboard', href: '/admin/dashboard' },
+    { icon: BarChart3, label: 'Analytics Overview', href: '/admin/analytics/full-overview' },
     { icon: UsersIcon, label: 'User Management', href: '/admin/users' },
     { icon: Lock, label: 'Roles & Permissions', href: '/admin/roles' },
     { icon: ShieldX, label: 'Content Moderation', href: '/admin/moderation' },

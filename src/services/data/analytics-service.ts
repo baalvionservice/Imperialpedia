@@ -2,7 +2,7 @@ import * as mockApi from '@/services/mock-api/analytics';
 import { ApiResponse } from '@/types';
 import { TrendingItem } from '@/services/mock-api/analytics';
 import { errorHandler } from '@/lib/errors/error-handler';
-import { TrafficAnalytics, SeoAnalytics, PlatformOverview, ContentAnalyticsReport, TrafficAnalyticsReport, EngagementAnalytics, ModerationAnalytics, CreatorEngagement, TrafficSources, TrendingContent, DailyActiveUsers, WeeklyActiveUsers, TopContent, TopKeyword, GrowthMetrics, EngagementByCategory, TrafficTrends, EngagementTrends } from '@/types/analytics';
+import { TrafficAnalytics, SeoAnalytics, PlatformOverview, ContentAnalyticsReport, TrafficAnalyticsReport, EngagementAnalytics, ModerationAnalytics, CreatorEngagement, TrafficSources, TrendingContent, DailyActiveUsers, WeeklyActiveUsers, TopContent, TopKeyword, GrowthMetrics, EngagementByCategory, TrafficTrends, EngagementTrends, FullAnalyticsOverview } from '@/types/analytics';
 
 /**
  * @fileOverview Abstraction layer for analytics and trending data with error handling.
@@ -285,6 +285,19 @@ export const analyticsService = {
       const appError = errorHandler.handleError(error);
       return {
         data: [],
+        status: appError.statusCode,
+        error: appError.message,
+      };
+    }
+  },
+
+  async getFullAnalyticsOverview(): Promise<ApiResponse<FullAnalyticsOverview | null>> {
+    try {
+      return await mockApi.getFullAnalyticsOverview();
+    } catch (error) {
+      const appError = errorHandler.handleError(error);
+      return {
+        data: null,
         status: appError.statusCode,
         error: appError.message,
       };
