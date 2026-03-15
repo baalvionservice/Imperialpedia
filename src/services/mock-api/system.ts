@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog, SecuritySettings } from '@/types/system';
+import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog, SecuritySettings, GlobalNotificationSettings } from '@/types/system';
 
 /**
  * @fileOverview Mock service for managing global platform configuration and system notifications.
@@ -40,6 +40,12 @@ const mockSettings: SystemSettings = {
     allowSelfOnboarding: true,
     autoModerateComments: false
   }
+};
+
+const mockGlobalNotificationSettings: GlobalNotificationSettings = {
+  email: true,
+  push: true,
+  sms: false
 };
 
 const mockSecuritySettings: SecuritySettings = {
@@ -142,6 +148,23 @@ export const updateSystemSettings = async (settings: SystemSettings): Promise<Ap
   };
 };
 
+export const getGlobalNotificationSettings = async (): Promise<ApiResponse<GlobalNotificationSettings>> => {
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  return {
+    data: mockGlobalNotificationSettings,
+    status: 200,
+  };
+};
+
+export const updateGlobalNotificationSettings = async (settings: GlobalNotificationSettings): Promise<ApiResponse<GlobalNotificationSettings>> => {
+  await new Promise((resolve) => setTimeout(resolve, 800));
+  return {
+    data: settings,
+    status: 200,
+    message: 'Communication nodes synchronized across the cluster.'
+  };
+};
+
 export const getSecuritySettings = async (): Promise<ApiResponse<SecuritySettings>> => {
   await new Promise((resolve) => setTimeout(resolve, 400));
   return {
@@ -205,16 +228,21 @@ export const getSystemHealth = async (): Promise<ApiResponse<SystemHealth>> => {
   await new Promise((resolve) => setTimeout(resolve, 400));
   return {
     data: {
-      apiUptime: 99.98,
-      dbStatus: 'healthy',
-      serverLoad: 42,
-      errorRate: 0.04,
+      uptimePercentage: 99.98,
+      errorCountLast24h: 12,
+      apiStatus: 'Healthy',
       latency: 42,
       history: Array.from({ length: 24 }, (_, i) => ({
         timestamp: `${i}:00`,
         load: Math.floor(Math.random() * 30) + 20,
-        errors: Math.random() * 0.1
-      }))
+        errors: Math.floor(Math.random() * 2)
+      })),
+      nodes: [
+        { name: 'API Gateway Hub', status: 'Healthy', load: 24 },
+        { name: 'pSEO Ingestion Node', status: 'Healthy', load: 68 },
+        { name: 'Search Index Cluster', status: 'Warning', load: 82 },
+        { name: 'Media Transformer', status: 'Healthy', load: 12 },
+      ]
     },
     status: 200
   };

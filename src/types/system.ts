@@ -39,6 +39,12 @@ export interface SystemSettings {
   };
 }
 
+export interface GlobalNotificationSettings {
+  email: boolean;
+  push: boolean;
+  sms: boolean;
+}
+
 export interface SecuritySettings {
   twoFactorAuth: boolean;
   passwordPolicy: {
@@ -83,15 +89,19 @@ export interface AdminAlert {
 }
 
 export interface SystemHealth {
-  apiUptime: number;
-  dbStatus: 'healthy' | 'warning' | 'critical';
-  serverLoad: number;
-  errorRate: number;
+  uptimePercentage: number;
+  errorCountLast24h: number;
+  apiStatus: 'Healthy' | 'Warning' | 'Critical';
   latency: number;
   history: {
     timestamp: string;
-    load: number;
     errors: number;
+    load: number;
+  }[];
+  nodes: {
+    name: string;
+    status: 'Healthy' | 'Warning' | 'Critical';
+    load: number;
   }[];
 }
 
