@@ -8,13 +8,16 @@ export type Timestamp = string; // ISO 8601 format
 
 export type Status = 'active' | 'inactive' | 'development' | 'planned' | 'archived';
 
-export type Role = 'admin' | 'writer' | 'editor' | 'creator' | 'reader' | 'guest';
+export type Role = 'admin' | 'writer' | 'editor' | 'creator' | 'reader' | 'guest' | 'viewer';
+
+export type UserStatus = 'active' | 'suspended' | 'pending';
 
 export interface User {
   id: ID;
   name: string;
   email: string;
   role: Role;
+  status?: UserStatus;
   avatar?: string;
 }
 
