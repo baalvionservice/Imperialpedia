@@ -1,4 +1,5 @@
 import { Article, PaginatedResponse, ApiResponse } from '@/types';
+import { SubmittedArticle } from '@/modules/content-engine/types/article';
 
 /**
  * @fileOverview Mock service for managing article data.
@@ -48,19 +49,30 @@ const mockArticles: Article[] = [
     },
   },
   {
-    id: 'art-draft-1',
-    slug: 'macro-trends-2026',
-    title: 'Macro Trends in 2026',
-    description: 'Predicting the shift in global trade and monetary policy.',
-    excerpt: 'As we approach the mid-decade, several structural changes are emerging...',
-    content: '',
+    id: 'art-sub-1',
+    slug: 'future-of-central-banking',
+    title: 'The Future of Central Banking in a Digital Age',
+    description: 'How CBDCs and algorithmic policy are changing the role of the Fed.',
+    excerpt: 'Central banks are at a crossroads as digital currencies gain traction...',
+    content: 'As we move further into the 21st century, the foundational principles of central banking are being challenged by the rise of decentralized finance and digital currencies...',
     category: 'Economics',
     authorId: 'creator-1',
-    tags: ['macro', 'future'],
-    featuredImage: '',
+    tags: ['macro', 'crypto', 'banking'],
+    featuredImage: 'https://picsum.photos/seed/banking/800/600',
+    publishedAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
-    status: 'draft',
-    readingTime: 0,
+    status: 'review',
+    readingTime: 12,
+  }
+];
+
+const mockSubmittedArticles: SubmittedArticle[] = [
+  {
+    ...mockArticles[2],
+    comments: [
+      { id: 'c1', userId: 'editor-1', message: 'Please clarify the section on liquidity injection.', createdAt: '2024-03-10T10:00:00Z' }
+    ],
+    submittedAt: '2024-03-09T15:00:00Z'
   }
 ];
 
@@ -102,4 +114,14 @@ export const getFeaturedArticles = async (): Promise<ApiResponse<Article[]>> => 
 export const getWriterDrafts = async (writerId: string): Promise<Article[]> => {
   await new Promise((resolve) => setTimeout(resolve, 300));
   return mockArticles.filter((a) => a.authorId === writerId && a.status === 'draft');
+};
+
+export const getSubmittedArticles = async (): Promise<SubmittedArticle[]> => {
+  await new Promise((resolve) => setTimeout(resolve, 300));
+  return mockSubmittedArticles;
+};
+
+export const getSubmittedArticleById = async (id: string): Promise<SubmittedArticle | null> => {
+  await new Promise((resolve) => setTimeout(resolve, 300));
+  return mockSubmittedArticles.find(a => a.id === id) || null;
 };

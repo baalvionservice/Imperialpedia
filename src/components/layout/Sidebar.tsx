@@ -16,7 +16,10 @@ import {
   PlusSquare,
   FileEdit,
   Send,
-  UserCircle
+  UserCircle,
+  FileSearch,
+  CheckCircle,
+  MessageSquare
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 
@@ -57,6 +60,13 @@ const Sidebar = ({ className }: { className?: string }) => {
     { icon: Database, label: 'pSEO Health', href: '/admin/seo-audit' },
   ];
 
+  const editorItems = [
+    { icon: LayoutDashboard, label: 'Editor Home', href: '/editor' },
+    { icon: FileSearch, label: 'Pending Reviews', href: '/editor/pending' },
+    { icon: CheckCircle, label: 'Approved Index', href: '/editor/approved' },
+    { icon: MessageSquare, label: 'Editorial Chat', href: '/editor/messages' },
+  ];
+
   const writerItems = [
     { icon: LayoutDashboard, label: 'Writer Home', href: '/writer' },
     { icon: PlusSquare, label: 'New Article', href: '/writer/new' },
@@ -80,7 +90,7 @@ const Sidebar = ({ className }: { className?: string }) => {
       </div>
 
       <div className="space-y-6 flex-grow overflow-y-auto">
-        {/* Admin Section - Only shown if on /admin paths */}
+        {/* Admin Section */}
         {pathname.startsWith('/admin') && (
           <div>
             <Text variant="label" className="px-4 mb-3 text-[10px] text-muted-foreground/50 font-bold uppercase tracking-widest">
@@ -98,7 +108,25 @@ const Sidebar = ({ className }: { className?: string }) => {
           </div>
         )}
 
-        {/* Writer Section - Shown if on /writer paths or general publishing */}
+        {/* Editor Section */}
+        {pathname.startsWith('/editor') && (
+          <div>
+            <Text variant="label" className="px-4 mb-3 text-[10px] text-muted-foreground/50 font-bold uppercase tracking-widest">
+              Editorial Intelligence
+            </Text>
+            <div className="space-y-1">
+              {editorItems.map((item) => (
+                <SidebarItem
+                  key={item.href}
+                  {...item}
+                  isActive={pathname === item.href}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Writer Section */}
         {(pathname.startsWith('/writer') || pathname === '/writer') && (
           <div>
             <Text variant="label" className="px-4 mb-3 text-[10px] text-muted-foreground/50 font-bold uppercase tracking-widest">
@@ -117,7 +145,7 @@ const Sidebar = ({ className }: { className?: string }) => {
         )}
 
         {/* General Publishing Links */}
-        {!pathname.startsWith('/admin') && !pathname.startsWith('/writer') && (
+        {!pathname.startsWith('/admin') && !pathname.startsWith('/writer') && !pathname.startsWith('/editor') && (
           <div>
             <Text variant="label" className="px-4 mb-3 text-[10px] text-muted-foreground/50 font-bold uppercase tracking-widest">
               Knowledge Hub
