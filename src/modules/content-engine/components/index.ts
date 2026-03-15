@@ -12,3 +12,4 @@ export * from './ArticleList';
 export * from './ArticleCard';
 export * from './CategoryHeader';
 export * from './RelatedArticles';
+export * from './TableOfContents';

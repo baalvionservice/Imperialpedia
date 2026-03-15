@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Text } from '@/design-system/typography/text';
 import { ContentBlock } from '../types';
 import { cn } from '@/lib/utils';
+import { slugify } from '../utils/slugify';
 import { 
   Table, 
   TableBody, 
@@ -29,8 +30,15 @@ export const ContentBlockRenderer = ({ block }: ContentBlockRendererProps) => {
     case 'heading': {
       const level = metadata?.level || 2;
       const variant = `h${level}` as any;
+      const id = slugify(content as string);
+      
       return (
-        <Text variant={variant} as={variant} className="mt-8 mb-4">
+        <Text 
+          variant={variant} 
+          as={variant} 
+          id={id}
+          className="mt-8 mb-4 scroll-mt-24"
+        >
           {content}
         </Text>
       );

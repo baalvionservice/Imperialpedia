@@ -4,6 +4,7 @@ import React from 'react';
 import { Text } from '@/design-system/typography/text';
 import { ContentSection } from '../types';
 import { ContentBlockRenderer } from './ContentBlockRenderer';
+import { slugify } from '../utils/slugify';
 
 interface ArticleSectionProps {
   section: ContentSection;
@@ -13,10 +14,12 @@ interface ArticleSectionProps {
  * Renders a complete article section, including its title and nested content blocks.
  */
 export const ArticleSection = ({ section }: ArticleSectionProps) => {
+  const sectionId = section.title ? slugify(section.title) : undefined;
+
   return (
     <section className="mb-12 scroll-mt-24">
       {section.title && (
-        <Text variant="h2" as="h2" className="mb-6 border-b pb-2">
+        <Text variant="h2" as="h2" id={sectionId} className="mb-6 border-b pb-2 scroll-mt-24">
           {section.title}
         </Text>
       )}

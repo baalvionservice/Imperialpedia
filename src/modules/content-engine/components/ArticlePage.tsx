@@ -7,10 +7,12 @@ import { getArticleBySlug } from '../services/content-service';
 import { ArticleHeader } from './ArticleHeader';
 import { ArticleBody } from './ArticleBody';
 import { RelatedArticles } from './RelatedArticles';
+import { TableOfContents } from './TableOfContents';
 import { Loader2, AlertCircle, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { Card, CardContent } from '@/components/ui/card';
 
 interface ArticlePageProps {
   slug: string;
@@ -18,7 +20,7 @@ interface ArticlePageProps {
 
 /**
  * Main article page component.
- * Handles data fetching, loading states, and orchestrates header/body rendering.
+ * Handles data fetching, loading states, and orchestrates header/body/TOC rendering.
  */
 export const ArticlePage = ({ slug }: ArticlePageProps) => {
   const [article, setArticle] = useState<Article | null>(null);
@@ -76,14 +78,38 @@ export const ArticlePage = ({ slug }: ArticlePageProps) => {
 
   return (
     <article className="py-12 lg:py-20">
-      <Container isNarrow>
-        <ArticleHeader article={article} />
-        {/* In a real scenario, sections would be populated. 
-            For this prototype, we'll assume sections are fetched or included. */}
-        <ArticleBody sections={[]} />
-        
-        <RelatedArticles currentArticleId={article.id} category={article.category} />
-        
+      <Container>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          {/* Main Content Area */}
+          <div className="lg:col-span-8">
+            <ArticleHeader article={article} />
+            
+            {/* Mobile TOC: Collapsible card shown only on mobile/tablet */}
+            <div className="lg:hidden mb-8">
+              <Card className="glass-card">
+                <CardContent className="pt-6">
+                  <TableOfContents sections={[]} /> {/* Sections mapping would happen here */}
+                </CardContent>
+              </Card>
+            </div>
+
+            <ArticleBody sections={[]} /> {/* Real data mapping happens in production */}
+            
+            <RelatedArticles currentArticleId={article.id} category={article.category} />
+          </div>
+
+          {/* Desktop Sidebar TOC */}
+          <aside className="hidden lg:block lg:col-span-4">
+            <div className="sticky top-24">
+              <Card className="glass-card">
+                <CardContent className="pt-6">
+                  <TableOfContents sections={[]} /> {/* Real data mapping happens in production */}
+                </CardContent>
+              </Card>
+            </div>
+          </aside>
+        </div>
+
         <div className="mt-20 pt-8 border-t text-center">
           <Button variant="outline" asChild>
             <Link href="/glossary">Explore Full Glossary</Link>
