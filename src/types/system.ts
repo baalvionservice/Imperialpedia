@@ -458,3 +458,43 @@ export interface SeoManagementData {
   sitemap: SitemapEntry[];
   alerts_suggestions: SeoAlertSuggestion[];
 }
+
+/**
+ * Prompt 49: Experiment Tracking & A/B Testing Types
+ */
+export interface ExperimentNode {
+  id?: string;
+  experiment_name: string;
+  description: string;
+  start_date: string;
+  end_date: string;
+  status: 'mock_running' | 'mock_completed' | 'mock_draft';
+  kpi: {
+    CTR: string;
+    Conversions: string;
+    Engagement?: string;
+  };
+}
+
+export interface AbVariant {
+  variant: string; // A, B, C
+  traffic: string; // 50%
+  metric_values: {
+    CTR: string;
+    Conversions: string;
+  };
+}
+
+export interface ExperimentDetail {
+  experiment_name: string;
+  timeline: string;
+  results_graph: string;
+  variant_insights: string;
+  chart_data?: { date: string; variantA: number; variantB: number }[];
+}
+
+export interface ExperimentManagementData {
+  experiments: ExperimentNode[];
+  ab_variants: AbVariant[];
+  experiment_details: ExperimentDetail[];
+}

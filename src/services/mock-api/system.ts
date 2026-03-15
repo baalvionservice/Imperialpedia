@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types';
-import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog, SecuritySettings, GlobalNotificationSettings, AuditTrailEntry, FeatureSettings, AdminSession, BrandingSettings, SystemAlert, AdminHomeOverview, SecurityDashboardData, AdminSystemHubData, SecurityMockData, InfrastructureMockData, EdgeComputingData, CdnManagementData, SeoManagementData } from '@/types/system';
+import { SystemSettings, SystemNotification, AdminAlert, SystemHealth, Backup, AccessLog, ErrorLog, FeatureFlag, NotificationLog, PlatformSettings, AdminActivityLog, SecuritySettings, GlobalNotificationSettings, AuditTrailEntry, FeatureSettings, AdminSession, BrandingSettings, SystemAlert, AdminHomeOverview, SecurityDashboardData, AdminSystemHubData, SecurityMockData, InfrastructureMockData, EdgeComputingData, CdnManagementData, SeoManagementData, ExperimentManagementData } from '@/types/system';
 
 /**
  * @fileOverview Mock service for managing global platform configuration and system notifications.
@@ -296,6 +296,33 @@ const mockSeoManagementData: SeoManagementData = {
     { alert_type: "Duplicate Meta Node", page: "/glossary/interest-rates", status: "mock_triggered" },
     { suggestion: "Increase keyword density for 'fiscal Super-cycle'", page: "/articles/yield-curve-2026", status: "mock_suggested" },
     { suggestion: "Improve meta description CTR mapping", page: "/glossary/compound-interest", status: "mock_suggested" }
+  ]
+};
+
+const mockExperimentData: ExperimentManagementData = {
+  experiments: [
+    { id: 'exp-1', experiment_name: "Homepage CTA Test", description: "Testing CTA button colors for institutional conversion.", start_date: "2026-03-10", end_date: "2026-03-20", status: "mock_running", kpi: { "CTR": "5%", "Conversions": "2%", "Engagement": "12.4%" } },
+    { id: 'exp-2', experiment_name: "Pricing Page Layout", description: "Testing grid vs stack pricing layouts for Pro tier.", start_date: "2026-03-12", end_date: "2026-03-22", status: "mock_completed", kpi: { "CTR": "6%", "Conversions": "3%", "Engagement": "8.2%" } },
+    { id: 'exp-3', experiment_name: "Expert Profile Badge Shift", description: "Visual priority for verification badges.", start_date: "2026-03-15", end_date: "2026-03-25", status: "mock_draft", kpi: { "CTR": "0%", "Conversions": "0%" } }
+  ],
+  ab_variants: [
+    { variant: "A", traffic: "50%", metric_values: { "CTR": "5%", "Conversions": "2%" } },
+    { variant: "B", traffic: "50%", metric_values: { "CTR": "6%", "Conversions": "3%" } }
+  ],
+  experiment_details: [
+    { 
+      experiment_name: "Homepage CTA Test", 
+      timeline: "mock_timeline", 
+      results_graph: "mock_graph", 
+      variant_insights: "Variant B shows 20% higher conversion velocity in APAC nodes.",
+      chart_data: [
+        { date: 'Day 1', variantA: 120, variantB: 110 },
+        { date: 'Day 2', variantA: 135, variantB: 142 },
+        { date: 'Day 3', variantA: 140, variantB: 168 },
+        { date: 'Day 4', variantA: 155, variantB: 190 },
+        { date: 'Day 5', variantA: 162, variantB: 210 },
+      ]
+    }
   ]
 };
 
@@ -635,6 +662,14 @@ export const getSeoManagementData = async (): Promise<ApiResponse<SeoManagementD
   await new Promise((resolve) => setTimeout(resolve, 600));
   return {
     data: mockSeoManagementData,
+    status: 200,
+  };
+};
+
+export const getExperimentManagementData = async (): Promise<ApiResponse<ExperimentManagementData>> => {
+  await new Promise((resolve) => setTimeout(resolve, 600));
+  return {
+    data: mockExperimentData,
     status: 200,
   };
 };

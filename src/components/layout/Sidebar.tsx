@@ -65,7 +65,8 @@ import {
   Spline,
   Fingerprint,
   Cpu,
-  Network
+  Network,
+  FlaskConical
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 import { useAppStore } from '@/lib/state/app-store';
@@ -148,6 +149,7 @@ const Sidebar = ({ className }: { className?: string }) => {
     { icon: Lock, label: 'Roles & Permissions', href: '/admin/roles' },
     { icon: Shield, label: 'Security Protocols', href: '/admin/control/security' },
     { icon: Fingerprint, label: 'Security Showcase', href: '/admin/control/security-showcase' },
+    { icon: FlaskConical, label: 'Experiment Console', href: '/admin/control/experiments' },
     { icon: Cpu, label: 'Infrastructure & Scale', href: '/admin/control/infrastructure' },
     { icon: Network, label: 'Edge & Multi-Region', href: '/admin/control/edge' },
     { icon: Globe, label: 'CDN & Page Cache', href: '/admin/control/cdn' },

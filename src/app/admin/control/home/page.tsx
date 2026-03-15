@@ -28,7 +28,8 @@ import {
   Network,
   Cpu,
   Globe,
-  Search
+  Search,
+  FlaskConical
 } from 'lucide-react';
 import Link from 'next/link';
 import { systemService } from '@/services/data/system-service';
@@ -80,6 +81,7 @@ export default function AdminControlCenterHomePage() {
     { label: 'Identity Studio', desc: 'Manage brand & visual tokens.', href: '/admin/control/branding', icon: Palette, color: 'text-primary', badge: 0 },
     { label: 'Discovery Logic', desc: 'Manage SEO & Sitemaps.', href: '/admin/control/seo', icon: Search, color: 'text-secondary', badge: 0 },
     { label: 'Broadcast Hub', desc: 'Manage system alerts.', href: '/admin/control/alerts', icon: Megaphone, color: 'text-secondary', badge: overview.alertsActive },
+    { label: 'Experiment Hub', desc: 'A/B testing & Rollouts.', href: '/admin/control/experiments', icon: FlaskConical, color: 'text-emerald-500', badge: 0 },
     { label: 'Session Command', desc: 'Monitor active connections.', href: '/admin/control/sessions', icon: Activity, color: 'text-primary', badge: overview.activeSessions },
     { label: 'Scaling Hub', desc: 'Cluster & deployment telemetry.', href: '/admin/control/infrastructure', icon: Cpu, color: 'text-secondary', badge: 0 },
     { label: 'Distribution Hub', desc: 'Edge & Multi-Region monitoring.', href: '/admin/control/edge', icon: Network, color: 'text-primary', badge: 0 },
