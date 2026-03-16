@@ -34,11 +34,9 @@ export interface TrafficAnalytics {
     mobile: number;
     tablet: number;
   };
-  geoBreakdown: {
-    country: string;
-    users: number;
-    percentage: number;
-  }[];
+  geoBreakdown: [
+    { country: string; users: number; percentage: number }
+  ];
   hourlyTraffic: {
     hour: string;
     sessions: number;
@@ -96,15 +94,49 @@ export interface TopKeyword {
   history: { date: string; impressions: number }[];
 }
 
+/**
+ * Prompt 74: SEO Authority Dashboard Types
+ */
+export interface KeywordRankingNode {
+  keyword: string;
+  search_volume: number;
+  ranking_position: number;
+  ranking_change: string;
+  target_article: string;
+  category: string;
+}
+
+export interface BacklinkNode {
+  source: string;
+  authority: number;
+  date: string;
+  type: 'Do-Follow' | 'No-Follow';
+}
+
+export interface SeoOpportunityNode {
+  title: string;
+  description: string;
+  priority: 'High' | 'Medium' | 'Low';
+}
+
 export interface SeoAnalytics {
   indexedPages: number;
   clickThroughRate: number;
   avgPosition: number;
   backlinks: number;
-  topKeywords: SeoPerformanceItem[];
-  trends: [
-    { date: string; clicks: number; impressions: number }
-  ];
+  total_organic_traffic: number;
+  top_keywords_count: number;
+  keywords: KeywordRankingNode[];
+  backlink_sources: BacklinkNode[];
+  opportunities: SeoOpportunityNode[];
+  top_search_content: Array<{
+    title: string;
+    rank: number;
+    traffic: number;
+    backlinks: number;
+    quality_score: number;
+  }>;
+  trends: { date: string; clicks: number; impressions: number; organic_traffic: number }[];
 }
 
 export interface PlatformOverview {
