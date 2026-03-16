@@ -74,6 +74,11 @@ export function ReviewConsole({ submission }: ReviewConsoleProps) {
           </div>
         </div>
         <div className="flex items-center gap-3">
+          <Button variant="outline" className="rounded-xl border-white/10 h-11 px-6 bg-card/30" asChild>
+            <Link href={`/editor/review/${submission.id}/history`}>
+              <History className="mr-2 h-4 w-4" /> Version History
+            </Link>
+          </Button>
           <Button variant="outline" className="rounded-xl border-destructive/20 text-destructive h-11 px-6 bg-destructive/5" onClick={() => handleDecision('Reject')}>
             <XCircle className="mr-2 h-4 w-4" /> Reject Node
           </Button>
@@ -274,7 +279,7 @@ export function ReviewConsole({ submission }: ReviewConsoleProps) {
 
           <div className="p-8 rounded-[3rem] bg-secondary/5 border border-secondary/20 space-y-4 relative overflow-hidden group">
             <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform">
-              <Sparkles className="h-16 w-16 text-secondary rotate-12" />
+              <Sparkles className="h-16 w-16 text-secondary" />
             </div>
             <div className="flex items-center gap-2 text-secondary font-bold text-sm uppercase tracking-widest">
               <Info className="h-4 w-4" /> Editorial SLA
