@@ -12,15 +12,16 @@ import {
   Twitter, 
   Linkedin, 
   Github, 
-  Mail, 
-  Zap, 
-  Loader2, 
   CheckCircle2, 
   ArrowRight,
-  ChevronRight
+  ChevronRight,
+  Loader2,
+  AlertCircle
 } from 'lucide-react';
 import { WaitlistModal } from '@/components/landing/WaitlistModal';
 import { cn } from '@/lib/utils';
+import { useTranslation } from 'react-i18next';
+import { trackEvent } from '@/lib/utils/analytics';
 
 /**
  * Global Platform Footer.
@@ -28,10 +29,15 @@ import { cn } from '@/lib/utils';
  * Optimized for WCAG 2.1 accessibility.
  */
 export const Footer = () => {
+  const { t } = useTranslation('common');
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
   const [isWaitlistOpen, setIsWaitlistOpen] = useState(false);
+
+  // TODO: AI-powered dynamic footer links based on user behavior
+  // TODO: Footer localization for multi-language support has been integrated
+  // TODO: Translation suggestions for AI-generated knowledge pages
 
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -78,20 +84,18 @@ export const Footer = () => {
 
   return (
     <footer className="bg-card/30 border-t border-white/5 pt-20 pb-12 relative overflow-hidden" role="contentinfo">
-      {/* Visual Background Element */}
       <div className="absolute -bottom-24 -left-24 opacity-[0.02] pointer-events-none" aria-hidden="true">
         <Globe size={480} />
       </div>
 
       <Container>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 mb-20">
-          {/* Brand & Descriptive Node */}
           <div className="lg:col-span-4 space-y-6">
             <Link href="/" className="text-2xl font-bold text-primary tracking-tighter inline-block group focus-visible:ring-2 focus-visible:ring-primary rounded-lg outline-none" aria-label="Imperialpedia home">
               Imperial<span className="text-foreground transition-colors group-hover:text-primary">pedia</span>
             </Link>
             <Text variant="bodySmall" className="text-muted-foreground leading-relaxed max-w-sm">
-              The world's most scalable AI-powered financial intelligence engine. Providing deep-dive research across 1,000,000+ programmatic knowledge nodes.
+              {t('footer.description')}
             </Text>
             <div className="flex items-center gap-3">
               <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl hover:bg-primary/10 hover:text-primary transition-all focus-visible:ring-offset-2" aria-label="Follow us on Twitter">
@@ -106,7 +110,6 @@ export const Footer = () => {
             </div>
           </div>
 
-          {/* Nav Matrix */}
           <div className="lg:col-span-5 grid grid-cols-2 gap-8">
             <nav className="space-y-6" aria-label="Platform directory">
               <Text variant="label" className="text-[10px] font-bold text-foreground/60 tracking-[0.2em] uppercase">Intelligence</Text>
@@ -144,12 +147,11 @@ export const Footer = () => {
             </nav>
           </div>
 
-          {/* Newsletter Acquisition */}
           <div className="lg:col-span-3 space-y-6">
             <div className="space-y-2">
-              <Text variant="label" className="text-[10px] font-bold text-foreground/60 tracking-[0.2em] uppercase">Stay Synchronized</Text>
+              <Text variant="label" className="text-[10px] font-bold text-foreground/60 tracking-[0.2em] uppercase">{t('footer.stay_synced')}</Text>
               <Text variant="caption" className="text-muted-foreground leading-relaxed block">
-                Subscribe to the Intelligence Wire for real-time market audits and pSEO alerts.
+                {t('footer.sync_desc')}
               </Text>
             </div>
             
@@ -191,14 +193,13 @@ export const Footer = () => {
           </div>
         </div>
 
-        {/* Legal & Copyright */}
         <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-6">
             <Text variant="caption" className="text-muted-foreground font-medium">
-              © {new Date().getFullYear()} Imperialpedia. AI Knowledge Infrastructure.
+              {t('footer.copyright', { year: new Date().getFullYear() })}
             </Text>
             <div className="hidden md:flex items-center gap-2 text-emerald-500/40 text-[9px] font-bold uppercase tracking-[0.2em]">
-              <ShieldCheck className="h-3.5 w-3.5" /> Data Traversal Encrypted
+              <ShieldCheck className="h-3.5 w-3.5" /> {t('footer.enc_status')}
             </div>
           </div>
           
@@ -211,9 +212,6 @@ export const Footer = () => {
           </nav>
         </div>
       </Container>
-
-      {/* TODO: AI-powered dynamic footer links based on user behavior */}
-      {/* TODO: Footer localization for multi-language support */}
 
       <WaitlistModal isOpen={isWaitlistOpen} onOpenChange={setIsWaitlistOpen} />
     </footer>

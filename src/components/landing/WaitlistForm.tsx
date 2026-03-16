@@ -8,6 +8,7 @@ import { Text } from '@/design-system/typography/text';
 import { Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { trackEvent } from '@/lib/utils/analytics';
+import { useTranslation } from 'react-i18next';
 
 /**
  * Waitlist email collection form (Inline Version).
@@ -16,6 +17,7 @@ import { trackEvent } from '@/lib/utils/analytics';
  * Optimized for WCAG 2.1 accessibility.
  */
 export const WaitlistForm = () => {
+  const { t } = useTranslation('common');
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
@@ -39,8 +41,6 @@ export const WaitlistForm = () => {
     }
 
     setStatus('loading');
-    
-    // TODO: AI-powered waitlist insights in Phase 2
     trackEvent({ category: 'Form', action: 'Submit', label: 'Inline Waitlist' });
 
     try {
@@ -54,6 +54,7 @@ export const WaitlistForm = () => {
       if (data.success) {
         setStatus('success');
         setMessage(data.message);
+        setEmail('');
         
         toast({
           title: "Identity Secured",
@@ -107,7 +108,7 @@ export const WaitlistForm = () => {
             <Input
               id="inline-email"
               type="email"
-              placeholder="Enter institutional email..."
+              placeholder={t('waitlist.input_placeholder')}
               value={email}
               onChange={(e) => {
                 setEmail(e.target.value);
@@ -124,7 +125,7 @@ export const WaitlistForm = () => {
                 disabled={status === 'loading'}
                 className="h-10 px-6 rounded-xl font-bold bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20 focus-visible:ring-offset-0"
               >
-                {status === 'loading' ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Join Matrix'}
+                {status === 'loading' ? <Loader2 className="h-4 w-4 animate-spin" /> : t('waitlist.submit_button')}
               </Button>
             </div>
           </div>
@@ -139,7 +140,7 @@ export const WaitlistForm = () => {
         </div>
         
         <Text variant="caption" className="text-muted-foreground text-center block px-4 leading-relaxed">
-          Join 142,000+ analysts receiving high-fidelity intelligence nodes. No spam, only alpha.
+          {t('waitlist.caption')}
         </Text>
       </form>
     </div>

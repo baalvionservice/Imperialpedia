@@ -9,7 +9,7 @@ import { buildMetadata } from '@/lib/seo/metadata-builder';
 
 export function generateLandingMetadata(): Metadata {
   return buildMetadata({
-    title: "Imperialpedia — The World's AI Knowledge Infrastructure",
+    title: "Imperialpedia — AI Knowledge Engine",
     description: "Research anything instantly with structured global data. AI-generated knowledge pages, datasets, and research assistant.",
     keywords: [
       "AI Knowledge Infrastructure", 
@@ -27,6 +27,7 @@ export function generateLandingMetadata(): Metadata {
   });
 }
 
-// TODO: AI-powered SEO meta suggestions (Phase 2)
-// TODO: Auto-generate OG images for AI-generated content (Phase 2)
-// TODO: Include multi-language metadata for i18n support (Phase 2)
+// TODO: AI-powered dynamic metadata for entity pages
+// TODO: Auto-generate OG images for AI-generated content
+// TODO: Include multi-language metadata for i18n support
+// TODO: Translation suggestions for AI-generated knowledge pages
