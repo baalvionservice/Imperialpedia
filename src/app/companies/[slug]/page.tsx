@@ -20,10 +20,10 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-async function getCompany(slug: string): Promise<Company | null> {
-  const res = await fetch(`${env.siteUrl}/api/companies?slug=${slug}`, { cache: 'no-store' });
+async function getCompany(slug: string): Promise<any | null> {
+  const res = await fetch(`${env.siteUrl}/api/companies?slug=${slug}&include_relations=true`, { cache: 'no-store' });
   if (!res.ok) return null;
-  const response: ApiResponse<Company> = await res.json();
+  const response: ApiResponse<any> = await res.json();
   return response.data;
 }
 
@@ -69,9 +69,7 @@ export default async function Page({ params }: PageProps) {
 
         <DataTable title="Institutional Handshake" headers={['Attribute', 'Value']} rows={technicalData} />
 
-        <RelatedEntities 
-          entities={company.technologies.map((t: string) => ({ name: t.replace('-', ' '), slug: t, type: 'technology' }))} 
-        />
+        <RelatedEntities entities={company.related_graph_entities || []} />
 
         <Section title="AI Intelligence Synthesis">
           <div className="p-10 rounded-[3rem] bg-primary/5 border border-primary/20 relative overflow-hidden group">

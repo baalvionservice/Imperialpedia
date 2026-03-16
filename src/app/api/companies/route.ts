@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import companies from '@/data/companies.json';
+import { getGraphRelatedEntities } from '@/lib/utils/entityHelpers';
 
 /**
  * Company API Route.
@@ -7,6 +8,7 @@ import companies from '@/data/companies.json';
  * - Listing all companies (with pagination)
  * - Fetching a single company by slug
  * - Filtering by industry
+ * - include_relations=true for graph traversal
  */
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -14,14 +16,20 @@ export async function GET(request: Request) {
   const industry = searchParams.get('industry');
   const page = parseInt(searchParams.get('page') || '1');
   const limit = parseInt(searchParams.get('limit') || '10');
+  const includeRelations = searchParams.get('include_relations') === 'true';
 
-  // FUTURE: Replace this mock logic with a database query (e.g., Prisma/PostgreSQL)
+  // FUTURE: Replace this mock logic with a high-performance graph database (Neo4j)
 
   if (slug) {
-    const company = companies.find((c) => c.slug === slug);
+    const company = (companies as any[]).find((c) => c.slug === slug);
     if (!company) {
       return NextResponse.json({ error: 'Entity not found' }, { status: 404 });
     }
+
+    if (includeRelations) {
+      company.related_graph_entities = getGraphRelatedEntities(company.id);
+    }
+
     return NextResponse.json({ data: company, status: 200 });
   }
 

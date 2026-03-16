@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import technologies from '@/data/technologies.json';
+import { getGraphRelatedEntities } from '@/lib/utils/entityHelpers';
 
 /**
  * Technology API Route.
@@ -7,6 +8,7 @@ import technologies from '@/data/technologies.json';
  * - Listing all technologies (with pagination)
  * - Fetching a single technology by slug
  * - Filtering by industry
+ * - include_relations=true for graph traversal
  */
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -14,14 +16,18 @@ export async function GET(request: Request) {
   const industry = searchParams.get('industry');
   const page = parseInt(searchParams.get('page') || '1');
   const limit = parseInt(searchParams.get('limit') || '10');
-
-  // FUTURE: Replace this mock logic with a database query
+  const includeRelations = searchParams.get('include_relations') === 'true';
 
   if (slug) {
-    const tech = technologies.find((t) => t.slug === slug);
+    const tech = (technologies as any[]).find((t) => t.slug === slug);
     if (!tech) {
       return NextResponse.json({ error: 'Entity not found' }, { status: 404 });
     }
+
+    if (includeRelations) {
+      tech.related_graph_entities = getGraphRelatedEntities(tech.id);
+    }
+
     return NextResponse.json({ data: tech, status: 200 });
   }
 

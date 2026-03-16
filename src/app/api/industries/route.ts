@@ -1,25 +1,31 @@
 import { NextResponse } from 'next/server';
 import industries from '@/data/industries.json';
+import { getGraphRelatedEntities } from '@/lib/utils/entityHelpers';
 
 /**
  * Industry API Route.
  * Supports:
  * - Listing all industries (with pagination)
  * - Fetching a single industry by slug
+ * - include_relations=true for graph traversal
  */
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const slug = searchParams.get('slug');
   const page = parseInt(searchParams.get('page') || '1');
   const limit = parseInt(searchParams.get('limit') || '10');
-
-  // FUTURE: Replace this mock logic with a database query
+  const includeRelations = searchParams.get('include_relations') === 'true';
 
   if (slug) {
-    const industry = industries.find((i) => i.slug === slug);
+    const industry = (industries as any[]).find((i) => i.slug === slug);
     if (!industry) {
       return NextResponse.json({ error: 'Entity not found' }, { status: 404 });
     }
+
+    if (includeRelations) {
+      industry.related_graph_entities = getGraphRelatedEntities(industry.id);
+    }
+
     return NextResponse.json({ data: industry, status: 200 });
   }
 

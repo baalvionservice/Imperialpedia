@@ -5,7 +5,8 @@ import technologies from '@/data/technologies.json';
 import universities from '@/data/universities.json';
 import people from '@/data/people.json';
 import markets from '@/data/markets.json';
-import { BaseEntity, EntityType } from '@/types/entity';
+import { BaseEntity, EntityType, ID } from '@/types/entity';
+import { getRelatedEntityIds } from './relations';
 
 const allData: BaseEntity[] = [
   ...countries as any,
@@ -25,6 +26,13 @@ export function getEntityBySlug(slug: string): BaseEntity | undefined {
 }
 
 /**
+ * Retrieves an entity by its ID node.
+ */
+export function getEntityById(id: ID): BaseEntity | undefined {
+  return allData.find(e => e.id === id);
+}
+
+/**
  * Retrieves all entities of a specific type.
  */
 export function getEntitiesByType(type: EntityType): BaseEntity[] {
@@ -32,7 +40,16 @@ export function getEntitiesByType(type: EntityType): BaseEntity[] {
 }
 
 /**
+ * Fetches entities connected through the Knowledge Graph relations matrix.
+ */
+export function getGraphRelatedEntities(entityId: ID): BaseEntity[] {
+  const relatedIds = getRelatedEntityIds(entityId);
+  return allData.filter(e => relatedIds.includes(e.id));
+}
+
+/**
  * Finds entities related to the given entity based on shared tags, country, or industry.
+ * Legacy helper maintained for initial discovery logic.
  */
 export function getRelatedEntities(entity: BaseEntity): BaseEntity[] {
   return allData.filter(e => 
