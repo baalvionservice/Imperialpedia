@@ -1,7 +1,4 @@
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { ArrowRight, BookOpen, PenTool, Database, PieChart, ShieldCheck, Activity, Sparkles, Zap } from 'lucide-react';
+import React from 'react';
 import { HeroSection } from '@/components/landing/HeroSection';
 import { FeaturesSection } from '@/components/landing/FeaturesSection';
 import { TestimonialsSection } from '@/components/landing/TestimonialsSection';
@@ -12,8 +9,22 @@ import { LandingFooter } from '@/components/landing/Footer';
 import { StickyCTA } from '@/components/landing/StickyCTA';
 import { Text } from '@/design-system/typography/text';
 import { Container } from '@/design-system/layout/container';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { ArrowRight, BookOpen, Database, PenTool, ShieldCheck, Activity, Sparkles, Zap } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import Link from 'next/link';
 import { generateLandingMetadata } from '@/lib/utils/landingSEO';
+
+// --- Phase 2 Loading Components ---
+// import { 
+//   HeroSectionSkeleton, 
+//   FeaturesSectionSkeleton, 
+//   TestimonialsSectionSkeleton, 
+//   FAQSectionSkeleton, 
+//   PricingSectionSkeleton 
+// } from '@/components/landing/SectionSkeletons';
 
 /**
  * Landing Page Metadata.
@@ -23,18 +34,22 @@ export const metadata = generateLandingMetadata();
 
 /**
  * The main Home page for Imperialpedia.
- * This file is the authoritative entry point for the root route.
+ * Orchestrates the full landing page experience from initial value prop to acquisition.
  */
 export default function Home() {
+  // TODO: Implement Phase 2 dynamic loading state
+  // const isLoading = false;
+
   return (
     <div className="flex flex-col w-full">
-      {/* Institutional Hero Section */}
+      {/* 
+        TODO: In Phase 2, wrap these in loading logic:
+        {isLoading ? <HeroSectionSkeleton /> : <HeroSection />}
+      */}
       <HeroSection />
 
-      {/* Core Features & Benefits */}
       <FeaturesSection />
 
-      {/* Social Proof / Testimonials */}
       <TestimonialsSection />
 
       {/* Discovery Matrix Section */}
@@ -54,7 +69,7 @@ export default function Home() {
               { title: 'pSEO Engine', desc: 'Programmatic infrastructure for 1M+ indexable knowledge nodes.', icon: Database, color: 'text-secondary', href: '/explore' },
               { title: 'Creator Economy', desc: 'Tools for experts to build audience and intelligence revenue.', icon: PenTool, color: 'text-primary', href: '/creators' },
               { title: 'Financial Glossary', desc: 'Deep dictionary of 5,000+ market terms and economic definitions.', icon: ShieldCheck, color: 'text-secondary', href: '/glossary' },
-              { title: 'Calculators', desc: 'Precision instruments for everyday planning and wealth modeling.', icon: PieChart, color: 'text-primary', href: '/financial-tools' },
+              { title: 'Calculators', desc: 'Precision instruments for everyday planning and wealth modeling.', icon: Zap, color: 'text-primary', href: '/financial-tools' },
               { title: 'Analytics Hub', desc: 'Real-time platform insights and market trajectory telemetry.', icon: Activity, color: 'text-secondary', href: '/admin/analytics' }
             ].map((module, idx) => (
               <Card key={idx} className="glass-card p-4 hover:border-primary/40 transition-all duration-500 group relative overflow-hidden">
@@ -81,10 +96,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Frequently Asked Questions */}
       <FAQSection />
 
-      {/* Subscription Tiers */}
       <PricingSection />
 
       {/* Final Conversion Node */}
@@ -111,10 +124,8 @@ export default function Home() {
         </Container>
       </section>
 
-      {/* Primary Footer Section */}
       <LandingFooter />
 
-      {/* Persistent Conversion Node */}
       <StickyCTA />
     </div>
   );
