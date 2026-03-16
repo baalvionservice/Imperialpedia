@@ -18,6 +18,9 @@ export interface ToastProps {
  * High-fidelity Intelligence Alert Component.
  * Features institutional styling, animated entry, and automatic temporal decay.
  * Enhanced with ARIA alert roles for real-time accessibility.
+ * 
+ * // TODO: AI-driven contextual toast messages
+ * // TODO: Analytics tracking for toast interactions
  */
 export const Toast = ({ id, message, type = 'info', duration = 5000, onClose }: ToastProps) => {
   useEffect(() => {
@@ -64,9 +67,6 @@ export const Toast = ({ id, message, type = 'info', duration = 5000, onClose }: 
       >
         <X className="h-4 w-4" aria-hidden="true" />
       </button>
-      
-      {/* TODO: AI-driven personalized notifications per user behavior */}
-      {/* TODO: Dynamic toast styling based on engagement metrics */}
     </motion.div>
   );
 };

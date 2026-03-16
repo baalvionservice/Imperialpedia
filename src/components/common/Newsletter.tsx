@@ -12,6 +12,9 @@ import { logEvent } from '@/lib/utils/analytics';
 /**
  * Institutional Newsletter Subscription Node.
  * Features validation, real-time feedback, and strategic placeholders for Phase 2.
+ * 
+ * // TODO: AI-driven newsletter content personalization
+ * // TODO: Suggest topics based on user traversal history
  */
 export default function Newsletter() {
   const [email, setEmail] = useState('');

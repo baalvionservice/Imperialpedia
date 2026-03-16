@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
-import { Toast } from './Toast';
+import { Toast, ToastProps } from './Toast';
 import { AnimatePresence } from 'framer-motion';
 
 interface ToastOptions {
@@ -33,6 +33,9 @@ interface ToastItem extends ToastOptions {
 
 /**
  * Global provider for managing the lifecycle of platform-wide alerts.
+ * 
+ * // TODO: AI-driven predictive notification scheduling 
+ * // TODO: Dynamic dashboard for admin notification insights
  */
 export default function ToastProvider({ children }: { children: ReactNode }) {
   const [toasts, setToasts] = useState<ToastItem[]>([]);
@@ -58,9 +61,6 @@ export default function ToastProvider({ children }: { children: ReactNode }) {
           ))}
         </AnimatePresence>
       </div>
-      
-      {/* TODO: AI-driven predictive notification scheduling */}
-      {/* TODO: Analytics tracking for toast display and click interactions */}
     </ToastContext.Provider>
   );
 }

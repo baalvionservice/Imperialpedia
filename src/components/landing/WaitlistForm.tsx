@@ -15,6 +15,9 @@ import { useTranslation } from 'react-i18next';
  * Enhanced Waitlist & Early Access Form.
  * Captures user identity nodes (name/email) with robust validation.
  * Optimized for high-fidelity conversion zones and accessibility.
+ * 
+ * // TODO: AI-driven lead qualification score
+ * // TODO: Predictive analytics for conversion probability
  */
 export const WaitlistForm = () => {
   const { t } = useTranslation('common');
