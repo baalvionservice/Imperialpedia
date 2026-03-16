@@ -13,6 +13,13 @@ import { StickyCTA } from '@/components/landing/StickyCTA';
 import { Text } from '@/design-system/typography/text';
 import { Container } from '@/design-system/layout/container';
 import { cn } from '@/lib/utils';
+import { generateLandingMetadata } from '@/lib/utils/landingSEO';
+
+/**
+ * Landing Page Metadata.
+ * Optimized for institutional-grade SEO and social sharing.
+ */
+export const metadata = generateLandingMetadata();
 
 /**
  * The main Home page for Imperialpedia.
