@@ -405,3 +405,62 @@ export interface AdminAnalyticsData {
   feature_usage: FeatureUsageMetric[];
   content_reports: ContentReportItem[];
 }
+
+/**
+ * PROMPT 77: PLATFORM ANALYTICS COMMAND CENTER TYPES
+ */
+
+export interface PlatformKPIs {
+  total_articles: number;
+  total_users: number;
+  monthly_active_users: number;
+  page_views: number;
+  avg_session_duration: string;
+  engagement_rate: string;
+}
+
+export interface TrafficSourceItem {
+  source: string;
+  percentage: string;
+  value: number;
+}
+
+export interface TopPerformingArticle {
+  title: string;
+  category: string;
+  views: number;
+  read_time: string;
+  engagement: string;
+}
+
+export interface RegionalUser {
+  region: string;
+  count: string | number;
+  percent: number;
+}
+
+export interface SystemHealthAlert {
+  id: string;
+  type: 'traffic' | 'trending' | 'engagement' | 'performance';
+  message: string;
+  severity: 'low' | 'medium' | 'high';
+  timestamp: string;
+}
+
+export interface PlatformCommandCenterData {
+  platform_metrics: PlatformKPIs;
+  traffic_sources: TrafficSourceItem[];
+  top_articles: TopPerformingArticle[];
+  regional_users: RegionalUser[];
+  system_alerts: SystemHealthAlert[];
+  growth_trends: {
+    articles: { date: string; count: number }[];
+    topics: { date: string; count: number }[];
+    contributors: { date: string; count: number }[];
+  };
+  engagement_vitals: {
+    registrations: { date: string; count: number }[];
+    returning: { date: string; count: number }[];
+    interactions: { date: string; count: number }[];
+  };
+}

@@ -159,7 +159,7 @@ const Sidebar = ({ className }: { className?: string }) => {
 
   const adminItems = [
     { icon: LayoutDashboard, label: 'Admin Dashboard', href: '/admin/dashboard' },
-    { icon: BarChart3, label: 'Analytics Overview', href: '/admin/analytics/full-overview' },
+    { icon: BarChart3, label: 'Analytics Command Center', href: '/admin/analytics/command-center' },
     { icon: ShieldCheck, label: 'Content Quality Audit', href: '/admin/analytics/content-quality' },
     { icon: ShieldAlert, label: 'AI Moderation Hub', href: '/admin/control/moderation/ai-hub' },
     { icon: ShieldAlert, label: 'Incident Response', href: '/admin/control/incidents' },

@@ -23,7 +23,8 @@ import {
   AssetCase,
   EventIntelligenceData,
   TrendExplanationItem,
-  RecapSummaryItem
+  RecapSummaryItem,
+  PlatformCommandCenterData
 } from '@/types/analytics';
 
 /**
@@ -247,11 +248,11 @@ export const getPlatformOverview = async (): Promise<ApiResponse<PlatformOvervie
   await new Promise((resolve) => setTimeout(resolve, 600));
   return {
     data: {
-      totalUsers: 142500,
+      totalUsers: 820000,
       activeCreators: 156,
-      totalContent: 1248,
-      totalTraffic: 4250000,
-      userGrowth: [{ date: '2024-03-01', users: 141200 }, { date: '2024-03-10', users: 142500 }],
+      totalContent: 145000,
+      totalTraffic: 6400000,
+      userGrowth: [{ date: '2024-03-01', users: 815000 }, { date: '2024-03-10', users: 820000 }],
       topContent: [
         { id: '1', title: 'Quantitative Easing vs Tightening', author: 'The Market Maven', views: 45200, engagement: 8.4, status: 'Trending' }
       ]
@@ -418,6 +419,68 @@ export const getContentAnalytics = async (): Promise<ApiResponse<any>> => {
       totalViews: 4250000, avgEngagement: 8.4, totalArticles: 1248,
       topArticles: [{ articleId: '1', title: 'Understanding Yield Curve Inversion', views: 45200, likes: 1240, shares: 580, comments: 320, seoScore: 92, category: 'Economics' }],
       topCategories: [{ category: 'Economics', views: 1250000 }]
+    },
+    status: 200
+  };
+};
+
+/**
+ * PROMPT 77: PLATFORM ANALYTICS COMMAND CENTER MOCK
+ */
+export const getPlatformCommandCenterData = async (): Promise<ApiResponse<PlatformCommandCenterData>> => {
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  
+  const dates = Array.from({ length: 12 }, (_, i) => {
+    const d = new Date();
+    d.setMonth(d.getMonth() - (11 - i));
+    return d.toLocaleString('default', { month: 'short' });
+  });
+
+  return {
+    data: {
+      platform_metrics: {
+        total_articles: 145000,
+        total_users: 820000,
+        monthly_active_users: 320000,
+        page_views: 6400000,
+        avg_session_duration: "5m 12s",
+        engagement_rate: "72%"
+      },
+      traffic_sources: [
+        { source: "Organic Search", percentage: "55%", value: 55 },
+        { source: "Direct Traffic", percentage: "20%", value: 20 },
+        { source: "Social Media", percentage: "15%", value: 15 },
+        { source: "Referral Nodes", percentage: "10%", value: 10 }
+      ],
+      top_articles: [
+        { title: "Understanding Inflation", category: "Economics", views: 120000, read_time: "4m 30s", engagement: "85%" },
+        { title: "Bitcoin Halving Guide", category: "Crypto", views: 98000, read_time: "5m 10s", engagement: "81%" },
+        { title: "Yield Curve Strategy", category: "Markets", views: 85400, read_time: "6m 12s", engagement: "78%" },
+        { title: "Compound Interest 101", category: "Investing", views: 72100, read_time: "3m 45s", engagement: "92%" }
+      ],
+      regional_users: [
+        { region: "North America", count: "385k", percent: 45 },
+        { region: "Europe", count: "210k", percent: 25 },
+        { region: "Asia", count: "150k", percent: 18 },
+        { region: "South America", count: "42k", percent: 5 },
+        { region: "Africa", count: "25k", percent: 3 },
+        { region: "Oceania", count: "18k", percent: 4 }
+      ],
+      system_alerts: [
+        { id: "al-1", type: "traffic", message: "Abnormal traffic spike detected in 'Crypto' hub (+450%).", severity: "high", timestamp: "10m ago" },
+        { id: "al-2", type: "trending", message: "Trending topic surge: 'CBDC Digital Dollar'.", severity: "medium", timestamp: "42m ago" },
+        { id: "al-3", type: "performance", message: "Edge node latency spike in EU-West cluster.", severity: "low", timestamp: "1h ago" }
+      ],
+      growth_trends: {
+        articles: dates.map(date => ({ date, count: Math.floor(Math.random() * 5000) + 10000 })),
+        topics: dates.map(date => ({ date, count: Math.floor(Math.random() * 200) + 800 })),
+        contributors: dates.map(date => ({ date, count: Math.floor(Math.random() * 50) + 150 })),
+      },
+      engagement_vitals: {
+        registrations: dates.map(date => ({ date, count: Math.floor(Math.random() * 10000) + 50000 })),
+        returning: dates.map(date => ({ date, count: Math.floor(Math.random() * 5000) + 20000 })),
+        interactions: dates.map(date => ({ date, count: Math.floor(Math.random() * 100000) + 500000 })),
+      }
     },
     status: 200
   };
