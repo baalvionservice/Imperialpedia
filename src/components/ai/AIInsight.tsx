@@ -3,21 +3,45 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Text } from '@/design-system/typography/text';
-import { Sparkles, Loader2, Zap } from 'lucide-react';
+import { Sparkles, Loader2, Zap, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { AIInsight as AIInsightType } from '@/types/ai';
+
+interface AIInsightProps {
+  entityType: string;
+  slug: string;
+}
 
 /**
- * AI Insight Placeholder component.
- * Prepares the structural UI for Phase 2 Generative Research features.
+ * AI Research Assistant Component.
+ * Fetches and displays synthesized intelligence from the platform's AI kernel.
  */
-export const AIInsight = () => {
+export const AIInsight = ({ entityType, slug }: AIInsightProps) => {
   const [loading, setLoading] = useState(true);
+  const [insights, setInsights] = useState<string | null>(null);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    // Simulate initial telemetry calibration
-    const timer = setTimeout(() => setLoading(false), 1500);
-    return () => clearTimeout(timer);
-  }, []);
+    async function fetchInsights() {
+      setLoading(true);
+      setError(false);
+      try {
+        const res = await fetch(`/api/ai-insights?entityType=${entityType}&slug=${slug}`);
+        if (!res.ok) throw new Error('API Handshake Failure');
+        const data: AIInsightType = await res.json();
+        setInsights(data.insights);
+      } catch (err) {
+        console.error('AI Kernel Fetch Error:', err);
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    if (entityType && slug) {
+      fetchInsights();
+    }
+  }, [entityType, slug]);
 
   return (
     <Card className="glass-card border-primary/20 bg-primary/5 overflow-hidden animate-in fade-in duration-700">
@@ -33,12 +57,19 @@ export const AIInsight = () => {
         {loading ? (
           <div className="flex items-center gap-3 py-4">
             <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-            <Text variant="caption" className="animate-pulse font-bold uppercase tracking-tighter">Preparing AI insights...</Text>
+            <Text variant="caption" className="animate-pulse font-bold uppercase tracking-tighter text-muted-foreground">
+              Generating AI insights...
+            </Text>
+          </div>
+        ) : error ? (
+          <div className="flex items-center gap-3 py-4 text-destructive">
+            <AlertCircle className="h-4 w-4" />
+            <Text variant="caption" className="font-bold">Unable to load AI insights at this time.</Text>
           </div>
         ) : (
           <div className="space-y-4">
             <Text variant="bodySmall" className="text-muted-foreground leading-relaxed italic">
-              "Establish a secure handshake to generate customized intelligence reports, predictive models, and cross-taxonomy correlations for this node."
+              "{insights}"
             </Text>
             <div className="pt-2">
               <Button size="sm" className="bg-primary hover:bg-primary/90 text-white font-bold text-[10px] uppercase rounded-lg shadow-lg shadow-primary/20">
@@ -47,7 +78,6 @@ export const AIInsight = () => {
             </div>
           </div>
         )}
-        {/* Future: Connect to AI research API. Example: /api/ai-insights?entity=slug */}
       </CardContent>
     </Card>
   );

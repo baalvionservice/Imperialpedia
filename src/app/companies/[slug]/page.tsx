@@ -69,7 +69,7 @@ export default async function Page({ params }: PageProps) {
 
           <aside className="lg:col-span-4 space-y-10">
             <div className="sticky top-24 space-y-10">
-              <AIInsight />
+              <AIInsight entityType="company" slug={company.slug} />
               <RelatedHighlights entityId={company.id} />
             </div>
           </aside>
