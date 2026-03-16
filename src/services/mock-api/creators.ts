@@ -1,6 +1,7 @@
 import { CreatorProfile, ApiResponse, CreatorContentItem, CreatorDashboardSummary, CreatorDashboardAnalytics, CreatorVerification, CreatorLeaderboard, ScheduledContent, CreatorSettings, CreatorDashboardStats, Follower, CreatorRevenue, CreatorRevenueSummary, AdminCreatorAnalytics } from '@/types';
 import { TopCreator } from '@/types/analytics';
 import { Notification } from '@/modules/content-engine/types/article';
+import { TrustRankedContributor, ContributorTrustData } from '@/types/trust';
 
 /**
  * @fileOverview Mock service for managing creator profiles, stats, and discovery data.
@@ -145,6 +146,76 @@ const mockCreators: CreatorProfile[] = [
     ],
   },
 ];
+
+/**
+ * Prompt 70: Trusted Contributor Matrix
+ */
+const mockTrustDirectory: TrustRankedContributor[] = [
+  {
+    id: 'cont-1',
+    name: 'Dr. Andrew Miller',
+    username: 'amiller_phd',
+    avatar: 'https://picsum.photos/seed/andrew/200/200',
+    title: 'Macro Economic Analyst',
+    trust_score: 93,
+    verification: ["Identity Verified", "Credentials Verified"],
+    followers: 18200,
+    articles: 64
+  },
+  {
+    id: 'cont-2',
+    name: 'Laura Chen',
+    username: 'lchen_crypto',
+    avatar: 'https://picsum.photos/seed/laura/200/200',
+    title: 'Cryptocurrency Researcher',
+    trust_score: 87,
+    verification: ["Identity Verified", "Professional Verified"],
+    followers: 12400,
+    articles: 42
+  },
+  {
+    id: 'cont-3',
+    name: 'Eleanor Vance',
+    username: 'econvance',
+    avatar: 'https://picsum.photos/seed/eleanor/200/200',
+    title: 'Market Strategist',
+    trust_score: 98,
+    verification: ["Identity Verified", "Professional Verified", "Credentials Verified"],
+    followers: 25000,
+    articles: 120
+  }
+];
+
+export const getTrustDirectory = async (): Promise<ApiResponse<TrustRankedContributor[]>> => {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  return { data: mockTrustDirectory, status: 200 };
+};
+
+export const getContributorTrustData = async (id: string): Promise<ApiResponse<ContributorTrustData>> => {
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  return {
+    data: {
+      trust_score: 93,
+      level: 'Highly Trusted',
+      organization: 'Global Macro Research Institute',
+      certifications: ['CFA Charterholder', 'FINRA Series 7', 'PhD in Economics'],
+      avg_engagement: '14.2%',
+      verification_flags: [
+        { type: 'identity', status: 'verified', label: 'Identity Authenticated' },
+        { type: 'professional', status: 'verified', label: 'Professional History Validated' },
+        { type: 'credentials', status: 'verified', label: 'Academic Credentials Sealed' }
+      ],
+      milestones: [
+        { date: 'Oct 2022', event: 'Joined Imperialpedia Index', type: 'joined' },
+        { date: 'Dec 2022', event: 'First Institutional Audit Published', type: 'published' },
+        { date: 'Jan 2023', event: 'Verified Expert Status Approved', type: 'verified' },
+        { date: 'June 2023', event: 'Top 1% Precision Forecast Award', type: 'award' },
+        { date: 'Mar 2024', event: 'Crossed 1M Global Reads', type: 'milestone' }
+      ]
+    },
+    status: 200
+  };
+};
 
 const mockAdminCreatorAnalytics: AdminCreatorAnalytics[] = mockCreators.map(c => ({
   id: c.id,

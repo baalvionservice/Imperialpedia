@@ -32,12 +32,15 @@ import {
   Search,
   Activity,
   Bell,
-  BellOff
+  BellOff,
+  Flame,
+  Target,
+  FileText
 } from 'lucide-react';
 import { format } from 'date-fns';
 import Link from 'next/link';
 import { ArticleCard } from '@/modules/content-engine/components/ArticleCard';
-import { getCreatorContent, getCreators } from '@/services/mock-api/creators';
+import { getCreatorContent, getCreators, getContributorTrustData } from '@/services/mock-api/creators';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -48,6 +51,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { TrustVerificationPanel } from '@/modules/creators/components/TrustVerificationPanel';
+import { ContributorTrustData } from '@/types/trust';
 
 interface CreatorProfileClientProps {
   creator: CreatorProfile;
@@ -62,19 +67,19 @@ export function CreatorProfileClient({ creator }: CreatorProfileClientProps) {
   const [notifsActive, setNotifsActive] = useState(true);
   const [followers, setFollowers] = useState(creator.stats.followersCount);
   const [content, setContent] = useState<CreatorContentItem[]>([]);
-  const [relatedCreators, setRelatedCreators] = useState<CreatorProfile[]>([]);
+  const [trustData, setTrustData] = useState<ContributorTrustData | null>(null);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
 
   useEffect(() => {
     async function loadExtraData() {
       try {
-        const [contentRes, creatorsRes] = await Promise.all([
+        const [contentRes, trustRes] = await Promise.all([
           getCreatorContent(creator.id),
-          getCreators()
+          getContributorTrustData(creator.id)
         ]);
         setContent(contentRes.data);
-        setRelatedCreators(creatorsRes.data.filter(c => c.id !== creator.id).slice(0, 4));
+        if (trustRes.data) setTrustData(trustRes.data);
       } catch (e) {
         console.error(e);
       } finally {
@@ -231,9 +236,12 @@ export function CreatorProfileClient({ creator }: CreatorProfileClientProps) {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
         {/* Main Intelligence Column */}
         <div className="lg:col-span-8 space-y-12">
-          <Tabs defaultValue="performance" className="w-full space-y-10">
+          <Tabs defaultValue="trust" className="w-full space-y-10">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 border-b border-white/5 pb-4">
               <TabsList className="bg-card/30 border border-white/5 p-1 h-12 rounded-2xl">
+                <TabsTrigger value="trust" className="px-8 h-10 gap-2 rounded-xl font-bold text-xs data-[state=active]:bg-primary">
+                  <ShieldCheck className="h-4 w-4" /> Trust Node
+                </TabsTrigger>
                 <TabsTrigger value="performance" className="px-8 h-10 gap-2 rounded-xl font-bold text-xs data-[state=active]:bg-primary">
                   <Activity className="h-4 w-4" /> Performance Audit
                 </TabsTrigger>
@@ -252,6 +260,15 @@ export function CreatorProfileClient({ creator }: CreatorProfileClientProps) {
                 />
               </div>
             </div>
+
+            {/* TRUST TAB */}
+            <TabsContent value="trust" className="mt-0">
+              {trustData ? (
+                <TrustVerificationPanel trustData={trustData} displayName={creator.displayName} />
+              ) : (
+                <div className="py-20 flex justify-center"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>
+              )}
+            </TabsContent>
 
             {/* PERFORMANCE TAB */}
             <TabsContent value="performance" className="mt-0">
@@ -402,5 +419,3 @@ export function CreatorProfileClient({ creator }: CreatorProfileClientProps) {
     </div>
   );
 }
-
-import { Flame } from 'lucide-react';
