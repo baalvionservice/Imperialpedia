@@ -1,11 +1,17 @@
 'use client';
 
 import React from 'react';
-import { Card, CardContent } from '@/components/ui/card';
+import { Container } from '@/design-system/layout/container';
 import { Text } from '@/design-system/typography/text';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { 
+  Carousel, 
+  CarouselContent, 
+  CarouselItem, 
+  CarouselNext, 
+  CarouselPrevious 
+} from '@/components/ui/carousel';
+import { TestimonialCard } from '@/components/common/TestimonialCard';
 import { Quote, Star, ShieldCheck, Globe, Building } from 'lucide-react';
-import { cn } from '@/lib/utils';
 
 const testimonials = [
   {
@@ -28,6 +34,20 @@ const testimonials = [
     company: "Alpha Peak Assets",
     quote: "The AI analyst suite has drastically reduced our discovery time for technical benchmarks. It's an indispensable part of our daily workflow.",
     avatar: "https://picsum.photos/seed/james/100/100",
+  },
+  {
+    name: "Elena Rodriguez",
+    role: "Venture Partner",
+    company: "Nexus Capital",
+    quote: "The depth of the industry taxonomy allows us to perform competitive analysis across technical clusters with zero friction.",
+    avatar: "https://picsum.photos/seed/elena/100/100",
+  },
+  {
+    name: "Thomas Chen",
+    role: "Data Scientist",
+    company: "Quant Logic",
+    quote: "Having access to 1M+ structured nodes via API has transformed how we train our proprietary financial models.",
+    avatar: "https://picsum.photos/seed/thomas/100/100",
   }
 ];
 
@@ -40,12 +60,12 @@ const partners = [
 
 /**
  * Landing Page Testimonials Section.
- * Showcases early user feedback and partner credibility.
+ * Showcases expert feedback via an interactive, responsive carousel.
  */
 export const TestimonialsSection = () => {
   return (
-    <section className="py-24 bg-background">
-      <div className="container mx-auto px-4">
+    <section className="py-24 bg-background overflow-hidden">
+      <Container>
         <div className="max-w-3xl mb-16 px-2">
           <Text variant="label" className="text-secondary mb-4 uppercase tracking-widest">Early User Handshake</Text>
           <Text variant="h2" className="text-3xl lg:text-5xl font-bold tracking-tight mb-6">Voice of the Network</Text>
@@ -54,38 +74,31 @@ export const TestimonialsSection = () => {
           </Text>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {testimonials.map((t, idx) => (
-            <Card key={idx} className="glass-card border-none hover:border-secondary/20 transition-all duration-500 group shadow-xl bg-secondary/5">
-              <CardContent className="p-8 space-y-6">
-                <div className="flex gap-1">
-                  {[1, 2, 3, 4, 5].map(i => (
-                    <Star key={i} size={14} className="fill-secondary text-secondary" />
-                  ))}
-                </div>
-                
-                <Text variant="bodySmall" className="text-foreground/90 italic leading-relaxed text-base">
-                  "{t.quote}"
-                </Text>
-
-                <div className="flex items-center gap-4 pt-4 border-t border-white/5">
-                  <Avatar className="h-12 w-12 rounded-xl border-2 border-background ring-1 ring-white/10">
-                    <AvatarImage src={t.avatar} />
-                    <AvatarFallback>{t.name.charAt(0)}</AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <Text variant="bodySmall" weight="bold" className="block text-foreground">
-                      {t.name}
-                    </Text>
-                    <Text variant="caption" className="text-muted-foreground font-medium uppercase tracking-tighter text-[9px]">
-                      {t.role} • {t.company}
-                    </Text>
+        <div className="relative px-4 md:px-12">
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            className="w-full"
+          >
+            <CarouselContent className="-ml-4 md:-ml-6">
+              {testimonials.map((t, idx) => (
+                <CarouselItem key={idx} className="pl-4 md:pl-6 md:basis-1/2 lg:basis-1/3">
+                  <div className="h-full py-4">
+                    <TestimonialCard {...t} />
                   </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="hidden md:flex -left-6 border-white/10 bg-card/30 hover:bg-primary hover:text-white transition-all shadow-xl" />
+            <CarouselNext className="hidden md:flex -right-6 border-white/10 bg-card/30 hover:bg-primary hover:text-white transition-all shadow-xl" />
+          </Carousel>
         </div>
+
+        {/* TODO: AI-powered testimonial suggestions based on user engagement */}
+        {/* TODO: Multi-language translation for quotes */}
+        {/* TODO: Dynamic ordering based on credibility scores */}
 
         {/* Logo Bar */}
         <div className="mt-24 pt-12 border-t border-white/5">
@@ -101,7 +114,7 @@ export const TestimonialsSection = () => {
             ))}
           </div>
         </div>
-      </div>
+      </Container>
     </section>
   );
 };
