@@ -1,0 +1,13 @@
+[
+  {
+    "id": "ind-1",
+    "name": "Semiconductors",
+    "slug": "semiconductors",
+    "type": "industry",
+    "description": "The backbone of modern electronic devices and AI.",
+    "market_size": "600B",
+    "tags": ["hardware", "tech", "infrastructure"],
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-01T00:00:00Z"
+  }
+]
