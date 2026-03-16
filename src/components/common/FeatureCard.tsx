@@ -18,6 +18,7 @@ interface FeatureCardProps {
 /**
  * Enhanced Feature Card Component.
  * Features scroll-triggered entry animations and interactive hover scaling.
+ * Optimized for screen readers with semantic roles.
  */
 export const FeatureCard = ({ 
   icon: Icon, 
@@ -36,12 +37,15 @@ export const FeatureCard = ({
       style={{ animationDelay: `${index * 150}ms` }}
     >
       <CardContent className="p-8 space-y-6">
-        <div className={cn(
-          "p-4 rounded-2xl w-fit transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3 shadow-inner", 
-          bgColor, 
-          color
-        )}>
-          <Icon size={28} aria-hidden="true" />
+        <div 
+          className={cn(
+            "p-4 rounded-2xl w-fit transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3 shadow-inner", 
+            bgColor, 
+            color
+          )}
+          aria-hidden="true"
+        >
+          <Icon size={28} />
         </div>
         
         <div className="space-y-3">
@@ -55,7 +59,7 @@ export const FeatureCard = ({
       </CardContent>
       
       {/* Decorative gradient overlay on hover */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" aria-hidden="true" />
     </Card>
   );
 };
