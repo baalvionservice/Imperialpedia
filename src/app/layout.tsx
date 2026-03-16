@@ -4,11 +4,14 @@ import { Toaster } from '@/components/ui/toaster';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { GlobalStoreProvider } from '@/lib/state';
-import { buildMetadata } from '@/lib/seo';
+import { generateMetadata } from '@/lib/seo/metadata';
 import { ThemeProvider } from '@/design-system/themes/theme-provider';
 import { TooltipProvider } from '@/components/ui/tooltip';
 
-export const metadata: Metadata = buildMetadata();
+export const metadata: Metadata = generateMetadata({
+  title: 'Imperialpedia — AI Knowledge Infrastructure',
+  description: 'The world\'s most scalable financial intelligence engine. Explore over 1,000,000 pages of deep financial insights, creator insights, and programmatic SEO driven knowledge.',
+});
 
 export default function RootLayout({
   children,

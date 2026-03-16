@@ -12,6 +12,9 @@ import { Text } from '@/design-system/typography/text';
 import { env } from '@/config/env';
 import { ApiResponse } from '@/types/api';
 import { Company } from '@/types/company';
+import { generateEntityMetadata } from '@/lib/seo/metadata';
+import { structuredData } from '@/lib/seo/structuredData';
+import { JsonLd } from '@/modules/seo-engine/components/JsonLd';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -27,16 +30,8 @@ async function getCompany(slug: string): Promise<Company | null> {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const company = await getCompany(slug);
-
-  if (!company) {
-    return { title: 'Company Not Found' };
-  }
-
-  return {
-    title: `${company.name} | Company Profile | Imperialpedia`,
-    description: company.description,
-    keywords: company.tags,
-  };
+  if (!company) return { title: 'Company Not Found' };
+  return generateEntityMetadata(company, 'company');
 }
 
 export default async function Page({ params }: PageProps) {
@@ -55,8 +50,11 @@ export default async function Page({ params }: PageProps) {
     ['Website', <a href={company.website} target="_blank" className="text-primary hover:underline">{company.website.replace('https://', '')}</a>]
   ];
 
+  const schema = structuredData.entity(company, 'company');
+
   return (
     <main className="min-h-screen bg-background pt-20 pb-32">
+      <JsonLd data={schema} />
       <Container>
         <EntityHeader name={company.name} type="Company" tags={company.tags} />
         

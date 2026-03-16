@@ -9,6 +9,9 @@ import { RelatedEntities } from '@/components/knowledge/RelatedEntities';
 import { env } from '@/config/env';
 import { ApiResponse } from '@/types/api';
 import { Country } from '@/types/country';
+import { generateEntityMetadata } from '@/lib/seo/metadata';
+import { structuredData } from '@/lib/seo/structuredData';
+import { JsonLd } from '@/modules/seo-engine/components/JsonLd';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -24,16 +27,8 @@ async function getCountry(slug: string): Promise<Country | null> {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const country = await getCountry(slug);
-
-  if (!country) {
-    return { title: 'Country Not Found' };
-  }
-
-  return {
-    title: `${country.name} | Global Intelligence | Imperialpedia`,
-    description: country.description,
-    keywords: country.tags,
-  };
+  if (!country) return { title: 'Country Not Found' };
+  return generateEntityMetadata(country, 'country');
 }
 
 export default async function Page({ params }: PageProps) {
@@ -52,8 +47,11 @@ export default async function Page({ params }: PageProps) {
     ['Identity Language', country.official_language]
   ];
 
+  const schema = structuredData.entity(country, 'country');
+
   return (
     <main className="min-h-screen bg-background pt-20 pb-32">
+      <JsonLd data={schema} />
       <Container>
         <EntityHeader name={country.name} type="Country" tags={country.tags} />
         
