@@ -1,0 +1,61 @@
+'use client';
+
+import React from 'react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Text } from '@/design-system/typography/text';
+import { LucideIcon } from 'lucide-react';
+import { cn } from '@/lib/utils';
+
+interface FeatureCardProps {
+  icon: LucideIcon;
+  title: string;
+  description: string;
+  color?: string;
+  bgColor?: string;
+  index?: number;
+}
+
+/**
+ * Enhanced Feature Card Component.
+ * Features scroll-triggered entry animations and interactive hover scaling.
+ */
+export const FeatureCard = ({ 
+  icon: Icon, 
+  title, 
+  description, 
+  color = "text-primary", 
+  bgColor = "bg-primary/10",
+  index = 0
+}: FeatureCardProps) => {
+  return (
+    <Card 
+      className={cn(
+        "glass-card border-none shadow-xl hover:border-primary/20 transition-all duration-500 group overflow-hidden",
+        "animate-in fade-in slide-in-from-bottom-8 duration-700 fill-mode-both"
+      )}
+      style={{ animationDelay: `${index * 150}ms` }}
+    >
+      <CardContent className="p-8 space-y-6">
+        <div className={cn(
+          "p-4 rounded-2xl w-fit transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3 shadow-inner", 
+          bgColor, 
+          color
+        )}>
+          <Icon size={28} aria-hidden="true" />
+        </div>
+        
+        <div className="space-y-3">
+          <Text variant="h3" className="text-xl font-bold group-hover:text-primary transition-colors duration-300">
+            {title}
+          </Text>
+          <Text variant="bodySmall" className="text-muted-foreground leading-relaxed group-hover:text-foreground transition-colors duration-300">
+            {description}
+          </Text>
+        </div>
+      </CardContent>
+      
+      {/* Decorative gradient overlay on hover */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+    </Card>
+  );
+};
