@@ -16,21 +16,21 @@ const features = [
   },
   {
     title: "Global Datasets",
-    description: "Unrestricted access to high-fidelity entities across countries, companies, industries, and technologies.",
+    description: "Access millions of entities across countries, companies, industries, and technologies.",
     icon: Database,
     color: "text-secondary",
     bgColor: "bg-secondary/10"
   },
   {
     title: "Research Assistant",
-    description: "Generate comprehensive reports, summaries, and tactical analysis at the push of a button.",
+    description: "AI-powered reports and summaries at your fingertips.",
     icon: Sparkles,
     color: "text-amber-500",
     bgColor: "bg-amber-500/10"
   },
   {
     title: "Enterprise API",
-    description: "Integrate our structured knowledge graph directly into your own institutional applications.",
+    description: "Connect our structured knowledge graph directly to your applications.",
     icon: Code,
     color: "text-emerald-500",
     bgColor: "bg-emerald-500/10"
@@ -43,10 +43,10 @@ const features = [
  */
 export const FeaturesSection = () => {
   return (
-    <section className="py-24 bg-background">
+    <section id="features" className="py-24 bg-background scroll-mt-20">
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mb-16 px-2">
-          <Text variant="label" className="text-primary mb-4">Core Capabilities</Text>
+          <Text variant="label" className="text-primary mb-4 uppercase tracking-widest">Core Capabilities</Text>
           <Text variant="h2" className="text-3xl lg:text-5xl font-bold tracking-tight mb-6">Why Imperialpedia?</Text>
           <Text variant="body" className="text-muted-foreground text-lg leading-relaxed">
             We provide the architectural foundation for the future of financial intelligence, merging human expertise with machine-scale data processing.
@@ -72,7 +72,6 @@ export const FeaturesSection = () => {
                     {feature.description}
                   </Text>
                 </div>
-                {/* TODO: Add real-time AI examples in Phase 2 */}
               </CardContent>
             </Card>
           ))}

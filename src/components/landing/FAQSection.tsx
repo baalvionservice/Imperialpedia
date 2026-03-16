@@ -10,6 +10,8 @@ import {
 import { Container } from '@/design-system/layout/container';
 import { Text } from '@/design-system/typography/text';
 import { HelpCircle, Sparkles } from 'lucide-react';
+import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
 const faqs = [
   {
@@ -36,7 +38,7 @@ const faqs = [
  */
 export const FAQSection = () => {
   return (
-    <section className="py-24 bg-background">
+    <section id="faq" className="py-24 bg-background scroll-mt-20">
       <Container isNarrow>
         <div className="text-center mb-16 space-y-4">
           <div className="flex items-center justify-center gap-2 text-primary mb-4">
@@ -69,7 +71,6 @@ export const FAQSection = () => {
                 </AccordionTrigger>
                 <AccordionContent className="pb-8 pl-12 text-muted-foreground leading-relaxed text-base">
                   {faq.answer}
-                  {/* TODO: Replace static answers with AI-generated responses via /api/ai-faq?question=slug */}
                 </AccordionContent>
               </AccordionItem>
             ))}
@@ -94,6 +95,3 @@ export const FAQSection = () => {
     </section>
   );
 };
-
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';

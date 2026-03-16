@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Text } from '@/design-system/typography/text';
-import { CheckCircle2, Zap, ShieldCheck, Globe, ArrowRight } from 'lucide-react';
+import { CheckCircle2, Zap, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { WaitlistModal } from './WaitlistModal';
 
@@ -57,7 +57,6 @@ const plans = [
 /**
  * Landing Page Pricing Section.
  * Showcases upcoming subscription tiers and strategic features.
- * Prepares the platform for Phase 4 monetization.
  */
 export const PricingSection = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -69,8 +68,7 @@ export const PricingSection = () => {
   };
 
   return (
-    <section className="py-24 bg-background relative overflow-hidden">
-      {/* Visual Background Element */}
+    <section id="pricing" className="py-24 bg-background relative overflow-hidden scroll-mt-20">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full max-w-4xl pointer-events-none blur-[150px] opacity-10 z-0">
         <div className="absolute top-0 left-0 w-96 h-96 bg-primary rounded-full" />
       </div>
@@ -128,9 +126,6 @@ export const PricingSection = () => {
               </CardContent>
 
               <CardFooter className="p-8 pt-0">
-                {/* TODO: Connect to real pricing and subscription plans */}
-                {/* TODO: Integrate with Stripe or payment provider */}
-                {/* TODO: Add dynamic plan features based on user type */}
                 <Button 
                   onClick={() => handleCtaClick(plan.name)}
                   className={cn(

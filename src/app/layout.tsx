@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
-import Header from '@/components/layout/Header';
+import { Navbar } from '@/components/common/Navbar';
 import Footer from '@/components/layout/Footer';
 import { GlobalStoreProvider } from '@/lib/state';
 import { generateMetadata } from '@/lib/seo/metadata';
@@ -29,7 +29,7 @@ export default function RootLayout({
         <GlobalStoreProvider>
           <ThemeProvider>
             <TooltipProvider>
-              <Header />
+              <Navbar />
               <main className="flex-grow">
                 {children}
               </main>
