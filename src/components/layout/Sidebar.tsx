@@ -1,3 +1,7 @@
+/**
+ * UPDATED SIDEBAR - ADDED CONTENT QUALITY AUDIT
+ */
+
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -111,10 +115,6 @@ const SidebarItem = ({ icon: Icon, label, href, isActive, badge }: SidebarItemPr
   </Link>
 );
 
-/**
- * Scalable Sidebar component for platform dashboards and specialized sections.
- * Optimized with Role-Based Access Control logic.
- */
 const Sidebar = ({ className }: { className?: string }) => {
   const pathname = usePathname();
   const { currentUser, notifications } = useAppStore();
@@ -156,6 +156,7 @@ const Sidebar = ({ className }: { className?: string }) => {
   const adminItems = [
     { icon: LayoutDashboard, label: 'Admin Dashboard', href: '/admin/dashboard' },
     { icon: BarChart3, label: 'Analytics Overview', href: '/admin/analytics/full-overview' },
+    { icon: ShieldCheck, label: 'Content Quality Audit', href: '/admin/analytics/content-quality' },
     { icon: ShieldAlert, label: 'Incident Response', href: '/admin/control/incidents' },
     { icon: Bell, label: 'Alerts System', href: '/admin/control/alerts-system' },
     { icon: Key, label: 'Access Orchestration', href: '/admin/control/access' },
