@@ -1,6 +1,6 @@
 import React from 'react';
 import Sidebar from '@/components/layout/Sidebar';
-import Header from '@/components/layout/Header';
+import { Navbar } from '@/components/common/Navbar';
 import { Container } from '@/design-system/layout/container';
 import { AdminAlertListener } from './AdminAlertListener';
 
@@ -15,14 +15,12 @@ export default function AdminLayout({
 }) {
   return (
     <div className="flex min-h-screen bg-background">
-      {/* Background listener for real-time administrative alerts */}
       <AdminAlertListener />
       
-      {/* Fixed Sidebar for Admin Navigation */}
       <Sidebar className="hidden lg:flex sticky top-0 h-screen" />
       
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        {/* Admin Specific Header can be injected here if different from Public */}
+        <Navbar />
         <div className="flex-1 overflow-y-auto p-4 lg:p-8">
           <Container className="max-w-7xl">
             {children}

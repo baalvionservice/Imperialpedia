@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useId } from 'react';
 import { Container } from '@/design-system/layout/container';
 import { Text } from '@/design-system/typography/text';
-import { Zap } from 'lucide-react';
+import { Zap, ArrowRight } from 'lucide-react';
 import { WaitlistModal } from './WaitlistModal';
 import { logEvent } from '@/lib/utils/analytics';
 import { PricingCard } from '@/components/common/PricingCard';
@@ -13,12 +13,9 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 
-/**
- * Landing Page Pricing Section.
- * Orchestrates tiered plans with dynamic rendering and conversion triggers.
- */
 export const PricingSection = () => {
   const { t } = useTranslation('common');
+  const toggleId = useId();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<string>('');
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly');
@@ -81,14 +78,13 @@ export const PricingSection = () => {
       aria-labelledby="pricing-heading"
       className="py-24 bg-background relative overflow-hidden scroll-mt-20"
     >
-      {/* Dynamic Background Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full max-w-4xl pointer-events-none blur-[150px] opacity-[0.08] z-0">
         <div className="absolute top-0 left-0 w-96 h-96 bg-primary rounded-full" />
         <div className="absolute bottom-0 right-0 w-96 h-96 bg-secondary rounded-full" />
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
-        <header className="mb-12 text-center max-w-3xl mx-auto space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-1000">
+        <header className="mb-12 text-center max-w-3xl mx-auto space-y-6">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary mb-2">
             <Zap className="h-4 w-4" aria-hidden="true" />
             <Text variant="label" className="text-[10px] font-bold uppercase tracking-widest">{t('pricing.label')}</Text>
@@ -98,16 +94,27 @@ export const PricingSection = () => {
             {t('pricing.subtitle')}
           </Text>
 
-          {/* Billing Cycle Toggle */}
           <div className="flex items-center justify-center gap-4 pt-6">
-            <Label className={cn("text-xs font-bold uppercase tracking-widest transition-colors", billingCycle === 'monthly' ? "text-foreground" : "text-muted-foreground")}>Monthly</Label>
+            <Label 
+              htmlFor={toggleId}
+              className={cn("text-xs font-bold uppercase tracking-widest transition-colors cursor-pointer", billingCycle === 'monthly' ? "text-foreground" : "text-muted-foreground")}
+            >
+              Monthly
+            </Label>
             <Switch 
+              id={toggleId}
               checked={billingCycle === 'yearly'} 
               onCheckedChange={(val) => setBillingCycle(val ? 'yearly' : 'monthly')} 
               className="scale-110"
+              aria-label="Toggle between monthly and yearly billing"
             />
             <div className="flex items-center gap-2">
-              <Label className={cn("text-xs font-bold uppercase tracking-widest transition-colors", billingCycle === 'yearly' ? "text-foreground" : "text-muted-foreground")}>Yearly</Label>
+              <Label 
+                htmlFor={toggleId}
+                className={cn("text-xs font-bold uppercase tracking-widest transition-colors cursor-pointer", billingCycle === 'yearly' ? "text-foreground" : "text-muted-foreground")}
+              >
+                Yearly
+              </Label>
               <Badge className="bg-emerald-500/10 text-emerald-500 border-none font-bold text-[9px] uppercase tracking-tighter">SAVE 20%</Badge>
             </div>
           </div>
@@ -123,11 +130,7 @@ export const PricingSection = () => {
           ))}
         </div>
 
-        {/* TODO: AI-powered dynamic pricing based on user type and region */}
-        {/* TODO: Analytics tracking for plan selection */}
-        {/* TODO: Dynamic plan feature updates via backend API */}
-
-        <div className="mt-20 text-center animate-in fade-in duration-1000 delay-500">
+        <div className="mt-20 text-center">
           <Text variant="caption" className="text-muted-foreground italic leading-relaxed max-w-xl mx-auto block">
             "{t('pricing.disclaimer')}"
           </Text>

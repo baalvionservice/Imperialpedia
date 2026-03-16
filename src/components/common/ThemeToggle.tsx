@@ -31,11 +31,12 @@ export const ThemeToggle = () => {
       onClick={handleToggle}
       className="h-9 w-9 rounded-xl border border-white/5 bg-card/30 text-muted-foreground hover:text-primary transition-all outline-none focus-visible:ring-2 focus-visible:ring-primary"
       aria-label={themeMode === 'light' ? "Switch to dark intelligence mode" : "Switch to light intelligence mode"}
+      title={themeMode === 'light' ? "Enable Dark Mode" : "Enable Light Mode"}
     >
       {themeMode === 'light' ? (
-        <Moon className="h-4 w-4" />
+        <Moon className="h-4 w-4" aria-hidden="true" />
       ) : (
-        <Sun className="h-4 w-4" />
+        <Sun className="h-4 w-4" aria-hidden="true" />
       )}
     </Button>
   );
