@@ -10,19 +10,19 @@
     --card-foreground: 264 17% 10%;
     --popover: 0 0% 100%;
     --popover-foreground: 264 17% 10%;
-    --primary: 247 82% 65%; /* Adjusted for better contrast on white */
+    --primary: 247 82% 55%; /* Slightly darker for better light-mode contrast */
     --primary-foreground: 0 0% 100%;
-    --secondary: 208 100% 65%; /* Adjusted for better contrast on white */
+    --secondary: 208 100% 45%; /* Improved contrast for accessibility */
     --secondary-foreground: 264 17% 10%;
     --muted: 264 10% 90%;
-    --muted-foreground: 264 5% 40%;
-    --accent: 208 100% 65%;
+    --muted-foreground: 264 5% 35%;
+    --accent: 208 100% 45%;
     --accent-foreground: 264 17% 10%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --border: 264 10% 85%;
     --input: 264 10% 85%;
-    --ring: 247 82% 65%;
+    --ring: 247 82% 55%;
     --radius: 0.75rem;
   }
 
@@ -58,9 +58,11 @@
   }
   body {
     @apply bg-background text-foreground antialiased selection:bg-primary/30;
+    font-family: var(--font-body), sans-serif;
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-headline tracking-tight;
+    font-family: var(--font-headline), serif;
   }
   
   :focus-visible {
@@ -86,4 +88,12 @@
   .text-balance {
     text-wrap: balance;
   }
+  .animate-spin-slow {
+    animation: spin 8s linear infinite;
+  }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }

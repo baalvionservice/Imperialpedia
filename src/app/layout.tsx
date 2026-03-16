@@ -3,6 +3,7 @@
 import React, { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import Script from 'next/script';
+import { Playfair_Display, PT_Sans } from 'next/font/google';
 import './globals.css';
 
 // UI & Common Components
@@ -18,10 +19,25 @@ import { ThemeProvider } from '@/design-system/themes/theme-provider';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { trackPageView } from '@/lib/utils/analytics';
 import { I18nProvider } from '@/components/i18n/I18nProvider';
+import { cn } from '@/lib/utils';
+
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  variable: '--font-headline',
+  display: 'swap',
+});
+
+const ptSans = PT_Sans({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  variable: '--font-body',
+  display: 'swap',
+});
 
 /**
  * Root Layout for Imperialpedia.
  * Optimized for institutional performance and accessibility.
+ * Features next/font for zero render-blocking typography.
  */
 export default function RootLayout({
   children,
@@ -33,17 +49,12 @@ export default function RootLayout({
   }, [pathname]);
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={cn(playfair.variable, ptSans.variable)}>
       <head>
-        <title>Imperialpedia | Global AI Knowledge Infrastructure</title>
-        <meta name="description" content="Research 1M+ programmatic nodes with institutional-grade AI intelligence." />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=PT+Sans:wght@400;700&display=swap"
-          rel="stylesheet"
-        />
-
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#1C1822" />
+        
+        {/* Google Analytics - Loaded after initial discovery */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-IMP-INDEX-42"
           strategy="afterInteractive"
@@ -61,6 +72,7 @@ export default function RootLayout({
       </head>
 
       <body className="font-body bg-background text-foreground antialiased min-h-screen flex flex-col">
+        {/* Skip Link for Keyboard Accessibility */}
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-6 focus:py-3 focus:bg-primary focus:text-white focus:rounded-xl focus:font-bold focus:shadow-2xl transition-all"

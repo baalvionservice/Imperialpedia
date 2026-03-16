@@ -33,6 +33,7 @@ export const ThemeToggle = () => {
       aria-label={themeMode === 'light' ? "Switch to dark intelligence mode" : "Switch to light intelligence mode"}
       title={themeMode === 'light' ? "Enable Dark Mode" : "Enable Light Mode"}
     >
+      <span className="sr-only">Toggle Discovery Theme</span>
       {themeMode === 'light' ? (
         <Moon className="h-4 w-4" aria-hidden="true" />
       ) : (

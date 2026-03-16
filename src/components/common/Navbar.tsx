@@ -39,9 +39,9 @@ export const Navbar = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      setIsScrolled(window.scrollY > 20);
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -176,6 +176,28 @@ export const Navbar = () => {
           </div>
         </Container>
       </nav>
+
+      {/* Mobile Menu Overlay */}
+      {isOpen && (
+        <div className="fixed inset-0 z-40 bg-background/95 backdrop-blur-2xl lg:hidden animate-in fade-in duration-300">
+          <div className="flex flex-col items-center justify-center h-full space-y-8 p-8">
+            {navLinks.map((link) => (
+              <Link 
+                key={link.id} 
+                href={link.href}
+                onClick={() => setIsOpen(false)}
+                className="text-2xl font-bold text-foreground hover:text-primary transition-all"
+              >
+                {link.label}
+              </Link>
+            ))}
+            <div className="pt-8 border-t border-white/5 w-full max-w-xs flex flex-col gap-4">
+              <LanguageSelector />
+              <ThemeToggle />
+            </div>
+          </div>
+        </div>
+      )}
 
       <SearchModal open={isSearchOpen} onOpenChange={setIsSearchOpen} />
     </>
