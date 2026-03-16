@@ -2,6 +2,9 @@ import { BaseEntity } from './entity';
 
 export interface Technology extends BaseEntity {
   type: 'technology';
-  maturity_level: 'emerging' | 'growing' | 'mature';
-  adoption_rate?: string;
+  industry: string;
+  applications: string[];
+  invented_year: number;
+  key_companies: string[];
+  related_technologies: string[];
 }

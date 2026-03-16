@@ -1,11 +1,8 @@
-import { ID, Timestamp } from './common';
+import { BaseEntity } from './entity';
 
-export interface Dataset {
-  id: ID;
-  name: string;
-  source: string;
-  description: string;
-  rows_count: number;
-  last_updated: Timestamp;
+export interface Dataset extends BaseEntity {
+  type: 'dataset';
   category: string;
+  records: number;
+  source: string;
 }

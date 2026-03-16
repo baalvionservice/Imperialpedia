@@ -2,8 +2,12 @@ import { BaseEntity } from './entity';
 
 export interface Company extends BaseEntity {
   type: 'company';
-  ticker: string;
-  market_cap: string;
-  ceo?: string;
-  founded?: number;
+  industry: string;
+  country: string;
+  founded_year: number;
+  headquarters: string;
+  employees: number;
+  website: string;
+  technologies: string[];
+  competitors: string[];
 }
