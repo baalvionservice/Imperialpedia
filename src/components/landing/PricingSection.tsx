@@ -11,42 +11,42 @@ import { useTranslation } from 'react-i18next';
 
 /**
  * Landing Page Pricing Section.
- * Refined with animated PricingCard components and Phase 2 placeholders.
+ * Orchestrates tiered plans with dynamic rendering and conversion triggers.
+ * 
+ * TODO: AI-driven pricing adjustments based on user behavior
+ * TODO: Dynamic feature recommendations per user segment
+ * TODO: Analytics tracking for plan clicks and conversions
  */
 export const PricingSection = () => {
   const { t } = useTranslation('common');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<string>('');
 
-  // TODO: AI-powered dynamic pricing based on user behavior
-  // TODO: Personalized plan recommendations
-  // TODO: Analytics tracking for CTA conversions per plan
-
   const plans = [
     {
       id: "free",
-      name: "Standard",
+      name: "Free",
       price: "$0",
-      description: "Foundational access for retail researchers.",
+      description: "Foundational access for retail researchers and enthusiasts.",
       features: [
         "Basic Intelligence Index access",
         "Limited knowledge node traversal",
         "Standard search queries",
         "Community forum access"
       ],
-      ctaText: "Start Discovery",
+      ctaText: "Get Started Free",
       recommended: false
     },
     {
       id: "pro",
-      name: "Professional",
+      name: "Developer",
       price: "$49",
-      description: "Unrestricted index access for serious analysts.",
+      description: "High-velocity suite for power users and data analysts.",
       features: [
         "Full 1M+ node index traversal",
-        "Unlimited AI research summaries",
         "Advanced financial calculators",
-        "Priority pSEO discoverability"
+        "Full API Access",
+        "Priority Support Node"
       ],
       ctaText: "Join Waitlist",
       recommended: true
@@ -55,14 +55,14 @@ export const PricingSection = () => {
       id: "enterprise",
       name: "Enterprise",
       price: "$499",
-      description: "Institutional-grade data infrastructure.",
+      description: "Institutional-grade research and data infrastructure.",
       features: [
-        "Unlimited API handshakes",
-        "Custom structured datasets",
-        "24/7 dedicated support node",
+        "Custom Data & Structured Reports",
+        "Dedicated Account Manager",
+        "Unlimited API Handshakes",
         "Early Phase 2 AI beta access"
       ],
-      ctaText: "Early Access",
+      ctaText: "Contact Hub",
       recommended: false
     }
   ];
@@ -70,7 +70,11 @@ export const PricingSection = () => {
   const handleCtaClick = (planName: string) => {
     setSelectedPlan(planName);
     setIsModalOpen(true);
-    trackEvent({ category: 'CTA', action: 'Select Plan', label: planName });
+    trackEvent({ 
+      category: 'CTA', 
+      action: 'Pricing Selection', 
+      label: planName 
+    });
   };
 
   return (
@@ -80,6 +84,7 @@ export const PricingSection = () => {
       aria-labelledby="pricing-heading"
       className="py-24 bg-background relative overflow-hidden scroll-mt-20"
     >
+      {/* Dynamic Background Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full max-w-4xl pointer-events-none blur-[150px] opacity-[0.08] z-0">
         <div className="absolute top-0 left-0 w-96 h-96 bg-primary rounded-full" />
         <div className="absolute bottom-0 right-0 w-96 h-96 bg-secondary rounded-full" />
@@ -117,7 +122,7 @@ export const PricingSection = () => {
       <WaitlistModal 
         isOpen={isModalOpen} 
         onOpenChange={setIsModalOpen} 
-        title={selectedPlan ? `Secure ${selectedPlan} Access` : undefined} 
+        title={selectedPlan ? `Secure ${selectedPlan} Access` : "Join the Intelligence Network"} 
       />
     </section>
   );
