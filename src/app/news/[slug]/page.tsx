@@ -160,7 +160,7 @@ export default async function SingleNewsPage({
             {/* Category + title */}
             <div className="my-2">
               
-              <h1 className="text-gray-900 text-3xl md:text-4xl font-extrabold leading-7 tracking-wider">
+              <h1 className="text-gray-900 text-3xl md:text-5xl font-extrabold leading-4 tracking-wider">
                 {article.title}
               </h1>
             </div>

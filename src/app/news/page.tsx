@@ -1,8 +1,9 @@
 import { NewsArticle, newsArticles, NewsCategory } from "@/lib/data.news";
 import { buildMetadata } from "@/lib/seo";
-import { formatDate } from "@/services/format-date";
 import Image from "next/image";
 import Link from "next/link";
+import { ExploreNewsSection } from "./ExploreNewsSection";
+import { ArticleCard } from "./NewsArticleCard";
 
 export const metadata = buildMetadata({
     title: "Financial News and Analysis",
@@ -98,33 +99,6 @@ function HorizontalArticleCard({ article }: { article: NewsArticle }) {
     );
 }
 
-/** Standard vertical card — image top, text bottom */
-function ArticleCard({ article }: { article: NewsArticle }) {
-    return (
-        <Link href={`/news/${article.slug}`} className="group flex flex-col">
-            <div className="relative w-full aspect-[16/9] overflow-hidden rounded-xl mb-3">
-                <Image
-                    src={article.imageUrl}
-                    alt={article.title}
-                    fill
-                    className="object-cover transition-transform duration-300 group-hover:scale-105"
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                />
-            </div>
-            <div className="flex flex-col flex-1 space-y-2">
-                <CategoryBadge category={article.category} />
-                <h3 className="text-base font-bold text-gray-900 leading-snug group-hover:text-blue-600 transition-colors line-clamp-3">
-                    {article.title}
-                </h3>
-                <p className="text-sm text-gray-500 line-clamp-2 flex-1">{article.excerpt}</p>
-                <p className="text-xs text-gray-400">
-                    By {article.author.name} · {formatDate(article.publishedAt)}
-                </p>
-            </div>
-        </Link>
-    );
-}
-
 // ─── Page ────────────────────────────────────────────────────────────────────
 
 export default function NewsPage() {
@@ -167,15 +141,12 @@ export default function NewsPage() {
 
 
                 {/* ── Article grid ── */}
-                <section>
-                    <h2 className="text-sm font-bold uppercase tracking-widest text-gray-400 mb-6 border-b border-gray-200 pb-2">
-                        More News
+                <section className="pb-4 md:pb-12">
+                    <h2 className="text-sm font-bold uppercase tracking-widest text-gray-400 mb-6 pb-2">
+                        Explore News
                     </h2>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {gridArticles.map((article) => (
-                            <ArticleCard key={article.id} article={article} />
-                        ))}
-                    </div>
+
+                    <ExploreNewsSection articles={gridArticles} />
                 </section>
             </div>
         </div>
