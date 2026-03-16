@@ -13,12 +13,12 @@ import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { generateLandingMetadata } from '@/lib/utils/landingSEO';
 import { JsonLd } from '@/modules/seo-engine/components/JsonLd';
+import FaqSection from '@/components/common/FaqSection';
 
 // Skeleton fallbacks for lazy loading
 import { 
   FeaturesSectionSkeleton, 
   TestimonialsSectionSkeleton, 
-  FAQSectionSkeleton, 
   PricingSectionSkeleton 
 } from '@/components/landing/SectionSkeletons';
 
@@ -31,31 +31,39 @@ const TestimonialsSection = dynamic(() => import('@/components/landing/Testimoni
   loading: () => <TestimonialsSectionSkeleton />,
 });
 
-const FAQSection = dynamic(() => import('@/components/landing/FAQSection').then(mod => mod.FAQSection), {
-  loading: () => <FAQSectionSkeleton />,
-});
-
 const PricingSection = dynamic(() => import('@/components/landing/PricingSection').then(mod => mod.PricingSection), {
   loading: () => <PricingSectionSkeleton />,
 });
 
 /**
  * Landing Page Metadata.
- * Optimized for institutional-grade SEO and social sharing.
- * Aligned with Prompt 51 specific values.
  */
 export const metadata = generateLandingMetadata();
 
 /**
  * The main Home page for Imperialpedia.
  * Orchestrates the full landing page experience with performance-optimized lazy loading.
- * 
- * TODO: AI-powered SEO meta suggestions (Phase 2)
- * TODO: Dynamic structured data for AI-generated content (Phase 2)
- * TODO: Automated performance reporting for pages (Phase 2)
  */
 export default function Home() {
-  // Institutional Structured Data for Sitelinks Searchbox
+  const faqs = [
+    {
+      question: "What is Imperialpedia?",
+      answer: "Imperialpedia is an AI-powered knowledge engine providing structured global data for institutional-grade research and analysis."
+    },
+    {
+      question: "How do I join the early access waitlist?",
+      answer: "Use the 'Join Waitlist' button in the Hero or CTA section to submit your email and secure your spot in our discovery matrix."
+    },
+    {
+      question: "Is the platform free to use?",
+      answer: "Yes, foundational research access is free. Premium plans are available for advanced API throughput, custom datasets, and AI-synthesized deep dives."
+    },
+    {
+      question: "When will the full AI suite be active?",
+      answer: "Phase 2 of the Imperialpedia rollout will introduce real-time research synthesis, automated fiscal audits, and predictive catalyst scanning."
+    }
+  ];
+
   const websiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
@@ -70,18 +78,14 @@ export default function Home() {
 
   return (
     <div className="flex flex-col w-full">
-      {/* SEO Injection Node */}
       <JsonLd data={websiteSchema} />
 
-      {/* Hero is loaded statically as it contains LCP elements */}
       <HeroSection />
 
-      {/* Heavy sections are lazy-loaded to improve initial load performance */}
       <FeaturesSection />
 
       <TestimonialsSection />
 
-      {/* Discovery Matrix Section */}
       <section className="py-24 bg-card/20 border-y border-white/5">
         <div className="container mx-auto px-4">
           <header className="mb-16 max-w-2xl px-2">
@@ -125,11 +129,10 @@ export default function Home() {
         </div>
       </section>
 
-      <FAQSection />
+      <FaqSection faqs={faqs} />
 
       <PricingSection />
 
-      {/* Final Conversion Node */}
       <CtaSection />
 
       <LandingFooter />
