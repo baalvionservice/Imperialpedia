@@ -3,12 +3,14 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
+import { motion } from 'framer-motion';
 import { Container } from '@/design-system/layout/container';
 import { Text } from '@/design-system/typography/text';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Sparkles, Zap, ArrowRight, ShieldCheck, Globe, Activity } from 'lucide-react';
 import { WaitlistModal } from './WaitlistModal';
+import { ThemeToggle } from '@/components/common/ThemeToggle';
 import { useTranslation } from 'react-i18next';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { logEvent } from '@/lib/utils/analytics';
@@ -22,7 +24,7 @@ const WaitlistForm = dynamic(() => import('./WaitlistForm').then(mod => mod.Wait
 /**
  * Enhanced Landing Page Hero Section.
  * Features animated typography, high-fidelity CTAs, and optimized visual intelligence.
- * priority={true} is set on the hero image to optimize LCP.
+ * Optimized for institutional discovery and Phase 2 AI integration.
  */
 export const HeroSection = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -40,14 +42,15 @@ export const HeroSection = () => {
     <section 
       role="banner"
       aria-label="Imperialpedia Hero"
-      className="relative pt-20 pb-32 lg:pt-32 lg:pb-48 overflow-hidden"
+      className="relative pt-20 pb-32 lg:pt-32 lg:pb-48 overflow-hidden bg-gray-50 dark:bg-background"
     >
       {/* Background Architectural Grid */}
       <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none" 
            style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '40px 40px' }} 
       />
       
-      {/* Radiant Gradients */}
+      {/* Radiant Gradients - Placeholder for Phase 2 AI-driven visuals */}
+      {/* TODO: Animated visuals dynamically generated or fetched via AI (particles, gradients, AI effects) */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-6xl pointer-events-none blur-[120px] opacity-20 z-0">
         <div className="absolute top-0 left-0 w-96 h-96 bg-primary rounded-full" />
         <div className="absolute bottom-0 right-0 w-96 h-96 bg-secondary rounded-full" />
@@ -57,30 +60,54 @@ export const HeroSection = () => {
         <div className="max-w-5xl mx-auto text-center space-y-10">
           
           {/* Animated Status Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary animate-in fade-in slide-in-from-top-4 duration-700 fill-mode-both">
+          <motion.div 
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary"
+          >
             <Sparkles className="h-4 w-4 animate-pulse" aria-hidden="true" />
             <Text variant="label" className="text-[10px] font-bold uppercase tracking-[0.2em]">{t('hero.badge')}</Text>
-          </div>
+          </motion.div>
 
           {/* Precision Headlines with Entrance Animations */}
           <div className="space-y-6">
-            <Text 
-              variant="display" 
-              as="h1"
-              className="text-5xl lg:text-8xl font-bold tracking-tight leading-[1.1] animate-in fade-in slide-in-from-bottom-8 duration-1000 fill-mode-both"
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
             >
-              {t('hero.title')}
-            </Text>
-            <Text 
-              variant="body" 
-              className="text-muted-foreground text-xl lg:text-2xl max-w-2xl mx-auto leading-relaxed animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-300 fill-mode-both"
+              {/* TODO: AI-driven headline suggestions based on user profile and behavior */}
+              <Text 
+                variant="display" 
+                as="h1"
+                className="text-5xl lg:text-8xl font-bold tracking-tight leading-[1.1]"
+              >
+                {t('hero.title')}
+              </Text>
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5, duration: 0.8 }}
             >
-              {t('hero.subtitle')}
-            </Text>
+              <Text 
+                variant="body" 
+                className="text-muted-foreground text-xl lg:text-2xl max-w-2xl mx-auto leading-relaxed"
+              >
+                {t('hero.subtitle')}
+              </Text>
+            </motion.div>
           </div>
 
           {/* Interactive CTA Hub */}
-          <div className="flex flex-col items-center gap-8 pt-4 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-500 fill-mode-both">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1, duration: 0.8 }}
+            className="flex flex-col items-center gap-8 pt-4"
+          >
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full">
               <Button 
                 size="lg" 
@@ -102,14 +129,24 @@ export const HeroSection = () => {
               </Button>
             </div>
 
+            {/* In-Hero Theme Control Node */}
+            <div className="mt-4 p-2 bg-card/30 border border-white/5 rounded-2xl shadow-xl">
+              <ThemeToggle />
+            </div>
+
             {/* Email Acquisition Handshake */}
-            <div id="waitlist" className="w-full">
+            <div id="waitlist" className="w-full pt-4">
               <WaitlistForm />
             </div>
-          </div>
+          </motion.div>
 
-          {/* Responsive Visual Intelligence Layer - priority={true} for LCP optimization */}
-          <div className="pt-16 lg:pt-24 animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-700 fill-mode-both">
+          {/* Responsive Visual Intelligence Layer */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 1.2, duration: 1 }}
+            className="pt-16 lg:pt-24"
+          >
             <div className="relative aspect-[21/9] w-full rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl shadow-primary/5 bg-card/30 group">
               <Image 
                 src={heroImage?.imageUrl || "https://picsum.photos/seed/hero/1200/600"}
@@ -122,11 +159,11 @@ export const HeroSection = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-60" aria-hidden="true" />
               <div className="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-[3rem]" aria-hidden="true" />
             </div>
-          </div>
+          </motion.div>
 
           {/* Institutional Telemetry Grid */}
           <div 
-            className="pt-16 grid grid-cols-2 md:grid-cols-4 gap-8 opacity-60 animate-in fade-in duration-1000 delay-1000 fill-mode-both"
+            className="pt-16 grid grid-cols-2 md:grid-cols-4 gap-8 opacity-60"
             role="group"
             aria-label="Platform Statistics"
           >
@@ -146,6 +183,7 @@ export const HeroSection = () => {
         </div>
       </Container>
 
+      {/* TODO: Analytics tracking for CTA clicks and hero interactions */}
       <WaitlistModal isOpen={isModalOpen} onOpenChange={setIsModalOpen} />
     </section>
   );
