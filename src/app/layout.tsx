@@ -50,13 +50,21 @@ export default function RootLayout({
         </Script>
       </head>
       <body className="font-body bg-background text-foreground antialiased min-h-screen flex flex-col">
+        {/* Skip to Content - Keyboard Navigation Node */}
+        <a 
+          href="#main-content" 
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-6 focus:py-3 focus:bg-primary focus:text-white focus:rounded-xl focus:font-bold focus:shadow-2xl transition-all"
+        >
+          Skip to main content
+        </a>
+
         <I18nProvider>
           <GlobalStoreProvider>
             <ThemeProvider>
               <TooltipProvider>
                 <Navbar />
                 <CookieConsent />
-                <main className="flex-grow">
+                <main id="main-content" className="flex-grow outline-none" tabIndex={-1}>
                   {children}
                 </main>
                 <Footer />

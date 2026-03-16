@@ -22,7 +22,7 @@ interface PricingCardProps {
 /**
  * Enhanced Pricing Card Component.
  * Features sophisticated Framer Motion animations and institutional-grade styling.
- * Optimized for WCAG accessibility with clear action labels.
+ * Optimized for WCAG accessibility with clear action labels and semantic structures.
  */
 export const PricingCard = ({ 
   name, 
@@ -43,7 +43,7 @@ export const PricingCard = ({
     >
       <Card 
         className={cn(
-          "glass-card flex flex-col h-full border-none relative overflow-hidden transition-all duration-500 group focus-within:ring-2 focus-visible:ring-primary",
+          "glass-card flex flex-col h-full border-none relative overflow-hidden transition-all duration-500 group focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-4 focus-within:ring-offset-background",
           recommended 
             ? "ring-2 ring-primary/40 shadow-2xl md:scale-105 z-10 bg-primary/5" 
             : "opacity-90 hover:opacity-100 hover:translate-y-[-8px] hover:shadow-xl hover:border-primary/20"
@@ -51,7 +51,7 @@ export const PricingCard = ({
       >
         {/* Visual recommended badge */}
         {recommended && (
-          <div className="bg-primary text-white text-[9px] font-bold uppercase tracking-widest text-center py-1.5 absolute top-0 left-0 w-full shadow-md" role="status">
+          <div className="bg-primary text-white text-[9px] font-bold uppercase tracking-widest text-center py-1.5 absolute top-0 left-0 w-full shadow-md" role="status" aria-label="Recommended choice">
             Recommended Intelligence Path
           </div>
         )}
@@ -67,7 +67,7 @@ export const PricingCard = ({
             <CardDescription className="text-sm leading-relaxed">{description}</CardDescription>
           </div>
           <div className="pt-6 flex items-baseline gap-1">
-            <span className="text-5xl font-bold tracking-tighter text-foreground" aria-label={`Price: ${price}`}>{price}</span>
+            <span className="text-5xl font-bold tracking-tighter text-foreground" aria-label={`Price: ${price} per month`}>{price}</span>
             {price !== "$0" && <span className="text-muted-foreground font-medium" aria-hidden="true">/mo</span>}
           </div>
         </CardHeader>
@@ -75,9 +75,9 @@ export const PricingCard = ({
         <CardContent className="p-8 pt-0 flex-grow">
           <div className="space-y-6">
             <div className="h-px bg-gradient-to-r from-white/10 to-transparent" aria-hidden="true" />
-            <nav className="space-y-4" aria-label={`${name} plan features`}>
+            <div className="space-y-4">
               <Text variant="label" className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">Included Capabilities</Text>
-              <ul className="space-y-3">
+              <ul className="space-y-3" aria-label={`Features included in the ${name} plan`}>
                 {features.map((feature, idx) => (
                   <li key={idx} className="flex gap-3 items-start group/item">
                     <div className="mt-1 p-0.5 rounded-full bg-emerald-500/10 text-emerald-500 group-hover/item:bg-emerald-500 group-hover/item:text-white transition-all duration-300">
@@ -89,16 +89,16 @@ export const PricingCard = ({
                   </li>
                 ))}
               </ul>
-            </nav>
+            </div>
           </div>
         </CardContent>
 
         <CardFooter className="p-8 pt-0">
           <Button 
             onClick={() => onCtaClick(name)}
-            aria-label={`${ctaText} for the ${name} plan`}
+            aria-label={`${ctaText} for ${name} plan`}
             className={cn(
-              "w-full h-14 rounded-2xl font-bold uppercase tracking-widest text-[10px] transition-all scale-100 active:scale-95 shadow-lg focus-visible:ring-offset-2",
+              "w-full h-14 rounded-2xl font-bold uppercase tracking-widest text-[10px] transition-all scale-100 active:scale-95 shadow-lg focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
               recommended 
                 ? "bg-primary hover:bg-primary/90 shadow-primary/20" 
                 : "variant-outline border-white/10 bg-card/30 hover:bg-white/5"

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useId } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -14,7 +14,7 @@ import { cn } from '@/lib/utils';
 /**
  * Enhanced Waitlist & Early Access Form.
  * Captures user identity nodes (name/email) with robust validation.
- * Optimized for high-fidelity conversion zones.
+ * Optimized for high-fidelity conversion zones and accessibility.
  */
 export const WaitlistForm = () => {
   const { t } = useTranslation('common');
@@ -23,9 +23,12 @@ export const WaitlistForm = () => {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
   const { toast } = useToast();
+  
+  const errorId = useId();
+  const successId = useId();
 
   // TODO: AI-powered predictive form auto-fill based on domain or social profile
-  // TODO: Dynamic user segmentation and automated marketing handshake
+  // TODO: AI-powered dynamic focus recommendations based on error density
 
   const validateEmail = (email: string) => {
     return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email);
@@ -85,6 +88,7 @@ export const WaitlistForm = () => {
   if (status === 'success') {
     return (
       <div 
+        id={successId}
         role="alert" 
         aria-live="assertive"
         className="p-8 rounded-[2rem] bg-emerald-500/10 border border-emerald-500/20 text-center space-y-4 animate-in zoom-in-95 duration-500"
@@ -100,14 +104,14 @@ export const WaitlistForm = () => {
 
   return (
     <div id="waitlist-inline" className="w-full max-w-lg mx-auto scroll-mt-32">
-      <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+      <form onSubmit={handleSubmit} className="space-y-4" noValidate aria-label="Waitlist registration form">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="space-y-2">
+          <div className="space-y-2 text-left">
             <Label htmlFor="inline-name" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">
               Legal Persona (Optional)
             </Label>
             <div className="relative group">
-              <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
+              <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" aria-hidden="true" />
               <Input
                 id="inline-name"
                 type="text"
@@ -115,12 +119,12 @@ export const WaitlistForm = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 disabled={status === 'loading'}
-                className="h-12 pl-10 bg-card/50 border-white/10 rounded-xl focus:ring-primary/20 transition-all text-sm"
+                className="h-12 pl-10 bg-card/50 border-white/10 rounded-xl focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background transition-all text-sm"
               />
             </div>
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-2 text-left">
             <Label htmlFor="inline-email" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">
               Intelligence Node (Email)
             </Label>
@@ -135,8 +139,11 @@ export const WaitlistForm = () => {
                   if (status === 'error') setStatus('idle');
                 }}
                 disabled={status === 'loading'}
+                aria-required="true"
+                aria-invalid={status === 'error'}
+                aria-describedby={status === 'error' ? errorId : undefined}
                 className={cn(
-                  "h-12 bg-card/50 border-white/10 rounded-xl focus:ring-primary/20 transition-all text-sm",
+                  "h-12 bg-card/50 border-white/10 rounded-xl focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background transition-all text-sm",
                   status === 'error' && "border-destructive/50"
                 )}
                 required
@@ -148,17 +155,18 @@ export const WaitlistForm = () => {
         <Button 
           type="submit" 
           disabled={status === 'loading'}
-          className="w-full h-12 rounded-xl font-bold bg-primary hover:bg-primary/90 shadow-xl shadow-primary/20 transition-all scale-100 active:scale-[0.98] group/btn"
+          aria-label={status === 'loading' ? 'Transmitting waitlist request' : 'Join the waitlist'}
+          className="w-full h-12 rounded-xl font-bold bg-primary hover:bg-primary/90 shadow-xl shadow-primary/20 transition-all scale-100 active:scale-[0.98] group/btn focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
           {status === 'loading' ? (
-            <Loader2 className="h-4 w-4 animate-spin mr-2" />
+            <Loader2 className="h-4 w-4 animate-spin mr-2" aria-hidden="true" />
           ) : (
-            <Send className="h-4 w-4 mr-2 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
+            <Send className="h-4 w-4 mr-2 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" aria-hidden="true" />
           )}
           {status === 'loading' ? 'Transmitting...' : t('waitlist.submit_button')}
         </Button>
         
-        <div aria-live="polite">
+        <div aria-live="polite" id={errorId}>
           {status === 'error' && (
             <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive text-xs font-bold animate-in fade-in slide-in-from-top-1">
               <AlertCircle className="h-3 w-3" aria-hidden="true" /> {message}

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Container } from '@/design-system/layout/container';
 import { Text } from '@/design-system/typography/text';
 import { Button } from '@/components/ui/button';
@@ -12,18 +12,18 @@ import { toast } from '@/hooks/use-toast';
 /**
  * GDPR-compliant Cookie Consent Banner.
  * Manages user privacy preferences and persists choices locally.
- * Refined for Prompt 49 with Accept/Reject/Manage logic.
- * Optimized for WCAG 2.1 accessibility.
+ * Refined for accessibility with role="region" and focus management.
  */
 export const CookieConsent = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const bannerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Check for existing consent handshake in the index
     const consent = localStorage.getItem('imperialpedia_cookie_consent');
     if (!consent) {
-      // Show banner after short delay for discovery impact
-      const timer = setTimeout(() => setIsVisible(true), 1500);
+      const timer = setTimeout(() => {
+        setIsVisible(true);
+      }, 1500);
       return () => clearTimeout(timer);
     }
   }, []);
@@ -32,8 +32,6 @@ export const CookieConsent = () => {
     localStorage.setItem('imperialpedia_cookie_consent', choice);
     setIsVisible(false);
     
-    // Explicitly allow tracking for this specific interaction even if consent wasn't set yet
-    // because this event marks the decision itself.
     trackEvent({
       category: 'Compliance',
       action: choice === 'accepted' ? 'Accept Cookies' : 'Decline Cookies',
@@ -60,6 +58,7 @@ export const CookieConsent = () => {
 
   return (
     <div 
+      ref={bannerRef}
       className="fixed bottom-0 left-0 w-full z-[100] p-4 lg:p-6 animate-in slide-in-from-bottom-full duration-1000"
       role="region"
       aria-label="Cookie consent and privacy notice"
@@ -76,7 +75,7 @@ export const CookieConsent = () => {
               </Text>
               <Text variant="caption" className="text-muted-foreground leading-relaxed">
                 Imperialpedia utilizes cookies to audit platform performance and optimize your discovery trajectory. By continuing, you agree to our{' '}
-                <Link href="/privacy-policy" className="text-primary hover:underline font-bold outline-none focus-visible:underline">Privacy Protocol</Link>.
+                <Link href="/privacy-policy" className="text-primary hover:underline font-bold outline-none focus-visible:underline focus-visible:ring-2 focus-visible:ring-primary">Privacy Protocol</Link>.
               </Text>
             </div>
           </div>
@@ -85,7 +84,7 @@ export const CookieConsent = () => {
             <Button 
               variant="ghost" 
               size="sm"
-              className="flex-1 md:flex-none h-11 px-4 rounded-xl text-[10px] font-bold uppercase tracking-widest text-muted-foreground hover:text-primary transition-all focus-visible:ring-offset-2"
+              className="flex-1 md:flex-none h-11 px-4 rounded-xl text-[10px] font-bold uppercase tracking-widest text-muted-foreground hover:text-primary transition-all focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               onClick={handleManage}
               aria-label="Manage detailed cookie preferences"
             >
@@ -93,14 +92,14 @@ export const CookieConsent = () => {
             </Button>
             <Button 
               variant="ghost" 
-              className="flex-1 md:flex-none h-11 px-6 rounded-xl text-xs font-bold uppercase tracking-widest text-muted-foreground hover:text-foreground border border-white/5 focus-visible:ring-offset-2"
+              className="flex-1 md:flex-none h-11 px-6 rounded-xl text-xs font-bold uppercase tracking-widest text-muted-foreground hover:text-foreground border border-white/5 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               onClick={() => handleChoice('declined')}
               aria-label="Reject non-essential cookies"
             >
               Decline
             </Button>
             <Button 
-              className="flex-1 md:flex-none h-11 px-8 rounded-xl bg-primary hover:bg-primary/90 text-white font-bold text-xs uppercase tracking-widest shadow-lg shadow-primary/20 focus-visible:ring-offset-2"
+              className="flex-1 md:flex-none h-11 px-8 rounded-xl bg-primary hover:bg-primary/90 text-white font-bold text-xs uppercase tracking-widest shadow-lg shadow-primary/20 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               onClick={() => handleChoice('accepted')}
               aria-label="Accept all cookies and continue"
             >
@@ -111,7 +110,7 @@ export const CookieConsent = () => {
       </Container>
       
       {/* TODO: AI-driven cookie consent messaging based on user region in Phase 2 */}
-      {/* TODO: Dynamic cookie categories (analytics, marketing, functional) */}
+      {/* TODO: Analytics tracking for keyboard and screen reader interactions */}
     </div>
   );
 };
