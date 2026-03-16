@@ -236,7 +236,7 @@ export default function Footer() {
         <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-6">
             <Text variant="caption" className="text-muted-foreground font-medium">
-              &copy; {new Date().getFullYear()} Imperialpedia. AI Knowledge Infrastructure.
+              &copy; {new Date().getFullYear()} Imperialpedia. All rights reserved.
             </Text>
             <div className="hidden md:flex items-center gap-2 text-emerald-500/40 text-[9px] font-bold uppercase tracking-[0.2em]">
               <ShieldCheck className="h-3.5 w-3.5" /> Data Traversal Encrypted
