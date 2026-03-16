@@ -6,9 +6,7 @@ import { EntityHeader } from '@/components/knowledge/EntityHeader';
 import { EntityOverview } from '@/components/knowledge/EntityOverview';
 import { DataTable } from '@/components/knowledge/DataTable';
 import { RelatedEntities } from '@/components/knowledge/RelatedEntities';
-import { env } from '@/config/env';
-import { ApiResponse } from '@/types/api';
-import { Country } from '@/types/country';
+import { getCountryBySlug } from '@/lib/data/loaders';
 import { generateEntityMetadata } from '@/lib/seo/metadata';
 import { structuredData } from '@/lib/seo/structuredData';
 import { JsonLd } from '@/modules/seo-engine/components/JsonLd';
@@ -17,23 +15,16 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-async function getCountry(slug: string): Promise<Country | null> {
-  const res = await fetch(`${env.siteUrl}/api/countries?slug=${slug}`, { cache: 'no-store' });
-  if (!res.ok) return null;
-  const response: ApiResponse<Country> = await res.json();
-  return response.data;
-}
-
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const country = await getCountry(slug);
+  const country = await getCountryBySlug(slug);
   if (!country) return { title: 'Country Not Found' };
   return generateEntityMetadata(country, 'country');
 }
 
 export default async function Page({ params }: PageProps) {
   const { slug } = await params;
-  const country = await getCountry(slug);
+  const country = await getCountryBySlug(slug);
 
   if (!country) {
     notFound();

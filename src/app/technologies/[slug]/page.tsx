@@ -6,24 +6,15 @@ import { EntityHeader } from '@/components/knowledge/EntityHeader';
 import { EntityOverview } from '@/components/knowledge/EntityOverview';
 import { DataTable } from '@/components/knowledge/DataTable';
 import { RelatedEntities } from '@/components/knowledge/RelatedEntities';
-import { env } from '@/config/env';
-import { ApiResponse } from '@/types/api';
-import { Technology } from '@/types/technology';
+import { getTechnologyBySlug } from '@/lib/data/loaders';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-async function getTechnology(slug: string): Promise<Technology | null> {
-  const res = await fetch(`${env.siteUrl}/api/technologies?slug=${slug}`, { cache: 'no-store' });
-  if (!res.ok) return null;
-  const response: ApiResponse<Technology> = await res.json();
-  return response.data;
-}
-
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const tech = await getTechnology(slug);
+  const tech = await getTechnologyBySlug(slug);
 
   if (!tech) {
     return { title: 'Technology Not Found' };
@@ -38,7 +29,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function Page({ params }: PageProps) {
   const { slug } = await params;
-  const tech = await getTechnology(slug);
+  const tech = await getTechnologyBySlug(slug);
 
   if (!tech) {
     notFound();
@@ -46,7 +37,7 @@ export default async function Page({ params }: PageProps) {
 
   const technicalData = [
     ['Inception Node', tech.invented_year],
-    ['Primary Domain', tech.industry],
+    ['Primary Domain', tech.category],
     ['Core Applications', tech.applications.join(', ')]
   ];
 
@@ -60,7 +51,7 @@ export default async function Page({ params }: PageProps) {
           stats={[
             { label: 'Innovation Node', value: tech.invented_year },
             { label: 'Application Scale', value: tech.applications.length },
-            { label: 'Industry Vertical', value: tech.industry.charAt(0).toUpperCase() + tech.industry.slice(1) }
+            { label: 'Industry Vertical', value: tech.category }
           ]} 
         />
 

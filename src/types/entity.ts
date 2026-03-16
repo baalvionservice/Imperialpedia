@@ -28,15 +28,64 @@ export interface EntityRelation {
   relation_type: RelationType | string;
 }
 
+/**
+ * Base interface for all knowledge nodes in the Imperialpedia Index.
+ */
 export interface BaseEntity {
   id: ID;
   name: string;
   slug: Slug;
   type: EntityType;
   description: string;
-  country?: string; // References by slug
-  industry?: string; // References by slug
+  category: string;
   tags: string[];
   created_at: Timestamp;
   updated_at: Timestamp;
+  // Optional relational fields
+  country?: string; 
+  industry?: string; 
+}
+
+export interface CountryEntity extends BaseEntity {
+  type: 'country';
+  capital: string;
+  region: string;
+  population: number;
+  gdp: string;
+  currency: string;
+  official_language: string;
+  industries: string[];
+  technologies: string[];
+}
+
+export interface CompanyEntity extends BaseEntity {
+  type: 'company';
+  industry: string;
+  country: string;
+  founded_year: number;
+  headquarters: string;
+  employees: number;
+  website: string;
+  technologies: string[];
+  competitors: string[];
+}
+
+export interface IndustryEntity extends BaseEntity {
+  type: 'industry';
+  sector: string;
+  global_market_size: string;
+  growth_rate: string;
+  top_countries: string[];
+  key_companies: string[];
+  related_technologies: string[];
+}
+
+export interface TechnologyEntity extends BaseEntity {
+  type: 'technology';
+  category: string;
+  invented_year: number;
+  applications: string[];
+  use_cases: string[];
+  key_companies: string[];
+  related_technologies: string[];
 }
