@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useId } from 'react';
+import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Text } from '@/design-system/typography/text';
@@ -15,6 +16,9 @@ import { logEvent } from '@/lib/utils/analytics';
  * 
  * // TODO: AI-driven newsletter content personalization
  * // TODO: Suggest topics based on user traversal history
+ * // TODO: AI-driven dynamic newsletter text and suggestions
+ * // TODO: Backend integration for subscription management
+ * // TODO: Analytics tracking for newsletter submissions
  */
 export default function Newsletter() {
   const [email, setEmail] = useState('');
@@ -82,10 +86,12 @@ export default function Newsletter() {
 
   if (status === 'success') {
     return (
-      <div 
+      <motion.div 
         id={successId}
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
         role="alert" 
-        className="p-8 rounded-[2rem] bg-emerald-500/10 border border-emerald-500/20 text-center space-y-4 animate-in zoom-in-95 duration-500"
+        className="p-8 rounded-[2rem] bg-emerald-500/10 border border-emerald-500/20 text-center space-y-4 shadow-xl"
       >
         <div className="w-16 h-16 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-2 shadow-inner">
           <CheckCircle2 className="h-8 w-8 text-emerald-500" />
@@ -94,12 +100,18 @@ export default function Newsletter() {
         <Text variant="bodySmall" className="text-muted-foreground leading-relaxed">
           {message}
         </Text>
-      </div>
+      </motion.div>
     );
   }
 
   return (
-    <div className="w-full max-w-2xl mx-auto space-y-6">
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6 }}
+      className="w-full max-w-2xl mx-auto space-y-6"
+    >
       <form 
         onSubmit={handleSubmit} 
         className="flex flex-col sm:flex-row gap-3" 
@@ -120,7 +132,7 @@ export default function Newsletter() {
             aria-invalid={status === 'error'}
             aria-describedby={status === 'error' ? errorId : undefined}
             className={cn(
-              "h-14 bg-card/30 border-white/10 rounded-2xl focus-visible:ring-2 focus-visible:ring-primary/20 transition-all text-lg pl-6",
+              "h-14 bg-card/30 border-white/10 rounded-2xl focus-visible:ring-2 focus-visible:ring-primary/20 transition-all text-lg pl-6 shadow-inner",
               status === 'error' && "border-destructive/50"
             )}
             required
@@ -157,6 +169,6 @@ export default function Newsletter() {
           <Sparkles className="h-3 w-3" /> pSEO Taxonomy Alerts
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
