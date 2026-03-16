@@ -7,6 +7,7 @@ import { FeaturesSection } from '@/components/landing/FeaturesSection';
 import { TestimonialsSection } from '@/components/landing/TestimonialsSection';
 import { FAQSection } from '@/components/landing/FAQSection';
 import { WaitlistForm } from '@/components/landing/WaitlistForm';
+import { LandingFooter } from '@/components/landing/Footer';
 import { Text } from '@/design-system/typography/text';
 import { Container } from '@/design-system/layout/container';
 import { cn } from '@/lib/utils';
@@ -30,11 +31,11 @@ export default function Home() {
       {/* Discovery Matrix Section */}
       <section className="py-24 bg-card/20 border-y border-white/5">
         <div className="container mx-auto px-4">
-          <header className="mb-16 max-w-2xl">
-            <Text variant="label" className="text-primary mb-4">Modular Ecosystem</Text>
-            <Text variant="h2" className="text-3xl lg:text-5xl font-bold tracking-tight mb-6">Structured Intelligence</Text>
+          <header className="mb-16 max-w-2xl px-2">
+            <Text variant="label" className="text-primary mb-4 uppercase tracking-widest">Structured Ecosystem</Text>
+            <Text variant="h2" className="text-3xl lg:text-5xl font-bold tracking-tight mb-6">Discovery Hubs</Text>
             <Text variant="body" className="text-muted-foreground leading-relaxed">
-              Our platform is built on a scalable, modular architecture designed for institutional-grade research.
+              Audit the world's most scalable intelligence infrastructure. Explore our specialized modules designed for professional-tier research.
             </Text>
           </header>
 
@@ -97,6 +98,9 @@ export default function Home() {
           </div>
         </Container>
       </section>
+
+      {/* Primary Footer Section */}
+      <LandingFooter />
     </div>
   );
 }
