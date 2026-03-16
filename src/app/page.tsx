@@ -43,7 +43,7 @@ export const metadata = generateLandingMetadata();
 
 /**
  * The main Home page for Imperialpedia.
- * Orchestrates the full landing page experience with performance-optimized lazy loading.
+ * Orchestrates the full landing page experience with performance-optimized lazy loading and pSEO metadata.
  */
 export default function Home() {
   const faqs = [
@@ -65,6 +65,7 @@ export default function Home() {
     }
   ];
 
+  // Structured Data Nodes
   const websiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
@@ -77,9 +78,52 @@ export default function Home() {
     }
   };
 
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Imperialpedia",
+    "url": "https://www.imperialpedia.com",
+    "logo": "https://www.imperialpedia.com/logo.png",
+    "sameAs": [
+      "https://www.linkedin.com/company/imperialpedia",
+      "https://twitter.com/imperialpedia",
+      "https://www.facebook.com/imperialpedia"
+    ]
+  };
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(faq => ({
+      "@type": "Question",
+      "name": faq.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.answer
+      }
+    }))
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://imperialpedia.com"
+      }
+    ]
+  };
+
   return (
     <div className="flex flex-col w-full">
+      {/* Institutional SEO Handshake */}
       <JsonLd data={websiteSchema} />
+      <JsonLd data={organizationSchema} />
+      <JsonLd data={faqSchema} />
+      <JsonLd data={breadcrumbSchema} />
 
       <HeroSection />
 
@@ -89,6 +133,7 @@ export default function Home() {
 
       <TestimonialsSection />
 
+      {/* Discovery Hubs Triage */}
       <section className="py-24 bg-card/20 border-y border-white/5">
         <div className="container mx-auto px-4">
           <header className="mb-16 max-w-2xl px-2">
@@ -141,6 +186,10 @@ export default function Home() {
       <FooterSection />
 
       <StickyCTA />
+
+      {/* TODO: AI-generated dynamic SEO content suggestions */}
+      {/* TODO: Personalized metadata based on visitor location or interest */}
+      {/* TODO: Analytics tracking for SEO and social sharing interactions */}
     </div>
   );
 }
