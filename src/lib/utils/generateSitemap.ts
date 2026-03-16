@@ -8,45 +8,32 @@ import { env } from '@/config/env';
 export const generateSitemap = () => {
   const baseUrl = env.siteUrl || 'https://imperialpedia.com';
   
+  const pages = [
+    { url: '/', changefreq: 'daily', priority: 1.0 },
+    { url: '/#features', changefreq: 'weekly', priority: 0.8 },
+    { url: '/#faq', changefreq: 'weekly', priority: 0.8 },
+    { url: '/#pricing', changefreq: 'weekly', priority: 0.8 },
+    { url: '/creators', changefreq: 'daily', priority: 0.9 },
+    { url: '/glossary', changefreq: 'daily', priority: 0.9 },
+    { url: '/financial-tools', changefreq: 'monthly', priority: 0.7 },
+    { url: '/explore', changefreq: 'daily', priority: 0.9 },
+    { url: '/ai-analyst', changefreq: 'daily', priority: 0.9 },
+  ];
+
+  const xmlEntries = pages
+    .map(page => `
+  <url>
+    <loc>${baseUrl}${page.url}</loc>
+    <changefreq>${page.changefreq}</changefreq>
+    <priority>${page.priority.toFixed(1)}</priority>
+  </url>`)
+    .join('');
+
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>${baseUrl}/</loc>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>${baseUrl}/#features</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>${baseUrl}/#faq</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>${baseUrl}/#pricing</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>${baseUrl}/creators</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>${baseUrl}/glossary</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>${baseUrl}/financial-tools</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
+${xmlEntries}
   <!-- TODO: Auto-generate sitemap entries for AI-generated entity pages in Phase 2 -->
-  <!-- TODO: Integrate AI-powered SEO recommendations for metadata -->
-  <!-- TODO: Dynamic robots rules per country / region -->
+  <!-- TODO: AI-powered dynamic sitemap prioritization -->
+  <!-- TODO: Automated submission to search engine discovery nodes -->
 </urlset>`.trim();
 };
