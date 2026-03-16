@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useId } from 'react';
+import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -12,12 +13,9 @@ import { logEvent } from '@/lib/utils/analytics';
 import { useTranslation } from 'react-i18next';
 
 /**
- * Enhanced Waitlist & Early Access Form.
- * Captures user identity nodes (name/email) with robust validation.
- * Optimized for high-fidelity conversion zones and accessibility.
- * 
- * // TODO: AI-driven lead qualification score
- * // TODO: Predictive analytics for conversion probability
+ * Institutional Waitlist & Lead Capture Form.
+ * Orchestrates user identity ingestion with robust validation and state management.
+ * Features Framer Motion entry and success states.
  */
 export const WaitlistForm = () => {
   const { t } = useTranslation('common');
@@ -86,23 +84,24 @@ export const WaitlistForm = () => {
 
   if (status === 'success') {
     return (
-      <div 
+      <motion.div 
         id={successId}
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
         role="alert" 
-        aria-live="assertive"
-        className="p-8 rounded-[2rem] bg-emerald-500/10 border border-emerald-500/20 text-center space-y-4 animate-in zoom-in-95 duration-500"
+        className="p-8 rounded-[2rem] bg-emerald-500/10 border border-emerald-500/20 text-center space-y-4 shadow-xl"
       >
         <div className="w-16 h-16 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-2 shadow-inner">
           <CheckCircle2 className="h-8 w-8 text-emerald-500" aria-hidden="true" />
         </div>
         <Text variant="h4" className="font-bold text-foreground">Handshake Complete</Text>
         <Text variant="bodySmall" className="text-muted-foreground">{message}</Text>
-      </div>
+      </motion.div>
     );
   }
 
   return (
-    <div id="waitlist-inline" className="w-full max-w-lg mx-auto scroll-mt-32">
+    <div id="waitlist-inline" className="w-full max-w-2xl mx-auto scroll-mt-32">
       <form 
         onSubmit={handleSubmit} 
         className="space-y-4" 
@@ -123,7 +122,7 @@ export const WaitlistForm = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 disabled={status === 'loading'}
-                className="h-12 pl-10 bg-card/30 border-white/10 rounded-xl focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background transition-all text-sm outline-none"
+                className="h-12 pl-10 bg-card/30 border-white/10 rounded-xl focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 transition-all text-sm"
               />
             </div>
           </div>
@@ -145,9 +144,8 @@ export const WaitlistForm = () => {
                 disabled={status === 'loading'}
                 aria-required="true"
                 aria-invalid={status === 'error'}
-                aria-describedby={status === 'error' ? errorId : undefined}
                 className={cn(
-                  "h-12 bg-card/30 border-white/10 rounded-xl focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background transition-all text-sm outline-none",
+                  "h-12 bg-card/30 border-white/10 rounded-xl focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 transition-all text-sm",
                   status === 'error' && "border-destructive/50"
                 )}
                 required
@@ -159,18 +157,17 @@ export const WaitlistForm = () => {
         <Button 
           type="submit" 
           disabled={status === 'loading'}
-          aria-label={status === 'loading' ? 'Transmitting waitlist request' : 'Join the waitlist'}
-          className="w-full h-12 rounded-xl font-bold bg-primary hover:bg-primary/90 shadow-xl shadow-primary/20 transition-all scale-100 active:scale-[0.98] group/btn focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background outline-none"
+          className="w-full h-14 rounded-xl font-bold bg-primary hover:bg-primary/90 shadow-xl shadow-primary/20 transition-all scale-100 active:scale-[0.98] group/btn"
         >
           {status === 'loading' ? (
-            <Loader2 className="h-4 w-4 animate-spin mr-2" aria-hidden="true" />
+            <Loader2 className="h-5 w-5 animate-spin mr-2" aria-hidden="true" />
           ) : (
             <Send className="h-4 w-4 mr-2 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" aria-hidden="true" />
           )}
           {status === 'loading' ? 'Transmitting...' : t('waitlist.submit_button')}
         </Button>
         
-        <div aria-live="polite" id={errorId}>
+        <div aria-live="polite">
           {status === 'error' && (
             <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive text-xs font-bold animate-in fade-in slide-in-from-top-1">
               <AlertCircle className="h-3 w-3" aria-hidden="true" /> {message}
@@ -184,6 +181,12 @@ export const WaitlistForm = () => {
           </Text>
         </div>
       </form>
+
+      {/* 
+        TODO: AI-driven lead qualification score (Phase 2)
+        TODO: Predictive analytics for conversion probability
+        TODO: Multi-language form translations
+      */}
     </div>
   );
 };
