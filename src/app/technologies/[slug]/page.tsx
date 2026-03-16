@@ -7,10 +7,12 @@ import { EntityOverview } from '@/components/knowledge/EntityOverview';
 import { DataTable } from '@/components/knowledge/DataTable';
 import { RelatedEntities } from '@/components/knowledge/RelatedEntities';
 import { getTechnologyBySlug } from '@/lib/data/loaders';
+import { generateEntityMetadata } from '@/lib/utils/seo';
 import { QuickStats } from '@/components/entity/QuickStats';
 import { RelatedHighlights } from '@/components/entity/RelatedHighlights';
 import { AIInsight } from '@/components/ai/AIInsight';
 import { EntityAnalytics } from '@/components/entity/EntityAnalytics';
+import { EntityTags } from '@/components/entity/EntityTags';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -24,11 +26,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     return { title: 'Technology Not Found' };
   }
 
-  return {
-    title: `${tech.name} | Technology Analysis | Imperialpedia`,
-    description: tech.description,
-    keywords: tech.tags,
-  };
+  return generateEntityMetadata(tech, 'technology');
 }
 
 export default async function Page({ params }: PageProps) {
@@ -76,6 +74,7 @@ export default async function Page({ params }: PageProps) {
 
           <aside className="lg:col-span-4 space-y-10">
             <div className="sticky top-24 space-y-10">
+              <EntityTags entity={tech} type="technology" />
               <AIInsight entityType="technology" slug={tech.slug} />
               <RelatedHighlights entityId={tech.id} />
             </div>

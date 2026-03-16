@@ -7,10 +7,12 @@ import { EntityOverview } from '@/components/knowledge/EntityOverview';
 import { DataTable } from '@/components/knowledge/DataTable';
 import { RelatedEntities } from '@/components/knowledge/RelatedEntities';
 import { getIndustryBySlug } from '@/lib/data/loaders';
+import { generateEntityMetadata } from '@/lib/utils/seo';
 import { QuickStats } from '@/components/entity/QuickStats';
 import { RelatedHighlights } from '@/components/entity/RelatedHighlights';
 import { AIInsight } from '@/components/ai/AIInsight';
 import { EntityAnalytics } from '@/components/entity/EntityAnalytics';
+import { EntityTags } from '@/components/entity/EntityTags';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -24,11 +26,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     return { title: 'Industry Not Found' };
   }
 
-  return {
-    title: `${industry.name} | Industry Intelligence | Imperialpedia`,
-    description: industry.description,
-    keywords: industry.tags,
-  };
+  return generateEntityMetadata(industry, 'industry');
 }
 
 export default async function Page({ params }: PageProps) {
@@ -77,6 +75,7 @@ export default async function Page({ params }: PageProps) {
 
           <aside className="lg:col-span-4 space-y-10">
             <div className="sticky top-24 space-y-10">
+              <EntityTags entity={industry} type="industry" />
               <AIInsight entityType="industry" slug={industry.slug} />
               <RelatedHighlights entityId={industry.id} />
             </div>
