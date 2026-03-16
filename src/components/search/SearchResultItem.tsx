@@ -2,49 +2,54 @@ import React from 'react';
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import { Text } from '@/design-system/typography/text';
-import { ArrowRight } from 'lucide-react';
+import { SearchResult } from '@/types/search';
+import { ArrowRight, Globe, Building, Factory, Cpu } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
-interface SearchResultItemProps {
-  name: string;
-  type: string;
-  slug: string;
+interface SearchResultItemProps extends SearchResult {
   onClick?: () => void;
+  className?: string;
 }
 
-/**
- * Individual result item for search suggestions and full lists.
- */
-export const SearchResultItem = ({ name, type, slug, onClick }: SearchResultItemProps) => {
-  const getPath = () => {
-    switch (type.toLowerCase()) {
-      case 'country': return `/countries/${slug}`;
-      case 'company': return `/companies/${slug}`;
-      case 'industry': return `/industries/${slug}`;
-      case 'technology': return `/technologies/${slug}`;
-      default: return '#';
-    }
-  };
+const typeConfig = {
+  country: { icon: Globe, color: 'text-primary bg-primary/10' },
+  company: { icon: Building, color: 'text-secondary bg-secondary/10' },
+  industry: { icon: Factory, color: 'text-emerald-500 bg-emerald-500/10' },
+  technology: { icon: Cpu, color: 'text-amber-500 bg-amber-500/10' },
+};
+
+export const SearchResultItem = ({ id, type, title, snippet, route, onClick, className }: SearchResultItemProps) => {
+  const config = typeConfig[type];
+  const Icon = config.icon;
 
   return (
     <Link 
-      href={getPath()} 
+      href={route} 
       onClick={onClick}
-      className="flex items-center justify-between p-3 rounded-xl hover:bg-primary/5 transition-all group border border-transparent hover:border-primary/10"
+      className={cn(
+        "flex items-center justify-between p-4 rounded-2xl hover:bg-muted/50 transition-all group border border-transparent hover:border-border/50",
+        className
+      )}
     >
       <div className="flex items-center gap-4">
-        <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary transition-colors">
-          <Text variant="bodySmall" weight="bold">{name.charAt(0)}</Text>
+        <div className={cn("w-12 h-12 rounded-xl flex items-center justify-center shrink-0", config.color)}>
+          <Icon size={20} />
         </div>
         <div className="space-y-1">
-          <Text variant="bodySmall" weight="bold" className="group-hover:text-primary transition-colors">
-            {name}
+          <div className="flex items-center gap-2">
+            <Text variant="bodySmall" weight="bold" className="group-hover:text-primary transition-colors">
+              {title}
+            </Text>
+            <Badge variant="outline" className="text-[8px] font-bold uppercase tracking-widest h-4 px-1.5 opacity-60">
+              {type}
+            </Badge>
+          </div>
+          <Text variant="caption" className="text-muted-foreground line-clamp-1 max-w-sm">
+            {snippet}
           </Text>
-          <Badge variant="secondary" className="text-[10px] font-bold uppercase tracking-tighter h-5 px-1.5 border-none">
-            {type}
-          </Badge>
         </div>
       </div>
-      <ArrowRight className="w-4 h-4 text-primary opacity-0 -translate-x-2 transition-all group-hover:opacity-100 group-hover:translate-x-0" />
+      <ArrowRight size={16} className="text-primary opacity-0 -translate-x-2 transition-all group-hover:opacity-100 group-hover:translate-x-0" />
     </Link>
   );
 };
