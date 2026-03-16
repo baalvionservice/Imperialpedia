@@ -8,7 +8,7 @@ import { Text } from '@/design-system/typography/text';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ArrowRight, BookOpen, Database, PenTool, ShieldCheck, Activity, Zap } from 'lucide-react';
+import { ArrowRight, BookOpen, Database, PenTool, ShieldCheck, Activity, Zap, Newspaper } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { generateLandingMetadata } from '@/lib/utils/landingSEO';
@@ -50,7 +50,11 @@ const DynamicSocialProof = dynamic(() => import('@/components/common/SocialProof
 });
 
 const ScrollPopupCTA = dynamic(() => import('@/components/landing/ScrollPopupCTA').then(mod => mod.ScrollPopupCTA), {
-  ssr: false, // Client-side scroll logic
+  ssr: true, // Component handles internal client-side checks
+});
+
+const Newsletter = dynamic(() => import('@/components/common/Newsletter'), {
+  ssr: true,
 });
 
 /**
@@ -183,6 +187,29 @@ export default function Home() {
       </section>
 
       <FaqSection faqs={faqs} />
+
+      {/* Strategic Newsletter Node */}
+      <section className="py-24 bg-background relative overflow-hidden" aria-label="Newsletter Signup">
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-3xl mx-auto text-center space-y-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary/10 border border-secondary/20 text-secondary mb-2">
+              <Newspaper className="h-4 w-4" />
+              <span className="text-[10px] font-bold uppercase tracking-widest">Intelligence Wire</span>
+            </div>
+            <Text variant="h2" className="text-3xl lg:text-5xl font-bold tracking-tight">Stay Synchronized with the Hub</Text>
+            <Text variant="body" className="text-muted-foreground text-lg">
+              Receive weekly institutional audits, real-time market sentiment pulses, and exclusive pSEO taxonomy alerts delivered to your node.
+            </Text>
+            <div className="pt-4">
+              <Newsletter />
+            </div>
+          </div>
+        </div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full max-w-4xl pointer-events-none blur-[150px] opacity-[0.05] z-0">
+          <div className="absolute top-0 left-0 w-96 h-96 bg-primary rounded-full" />
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-secondary rounded-full" />
+        </div>
+      </section>
 
       <PricingSection />
 
