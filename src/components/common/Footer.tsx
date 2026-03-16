@@ -24,7 +24,7 @@ import { cn } from '@/lib/utils';
 
 /**
  * Global Platform Footer.
- * Central hub for navigation, institutional trust signals, and newsletter acquisition.
+ * Central hub for navigation, institutional trust signals, and legal compliance.
  */
 export const Footer = () => {
   const [email, setEmail] = useState('');
@@ -67,9 +67,9 @@ export const Footer = () => {
       { label: 'Leaderboards', href: '/community/rankings' },
     ],
     legal: [
-      { label: 'Privacy Protocol', href: '#' },
-      { label: 'Terms of Traversal', href: '#' },
-      { label: 'Editorial Policy', href: '#' },
+      { label: 'Privacy Policy', href: '/privacy-policy' },
+      { label: 'Terms of Service', href: '/terms-of-service' },
+      { label: 'Contact', href: '/contact' },
       { label: 'Security Audit', href: '#' },
     ]
   };
@@ -92,15 +92,15 @@ export const Footer = () => {
               The world's most scalable AI-powered financial intelligence engine. Providing deep-dive research across 1,000,000+ programmatic knowledge nodes.
             </Text>
             <div className="flex items-center gap-3">
-              {[
-                { icon: Twitter, label: 'Twitter' },
-                { icon: Linkedin, label: 'LinkedIn' },
-                { icon: Github, label: 'GitHub' }
-              ].map((social) => (
-                <Button key={social.label} variant="ghost" size="icon" className="h-10 w-10 rounded-xl hover:bg-primary/10 hover:text-primary transition-all">
-                  <social.icon className="h-5 w-5" />
-                </Button>
-              ))}
+              <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl hover:bg-primary/10 hover:text-primary transition-all" aria-label="Follow us on Twitter">
+                <Twitter className="h-5 w-5" />
+              </Button>
+              <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl hover:bg-primary/10 hover:text-primary transition-all" aria-label="Connect on LinkedIn">
+                <Linkedin className="h-5 w-5" />
+              </Button>
+              <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl hover:bg-primary/10 hover:text-primary transition-all" aria-label="View our GitHub">
+                <Github className="h-5 w-5" />
+              </Button>
             </div>
           </div>
 
@@ -184,6 +184,7 @@ export const Footer = () => {
           </div>
         </div>
 
+        {/* Legal & Copyright */}
         <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-6">
             <Text variant="caption" className="text-muted-foreground font-medium">
@@ -203,6 +204,10 @@ export const Footer = () => {
           </div>
         </div>
       </Container>
+
+      {/* TODO: AI-powered dynamic footer links based on user behavior */}
+      {/* TODO: Footer localization for multi-language support */}
+      {/* TODO: Dynamic social media feed integration */}
 
       <WaitlistModal isOpen={isWaitlistOpen} onOpenChange={setIsWaitlistOpen} />
     </footer>
