@@ -18,6 +18,13 @@ i18next
     },
   });
 
+/**
+ * @fileOverview Global I18n Provider for the platform.
+ * 
+ * // TODO: AI-driven automatic translation suggestions per user region
+ * // TODO: Personalized content based on preferred language
+ * // TODO: Analytics tracking for language switch interactions
+ */
 export function I18nProvider({ children }: { children: ReactNode }) {
   return <I18nextProvider i18n={i18next}>{children}</I18nextProvider>;
 }

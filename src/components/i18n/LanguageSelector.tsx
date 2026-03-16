@@ -11,18 +11,27 @@ import {
 import { Button } from '@/components/ui/button';
 import { Languages, ChevronDown } from 'lucide-react';
 import { i18nConfig } from '@/i18n/config';
+import { trackEvent } from '@/lib/utils/analytics';
 
 /**
  * Institutional language selector component.
  * Allows switching between supported discovery dialects.
+ * 
+ * // TODO: AI-powered translation improvement and content consistency checks
+ * // TODO: Regional detection node integration for smart defaults
  */
 export const LanguageSelector = () => {
   const { i18n } = useTranslation();
 
   const handleLanguageChange = (lng: string) => {
     i18n.changeLanguage(lng);
-    // TODO: Detect user locale automatically and suggest language
-    // TODO: AI-powered translation improvement and content consistency checks
+    
+    // Broadcast language shift to the analytics cluster
+    trackEvent({
+      category: 'I18n',
+      action: 'Language Switch',
+      label: lng.toUpperCase()
+    });
   };
 
   const currentLanguage = i18nConfig.locales.find(l => l === i18n.language) || i18nConfig.defaultLocale;
