@@ -16,7 +16,8 @@ import {
   Zap, 
   Loader2, 
   CheckCircle2, 
-  ArrowRight 
+  ArrowRight,
+  ChevronRight
 } from 'lucide-react';
 import { WaitlistModal } from '@/components/landing/WaitlistModal';
 import { cn } from '@/lib/utils';
@@ -180,9 +181,6 @@ export const Footer = () => {
                 </Text>
               )}
             </form>
-            
-            {/* TODO: Integrate AI-generated newsletter suggestions */}
-            {/* TODO: Add analytics tracking for newsletter signups */}
           </div>
         </div>
 
