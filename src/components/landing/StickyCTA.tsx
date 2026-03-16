@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Text } from '@/design-system/typography/text';
 import { X, Sparkles, ArrowRight } from 'lucide-react';
 import { WaitlistModal } from './WaitlistModal';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/components/common/ToastManager';
 import { cn } from '@/lib/utils';
 import { trackEvent } from '@/lib/utils/analytics';
 
@@ -18,7 +18,7 @@ export const StickyCTA = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDismissed, setIsDismissed] = useState(true);
-  const { toast } = useToast();
+  const { addToast } = useToast();
 
   // TODO: AI-powered CTA text and placement optimization in Phase 2
   // TODO: Personalized CTA based on traversal history
@@ -44,9 +44,9 @@ export const StickyCTA = () => {
     setIsModalOpen(true);
     trackEvent({ category: 'CTA', action: 'Click', label: 'Sticky Banner Signup' });
     
-    toast({
-      title: "Establishing Handshake",
-      description: "Opening secure waitlist portal...",
+    addToast({
+      message: "Establishing Handshake: Opening secure waitlist portal...",
+      type: "info",
     });
   };
 
@@ -60,7 +60,7 @@ export const StickyCTA = () => {
           isVisible ? "translate-y-0 opacity-100" : "translate-y-20 opacity-0"
         )}
       >
-        <div className="glass-card bg-primary/10 border-primary/30 shadow-2xl shadow-primary/20 rounded-[2rem] p-4 pr-12 relative group">
+        <div className="glass-card bg-primary/10 border-primary/30 shadow-2xl shadow-primary/20 rounded-[2rem] p-4 pr-12 relative group pointer-events-auto">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-4 py-2">
             <div className="flex items-center gap-4">
               <div className="p-2.5 rounded-xl bg-primary/20 text-primary shadow-inner">

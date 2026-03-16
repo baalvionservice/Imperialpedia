@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Text } from '@/design-system/typography/text';
 import { Loader2, CheckCircle2, AlertCircle, Send, User } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/components/common/ToastManager';
 import { cn } from '@/lib/utils';
 import { trackEvent } from '@/lib/utils/analytics';
 
@@ -13,14 +13,13 @@ import { trackEvent } from '@/lib/utils/analytics';
  * Institutional newsletter subscription form.
  * Handles state transitions for capturing interest in intelligence updates.
  * Optimized for accessibility and search engine visibility.
- * // TODO: Analytics tracking for loading time and skeleton visibility
  */
 export const NewsletterForm = () => {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
-  const { toast } = useToast();
+  const { addToast } = useToast();
   
   const errorId = useId();
   const successId = useId();
@@ -68,9 +67,9 @@ export const NewsletterForm = () => {
         setEmail('');
         setName('');
         
-        toast({
-          title: "Subscription Active",
-          description: data.message,
+        addToast({
+          message: "Subscription Active: You are now synchronized with the wire.",
+          type: "success",
         });
 
         trackEvent({ 
@@ -86,10 +85,9 @@ export const NewsletterForm = () => {
       const errorMsg = err.message || 'Network handshake failed.';
       setMessage(errorMsg);
       
-      toast({
-        variant: "destructive",
-        title: "Handshake Failed",
-        description: errorMsg,
+      addToast({
+        message: "Handshake Failed: Unable to synchronize identity.",
+        type: "error",
       });
     }
   };

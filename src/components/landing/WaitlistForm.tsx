@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Text } from '@/design-system/typography/text';
 import { Loader2, CheckCircle2, AlertCircle, Send, User } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/components/common/ToastManager';
 import { trackEvent } from '@/lib/utils/analytics';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
@@ -22,7 +22,7 @@ export const WaitlistForm = () => {
   const [name, setName] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
-  const { toast } = useToast();
+  const { addToast } = useToast();
   
   const errorId = useId();
   const successId = useId();
@@ -65,9 +65,9 @@ export const WaitlistForm = () => {
         setEmail('');
         setName('');
         
-        toast({
-          title: "Identity Secured",
-          description: data.message,
+        addToast({
+          message: "Identity Secured: You have been indexed for early access.",
+          type: "success",
         });
       } else {
         throw new Error(data.message || 'Verification failure');
@@ -77,10 +77,9 @@ export const WaitlistForm = () => {
       const errorMsg = err.message || 'Network handshake failed. Try again shortly.';
       setMessage(errorMsg);
       
-      toast({
-        variant: "destructive",
-        title: "Connection Alert",
-        description: errorMsg,
+      addToast({
+        message: "Handshake Alert: Connectivity interruption detected.",
+        type: "error",
       });
     }
   };

@@ -13,6 +13,7 @@ import { ThemeProvider } from '@/design-system/themes/theme-provider';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { trackPageView } from '@/lib/utils/analytics';
 import { I18nProvider } from '@/components/i18n/I18nProvider';
+import ToastProvider from '@/components/common/ToastManager';
 
 export default function RootLayout({
   children,
@@ -61,15 +62,17 @@ export default function RootLayout({
         <I18nProvider>
           <GlobalStoreProvider>
             <ThemeProvider>
-              <TooltipProvider>
-                <Navbar />
-                <CookieConsent />
-                <main id="main-content" className="flex-grow outline-none" tabIndex={-1}>
-                  {children}
-                </main>
-                <Footer />
-                <Toaster />
-              </TooltipProvider>
+              <ToastProvider>
+                <TooltipProvider>
+                  <Navbar />
+                  <CookieConsent />
+                  <main id="main-content" className="flex-grow outline-none" tabIndex={-1}>
+                    {children}
+                  </main>
+                  <Footer />
+                  <Toaster />
+                </TooltipProvider>
+              </ToastProvider>
             </ThemeProvider>
           </GlobalStoreProvider>
         </I18nProvider>

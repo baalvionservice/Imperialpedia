@@ -14,7 +14,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Text } from '@/design-system/typography/text';
 import { Loader2, CheckCircle2, AlertCircle, Send, Sparkles, ShieldCheck, Info, User } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/components/common/ToastManager';
 import { cn } from '@/lib/utils';
 import { trackEvent } from '@/lib/utils/analytics';
 
@@ -33,7 +33,7 @@ export const WaitlistModal = ({ isOpen, onOpenChange, title = "Join the Imperial
   const [name, setName] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
-  const { toast } = useToast();
+  const { addToast } = useToast();
 
   const validateEmail = (email: string) => {
     return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email);
@@ -68,9 +68,9 @@ export const WaitlistModal = ({ isOpen, onOpenChange, title = "Join the Imperial
         setMessage(data.message);
         trackEvent({ category: 'Form', action: 'Submit Success', label: 'Waitlist Modal' });
         
-        toast({
-          title: "Identity Secured",
-          description: data.message,
+        addToast({
+          message: "Waitlist Success: Your node has been reserved in the index.",
+          type: "success",
         });
       } else {
         throw new Error(data.message || 'Audit Failure');
@@ -81,10 +81,9 @@ export const WaitlistModal = ({ isOpen, onOpenChange, title = "Join the Imperial
       setMessage(errorMsg);
       trackEvent({ category: 'Form', action: 'Connection Error', label: 'Waitlist Modal' });
       
-      toast({
-        variant: "destructive",
-        title: "Synchronization Alert",
-        description: errorMsg,
+      addToast({
+        message: "Sync Error: Handshake verification failed.",
+        type: "error",
       });
     }
   };
