@@ -1,0 +1,17 @@
+{
+  "hero": {
+    "badge": "Nodo de Índice Alfa Activo",
+    "title": "La Infraestructura de Conocimiento IA del Mundo",
+    "subtitle": "Investigue cualquier cosa al instante con datos globales estructurados. Explore más de 1 millón de nodos indexables en países, empresas, industrias y tecnologías.",
+    "cta": "Unirse a la lista",
+    "secondary_cta": "Acceso Anticipado"
+  },
+  "nav": {
+    "home": "Inicio",
+    "features": "Funciones",
+    "faq": "FAQ",
+    "pricing": "Precios",
+    "discovery": "Descubrimiento",
+    "waitlist": "Unirse"
+  }
+}

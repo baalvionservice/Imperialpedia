@@ -28,7 +28,9 @@ import {
   DropdownMenuTrigger 
 } from '@/components/ui/dropdown-menu';
 import { WaitlistModal } from '@/components/landing/WaitlistModal';
+import { LanguageSelector } from '@/components/i18n/LanguageSelector';
 import { cn } from '@/lib/utils';
+import { useTranslation } from 'react-i18next';
 
 /**
  * Global Site Navigation Header.
@@ -39,6 +41,7 @@ export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isWaitlistOpen, setIsWaitlistOpen] = useState(false);
   const pathname = usePathname();
+  const { t } = useTranslation('common');
 
   // Handle scroll telemetry for background effects
   useEffect(() => {
@@ -48,10 +51,10 @@ export const Navbar = () => {
   }, []);
 
   const navLinks = [
-    { label: 'Home', href: '/' },
-    { label: 'Features', href: '/#features' },
-    { label: 'FAQ', href: '/#faq' },
-    { label: 'Pricing', href: '/#pricing' },
+    { label: t('nav.home'), href: '/' },
+    { label: t('nav.features'), href: '/#features' },
+    { label: t('nav.faq'), href: '/#faq' },
+    { label: t('nav.pricing'), href: '/#pricing' },
   ];
 
   const entityLinks = [
@@ -94,7 +97,7 @@ export const Navbar = () => {
                 {/* Entities Discovery Dropdown */}
                 <DropdownMenu>
                   <DropdownMenuTrigger className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-muted-foreground hover:text-primary transition-all outline-none">
-                    Discovery <ChevronDown className="h-3 w-3" />
+                    {t('nav.discovery')} <ChevronDown className="h-3 w-3" />
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="start" className="w-56 glass-card border-white/10 p-2 animate-in slide-in-from-top-2 duration-300">
                     <div className="px-3 py-2 mb-1">
@@ -124,7 +127,6 @@ export const Navbar = () => {
                     disabled
                     className="w-full h-10 pl-10 pr-4 rounded-xl bg-background/40 border border-white/5 text-sm focus:outline-none opacity-60 cursor-not-allowed"
                   />
-                  {/* TODO: Integrate AI global search bar in Phase 2 */}
                   <div className="absolute right-2 top-1/2 -translate-y-1/2">
                     <Badge variant="outline" className="text-[8px] font-bold border-primary/20 bg-primary/5 text-primary">AI</Badge>
                   </div>
@@ -134,6 +136,9 @@ export const Navbar = () => {
 
             {/* Action Matrix */}
             <div className="flex items-center gap-4 shrink-0">
+              <div className="hidden sm:block">
+                <LanguageSelector />
+              </div>
               <Button 
                 variant="ghost" 
                 className="hidden sm:flex font-bold text-xs uppercase tracking-widest hover:text-primary transition-colors"
@@ -144,7 +149,7 @@ export const Navbar = () => {
                 onClick={() => setIsWaitlistOpen(true)}
                 className="rounded-xl h-10 px-6 font-bold text-xs uppercase tracking-widest bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20 transition-all scale-105 active:scale-95"
               >
-                Join Waitlist
+                {t('nav.waitlist')}
               </Button>
 
               {/* Mobile Trigger */}
@@ -178,6 +183,10 @@ export const Navbar = () => {
               ))}
             </div>
 
+            <div className="flex justify-center border-t border-white/5 pt-6">
+              <LanguageSelector />
+            </div>
+
             <div className="space-y-4">
               <Text variant="label" className="text-[10px] opacity-50 px-2 font-bold uppercase tracking-widest">Discovery Hubs</Text>
               <div className="grid grid-cols-2 gap-4">
@@ -199,7 +208,7 @@ export const Navbar = () => {
 
             <div className="pt-6 border-t border-white/5 flex flex-col gap-4">
               <Button className="w-full h-14 rounded-2xl font-bold bg-primary" onClick={() => { setIsOpen(false); setIsWaitlistOpen(true); }}>
-                Join the Waitlist
+                {t('nav.waitlist')}
               </Button>
               <div className="flex items-center justify-center gap-3 py-2 text-emerald-500/50">
                 <ShieldCheck className="h-4 w-4" />
@@ -212,12 +221,6 @@ export const Navbar = () => {
 
       {/* Handshake Logic Modules */}
       <WaitlistModal isOpen={isWaitlistOpen} onOpenChange={setIsWaitlistOpen} />
-      
-      {/* 
-        TODO: Integrate AI global search bar
-        TODO: Add user authentication / profile menu
-        TODO: Add multi-language support
-      */}
     </>
   );
 };

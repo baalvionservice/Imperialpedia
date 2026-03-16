@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Sparkles, Zap, ArrowRight, ShieldCheck, Globe, Activity } from 'lucide-react';
 import { WaitlistForm } from './WaitlistForm';
 import { WaitlistModal } from './WaitlistModal';
+import { useTranslation } from 'react-i18next';
 
 /**
  * Landing page hero section.
@@ -15,6 +16,7 @@ import { WaitlistModal } from './WaitlistModal';
  */
 export const HeroSection = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { t } = useTranslation('common');
 
   return (
     <section className="relative pt-20 pb-32 lg:pt-32 lg:pb-48 overflow-hidden">
@@ -34,17 +36,16 @@ export const HeroSection = () => {
           {/* Status Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary animate-in fade-in slide-in-from-top-4 duration-700">
             <Sparkles className="h-4 w-4" />
-            <Text variant="label" className="text-[10px] font-bold uppercase tracking-[0.2em]">Alpha Index Node Active</Text>
+            <Text variant="label" className="text-[10px] font-bold uppercase tracking-[0.2em]">{t('hero.badge')}</Text>
           </div>
 
           {/* Headlines */}
           <div className="space-y-6">
             <Text variant="display" className="text-5xl lg:text-8xl font-bold tracking-tight leading-[1.1]">
-              The World's AI <br />
-              <span className="text-primary">Knowledge Infrastructure</span>
+              {t('hero.title')}
             </Text>
             <Text variant="body" className="text-muted-foreground text-xl lg:text-2xl max-w-2xl mx-auto leading-relaxed">
-              Audit the global economy instantly. Research countries, companies, and technologies across our 1,000,000+ structured intelligence nodes.
+              {t('hero.subtitle')}
             </Text>
           </div>
 
@@ -56,7 +57,7 @@ export const HeroSection = () => {
                 onClick={() => setIsModalOpen(true)}
                 className="h-16 px-10 rounded-2xl font-bold text-lg bg-primary hover:bg-primary/90 shadow-2xl shadow-primary/30 transition-all scale-105 active:scale-95 group"
               >
-                Join the Waitlist <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+                {t('hero.cta')} <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
               </Button>
               <Button 
                 size="lg" 
@@ -64,7 +65,7 @@ export const HeroSection = () => {
                 onClick={() => setIsModalOpen(true)}
                 className="h-16 px-10 rounded-2xl font-bold text-lg border-white/10 bg-card/30 hover:bg-white/5 transition-all"
               >
-                Early Access
+                {t('hero.secondary_cta')}
               </Button>
             </div>
 

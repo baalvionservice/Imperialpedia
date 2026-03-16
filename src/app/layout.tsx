@@ -11,6 +11,7 @@ import { GlobalStoreProvider } from '@/lib/state';
 import { ThemeProvider } from '@/design-system/themes/theme-provider';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { trackPageView } from '@/lib/utils/analytics';
+import { I18nProvider } from '@/components/i18n/I18nProvider';
 
 export default function RootLayout({
   children,
@@ -32,19 +33,21 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet" />
       </head>
       <body className="font-body bg-background text-foreground antialiased min-h-screen flex flex-col">
-        <GlobalStoreProvider>
-          <ThemeProvider>
-            <TooltipProvider>
-              <Navbar />
-              <CookieConsent />
-              <main className="flex-grow">
-                {children}
-              </main>
-              <Footer />
-              <Toaster />
-            </TooltipProvider>
-          </ThemeProvider>
-        </GlobalStoreProvider>
+        <I18nProvider>
+          <GlobalStoreProvider>
+            <ThemeProvider>
+              <TooltipProvider>
+                <Navbar />
+                <CookieConsent />
+                <main className="flex-grow">
+                  {children}
+                </main>
+                <Footer />
+                <Toaster />
+              </TooltipProvider>
+            </ThemeProvider>
+          </GlobalStoreProvider>
+        </I18nProvider>
       </body>
     </html>
   );

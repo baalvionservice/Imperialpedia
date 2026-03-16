@@ -1,0 +1,17 @@
+{
+  "hero": {
+    "badge": "Alpha Index Node Active",
+    "title": "The World's AI Knowledge Infrastructure",
+    "subtitle": "Research anything instantly with structured global data. Explore 1M+ indexable nodes across countries, companies, industries, and technologies.",
+    "cta": "Join the Waitlist",
+    "secondary_cta": "Early Access"
+  },
+  "nav": {
+    "home": "Home",
+    "features": "Features",
+    "faq": "FAQ",
+    "pricing": "Pricing",
+    "discovery": "Discovery",
+    "waitlist": "Join Waitlist"
+  }
+}
