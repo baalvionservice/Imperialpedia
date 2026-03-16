@@ -7,15 +7,18 @@ import { EntityOverview } from '@/components/knowledge/EntityOverview';
 import { DataTable } from '@/components/knowledge/DataTable';
 import { RelatedEntities } from '@/components/knowledge/RelatedEntities';
 import { env } from '@/config/env';
+import { ApiResponse } from '@/types/api';
+import { Industry } from '@/types/industry';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-async function getIndustry(slug: string) {
+async function getIndustry(slug: string): Promise<Industry | null> {
   const res = await fetch(`${env.siteUrl}/api/industries?slug=${slug}`, { cache: 'no-store' });
   if (!res.ok) return null;
-  return res.json();
+  const response: ApiResponse<Industry> = await res.json();
+  return response.data;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {

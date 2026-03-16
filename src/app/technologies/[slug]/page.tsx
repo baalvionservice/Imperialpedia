@@ -7,15 +7,18 @@ import { EntityOverview } from '@/components/knowledge/EntityOverview';
 import { DataTable } from '@/components/knowledge/DataTable';
 import { RelatedEntities } from '@/components/knowledge/RelatedEntities';
 import { env } from '@/config/env';
+import { ApiResponse } from '@/types/api';
+import { Technology } from '@/types/technology';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-async function getTechnology(slug: string) {
+async function getTechnology(slug: string): Promise<Technology | null> {
   const res = await fetch(`${env.siteUrl}/api/technologies?slug=${slug}`, { cache: 'no-store' });
   if (!res.ok) return null;
-  return res.json();
+  const response: ApiResponse<Technology> = await res.json();
+  return response.data;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {

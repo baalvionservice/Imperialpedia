@@ -10,15 +10,18 @@ import { Section } from '@/components/ui/Section';
 import { Sparkles, Activity } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 import { env } from '@/config/env';
+import { ApiResponse } from '@/types/api';
+import { Company } from '@/types/company';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-async function getCompany(slug: string) {
+async function getCompany(slug: string): Promise<Company | null> {
   const res = await fetch(`${env.siteUrl}/api/companies?slug=${slug}`, { cache: 'no-store' });
   if (!res.ok) return null;
-  return res.json();
+  const response: ApiResponse<Company> = await res.json();
+  return response.data;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -72,7 +75,6 @@ export default async function Page({ params }: PageProps) {
           entities={company.technologies.map((t: string) => ({ name: t.replace('-', ' '), slug: t, type: 'technology' }))} 
         />
 
-        {/* AI Insight Placeholder */}
         <Section title="AI Intelligence Synthesis">
           <div className="p-10 rounded-[3rem] bg-primary/5 border border-primary/20 relative overflow-hidden group">
             <div className="absolute top-0 right-0 p-10 opacity-5 pointer-events-none group-hover:scale-110 transition-transform duration-1000">
