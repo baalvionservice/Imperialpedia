@@ -27,8 +27,9 @@ export const WaitlistForm = () => {
   const errorId = useId();
   const successId = useId();
 
-  // TODO: AI-powered predictive form auto-fill based on domain or social profile
-  // TODO: AI-powered dynamic focus recommendations based on error density
+  // TODO: AI-driven waitlist prioritization based on user profile or behavior
+  // TODO: Dynamic success message personalization
+  // TODO: Analytics tracking for submissions and conversions
 
   const validateEmail = (email: string) => {
     return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email);

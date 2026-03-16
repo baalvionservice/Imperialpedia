@@ -35,6 +35,10 @@ export const WaitlistModal = ({ isOpen, onOpenChange, title = "Join the Imperial
   const [message, setMessage] = useState('');
   const { addToast } = useToast();
 
+  // TODO: AI-driven waitlist prioritization based on user profile or behavior
+  // TODO: Dynamic success message personalization
+  // TODO: Analytics tracking for submissions and conversions
+
   const validateEmail = (email: string) => {
     return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email);
   };
@@ -196,7 +200,7 @@ export const WaitlistModal = ({ isOpen, onOpenChange, title = "Join the Imperial
                 className="w-full h-14 rounded-xl font-bold bg-primary hover:bg-primary/90 shadow-xl shadow-primary/20 transition-all scale-[1.02] active:scale-100 group/btn"
               >
                 {status === 'loading' ? (
-                  <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Authenticating...</>
+                  <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Authenticating...</>
                 ) : (
                   <>
                     <Send className="mr-2 h-4 w-4 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" /> 
