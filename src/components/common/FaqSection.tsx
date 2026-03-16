@@ -72,9 +72,9 @@ export default function FaqSection({ faqs }: FaqSectionProps) {
           </button>
         </div>
 
-        {/* TODO: AI-generated FAQs based on real-time user query telemetry */}
-        {/* TODO: Dynamic FAQ content delivery based on user research segment */}
-        {/* TODO: Analytics tracking for individual FAQ node engagement */}
+        {/* TODO: AI-driven FAQ personalization based on user behavior */}
+        {/* TODO: Dynamic FAQ ranking based on search queries */}
+        {/* TODO: Analytics tracking for FAQ interactions */}
       </Container>
     </section>
   );

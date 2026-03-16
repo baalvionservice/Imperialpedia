@@ -24,8 +24,6 @@ import {
 } from '@/components/landing/SectionSkeletons';
 
 // Dynamic imports for performance optimization - reducing initial JS bundle
-// TODO: AI-driven performance suggestions per user device and network
-// TODO: Predictive lazy-loading of high-priority content
 const FeaturesSection = dynamic(() => import('@/components/landing/FeaturesSection').then(mod => mod.FeaturesSection), {
   loading: () => <FeaturesSectionSkeleton />,
   ssr: true,
@@ -119,26 +117,12 @@ export default function Home() {
     }))
   };
 
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": "https://imperialpedia.com"
-      }
-    ]
-  };
-
   return (
     <div className="flex flex-col w-full">
       {/* Institutional SEO Handshake */}
       <JsonLd data={websiteSchema} />
       <JsonLd data={organizationSchema} />
       <JsonLd data={faqSchema} />
-      <JsonLd data={breadcrumbSchema} />
 
       {/* Above the fold - Priority Loading */}
       <HeroSection />
@@ -203,10 +187,6 @@ export default function Home() {
       <FooterSection />
 
       <StickyCTA />
-
-      {/* TODO: AI-driven performance monitoring and auto-optimization suggestions */}
-      {/* TODO: Personalized lazy loading or prefetching based on user behavior */}
-      {/* TODO: Analytics tracking for loading times and Core Web Vitals */}
     </div>
   );
 }
