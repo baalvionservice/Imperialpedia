@@ -35,26 +35,59 @@ import { useTranslation } from 'react-i18next';
 /**
  * Global Site Navigation Header.
  * Orchestrates platform-wide discovery and landing page triage.
+ * Enhanced with sticky scroll behavior and active section tracking.
  */
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
   const [isWaitlistOpen, setIsWaitlistOpen] = useState(false);
   const pathname = usePathname();
   const { t } = useTranslation('common');
 
-  // Handle scroll telemetry for background effects
+  // Handle scroll telemetry for background effects and shrinking
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Track active section based on scroll position
+  useEffect(() => {
+    if (pathname !== '/') return;
+
+    const sections = ['features', 'faq', 'pricing'];
+    const observers = sections.map(sectionId => {
+      const element = document.getElementById(sectionId);
+      if (!element) return null;
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              setActiveSection(sectionId);
+            }
+          });
+        },
+        { rootMargin: '-50% 0px -50% 0%' }
+      );
+
+      observer.observe(element);
+      return observer;
+    });
+
+    return () => {
+      observers.forEach(obs => obs?.disconnect());
+    };
+  }, [pathname]);
+
   const navLinks = [
-    { label: t('nav.home'), href: '/' },
-    { label: t('nav.features'), href: '/#features' },
-    { label: t('nav.faq'), href: '/#faq' },
-    { label: t('nav.pricing'), href: '/#pricing' },
+    { label: t('nav.home'), href: '/', id: 'home' },
+    { label: t('nav.features'), href: '/#features', id: 'features' },
+    { label: t('nav.faq'), href: '/#faq', id: 'faq' },
+    { label: t('nav.pricing'), href: '/#pricing', id: 'pricing' },
   ];
 
   const entityLinks = [
@@ -86,11 +119,20 @@ export const Navbar = () => {
               <div className="flex items-center gap-6">
                 {navLinks.map((link) => (
                   <Link 
-                    key={link.label} 
+                    key={link.id} 
                     href={link.href}
-                    className="text-xs font-bold uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors"
+                    className={cn(
+                      "text-xs font-bold uppercase tracking-widest transition-all relative group/link",
+                      activeSection === link.id && pathname === '/'
+                        ? "text-primary"
+                        : "text-muted-foreground hover:text-primary"
+                    )}
                   >
                     {link.label}
+                    <span className={cn(
+                      "absolute -bottom-1 left-0 h-0.5 bg-primary transition-all duration-300",
+                      activeSection === link.id && pathname === '/' ? "w-full" : "w-0 group-hover/link:w-full"
+                    )} />
                   </Link>
                 ))}
 
@@ -172,13 +214,22 @@ export const Navbar = () => {
             <div className="grid grid-cols-1 gap-4">
               {navLinks.map((link) => (
                 <Link 
-                  key={link.label} 
+                  key={link.id} 
                   href={link.href} 
                   onClick={() => setIsOpen(false)}
-                  className="flex items-center justify-between p-4 rounded-2xl bg-card/30 border border-white/5 group"
+                  className={cn(
+                    "flex items-center justify-between p-4 rounded-2xl bg-card/30 border border-white/5 group",
+                    activeSection === link.id && pathname === '/' ? "border-primary/40 bg-primary/5" : ""
+                  )}
                 >
-                  <Text variant="body" weight="bold" className="group-hover:text-primary transition-colors">{link.label}</Text>
-                  <ArrowRight className="h-4 w-4 text-primary opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
+                  <Text variant="body" weight="bold" className={cn(
+                    "transition-colors",
+                    activeSection === link.id && pathname === '/' ? "text-primary" : "group-hover:text-primary"
+                  )}>{link.label}</Text>
+                  <ArrowRight className={cn(
+                    "h-4 w-4 transition-all",
+                    activeSection === link.id && pathname === '/' ? "text-primary opacity-100" : "text-primary opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0"
+                  )} />
                 </Link>
               ))}
             </div>
@@ -219,7 +270,10 @@ export const Navbar = () => {
         </div>
       </nav>
 
-      {/* Handshake Logic Modules */}
+      {/* TODO: AI-powered suggested sections based on user behavior */}
+      {/* TODO: Dynamic sticky adjustments for entity pages */}
+      {/* TODO: Track Navbar interactions for analytics */}
+
       <WaitlistModal isOpen={isWaitlistOpen} onOpenChange={setIsWaitlistOpen} />
     </>
   );
