@@ -22,9 +22,9 @@ export default function Newsletter() {
   const errorId = useId();
   const successId = useId();
 
-  // TODO: AI-driven newsletter content personalization per user segment
-  // TODO: Suggest topics based on user behavior and knowledge traversal
-  // TODO: Analytics tracking for impressions and conversion velocity
+  // TODO: AI-driven newsletter content personalization  
+  // TODO: Suggest topics based on user behavior  
+  // TODO: Analytics tracking for impressions and conversions
 
   const validateEmail = (email: string) => {
     return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email);
@@ -47,11 +47,11 @@ export default function Newsletter() {
 
     setStatus('loading');
     
-    // Broadcast interaction to the analytics cluster
+    // Broadcast conversion to the analytics cluster
     trackEvent({ 
       category: 'Conversion', 
       action: 'Newsletter Signup', 
-      label: 'Main Section' 
+      label: email 
     });
 
     try {
@@ -64,11 +64,11 @@ export default function Newsletter() {
 
       if (data.success) {
         setStatus('success');
-        setMessage(data.message);
+        setMessage("Thank you for signing up! You are now synchronized with the wire.");
         setEmail('');
         
         addToast({
-          message: "Handshake Successful: You are now synchronized with the wire.",
+          message: "Handshake Successful: Subscription active.",
           type: "success",
         });
       } else {
@@ -139,9 +139,9 @@ export default function Newsletter() {
           {status === 'loading' ? (
             <Loader2 className="h-5 w-5 animate-spin mr-2" />
           ) : (
-            <Send className="h-5 w-5 mr-2 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
+            <Send className="h-4 w-4 mr-2 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
           )}
-          {status === 'loading' ? 'Transmitting...' : 'Join the Wire'}
+          {status === 'loading' ? 'Transmitting...' : 'Subscribe'}
         </Button>
       </form>
       

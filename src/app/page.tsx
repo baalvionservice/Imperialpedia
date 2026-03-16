@@ -50,7 +50,7 @@ const DynamicSocialProof = dynamic(() => import('@/components/common/SocialProof
 });
 
 const ScrollPopupCTA = dynamic(() => import('@/components/landing/ScrollPopupCTA').then(mod => mod.ScrollPopupCTA), {
-  ssr: true, // Component handles internal client-side checks
+  ssr: true,
 });
 
 const Newsletter = dynamic(() => import('@/components/common/Newsletter'), {
