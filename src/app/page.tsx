@@ -1,11 +1,12 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { ArrowRight, BookOpen, PenTool, Database, PieChart, ShieldCheck, Activity, Sparkles } from 'lucide-react';
+import { ArrowRight, BookOpen, PenTool, Database, PieChart, ShieldCheck, Activity, Sparkles, Zap } from 'lucide-react';
 import { HeroSection } from '@/components/landing/HeroSection';
 import { FeaturesSection } from '@/components/landing/FeaturesSection';
 import { TestimonialsSection } from '@/components/landing/TestimonialsSection';
 import { FAQSection } from '@/components/landing/FAQSection';
+import { PricingSection } from '@/components/landing/PricingSection';
 import { WaitlistForm } from '@/components/landing/WaitlistForm';
 import { LandingFooter } from '@/components/landing/Footer';
 import { Text } from '@/design-system/typography/text';
@@ -74,6 +75,9 @@ export default function Home() {
 
       {/* Frequently Asked Questions */}
       <FAQSection />
+
+      {/* Subscription Tiers */}
+      <PricingSection />
 
       {/* Final Conversion Node */}
       <section className="py-32 bg-background relative overflow-hidden">
