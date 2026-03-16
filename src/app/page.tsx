@@ -1,11 +1,14 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { ArrowRight, BookOpen, PenTool, Database, PieChart, ShieldCheck, Activity } from 'lucide-react';
+import { ArrowRight, BookOpen, PenTool, Database, PieChart, ShieldCheck, Activity, Sparkles } from 'lucide-react';
 import { HeroSection } from '@/components/landing/HeroSection';
 import { FeaturesSection } from '@/components/landing/FeaturesSection';
 import { TestimonialsSection } from '@/components/landing/TestimonialsSection';
+import { FAQSection } from '@/components/landing/FAQSection';
+import { WaitlistForm } from '@/components/landing/WaitlistForm';
 import { Text } from '@/design-system/typography/text';
+import { Container } from '@/design-system/layout/container';
 import { cn } from '@/lib/utils';
 
 /**
@@ -66,6 +69,33 @@ export default function Home() {
             ))}
           </div>
         </div>
+      </section>
+
+      {/* Frequently Asked Questions */}
+      <FAQSection />
+
+      {/* Final Conversion Node */}
+      <section className="py-32 bg-background relative overflow-hidden">
+        <div className="absolute inset-0 z-0 opacity-10 pointer-events-none">
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary rounded-full blur-[120px]" />
+          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-secondary rounded-full blur-[120px]" />
+        </div>
+        <Container isNarrow className="relative z-10 text-center">
+          <div className="space-y-8 max-w-2xl mx-auto">
+            <div className="w-20 h-20 bg-primary/10 rounded-[2.5rem] flex items-center justify-center mx-auto mb-8 shadow-2xl">
+              <Sparkles className="h-10 w-10 text-primary" />
+            </div>
+            <div className="space-y-4">
+              <Text variant="h2" className="text-4xl lg:text-6xl font-bold tracking-tight">Ready to Audit the Global Economy?</Text>
+              <Text variant="body" className="text-muted-foreground text-lg leading-relaxed">
+                Join our network of institutional analysts and expert researchers. Secure your node in the Imperialpedia Index today.
+              </Text>
+            </div>
+            <div className="pt-8">
+              <WaitlistForm />
+            </div>
+          </div>
+        </Container>
       </section>
     </div>
   );
