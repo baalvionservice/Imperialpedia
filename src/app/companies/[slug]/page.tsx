@@ -14,6 +14,7 @@ import { JsonLd } from '@/modules/seo-engine/components/JsonLd';
 import { QuickStats } from '@/components/entity/QuickStats';
 import { RelatedHighlights } from '@/components/entity/RelatedHighlights';
 import { AIInsight } from '@/components/ai/AIInsight';
+import { EntityAnalytics } from '@/components/entity/EntityAnalytics';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -63,6 +64,8 @@ export default async function Page({ params }: PageProps) {
             <QuickStats stats={quickStats} />
             
             <DataTable title="Institutional Handshake" headers={['Attribute', 'Value']} rows={technicalData} />
+
+            <EntityAnalytics type="company" slug={company.slug} />
             
             <RelatedEntities entities={[]} />
           </div>

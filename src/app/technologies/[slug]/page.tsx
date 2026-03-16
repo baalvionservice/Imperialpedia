@@ -10,6 +10,7 @@ import { getTechnologyBySlug } from '@/lib/data/loaders';
 import { QuickStats } from '@/components/entity/QuickStats';
 import { RelatedHighlights } from '@/components/entity/RelatedHighlights';
 import { AIInsight } from '@/components/ai/AIInsight';
+import { EntityAnalytics } from '@/components/entity/EntityAnalytics';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -62,6 +63,8 @@ export default async function Page({ params }: PageProps) {
             <QuickStats stats={quickStats} />
             
             <DataTable title="Instructional Layer" headers={['Technical Node', 'Value']} rows={technicalData} />
+
+            <EntityAnalytics type="technology" slug={tech.slug} />
 
             <RelatedEntities 
               entities={[
