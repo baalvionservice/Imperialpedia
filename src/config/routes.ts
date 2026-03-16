@@ -2,26 +2,40 @@ import { RouteConfig } from '@/types';
 
 /**
  * @fileOverview Centralized route definitions for the entire application.
+ * Mapped for full system integration.
  */
 
-export const routes: RouteConfig = {
+export const routes = {
   public: {
     home: '/',
-    outline: '/outline',
+    topics: '/topics',
+    articles: '/articles',
     glossary: '/glossary',
     calculators: '/financial-tools',
     creators: '/creators',
+    learningPaths: '/learning-paths',
+    market: '/market',
+    community: '/community',
+    aiTools: '/ai-analyst',
   },
   platform: {
     dashboard: '/dashboard',
+    recommendations: '/dashboard/recommendations',
+    portfolio: '/dashboard/portfolio',
+    alerts: '/dashboard/alerts',
   },
-  creator: {
-    dashboard: '/creator/dashboard',
-    publishing: '/creator/publishing',
-    monetization: '/creator/monetization',
+  premium: {
+    subscribe: '/premium/subscribe',
+    heatmap: '/premium/market-heatmap',
+    screener: '/premium/screener',
+    backtesting: '/premium/backtesting',
+    reports: '/premium/reports',
   },
   admin: {
     dashboard: '/admin/dashboard',
-    analytics: '/admin/analytics',
+    analytics: '/admin/analytics/command-center',
+    quality: '/admin/analytics/content-quality',
+    moderation: '/admin/control/moderation/ai-hub',
+    infrastructure: '/admin/control/infrastructure',
   },
 };
