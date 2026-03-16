@@ -20,6 +20,10 @@ export const StickyCTA = () => {
   const [isDismissed, setIsDismissed] = useState(true);
   const { toast } = useToast();
 
+  // TODO: AI-powered CTA text and placement optimization in Phase 2
+  // TODO: Personalized CTA based on traversal history
+  // TODO: Dynamic conversion tracking for premium tier targeting
+
   useEffect(() => {
     const dismissedStatus = localStorage.getItem('imperialpedia_cta_dismissed');
     if (!dismissedStatus) {

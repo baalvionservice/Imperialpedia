@@ -1,15 +1,14 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import { HeroSection } from '@/components/landing/HeroSection';
-import { WaitlistForm } from '@/components/landing/WaitlistForm';
 import { LandingFooter } from '@/components/landing/Footer';
 import { StickyCTA } from '@/components/landing/StickyCTA';
+import { CtaSection } from '@/components/landing/CtaSection';
 import { Text } from '@/design-system/typography/text';
-import { Container } from '@/design-system/layout/container';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ArrowRight, BookOpen, Database, PenTool, ShieldCheck, Activity, Sparkles, Zap } from 'lucide-react';
+import { ArrowRight, BookOpen, Database, PenTool, ShieldCheck, Activity, Zap } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { generateLandingMetadata } from '@/lib/utils/landingSEO';
@@ -114,28 +113,7 @@ export default function Home() {
       <PricingSection />
 
       {/* Final Conversion Node */}
-      <section className="py-32 bg-background relative overflow-hidden">
-        <div className="absolute inset-0 z-0 opacity-10 pointer-events-none">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary rounded-full blur-[120px]" />
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-secondary rounded-full blur-[120px]" />
-        </div>
-        <Container isNarrow className="relative z-10 text-center">
-          <div className="space-y-8 max-w-2xl mx-auto">
-            <div className="w-20 h-20 bg-primary/10 rounded-[2.5rem] flex items-center justify-center mx-auto mb-8 shadow-2xl">
-              <Sparkles className="h-10 w-10 text-primary" />
-            </div>
-            <div className="space-y-4">
-              <Text variant="h2" className="text-4xl lg:text-6xl font-bold tracking-tight">Ready to Audit the Global Economy?</Text>
-              <Text variant="body" className="text-muted-foreground text-lg leading-relaxed">
-                Join our network of institutional analysts and expert researchers. Secure your node in the Imperialpedia Index today.
-              </Text>
-            </div>
-            <div className="pt-8">
-              <WaitlistForm />
-            </div>
-          </div>
-        </Container>
-      </section>
+      <CtaSection />
 
       <LandingFooter />
 
