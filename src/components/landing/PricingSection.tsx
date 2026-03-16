@@ -19,8 +19,8 @@ export const PricingSection = () => {
   const [selectedPlan, setSelectedPlan] = useState<string>('');
 
   // TODO: AI-powered dynamic pricing based on user behavior
-  // TODO: Personalized plan suggestions
-  // TODO: Multi-currency support and localization
+  // TODO: Personalized plan recommendations
+  // TODO: Analytics tracking for CTA conversions per plan
 
   const plans = [
     {
@@ -34,8 +34,8 @@ export const PricingSection = () => {
         "Standard search queries",
         "Community forum access"
       ],
-      cta: "Start Discovery",
-      popular: false
+      ctaText: "Start Discovery",
+      recommended: false
     },
     {
       id: "pro",
@@ -48,8 +48,8 @@ export const PricingSection = () => {
         "Advanced financial calculators",
         "Priority pSEO discoverability"
       ],
-      cta: "Join Waitlist",
-      popular: true
+      ctaText: "Join Waitlist",
+      recommended: true
     },
     {
       id: "enterprise",
@@ -62,8 +62,8 @@ export const PricingSection = () => {
         "24/7 dedicated support node",
         "Early Phase 2 AI beta access"
       ],
-      cta: "Early Access",
-      popular: false
+      ctaText: "Early Access",
+      recommended: false
     }
   ];
 
