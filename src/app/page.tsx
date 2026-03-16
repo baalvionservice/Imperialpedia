@@ -42,6 +42,7 @@ const PricingSection = dynamic(() => import('@/components/landing/PricingSection
 /**
  * Landing Page Metadata.
  * Optimized for institutional-grade SEO and social sharing.
+ * Aligned with Prompt 39 specific values.
  */
 export const metadata = generateLandingMetadata();
 
