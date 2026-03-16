@@ -10,6 +10,7 @@ import { ThemeProvider } from '@/design-system/themes/theme-provider';
 import { TooltipProvider } from '@/components/ui/tooltip';
 
 
+
 export const metadata: Metadata = buildMetadata();
 const cabin = Cabin({
   subsets: ["latin"],
