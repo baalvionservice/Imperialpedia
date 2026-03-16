@@ -2,9 +2,10 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { ArrowRight, BookOpen, PenTool, Database, PieChart, ShieldCheck, Activity } from 'lucide-react';
-import Image from 'next/image';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { HeroSection } from '@/components/landing/HeroSection';
+import { FeaturesSection } from '@/components/landing/FeaturesSection';
+import { Text } from '@/design-system/typography/text';
+import { cn } from '@/lib/utils';
 
 /**
  * The main Home page for Imperialpedia.
@@ -15,6 +16,9 @@ export default function Home() {
     <div className="flex flex-col w-full">
       {/* Institutional Hero Section */}
       <HeroSection />
+
+      {/* Core Features & Benefits */}
+      <FeaturesSection />
 
       {/* Discovery Matrix Section */}
       <section className="py-24 bg-card/20 border-y border-white/5">
@@ -62,6 +66,3 @@ export default function Home() {
     </div>
   );
 }
-
-import { Text } from '@/design-system/typography/text';
-import { cn } from '@/lib/utils';
