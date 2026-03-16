@@ -1,3 +1,4 @@
+import { ArticleStatus } from '@/modules/content-engine/types';
 import { ID, Slug, Timestamp } from './common';
 
 /**
@@ -36,15 +37,17 @@ export interface Article {
   id: ID;
   slug: Slug;
   title: string;
-  description: string;
   excerpt: string;
+  description: string;
   content: string;
   category: string;
   authorId: ID;
   author?: AuthorProfile;
+  status: ArticleStatus;
   tags: string[];
   featuredImage: string;
   publishedAt: Timestamp;
+  body: string;
   updatedAt?: Timestamp;
   meta?: ContentMeta;
 }

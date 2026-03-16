@@ -6,12 +6,12 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Text } from '@/design-system/typography/text';
-import { 
-  FileSearch, 
-  Search, 
-  Filter, 
-  Loader2, 
-  Clock, 
+import {
+  FileSearch,
+  Search,
+  Filter,
+  Loader2,
+  Clock,
   ChevronRight,
   ArrowLeft,
   ArrowUpRight,
@@ -99,14 +99,14 @@ export default function EditorialQueuePage() {
       <div className="flex flex-col md:flex-row gap-4 bg-card/30 p-4 rounded-2xl border border-white/5 backdrop-blur-sm sticky top-20 z-30 shadow-lg">
         <div className="relative flex-1 group">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
-          <Input 
-            placeholder="Search by intelligence headline or expert identity..." 
+          <Input
+            placeholder="Search by intelligence headline or expert identity..."
             className="pl-12 bg-background/50 h-12 border-white/10 rounded-xl text-sm"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
-        
+
         <div className="flex gap-2">
           {['All', 'Submitted', 'Under Review', 'Revision Requested'].map((status) => (
             <Button
@@ -208,11 +208,11 @@ export default function EditorialQueuePage() {
           <div>
             <Text variant="h3" className="mb-2 text-xl font-bold">Automatic Triage Logic</Text>
             <Text variant="bodySmall" className="text-muted-foreground leading-relaxed">
-              The matrix automatically flags submissions with a **Quality Score < 60%** for immediate revision requests. Verified Experts bypass the initial heuristic filter and proceed directly to manual audit.
+              The matrix automatically flags submissions with a **Quality Score &lt; 60%** for immediate revision requests. Verified Experts bypass the initial heuristic filter and proceed directly to manual audit.
             </Text>
           </div>
         </Card>
-        
+
         <Card className="glass-card border-secondary/20 p-8 flex flex-col gap-4 relative overflow-hidden">
           <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
             <Layers className="h-24 w-24 text-secondary rotate-12" />

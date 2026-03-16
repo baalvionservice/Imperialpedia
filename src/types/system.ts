@@ -73,15 +73,15 @@ export interface SecuritySettings {
 }
 
 export interface SecurityDashboardData {
-  system_health: 'Good' | 'Warning' | 'Critical';
+  system_health: "Good" | "Warning" | "Critical";
   active_threats: number;
   failed_logins: number;
-  rate_limit_status: 'Normal' | 'Throttled' | 'High';
+  rate_limit_status: "Normal" | "Throttled" | "High";
   admin_ip_restriction: string[];
 }
 
-export type SystemNotificationType = 'info' | 'success' | 'warning' | 'error';
-export type SystemNotificationTarget = 'all' | 'creators' | 'admins';
+export type SystemNotificationType = "info" | "success" | "warning" | "error";
+export type SystemNotificationTarget = "all" | "creators" | "admins";
 
 export interface SystemNotification {
   id: string;
@@ -98,11 +98,11 @@ export interface NotificationLog {
   timestamp: string;
   recipient: string;
   type: string;
-  status: 'sent' | 'pending' | 'failed';
+  status: "sent" | "pending" | "failed";
   title: string;
 }
 
-export type AdminAlertType = 'content' | 'user' | 'system';
+export type AdminAlertType = "content" | "user" | "system";
 
 export interface AdminAlert {
   id: string;
@@ -110,22 +110,26 @@ export interface AdminAlert {
   message: string;
   read: boolean;
   createdAt: string;
-  priority: 'low' | 'medium' | 'high';
+  priority: "low" | "medium" | "high";
 }
 
 export interface SystemAlert {
   id: string;
   message: string;
-  type: 'Info' | 'Warning' | 'Critical';
-  status: 'Active' | 'Inactive';
+  type: "Info" | "Warning" | "Critical";
+  status: "Active" | "Inactive";
   date: string;
 }
 
 export interface SystemHealth {
   uptimePercentage: number;
   errorCountLast24h: number;
-  apiStatus: 'Healthy' | 'Warning' | 'Critical';
+  apiStatus: "Healthy" | "Warning" | "Critical";
   latency: number;
+  apiUptime: number;
+  dbStatus: "Healthy" | "Warning" | "Critical";
+  serverLoad: number;
+  errorRate: number;
   history: {
     timestamp: string;
     errors: number;
@@ -133,7 +137,7 @@ export interface SystemHealth {
   }[];
   nodes: {
     name: string;
-    status: 'Healthy' | 'Warning' | 'Critical';
+    status: "Healthy" | "Warning" | "Critical";
     load: number;
   }[];
 }
@@ -141,9 +145,9 @@ export interface SystemHealth {
 export interface Backup {
   id: string;
   timestamp: string;
-  status: 'completed' | 'failed' | 'in-progress';
+  status: "completed" | "failed" | "in-progress";
   size: string;
-  type: 'automated' | 'manual';
+  type: "automated" | "manual";
   checksum: string;
 }
 
@@ -153,14 +157,14 @@ export interface AccessLog {
   ip: string;
   device: string;
   timestamp: string;
-  status: 'success' | 'failed';
+  status: "success" | "failed";
 }
 
 export interface ErrorLog {
   id: string;
   timestamp: string;
   module: string;
-  type: 'info' | 'warning' | 'critical';
+  type: "info" | "warning" | "critical";
   message: string;
   stackTrace?: string;
 }
@@ -170,7 +174,7 @@ export interface FeatureFlag {
   name: string;
   enabled: boolean;
   description: string;
-  impact: 'low' | 'medium' | 'high';
+  impact: "low" | "medium" | "high";
   isBeta: boolean;
   module: string;
 }
@@ -181,7 +185,17 @@ export interface AdminActivityLog {
   action: string;
   target: string;
   date: string;
-  status: 'Success' | 'Failed';
+  status: "Success" | "Failed";
+}
+
+export interface AuditLog {
+  id: string;
+  timestamp: string;
+  action: string;
+  target: string;
+  userName: string;
+  type?: string;
+  status?: "Success" | "Failed";
 }
 
 export interface AuditTrailEntry {
@@ -190,7 +204,7 @@ export interface AuditTrailEntry {
   user: string;
   action: string;
   module?: string;
-  status?: 'Success' | 'Failed';
+  status?: "Success" | "Failed";
 }
 
 export interface RoleControl {
@@ -219,7 +233,7 @@ export interface AdminSession {
   role: string;
   loginTime: string;
   ip: string;
-  status: 'Active' | 'Inactive';
+  status: "Active" | "Inactive";
 }
 
 export interface AdminHomeOverview {
@@ -229,7 +243,7 @@ export interface AdminHomeOverview {
   activeSessions: number;
   alertsActive: number;
   pSEONodes: number;
-  systemHealth: 'Healthy' | 'Degraded' | 'Critical';
+  systemHealth: "Healthy" | "Degraded" | "Critical";
 }
 
 /**
@@ -239,13 +253,13 @@ export interface CMSContentItem {
   content_id: string | number;
   title: string;
   author: string;
-  status: 'Draft' | 'Review' | 'Published';
+  status: "Draft" | "Review" | "Published";
   last_updated: string;
 }
 
 export interface UserRoleItem {
   username: string;
-  role: 'Admin' | 'Editor' | 'Moderator' | 'Viewer';
+  role: "Admin" | "Editor" | "Moderator" | "Viewer";
   permissions: {
     view: boolean;
     edit: boolean;
@@ -277,7 +291,7 @@ export interface CMSDashboardData {
 export interface AdminAnalyticsKPI {
   metric: string;
   value: number;
-  trend: 'up' | 'down';
+  trend: "up" | "down";
 }
 
 export interface SystemMonitoringNode {
@@ -286,7 +300,7 @@ export interface SystemMonitoringNode {
   memory_usage: string;
   active_requests: number;
   uptime: string;
-  status: 'healthy' | 'warning' | 'critical';
+  status: "healthy" | "warning" | "critical";
 }
 
 export interface ThresholdAlert {
@@ -294,7 +308,7 @@ export interface ThresholdAlert {
   server: string;
   threshold: string;
   current: string;
-  status: 'mock_triggered' | 'resolved';
+  status: "mock_triggered" | "resolved";
 }
 
 export interface AdminSystemHubData {
@@ -308,20 +322,20 @@ export interface AdminSystemHubData {
  */
 export interface AuthMockEntry {
   user: string;
-  role: 'Admin' | 'Editor' | 'User';
-  login_status: 'success' | 'failed';
-  '2FA_required': boolean;
+  role: "Admin" | "Editor" | "User";
+  login_status: "success" | "failed";
+  "2FA_required": boolean;
 }
 
 export interface SecurityFlag {
   feature: string;
-  status: 'mock_enabled' | 'mock_displayed' | 'mock_disabled';
+  status: "mock_enabled" | "mock_displayed" | "mock_disabled";
 }
 
 export interface SecurityAlert {
   alert_type: string;
   user: string;
-  status: 'mock_triggered' | 'resolved';
+  status: "mock_triggered" | "resolved";
 }
 
 export interface SecurityMockData {
@@ -339,12 +353,12 @@ export interface InfrastructureNode {
   cpu_usage: string;
   memory_usage: string;
   network_usage: string;
-  auto_scaling: 'mock_active' | 'mock_inactive';
+  auto_scaling: "mock_active" | "mock_inactive";
 }
 
 export interface PipelineNode {
   pipeline_name: string;
-  status: 'mock_success' | 'mock_running' | 'mock_failed';
+  status: "mock_success" | "mock_running" | "mock_failed";
   progress: string;
 }
 
@@ -352,7 +366,7 @@ export interface QueueNode {
   name: string;
   queue_length: number;
   processed_jobs: number;
-  error_rate: 'mock_none' | 'mock_low' | 'mock_medium' | 'mock_high';
+  error_rate: "mock_none" | "mock_low" | "mock_medium" | "mock_high";
 }
 
 export interface InfrastructureMockData {
@@ -368,7 +382,7 @@ export interface RegionNode {
   region_name: string;
   nodes: number;
   latency: string;
-  status: 'mock_active' | 'mock_warning' | 'mock_offline';
+  status: "mock_active" | "mock_warning" | "mock_offline";
 }
 
 export interface EdgeNode {
@@ -384,7 +398,7 @@ export interface EdgeAlert {
   region?: string;
   node?: string;
   current?: string;
-  status: 'mock_triggered' | 'resolved';
+  status: "mock_triggered" | "resolved";
 }
 
 export interface EdgeComputingData {
@@ -401,12 +415,12 @@ export interface CdnNode {
   region: string;
   latency: string;
   bandwidth_usage: string;
-  status: 'mock_active' | 'mock_warning' | 'mock_inactive';
+  status: "mock_active" | "mock_warning" | "mock_inactive";
 }
 
 export interface PageCacheItem {
   page_url: string;
-  cache_status: 'mock_cached' | 'mock_expired' | 'mock_miss';
+  cache_status: "mock_cached" | "mock_expired" | "mock_miss";
   last_refresh: string;
   ttl: string;
   cache_hit_ratio: string;
@@ -442,7 +456,7 @@ export interface SeoManagementPage {
 export interface SitemapEntry {
   page_url: string;
   parent: string;
-  status: 'mock_active' | 'mock_inactive';
+  status: "mock_active" | "mock_inactive";
   last_updated: string;
 }
 
@@ -450,7 +464,7 @@ export interface SeoAlertSuggestion {
   alert_type?: string;
   suggestion?: string;
   page: string;
-  status: 'mock_triggered' | 'mock_suggested';
+  status: "mock_triggered" | "mock_suggested";
 }
 
 export interface SeoManagementData {
@@ -468,7 +482,7 @@ export interface ExperimentNode {
   description: string;
   start_date: string;
   end_date: string;
-  status: 'mock_running' | 'mock_completed' | 'mock_draft';
+  status: "mock_running" | "mock_completed" | "mock_draft";
   kpi: {
     CTR: string;
     Conversions: string;
@@ -505,15 +519,15 @@ export interface ExperimentManagementData {
 export interface IncidentNode {
   incident_id: string;
   type: string;
-  severity: 'High' | 'Medium' | 'Low';
-  status: 'mock_active' | 'mock_acknowledged' | 'mock_resolved';
+  severity: "High" | "Medium" | "Low";
+  status: "mock_active" | "mock_acknowledged" | "mock_resolved";
   timestamp: string;
 }
 
 export interface SystemAlertNode {
   alert_id: string;
   source: string;
-  severity: 'High' | 'Medium' | 'Low';
+  severity: "High" | "Medium" | "Low";
   message: string;
   timestamp: string;
 }
@@ -537,7 +551,7 @@ export interface IncidentResponseData {
 export interface FeatureFlagNode {
   feature_name: string;
   description: string;
-  status: 'mock_on' | 'mock_off';
+  status: "mock_on" | "mock_off";
   category?: string;
 }
 
@@ -563,14 +577,14 @@ export interface AccessManagementData {
 export interface LanguageNode {
   language_code: string;
   language_name: string;
-  status: 'mock_enabled' | 'mock_disabled';
+  status: "mock_enabled" | "mock_disabled";
 }
 
 export interface LocalizationItem {
   key: string;
   source_text: string;
   translation: Record<string, string>;
-  status: 'mock_reviewed' | 'mock_pending' | 'mock_approved';
+  status: "mock_reviewed" | "mock_pending" | "mock_approved";
   module?: string;
 }
 
@@ -585,23 +599,23 @@ export interface LocalizationData {
 export interface AdvancedAlertNode {
   alert_id: string;
   type: string;
-  severity: 'High' | 'Medium' | 'Low';
+  severity: "High" | "Medium" | "Low";
   source: string;
   timestamp: string;
-  status: 'mock_active' | 'mock_resolved' | 'mock_snoozed';
+  status: "mock_active" | "mock_resolved" | "mock_snoozed";
 }
 
 export interface NotificationChannelNode {
   channel: string;
-  status: 'mock_enabled' | 'mock_disabled';
+  status: "mock_enabled" | "mock_disabled";
   last_sent: string;
 }
 
 export interface AlertRuleNode {
   rule_name: string;
   condition: string;
-  priority: 'mock_high' | 'mock_medium' | 'mock_low';
-  status: 'mock_active' | 'mock_inactive';
+  priority: "mock_high" | "mock_medium" | "mock_low";
+  status: "mock_active" | "mock_inactive";
 }
 
 export interface AlertsSystemData {

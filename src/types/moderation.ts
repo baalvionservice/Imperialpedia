@@ -1,11 +1,28 @@
-import { ID, Timestamp } from './common';
+import { ID, Timestamp } from "./common";
 
 /**
  * @fileOverview Type definitions for the platform moderation system.
  */
 
-export type ModerationType = 'article' | 'comment' | 'submission' | 'Discussion' | 'Article' | 'Comment';
-export type ModerationStatus = 'Pending' | 'Reviewed' | 'Action Taken' | 'Approved' | 'Rejected' | 'pending' | 'approved' | 'rejected' | 'flagged' | 'Under Review' | 'Resolved';
+export type ModerationType =
+  | "article"
+  | "comment"
+  | "submission"
+  | "Discussion"
+  | "Article"
+  | "Comment";
+export type ModerationStatus =
+  | "Pending"
+  | "Reviewed"
+  | "Action Taken"
+  | "Approved"
+  | "Rejected"
+  | "pending"
+  | "approved"
+  | "rejected"
+  | "flagged"
+  | "Under Review"
+  | "Resolved";
 
 /**
  * Standard interface for administrative moderation tasks.
@@ -15,8 +32,12 @@ export interface ModerationItem {
   content: string;
   creator: string;
   reportType: string;
-  status: 'Pending' | 'Reviewed' | 'Action Taken';
+  status: "Pending" | "Reviewed" | "Action Taken";
   date: string;
+  title: string;
+  author: string;
+  type: ModerationType;
+  createdAt: string;
 }
 
 /**
@@ -28,7 +49,7 @@ export interface ModerationApproval {
   fullContent?: string;
   creator: string;
   reportType: string;
-  status: 'Pending' | 'Approved' | 'Rejected';
+  status: "Pending" | "Approved" | "Rejected";
   date: string;
 }
 
@@ -67,7 +88,7 @@ export interface FlaggedContentDetail {
 export interface ModerationHistoryItem {
   id: string;
   moderator: string;
-  action: 'Approved' | 'Revision Requested' | 'Removed' | 'User Warned';
+  action: "Approved" | "Revision Requested" | "Removed" | "User Warned";
   type: string;
   date: string;
 }
@@ -78,7 +99,7 @@ export interface CommunityReport {
   content_title: string;
   reason: string;
   timestamp: string;
-  status: 'Open' | 'Closed';
+  status: "Open" | "Closed";
 }
 
 export interface AIModerationHubData {

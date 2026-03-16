@@ -1,13 +1,17 @@
-import * as mockApi from '@/services/mock-api/articles';
-import { Article, ApiResponse, PaginatedResponse } from '@/types';
-import { errorHandler } from '@/lib/errors/error-handler';
+import * as mockApi from "@/services/mock-api/articles";
+import { ApiResponse, PaginatedResponse } from "@/types";
+import { Article } from "@/modules/content-engine/types/article";
+import { errorHandler } from "@/lib/errors/error-handler";
 
 /**
  * @fileOverview Abstraction layer for article-related data fetching with error handling.
  */
 
 export const articlesService = {
-  async getArticles(page?: number, limit?: number): Promise<PaginatedResponse<Article>> {
+  async getArticles(
+    page?: number,
+    limit?: number
+  ): Promise<PaginatedResponse<Article>> {
     try {
       return await mockApi.getArticles(page, limit);
     } catch (error) {

@@ -254,7 +254,7 @@ export function SentimentClient() {
               ))}
             </CardContent>
           </Card>
-        </div>
+        </aside>
       </div>
     </div>
   );

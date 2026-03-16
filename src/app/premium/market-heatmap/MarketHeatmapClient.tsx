@@ -7,15 +7,15 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Text } from '@/design-system/typography/text';
-import { 
-  PieChart as PieIcon, 
-  Activity, 
-  TrendingUp, 
-  TrendingDown, 
-  Zap, 
-  Globe, 
-  ArrowUpRight, 
-  Loader2, 
+import {
+  PieChart as PieIcon,
+  Activity,
+  TrendingUp,
+  TrendingDown,
+  Zap,
+  Globe,
+  ArrowUpRight,
+  Loader2,
   ChevronRight,
   ChevronLeft,
   Search,
@@ -24,10 +24,12 @@ import {
   Maximize2,
   Info,
   Layers,
-  Sparkles
+  Sparkles,
+  ShieldCheck
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from '@/hooks/use-toast';
+import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
 
 /**
  * Institutional Market Heatmap Interactive Client.
@@ -92,7 +94,7 @@ export function MarketHeatmapClient() {
           </div>
           <Text variant="h1" className="text-3xl font-bold tracking-tight">Market Heatmap</Text>
         </div>
-        
+
         <div className="flex items-center gap-3">
           <div className="flex bg-card/30 border border-white/5 p-1 rounded-xl h-11">
             {['1D', '1W', '1M', '3M', '1Y'].map(tf => (
@@ -115,7 +117,7 @@ export function MarketHeatmapClient() {
       </header>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        
+
         {/* MAIN HEATMAP GRID */}
         <div className="lg:col-span-9 space-y-6">
           <Card className="glass-card border-none shadow-2xl overflow-hidden">
@@ -145,7 +147,7 @@ export function MarketHeatmapClient() {
               <div className="flex flex-wrap gap-2 h-[500px] w-full content-stretch">
                 {!selectedSector ? (
                   data.sectors.map((sector) => (
-                    <div 
+                    <div
                       key={sector.name}
                       onClick={() => setSelectedSector(sector.name)}
                       className={cn(
@@ -163,7 +165,7 @@ export function MarketHeatmapClient() {
                   ))
                 ) : (
                   data.stocks.map((stock) => (
-                    <div 
+                    <div
                       key={stock.symbol}
                       className={cn(
                         "rounded-xl p-4 flex flex-col justify-center items-center text-center cursor-pointer transition-all duration-300 border border-transparent shadow-inner group",
@@ -303,7 +305,7 @@ export function MarketHeatmapClient() {
               </div>
             </CardContent>
           </Card>
-        </div>
+        </aside>
       </div>
 
       {/* TERMINAL FOOTER */}

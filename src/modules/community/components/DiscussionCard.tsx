@@ -1,24 +1,31 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { DiscussionNode } from '@/types/community';
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
-import { Text } from '@/design-system/typography/text';
-import { 
-  MessageSquare, 
-  Heart, 
-  Eye, 
-  TrendingUp, 
-  Clock, 
+import React from "react";
+import { DiscussionNode } from "@/types/community";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardFooter,
+} from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Text } from "@/design-system/typography/text";
+import {
+  MessageSquare,
+  Heart,
+  Eye,
+  TrendingUp,
+  Clock,
   ArrowRight,
   ShieldCheck,
   Flame,
-  Zap
-} from 'lucide-react';
-import { cn } from '@/lib/utils';
-import Link from 'next/link';
+  Zap,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 interface DiscussionCardProps {
   discussion: DiscussionNode;
@@ -38,7 +45,10 @@ export function DiscussionCard({ discussion }: DiscussionCardProps) {
       <CardHeader className="p-6 pb-2">
         <div className="flex justify-between items-start mb-4">
           <div className="flex items-center gap-2">
-            <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20 text-[9px] font-bold uppercase tracking-widest px-2 h-5">
+            <Badge
+              variant="outline"
+              className="bg-primary/5 text-primary border-primary/20 text-[9px] font-bold uppercase tracking-widest px-2 h-5"
+            >
               {discussion.category}
             </Badge>
             {discussion.trending_score > 90 && (
@@ -48,7 +58,8 @@ export function DiscussionCard({ discussion }: DiscussionCardProps) {
             )}
           </div>
           <div className="flex items-center gap-1.5 text-primary font-bold text-[10px]">
-            <TrendingUp className="h-3 w-3" /> {discussion.trending_score}% velocity
+            <TrendingUp className="h-3 w-3" /> {discussion.trending_score}%
+            velocity
           </div>
         </div>
         <Link href={`/community/discussions/${discussion.id}`}>
@@ -59,7 +70,10 @@ export function DiscussionCard({ discussion }: DiscussionCardProps) {
       </CardHeader>
 
       <CardContent className="p-6 pt-2">
-        <Text variant="bodySmall" className="text-muted-foreground line-clamp-2 italic leading-relaxed mb-6">
+        <Text
+          variant="bodySmall"
+          className="text-muted-foreground line-clamp-2 italic leading-relaxed mb-6"
+        >
           "{discussion.content}"
         </Text>
 
@@ -70,13 +84,20 @@ export function DiscussionCard({ discussion }: DiscussionCardProps) {
               <AvatarFallback>{discussion.author.charAt(0)}</AvatarFallback>
             </Avatar>
             <div className="flex flex-col">
-              <span className="text-xs font-bold text-foreground/90">{discussion.author}</span>
-              <span className="text-[9px] text-muted-foreground uppercase tracking-widest font-bold">{discussion.timestamp}</span>
+              <span className="text-xs font-bold text-foreground/90">
+                {discussion.author}
+              </span>
+              <span className="text-[9px] text-muted-foreground uppercase tracking-widest font-bold">
+                {discussion.timestamp}
+              </span>
             </div>
           </div>
-          
+
           {discussion.asset_tag && (
-            <Badge variant="secondary" className="bg-background/50 border border-white/5 text-[9px] font-mono font-bold text-primary">
+            <Badge
+              variant="secondary"
+              className="bg-background/50 border border-white/5 text-[9px] font-mono font-bold text-primary"
+            >
               <Zap className="h-2.5 w-2.5 mr-1" /> {discussion.asset_tag}
             </Badge>
           )}
@@ -88,21 +109,33 @@ export function DiscussionCard({ discussion }: DiscussionCardProps) {
           <div className="flex items-center gap-4 text-muted-foreground">
             <div className="flex items-center gap-1.5">
               <Eye className="h-3.5 w-3.5" />
-              <span className="text-[10px] font-bold font-mono">{(discussion.views / 1000).toFixed(1)}k</span>
+              <span className="text-[10px] font-bold font-mono">
+                {(discussion.views / 1000).toFixed(1)}k
+              </span>
             </div>
             <div className="flex items-center gap-1.5">
               <Heart className="h-3.5 w-3.5 text-destructive/60" />
-              <span className="text-[10px] font-bold font-mono">{discussion.likes}</span>
+              <span className="text-[10px] font-bold font-mono">
+                {discussion.likes}
+              </span>
             </div>
             <div className="flex items-center gap-1.5">
               <MessageSquare className="h-3.5 w-3.5 text-primary/60" />
-              <span className="text-[10px] font-bold font-mono">{discussion.comments}</span>
+              <span className="text-[10px] font-bold font-mono">
+                {discussion.comments}
+              </span>
             </div>
           </div>
-          
-          <Button variant="ghost" size="sm" className="h-8 px-2 text-primary font-bold text-xs group/btn" asChild>
+
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-8 px-2 text-primary font-bold text-xs group/btn"
+            asChild
+          >
             <Link href={`/community/discussions/${discussion.id}`}>
-              Analyze Hub <ArrowRight className="ml-1.5 h-3 w-3 transition-transform group-hover/btn:translate-x-1" />
+              Analyze Hub{" "}
+              <ArrowRight className="ml-1.5 h-3 w-3 transition-transform group-hover/btn:translate-x-1" />
             </Link>
           </Button>
         </div>

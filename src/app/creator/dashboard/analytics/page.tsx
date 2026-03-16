@@ -293,7 +293,7 @@ export default function CreatorAnalyticsPage() {
             </CardHeader>
             <CardContent>
               <Text variant="caption" className="text-muted-foreground">
-                Deep-dive analysis (>2,000 words) in the Economics hub currently commands a 15% higher ad-revenue premium due to high platform engagement from institutional readers.
+                Deep-dive analysis (2,000 words) in the Economics hub currently commands a 15% higher ad-revenue premium due to high platform engagement from institutional readers.
               </Text>
             </CardContent>
           </Card>

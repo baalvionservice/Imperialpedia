@@ -1,18 +1,18 @@
-import React from 'react';
-import { notFound } from 'next/navigation';
-import { ArticlePage } from '@/modules/content-engine/components';
-import { Container } from '@/design-system/layout/container';
-import { articlesService } from '@/services/data';
-import { buildMetadata } from '@/lib/seo';
-import { Metadata } from 'next';
-import { Breadcrumbs } from '@/modules/seo-engine/components/Breadcrumbs';
-import { breadcrumbService } from '@/modules/seo-engine/services/breadcrumb-service';
-import { Article } from '@/modules/content-engine/types';
-import { JsonLd } from '@/modules/seo-engine/components/JsonLd';
-import { schemaService } from '@/modules/seo/services/schema-service';
-import { canonicalService } from '@/modules/seo/services/canonical-service';
-import { CommentIntelligenceHub } from '@/modules/content-engine/components/CommentIntelligence/CommentIntelligenceHub';
-import { ArticleConnectionDisplay } from '@/modules/content-engine/components/KnowledgeGraph/ArticleConnectionDisplay';
+import React from "react";
+import { notFound } from "next/navigation";
+import { ArticlePage } from "@/modules/content-engine/components";
+import { Container } from "@/design-system/layout/container";
+import { articlesService } from "@/services/data";
+import { buildMetadata } from "@/lib/seo";
+import { Metadata } from "next";
+import { Breadcrumbs } from "@/modules/seo-engine/components/Breadcrumbs";
+import { breadcrumbService } from "@/modules/seo-engine/services/breadcrumb-service";
+import { Article } from "@/modules/content-engine/types";
+import { JsonLd } from "@/modules/seo-engine/components/JsonLd";
+import { schemaService } from "@/modules/seo/services/schema-service";
+import { canonicalService } from "@/modules/seo/services/canonical-service";
+import { CommentIntelligenceHub } from "@/modules/content-engine/components/CommentIntelligence/CommentIntelligenceHub";
+import { ArticleConnectionDisplay } from "@/modules/content-engine/components/KnowledgeGraph/ArticleConnectionDisplay";
 
 interface ArticleRouteProps {
   params: Promise<{ slug: string }>;
@@ -21,27 +21,29 @@ interface ArticleRouteProps {
 /**
  * Generates dynamic SEO metadata for the article page.
  */
-export async function generateMetadata({ params }: ArticleRouteProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: ArticleRouteProps): Promise<Metadata> {
   const { slug } = await params;
   const response = await articlesService.getArticleBySlug(slug);
   const article = response.data;
 
   if (!article) {
     return buildMetadata({
-      title: 'Article Not Found',
-      description: 'The requested financial article could not be found.',
+      title: "Article Not Found",
+      description: "The requested financial article could not be found.",
       noIndex: true,
     });
   }
 
-  const canonical = canonicalService.getCanonicalTag(slug, 'article');
+  const canonical = canonicalService.getCanonicalTag(slug, "article");
 
   return buildMetadata({
     title: article.title,
-    description: article.description || article.excerpt,
+    description: article.description,
     keywords: article.tags,
     ogImage: article.featuredImage,
-    ogType: 'article',
+    ogType: "article",
     canonical: canonical,
   });
 }
@@ -78,11 +80,11 @@ export default async function Page({ params }: ArticleRouteProps) {
       <JsonLd data={articleSchema} />
       <Container className="py-8">
         <Breadcrumbs breadcrumb={breadcrumbs} />
-        
+
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           <div className="lg:col-span-8">
             <ArticlePage slug={slug} />
-            
+
             {/* Advanced Comment Intelligence System */}
             <CommentIntelligenceHub articleId={article.id} />
           </div>
@@ -96,8 +98,12 @@ export default async function Page({ params }: ArticleRouteProps) {
                 <div className="flex items-center gap-2 text-primary font-bold text-sm uppercase tracking-widest">
                   <Zap className="h-4 w-4" /> Expert insight
                 </div>
-                <Text variant="bodySmall" className="text-muted-foreground leading-relaxed">
-                  Join the conversation below to discuss specific tactical executions based on this research node.
+                <Text
+                  variant="bodySmall"
+                  className="text-muted-foreground leading-relaxed"
+                >
+                  Join the conversation below to discuss specific tactical
+                  executions based on this research node.
                 </Text>
               </div>
             </div>
@@ -108,5 +114,5 @@ export default async function Page({ params }: ArticleRouteProps) {
   );
 }
 
-import { Zap } from 'lucide-react';
-import { Text } from '@/design-system/typography/text';
+import { Zap } from "lucide-react";
+import { Text } from "@/design-system/typography/text";

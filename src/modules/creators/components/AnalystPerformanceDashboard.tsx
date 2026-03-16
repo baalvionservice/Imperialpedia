@@ -1,32 +1,39 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Text } from '@/design-system/typography/text';
-import { Progress } from '@/components/ui/progress';
-import { Badge } from '@/components/ui/badge';
-import { 
-  TrendingUp, 
-  Target, 
-  Users, 
-  MessageSquare, 
-  Zap, 
-  CheckCircle2, 
+import React from "react";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+import { Text } from "@/design-system/typography/text";
+import { Progress } from "@/components/ui/progress";
+import { Badge } from "@/components/ui/badge";
+import {
+  TrendingUp,
+  Target,
+  Users,
+  MessageSquare,
+  Zap,
+  CheckCircle2,
   Star,
   Activity,
-  BarChart3
-} from 'lucide-react';
-import { 
-  BarChart, 
-  Bar, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
+  BarChart3,
+  ShieldCheck,
+} from "lucide-react";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
   ResponsiveContainer,
-  Cell
-} from 'recharts';
-import { cn } from '@/lib/utils';
+  Cell,
+} from "recharts";
+import { cn } from "@/lib/utils";
 
 interface AnalystPerformanceDashboardProps {
   stats: {
@@ -41,7 +48,10 @@ interface AnalystPerformanceDashboardProps {
 /**
  * Institutional-grade performance summary for verified analysts.
  */
-export function AnalystPerformanceDashboard({ stats, performanceHistory }: AnalystPerformanceDashboardProps) {
+export function AnalystPerformanceDashboard({
+  stats,
+  performanceHistory,
+}: AnalystPerformanceDashboardProps) {
   return (
     <div className="space-y-8 animate-in fade-in duration-700">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -52,10 +62,20 @@ export function AnalystPerformanceDashboard({ stats, performanceHistory }: Analy
               <ShieldCheck className="h-6 w-6" />
             </div>
             <div>
-              <div className="text-3xl font-bold tracking-tighter text-primary">{stats.credibilityScore}</div>
-              <Text variant="label" className="text-[10px] opacity-50 font-bold uppercase tracking-widest">Credibility Score</Text>
+              <div className="text-3xl font-bold tracking-tighter text-primary">
+                {stats.credibilityScore}
+              </div>
+              <Text
+                variant="label"
+                className="text-[10px] opacity-50 font-bold uppercase tracking-widest"
+              >
+                Credibility Score
+              </Text>
             </div>
-            <Progress value={stats.credibilityScore} className="h-1 bg-white/5" />
+            <Progress
+              value={stats.credibilityScore}
+              className="h-1 bg-white/5"
+            />
           </CardContent>
         </Card>
 
@@ -66,8 +86,15 @@ export function AnalystPerformanceDashboard({ stats, performanceHistory }: Analy
               <Target className="h-6 w-6" />
             </div>
             <div>
-              <div className="text-3xl font-bold tracking-tighter text-emerald-500">{stats.accuracyScore}%</div>
-              <Text variant="label" className="text-[10px] opacity-50 font-bold uppercase tracking-widest">Prediction Accuracy</Text>
+              <div className="text-3xl font-bold tracking-tighter text-emerald-500">
+                {stats.accuracyScore}%
+              </div>
+              <Text
+                variant="label"
+                className="text-[10px] opacity-50 font-bold uppercase tracking-widest"
+              >
+                Prediction Accuracy
+              </Text>
             </div>
             <Progress value={stats.accuracyScore} className="h-1 bg-white/5" />
           </CardContent>
@@ -80,10 +107,20 @@ export function AnalystPerformanceDashboard({ stats, performanceHistory }: Analy
               <TrendingUp className="h-6 w-6" />
             </div>
             <div>
-              <div className="text-3xl font-bold tracking-tighter text-secondary">{stats.engagementScore}%</div>
-              <Text variant="label" className="text-[10px] opacity-50 font-bold uppercase tracking-widest">Engagement Rate</Text>
+              <div className="text-3xl font-bold tracking-tighter text-secondary">
+                {stats.engagementScore}%
+              </div>
+              <Text
+                variant="label"
+                className="text-[10px] opacity-50 font-bold uppercase tracking-widest"
+              >
+                Engagement Rate
+              </Text>
             </div>
-            <Progress value={stats.engagementScore} className="h-1 bg-white/5" />
+            <Progress
+              value={stats.engagementScore}
+              className="h-1 bg-white/5"
+            />
           </CardContent>
         </Card>
 
@@ -94,11 +131,23 @@ export function AnalystPerformanceDashboard({ stats, performanceHistory }: Analy
               <Star className="h-6 w-6" />
             </div>
             <div>
-              <div className="text-3xl font-bold tracking-tighter text-amber-500">4.9/5</div>
-              <Text variant="label" className="text-[10px] opacity-50 font-bold uppercase tracking-widest">Community Rating</Text>
+              <div className="text-3xl font-bold tracking-tighter text-amber-500">
+                4.9/5
+              </div>
+              <Text
+                variant="label"
+                className="text-[10px] opacity-50 font-bold uppercase tracking-widest"
+              >
+                Community Rating
+              </Text>
             </div>
             <div className="flex gap-1">
-              {[1, 2, 3, 4, 5].map(i => <Star key={i} className="h-2.5 w-2.5 fill-amber-500 text-amber-500" />)}
+              {[1, 2, 3, 4, 5].map((i) => (
+                <Star
+                  key={i}
+                  className="h-2.5 w-2.5 fill-amber-500 text-amber-500"
+                />
+              ))}
             </div>
           </CardContent>
         </Card>
@@ -110,29 +159,55 @@ export function AnalystPerformanceDashboard({ stats, performanceHistory }: Analy
           <CardHeader className="bg-card/30 border-b border-white/5 p-6 flex flex-row items-center justify-between">
             <div>
               <CardTitle className="text-lg flex items-center gap-2">
-                <BarChart3 className="h-5 w-5 text-primary" /> Monthly Intelligence Reach
+                <BarChart3 className="h-5 w-5 text-primary" /> Monthly
+                Intelligence Reach
               </CardTitle>
-              <CardDescription>Visualizing output velocity vs audience engagement.</CardDescription>
+              <CardDescription>
+                Visualizing output velocity vs audience engagement.
+              </CardDescription>
             </div>
-            <Badge variant="outline" className="border-primary/20 bg-primary/5 text-primary font-bold text-[10px]">30 DAY WINDOW</Badge>
+            <Badge
+              variant="outline"
+              className="border-primary/20 bg-primary/5 text-primary font-bold text-[10px]"
+            >
+              30 DAY WINDOW
+            </Badge>
           </CardHeader>
           <CardContent className="p-8 h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={performanceHistory}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#ffffff05" vertical={false} />
-                <XAxis 
-                  dataKey="month" 
-                  stroke="#888888" 
-                  fontSize={10} 
-                  tickLine={false} 
-                  axisLine={false} 
+                <CartesianGrid
+                  strokeDasharray="3 3"
+                  stroke="#ffffff05"
+                  vertical={false}
                 />
-                <YAxis stroke="#888888" fontSize={10} tickLine={false} axisLine={false} />
-                <Tooltip 
-                  contentStyle={{ backgroundColor: '#1C1822', border: '1px solid #ffffff10', borderRadius: '12px' }}
-                  cursor={{ fill: 'rgba(255,255,255,0.03)' }}
+                <XAxis
+                  dataKey="month"
+                  stroke="#888888"
+                  fontSize={10}
+                  tickLine={false}
+                  axisLine={false}
                 />
-                <Bar dataKey="engagement" fill="#8272F2" radius={[4, 4, 0, 0]} barSize={30} />
+                <YAxis
+                  stroke="#888888"
+                  fontSize={10}
+                  tickLine={false}
+                  axisLine={false}
+                />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "#1C1822",
+                    border: "1px solid #ffffff10",
+                    borderRadius: "12px",
+                  }}
+                  cursor={{ fill: "rgba(255,255,255,0.03)" }}
+                />
+                <Bar
+                  dataKey="engagement"
+                  fill="#8272F2"
+                  radius={[4, 4, 0, 0]}
+                  barSize={30}
+                />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
@@ -150,16 +225,28 @@ export function AnalystPerformanceDashboard({ stats, performanceHistory }: Analy
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <Text variant="bodySmall" weight="bold" className="block leading-tight group-hover:text-primary transition-colors">
+              <Text
+                variant="bodySmall"
+                weight="bold"
+                className="block leading-tight group-hover:text-primary transition-colors"
+              >
                 Global Liquidity and Stock Market Cycles
               </Text>
               <div className="flex items-center gap-4 text-[10px] font-bold text-muted-foreground uppercase tracking-tighter">
-                <div className="flex items-center gap-1"><Activity className="h-3 w-3" /> 50.2k Reads</div>
-                <div className="flex items-center gap-1"><MessageSquare className="h-3 w-3" /> 124 Dialogue</div>
+                <div className="flex items-center gap-1">
+                  <Activity className="h-3 w-3" /> 50.2k Reads
+                </div>
+                <div className="flex items-center gap-1">
+                  <MessageSquare className="h-3 w-3" /> 124 Dialogue
+                </div>
               </div>
               <div className="pt-4 border-t border-white/5">
-                <Text variant="caption" className="italic text-muted-foreground leading-relaxed">
-                  "This research node achieved a 94% accuracy score against subsequent central bank liquidity injections."
+                <Text
+                  variant="caption"
+                  className="italic text-muted-foreground leading-relaxed"
+                >
+                  "This research node achieved a 94% accuracy score against
+                  subsequent central bank liquidity injections."
                 </Text>
               </div>
             </CardContent>
@@ -172,8 +259,12 @@ export function AnalystPerformanceDashboard({ stats, performanceHistory }: Analy
             <div className="flex items-center gap-2 text-secondary font-bold text-[10px] uppercase tracking-widest">
               <Activity className="h-4 w-4" /> Analyst Directives
             </div>
-            <Text variant="caption" className="text-muted-foreground leading-relaxed">
-              Maintain high word counts and primary source citations to increase your **Credibility Node** reach.
+            <Text
+              variant="caption"
+              className="text-muted-foreground leading-relaxed"
+            >
+              Maintain high word counts and primary source citations to increase
+              your **Credibility Node** reach.
             </Text>
           </div>
         </div>

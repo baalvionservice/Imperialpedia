@@ -1,19 +1,20 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import { Container } from '@/design-system/layout/container';
-import { Article } from '../types';
-import { getArticleBySlug } from '../services/content-service';
-import { ArticleHeader } from './ArticleHeader';
-import { ArticleBody } from './ArticleBody';
-import { RelatedArticles } from './RelatedArticles';
-import { TableOfContents } from './TableOfContents';
-import { CommunitySection } from './CommunitySection';
-import { Loader2, AlertCircle, ArrowLeft } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
-import { Card, CardContent } from '@/components/ui/card';
+import React, { useEffect, useState } from "react";
+import { Container } from "@/design-system/layout/container";
+import { Article } from "../types";
+import { getArticleBySlug } from "../services/content-service";
+import { ArticleHeader } from "./ArticleHeader";
+import { ArticleBody } from "./ArticleBody";
+import { RelatedArticles } from "./RelatedArticles";
+import { TableOfContents } from "./TableOfContents";
+import { CommunitySection } from "./CommunitySection";
+import { Loader2, AlertCircle, ArrowLeft, Zap } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { Card, CardContent } from "@/components/ui/card";
+import { Text } from "@/design-system/typography/text";
 
 interface ArticlePageProps {
   slug: string;
@@ -33,14 +34,14 @@ export const ArticlePage = ({ slug }: ArticlePageProps) => {
       try {
         setLoading(true);
         const response = await getArticleBySlug(slug);
-        
+
         if (response.data) {
           setArticle(response.data);
         } else {
-          setError(response.message || 'Article not found');
+          setError(response.message || "Article not found");
         }
       } catch (err) {
-        setError('An unexpected error occurred while loading the article.');
+        setError("An unexpected error occurred while loading the article.");
       } finally {
         setLoading(false);
       }
@@ -53,7 +54,9 @@ export const ArticlePage = ({ slug }: ArticlePageProps) => {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center space-y-4">
         <Loader2 className="h-12 w-12 text-primary animate-spin" />
-        <p className="text-muted-foreground animate-pulse font-bold tracking-widest uppercase text-[10px]">Retrieving financial intelligence...</p>
+        <p className="text-muted-foreground animate-pulse font-bold tracking-widest uppercase text-[10px]">
+          Retrieving financial intelligence...
+        </p>
       </div>
     );
   }
@@ -67,8 +70,14 @@ export const ArticlePage = ({ slug }: ArticlePageProps) => {
           <AlertDescription>
             {error || "We couldn't find the requested financial article."}
             <div className="mt-6">
-              <Button asChild variant="outline" className="border-destructive/30 hover:bg-destructive/10">
-                <Link href="/"><ArrowLeft className="mr-2 h-4 w-4" /> Return Home</Link>
+              <Button
+                asChild
+                variant="outline"
+                className="border-destructive/30 hover:bg-destructive/10"
+              >
+                <Link href="/">
+                  <ArrowLeft className="mr-2 h-4 w-4" /> Return Home
+                </Link>
               </Button>
             </div>
           </AlertDescription>
@@ -84,21 +93,24 @@ export const ArticlePage = ({ slug }: ArticlePageProps) => {
           {/* Main Content Area */}
           <div className="lg:col-span-8">
             <ArticleHeader article={article} />
-            
+
             {/* Mobile TOC: Collapsible card shown only on mobile/tablet */}
             <div className="lg:hidden mb-8">
               <Card className="glass-card">
                 <CardContent className="pt-6">
-                  <TableOfContents sections={[]} /> 
+                  <TableOfContents sections={[]} />
                 </CardContent>
               </Card>
             </div>
 
-            <ArticleBody sections={[]} /> 
-            
+            <ArticleBody sections={[]} />
+
             <CommunitySection />
 
-            <RelatedArticles currentArticleId={article.id} category={article.category} />
+            <RelatedArticles
+              currentArticleId={article.id}
+              category={article.category}
+            />
           </div>
 
           {/* Desktop Sidebar TOC */}
@@ -114,8 +126,12 @@ export const ArticlePage = ({ slug }: ArticlePageProps) => {
                 <div className="flex items-center gap-2 text-primary font-bold text-sm uppercase tracking-widest">
                   <Zap className="h-4 w-4" /> Expert insight
                 </div>
-                <Text variant="caption" className="text-muted-foreground leading-relaxed">
-                  Join the conversation below to discuss specific tactical executions based on this research node.
+                <Text
+                  variant="caption"
+                  className="text-muted-foreground leading-relaxed"
+                >
+                  Join the conversation below to discuss specific tactical
+                  executions based on this research node.
                 </Text>
               </div>
             </div>
@@ -123,7 +139,11 @@ export const ArticlePage = ({ slug }: ArticlePageProps) => {
         </div>
 
         <div className="mt-20 pt-8 border-t text-center">
-          <Button variant="outline" className="rounded-xl h-12 px-8 font-bold" asChild>
+          <Button
+            variant="outline"
+            className="rounded-xl h-12 px-8 font-bold"
+            asChild
+          >
             <Link href="/glossary">Explore Full Glossary</Link>
           </Button>
         </div>
@@ -131,5 +151,3 @@ export const ArticlePage = ({ slug }: ArticlePageProps) => {
     </article>
   );
 };
-
-import { Zap } from 'lucide-react';

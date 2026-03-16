@@ -2,6 +2,10 @@
  * @fileOverview Type definitions for the platform's subscription and premium systems.
  */
 
+import { ApiResponse } from "./api";
+
+export type { ApiResponse };
+
 export interface SubscriptionTier {
   id: string;
   name: string;
@@ -12,7 +16,7 @@ export interface SubscriptionTier {
   priceYearly: string;
   features: string[];
   isPopular?: boolean;
-  color?: 'primary' | 'secondary' | 'emerald';
+  color?: "primary" | "secondary" | "emerald";
 }
 
 export interface PremiumState {
@@ -31,7 +35,7 @@ export interface PremiumReport {
   description: string;
   date: string;
   download_link: string;
-  type: 'chart' | 'table' | 'summary';
+  type: "chart" | "table" | "summary";
   category: string;
   data: any[];
 }
@@ -50,7 +54,7 @@ export interface BacktestingTool {
 }
 
 export interface PremiumAnalytics {
-  type: 'portfolio_deep_dive' | 'historical_sentiment' | 'backtesting';
+  type: "portfolio_deep_dive" | "historical_sentiment" | "backtesting";
   summary?: string;
   data?: any[];
   results?: any[];
@@ -60,7 +64,7 @@ export interface PremiumAnalytics {
 export interface MockPaymentStatus {
   user: string;
   plan_selected: string;
-  status: 'success' | 'failed';
+  status: "success" | "failed";
   message: string;
 }
 
@@ -70,13 +74,13 @@ export interface MockPaymentStatus {
 export interface PremiumAnalyticsKPI {
   metric: string;
   value: string | number;
-  trend: 'mock_up' | 'mock_down' | 'mock_stable';
+  trend: "mock_up" | "mock_down" | "mock_stable";
 }
 
 export interface PremiumReportNode {
   report_name: string;
-  type: 'PDF' | 'CSV';
-  status: 'mock_ready' | 'mock_generating';
+  type: "PDF" | "CSV";
+  status: "mock_ready" | "mock_generating";
   last_generated: string;
 }
 
@@ -101,11 +105,11 @@ export interface DeepDiveAsset {
   ticker: string;
   current_price: string;
   allocation: string;
-  'P&L': string;
+  "P&L": string;
   ai_insights: {
-    bull_case: 'mock_up' | 'mock_down' | 'mock_neutral';
-    bear_case: 'mock_up' | 'mock_down' | 'mock_neutral';
-    risk_alert: 'mock_none' | 'mock_warning' | 'mock_critical';
+    bull_case: "mock_up" | "mock_down" | "mock_neutral";
+    bear_case: "mock_up" | "mock_down" | "mock_neutral";
+    risk_alert: "mock_none" | "mock_warning" | "mock_critical";
   };
 }
 
@@ -148,7 +152,7 @@ export interface ScreenerAsset {
 export interface CustomStrategy {
   strategy_name: string;
   conditions: string[];
-  status: 'mock_active' | 'mock_inactive';
+  status: "mock_active" | "mock_inactive";
 }
 
 export interface ScreenerDashboardData {
@@ -208,7 +212,7 @@ export interface SectorHeatmapNode {
   name: string;
   change: string;
   market_cap: string;
-  color: 'green' | 'light_green' | 'neutral' | 'light_red' | 'red';
+  color: "green" | "light_green" | "neutral" | "light_red" | "red";
   weight: number; // 1-100 for visual sizing
 }
 
@@ -224,7 +228,7 @@ export interface StockHeatmapNode {
 export interface CapitalFlowItem {
   sector: string;
   flow: string;
-  status: 'inflow' | 'outflow';
+  status: "inflow" | "outflow";
 }
 
 export interface RegionPerformance {

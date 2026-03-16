@@ -1,4 +1,4 @@
-import { RouteConfig } from '@/types';
+import { RouteConfig } from "@/types";
 
 /**
  * @fileOverview Centralized route definitions for the entire application.
@@ -7,35 +7,36 @@ import { RouteConfig } from '@/types';
 
 export const routes = {
   public: {
-    home: '/',
-    topics: '/topics',
-    articles: '/articles',
-    glossary: '/glossary',
-    calculators: '/financial-tools',
-    creators: '/creators',
-    learningPaths: '/learning-paths',
-    market: '/market',
-    community: '/community',
-    aiTools: '/ai-analyst',
+    home: "/",
+    topics: "/topics",
+    articles: "/articles",
+    glossary: "/glossary",
+    calculators: "/financial-tools",
+    creators: "/creators",
+    learningPaths: "/learning-paths",
+    market: "/market",
+    community: "/community",
+    aiTools: "/ai-analyst",
+    outline: "/ai-analyst/content-outline",
   },
   platform: {
-    dashboard: '/dashboard',
-    recommendations: '/dashboard/recommendations',
-    portfolio: '/dashboard/portfolio',
-    alerts: '/dashboard/alerts',
+    dashboard: "/dashboard",
+    recommendations: "/dashboard/recommendations",
+    portfolio: "/dashboard/portfolio",
+    alerts: "/dashboard/alerts",
   },
   premium: {
-    subscribe: '/premium/subscribe',
-    heatmap: '/premium/market-heatmap',
-    screener: '/premium/screener',
-    backtesting: '/premium/backtesting',
-    reports: '/premium/reports',
+    subscribe: "/premium/subscribe",
+    heatmap: "/premium/market-heatmap",
+    screener: "/premium/screener",
+    backtesting: "/premium/backtesting",
+    reports: "/premium/reports",
   },
   admin: {
-    dashboard: '/admin/dashboard',
-    analytics: '/admin/analytics/command-center',
-    quality: '/admin/analytics/content-quality',
-    moderation: '/admin/control/moderation/ai-hub',
-    infrastructure: '/admin/control/infrastructure',
+    dashboard: "/admin/dashboard",
+    analytics: "/admin/analytics/command-center",
+    quality: "/admin/analytics/content-quality",
+    moderation: "/admin/control/moderation/ai-hub",
+    infrastructure: "/admin/control/infrastructure",
   },
 };

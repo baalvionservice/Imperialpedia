@@ -9,10 +9,10 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
-import { 
-  Tooltip, 
-  TooltipContent, 
-  TooltipTrigger 
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger
 } from '@/components/ui/tooltip';
 import { calculatorsService } from '@/services/data';
 import { CalculatorResultModal } from '@/modules/calculators/components/CalculatorResultModal';
@@ -23,7 +23,7 @@ import { useCalculatorStore } from '@/lib/state/calculator-store';
 export default function LoanClient() {
   const { loan, updateLoan, resetCalculator } = useCalculatorStore();
   const { principal, rate, years, result, errors } = loan;
-  
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [calculating, setCalculating] = useState(false);
 
@@ -36,7 +36,7 @@ export default function LoanClient() {
     if (!principal || isNaN(p) || p <= 0) newErrors.principal = "Required (> 0)";
     if (!rate || isNaN(r) || r < 0 || r > 100) newErrors.rate = "Required (0-100%)";
     if (!years || isNaN(y) || y <= 0) newErrors.years = "Required (> 0)";
-    
+
     updateLoan({ errors: newErrors });
     return Object.keys(newErrors).length === 0;
   };
@@ -52,7 +52,7 @@ export default function LoanClient() {
         Number(rate),
         Number(years)
       );
-      
+
       if (response.data) {
         updateLoan({
           result: {
@@ -73,7 +73,7 @@ export default function LoanClient() {
     setIsModalOpen(false);
   };
 
-  const formatCurrency = (val: number) => 
+  const formatCurrency = (val: number) =>
     new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(val);
 
   return (
@@ -81,7 +81,7 @@ export default function LoanClient() {
       <Container isNarrow>
         <Button variant="ghost" size="sm" className="mb-8 p-0 hover:bg-transparent text-muted-foreground hover:text-primary group" asChild>
           <Link href="/financial-tools">
-            <ArrowLeft className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1" /> 
+            <ArrowLeft className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1" />
             Back to Dashboard
           </Link>
         </Button>
@@ -122,10 +122,10 @@ export default function LoanClient() {
                         </TooltipContent>
                       </Tooltip>
                     </div>
-                    <Input 
-                      id="principal" 
-                      type="number" 
-                      value={principal} 
+                    <Input
+                      id="principal"
+                      type="number"
+                      value={principal}
                       onChange={(e) => updateLoan({ principal: e.target.value, errors: { ...errors, principal: '' } })}
                       error={errors.principal}
                       className="h-12 bg-background/50 rounded-xl border-white/10"
@@ -133,7 +133,7 @@ export default function LoanClient() {
                       disabled={calculating}
                     />
                   </div>
-                  
+
                   <div className="space-y-3">
                     <div className="flex items-center gap-1.5">
                       <Label htmlFor="rate" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Annual Interest Rate (%)</Label>
@@ -146,11 +146,11 @@ export default function LoanClient() {
                         </TooltipContent>
                       </Tooltip>
                     </div>
-                    <Input 
-                      id="rate" 
-                      type="number" 
+                    <Input
+                      id="rate"
+                      type="number"
                       step="0.01"
-                      value={rate} 
+                      value={rate}
                       onChange={(e) => updateLoan({ rate: e.target.value, errors: { ...errors, rate: '' } })}
                       error={errors.rate}
                       className="h-12 bg-background/50 rounded-xl border-white/10"
@@ -171,10 +171,10 @@ export default function LoanClient() {
                         </TooltipContent>
                       </Tooltip>
                     </div>
-                    <Input 
-                      id="years" 
-                      type="number" 
-                      value={years} 
+                    <Input
+                      id="years"
+                      type="number"
+                      value={years}
                       onChange={(e) => updateLoan({ years: e.target.value, errors: { ...errors, years: '' } })}
                       error={errors.years}
                       className="h-12 bg-background/50 rounded-xl border-white/10"
@@ -231,13 +231,14 @@ export default function LoanClient() {
                   <Text variant="label" className="text-muted-foreground mb-1">Total Repayment</Text>
                   <div className="text-2xl font-bold">{formatCurrency(result.total)}</div>
                 </CardContent>
-              </div>
+              </Card>
             </div>
           )}
+
         </div>
 
         {result && (
-          <CalculatorResultModal 
+          <CalculatorResultModal
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
             onReset={handleReset}

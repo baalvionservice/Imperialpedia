@@ -6,14 +6,14 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Text } from '@/design-system/typography/text';
-import { 
-  ShieldAlert, 
-  CheckCircle2, 
-  XCircle, 
-  Search, 
-  Filter, 
-  Loader2, 
-  Clock, 
+import {
+  ShieldAlert,
+  CheckCircle2,
+  XCircle,
+  Search,
+  Filter,
+  Loader2,
+  Clock,
   Eye,
   ArrowLeft,
   FileText,
@@ -30,7 +30,11 @@ import {
   MessageSquare,
   History,
   Terminal,
-  Scale
+  Scale,
+  Users,
+  Sparkles,
+  ArrowRight,
+  TrendingUp
 } from 'lucide-react';
 import Link from 'next/link';
 import { moderationService } from '@/services/data/moderation-service';
@@ -80,7 +84,7 @@ export default function AIModerationHubPage() {
     await new Promise(r => setTimeout(r, 1200));
     setProcessing(null);
     setInspectedItem(null);
-    
+
     toast({
       title: "Action Committed",
       description: `Moderation directive "${action}" has been broadcast to the cluster for ${id}.`,
@@ -98,7 +102,7 @@ export default function AIModerationHubPage() {
     );
   }
 
-  const filteredFlagged = data.flagged_content.filter(item => 
+  const filteredFlagged = data.flagged_content.filter(item =>
     item.author.toLowerCase().includes(search.toLowerCase()) ||
     item.reason.toLowerCase().includes(search.toLowerCase()) ||
     item.content_preview.toLowerCase().includes(search.toLowerCase())
@@ -152,8 +156,8 @@ export default function AIModerationHubPage() {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        
+      <div className="grid grid-cols-1 lg:grid-cols-8 gap-8">
+
         {/* MAIN FLAGGED PIPELINE */}
         <div className="lg:col-span-8 space-y-8">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 px-2">
@@ -166,11 +170,11 @@ export default function AIModerationHubPage() {
                 <Text variant="caption" className="text-muted-foreground uppercase tracking-widest font-bold text-[9px]">Awaiting Human Decision Handshake</Text>
               </div>
             </div>
-            
+
             <div className="relative group w-full sm:w-64">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
-              <Input 
-                placeholder="Search audit IDs..." 
+              <Input
+                placeholder="Search audit IDs..."
                 className="pl-10 h-10 bg-card/30 border-white/5 rounded-xl text-xs"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
@@ -231,9 +235,9 @@ export default function AIModerationHubPage() {
                         </div>
                       </TableCell>
                       <TableCell className="text-right pr-8">
-                        <Button 
-                          variant="ghost" 
-                          size="sm" 
+                        <Button
+                          variant="ghost"
+                          size="sm"
                           className="h-8 rounded-xl text-[10px] font-bold uppercase gap-2 text-muted-foreground hover:text-primary transition-all"
                           onClick={() => setInspectedItem(item)}
                         >
@@ -305,19 +309,19 @@ export default function AIModerationHubPage() {
               ))}
             </div>
           </div>
+        </aside>
 
-          {/* Strategic Insight */}
-          <div className="p-8 rounded-[3rem] bg-primary/5 border border-primary/20 space-y-4 relative overflow-hidden group">
-            <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform duration-1000">
-              <Sparkles className="h-16 w-16 text-primary rotate-12" />
-            </div>
-            <div className="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-widest">
-              <ShieldCheck className="h-4 w-4" /> Integrity Guard
-            </div>
-            <Text variant="caption" className="text-muted-foreground leading-relaxed italic block">
-              "The **Manipulation Detection Engine** is currently benchmarking at 94% precision. Suspicious 'Pump and Dump' narratives are auto-throttled in the discovery feed."
-            </Text>
+        {/* Strategic Insight */}
+        <div className="p-8 lg:col-span-4 rounded-[3rem] bg-primary/5 border border-primary/20 space-y-4 relative overflow-hidden group">
+          <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform duration-1000">
+            <Sparkles className="h-16 w-16 text-primary rotate-12" />
           </div>
+          <div className="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-widest">
+            <ShieldCheck className="h-4 w-4" /> Integrity Guard
+          </div>
+          <Text variant="caption" className="text-muted-foreground leading-relaxed italic block">
+            "The **Manipulation Detection Engine** is currently benchmarking at 94% precision. Suspicious 'Pump and Dump' narratives are auto-throttled in the discovery feed."
+          </Text>
         </div>
       </div>
 
@@ -347,7 +351,7 @@ export default function AIModerationHubPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data.history.map((log) => (
+              {data && data.history.length > 0 && data.history.map((log) => (
                 <TableRow key={log.id} className="hover:bg-white/5 border-b border-white/5 transition-colors">
                   <TableCell className="py-4 pl-8">
                     <div className="flex items-center gap-3">
@@ -359,8 +363,8 @@ export default function AIModerationHubPage() {
                     <Badge variant="secondary" className={cn(
                       "text-[9px] font-bold uppercase h-5 px-2",
                       log.action === 'Removed' ? "bg-destructive/10 text-destructive" :
-                      log.action === 'Approved' ? "bg-emerald-500/10 text-emerald-500" :
-                      "bg-amber-500/10 text-amber-500"
+                        log.action === 'Approved' ? "bg-emerald-500/10 text-emerald-500" :
+                          "bg-amber-500/10 text-amber-500"
                     )}>{log.action}</Badge>
                   </TableCell>
                   <TableCell className="text-center font-bold text-xs text-muted-foreground uppercase">{log.type}</TableCell>
@@ -385,17 +389,17 @@ export default function AIModerationHubPage() {
               <Badge variant="outline" className="border-primary/20 bg-primary/5 text-primary text-[10px] font-bold uppercase tracking-widest px-3 h-6">
                 Intelligence Audit Console
               </Badge>
-              {inspectedItem && getStatusBadge(inspectedItem.status)}
+              {inspectedItem?.status && getStatusBadge(inspectedItem?.status ?? "")}
             </div>
             <DialogTitle className="text-2xl font-bold flex items-center gap-3">
-              <ShieldAlert className="h-6 w-6 text-primary" /> 
+              <ShieldAlert className="h-6 w-6 text-primary" />
               Review Node: {inspectedItem?.author}
             </DialogTitle>
             <DialogDescription className="text-muted-foreground pt-2">
               Cross-referencing entity data with the **Global Misinformation Matrix**.
             </DialogDescription>
           </DialogHeader>
-          
+
           <div className="p-8 space-y-8 max-h-[60vh] overflow-y-auto no-scrollbar">
             {/* Raw Content Payload */}
             <div className="space-y-4">
@@ -454,21 +458,21 @@ export default function AIModerationHubPage() {
 
           <DialogFooter className="p-8 bg-muted/20 border-t border-white/5 gap-3">
             <Button variant="ghost" onClick={() => setInspectedItem(null)} className="h-12 px-6 rounded-xl font-bold">Close Handshake</Button>
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               className="h-12 px-6 rounded-xl font-bold border-amber-500/20 text-amber-500 hover:bg-amber-500/10"
               onClick={() => handleModerationAction(inspectedItem?.id!, 'Request Revision')}
             >
               Request Revision
             </Button>
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               className="h-12 px-6 rounded-xl font-bold border-destructive/20 text-destructive hover:bg-destructive/10"
               onClick={() => handleModerationAction(inspectedItem?.id!, 'Remove Node')}
             >
               Purge Node
             </Button>
-            <Button 
+            <Button
               className="h-12 px-10 rounded-xl font-bold bg-emerald-600 hover:bg-emerald-700 shadow-xl shadow-emerald-900/20"
               onClick={() => handleModerationAction(inspectedItem?.id!, 'Approve')}
             >

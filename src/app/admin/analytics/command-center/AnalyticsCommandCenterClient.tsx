@@ -28,7 +28,9 @@ import {
   Target,
   AlertTriangle,
   Flame,
-  Layout
+  Layout,
+  Clock,
+  ShieldAlert
 } from 'lucide-react';
 import { 
   AreaChart, 
@@ -48,6 +50,7 @@ import {
 import { analyticsService } from '@/services/data/analytics-service';
 import { PlatformCommandCenterData } from '@/types/analytics';
 import { cn } from '@/lib/utils';
+import { Progress } from '@/components/ui/progress';
 
 /**
  * Platform Analytics Command Center Client.
@@ -303,7 +306,7 @@ export function AnalyticsCommandCenterClient() {
               ))}
             </div>
           </div>
-        </div>
+        </aside>
       </div>
 
       {/* STRATEGIC HUB FOOTER */}

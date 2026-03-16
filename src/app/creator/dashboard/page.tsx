@@ -23,7 +23,8 @@ import {
   DollarSign,
   BarChart3,
   ShieldCheck,
-  ArrowUpRight
+  ArrowUpRight,
+  Calendar
 } from 'lucide-react';
 import Link from 'next/link';
 import { getCreatorDashboardStats, getCreatorContent } from '@/services/mock-api/creators';
@@ -88,7 +89,7 @@ export default function CreatorDashboardPage() {
     new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(val);
 
   const summaryMetrics = [
-    { title: 'Intelligence Nodes', value: stats?.totalArticles, icon: FileEdit, color: 'text-primary', description: '+4 this month', href: '/creator/dashboard/schedule' },
+    { title: 'Intelligence Nodes', value: stats?.performanceTrends, icon: FileEdit, color: 'text-primary', description: '+4 this month', href: '/creator/dashboard/schedule' },
     { title: 'Total Audience', value: `${((stats?.totalFollowers || 0) / 1000).toFixed(1)}k`, icon: Users, color: 'text-secondary', description: '+1.2k new experts', href: '/creator/dashboard/notifications' },
     { title: 'Global Reach', value: `${((stats?.totalViews || 0) / 1000000).toFixed(1)}M`, icon: Eye, color: 'text-primary', description: 'Trending in Economics', href: '/creator/dashboard/analytics' },
     { title: 'Total Revenue', value: formatCurrency(stats?.totalRevenue || 0), icon: DollarSign, color: 'text-secondary', description: 'Next payout: Mar 15', href: '/creator/dashboard/revenue' },
@@ -139,7 +140,7 @@ export default function CreatorDashboardPage() {
                 <metric.icon className={`h-4 w-4 ${metric.color}`} />
               </CardHeader>
               <CardContent className="relative z-10">
-                <div className="text-2xl font-bold tracking-tight">{metric.value}</div>
+                <div className="text-2xl font-bold tracking-tight">{metric.title}</div>
                 <p className="text-[10px] text-emerald-500 font-bold mt-1 flex items-center gap-1">
                   <ArrowUpRight className="h-2.5 w-2.5" /> {metric.description}
                 </p>
