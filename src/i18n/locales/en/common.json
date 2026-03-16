@@ -50,7 +50,9 @@
   "waitlist": {
     "input_placeholder": "Enter institutional email...",
     "submit_button": "Join Matrix",
-    "caption": "Join 142,000+ analysts receiving high-fidelity intelligence nodes. No spam, only alpha."
+    "caption": "Join 142,000+ analysts receiving high-fidelity intelligence nodes. No spam, only alpha.",
+    "error_required": "Email identity node is required.",
+    "error_invalid": "Invalid email node detected."
   },
   "footer": {
     "description": "The world's most scalable AI-powered financial intelligence engine. Providing deep-dive research across 1,000,000+ programmatic knowledge nodes.",

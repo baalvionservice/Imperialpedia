@@ -13,7 +13,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Text } from '@/design-system/typography/text';
-import { Loader2, CheckCircle2, AlertCircle, Send, Sparkles, ShieldCheck, Info } from 'lucide-react';
+import { Loader2, CheckCircle2, AlertCircle, Send, Sparkles, ShieldCheck, Info, User } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { trackEvent } from '@/lib/utils/analytics';
@@ -25,18 +25,17 @@ interface WaitlistModalProps {
 }
 
 /**
- * Waitlist & Early Access Modal.
- * High-fidelity form for capturing institutional early access requests.
- * Integrated with the global toast and analytics system.
+ * Waitlist & Early Access Modal Hub.
+ * Features dual-input identity capture and institutional-grade validation.
  */
 export const WaitlistModal = ({ isOpen, onOpenChange, title = "Join the Imperialpedia Waitlist" }: WaitlistModalProps) => {
   const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
   const { toast } = useToast();
 
   const validateEmail = (email: string) => {
-    // Specific regex for standard email validation
     return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email);
   };
 
@@ -44,7 +43,7 @@ export const WaitlistModal = ({ isOpen, onOpenChange, title = "Join the Imperial
     e.preventDefault();
     if (!email) {
       setStatus('error');
-      setMessage('Email identity node is required.');
+      setMessage('Intelligence node (email) is required.');
       return;
     }
     if (!validateEmail(email)) {
@@ -54,16 +53,13 @@ export const WaitlistModal = ({ isOpen, onOpenChange, title = "Join the Imperial
     }
 
     setStatus('loading');
-    
-    // TODO: AI-powered early access segmentation and prioritization in Phase 2
     trackEvent({ category: 'Form', action: 'Submit Start', label: 'Waitlist Modal' });
 
     try {
-      // TODO: Connect to backend API endpoint for persistent email storage
       const res = await fetch('/api/waitlist', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ name, email }),
       });
       const data = await res.json();
 
@@ -77,37 +73,29 @@ export const WaitlistModal = ({ isOpen, onOpenChange, title = "Join the Imperial
           description: data.message,
         });
       } else {
-        setStatus('error');
-        setMessage(data.message);
-        trackEvent({ category: 'Form', action: 'Submit Error', label: 'Waitlist Modal' });
-        
-        toast({
-          variant: "destructive",
-          title: "Synchronization Error",
-          description: data.message,
-        });
+        throw new Error(data.message || 'Audit Failure');
       }
-    } catch (err) {
+    } catch (err: any) {
       setStatus('error');
-      const errorMsg = 'Network handshake failed. Try again shortly.';
+      const errorMsg = err.message || 'Network handshake failed. Try again shortly.';
       setMessage(errorMsg);
       trackEvent({ category: 'Form', action: 'Connection Error', label: 'Waitlist Modal' });
       
       toast({
         variant: "destructive",
-        title: "System Exception",
+        title: "Synchronization Alert",
         description: errorMsg,
       });
     }
   };
 
-  // Reset form when modal closes
   const handleOpenChange = (open: boolean) => {
     onOpenChange(open);
     if (!open) {
       setTimeout(() => {
         setStatus('idle');
         setEmail('');
+        setName('');
         setMessage('');
       }, 300);
     }
@@ -115,7 +103,7 @@ export const WaitlistModal = ({ isOpen, onOpenChange, title = "Join the Imperial
 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-      <DialogContent className="max-w-md bg-card border-white/10 p-0 overflow-hidden shadow-2xl">
+      <DialogContent className="max-w-md bg-card border-white/10 p-0 overflow-hidden shadow-3xl">
         {status === 'success' ? (
           <div className="p-12 text-center space-y-6 animate-in zoom-in-95 duration-500">
             <div className="w-20 h-20 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-500 mx-auto mb-2 shadow-[0_0_20px_rgba(16,185,129,0.2)]">
@@ -151,29 +139,47 @@ export const WaitlistModal = ({ isOpen, onOpenChange, title = "Join the Imperial
             </DialogHeader>
             
             <div className="p-8 space-y-6">
-              <div className="space-y-2">
-                <Label htmlFor="modal-email" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">Institutional Email</Label>
-                <Input 
-                  id="modal-email"
-                  type="email"
-                  placeholder="analyst@institution.com" 
-                  value={email}
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                    if (status === 'error') setStatus('idle');
-                  }}
-                  className={cn(
-                    "bg-background/50 border-white/5 h-14 rounded-xl text-lg transition-all",
-                    status === 'error' && "border-destructive focus-visible:ring-destructive"
-                  )}
-                  disabled={status === 'loading'}
-                  required
-                />
-                {status === 'error' && (
-                  <div className="flex items-center gap-2 text-destructive text-[10px] font-bold uppercase tracking-tighter mt-1 px-1">
-                    <AlertCircle className="h-3 w-3" /> {message}
+              <div className="space-y-5">
+                <div className="space-y-2">
+                  <Label htmlFor="modal-name" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">Legal Persona (Optional)</Label>
+                  <div className="relative group">
+                    <User className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                    <Input 
+                      id="modal-name"
+                      type="text"
+                      placeholder="Enter your full name" 
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      className="bg-background/50 border-white/5 h-14 pl-12 rounded-xl text-lg transition-all"
+                      disabled={status === 'loading'}
+                    />
                   </div>
-                )}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="modal-email" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">Institutional Email</Label>
+                  <Input 
+                    id="modal-email"
+                    type="email"
+                    placeholder="analyst@institution.com" 
+                    value={email}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      if (status === 'error') setStatus('idle');
+                    }}
+                    className={cn(
+                      "bg-background/50 border-white/5 h-14 rounded-xl text-lg transition-all",
+                      status === 'error' && "border-destructive focus-visible:ring-destructive"
+                    )}
+                    disabled={status === 'loading'}
+                    required
+                  />
+                  {status === 'error' && (
+                    <div className="flex items-center gap-2 text-destructive text-[10px] font-bold uppercase tracking-tighter mt-1 px-1">
+                      <AlertCircle className="h-3 w-3" /> {message}
+                    </div>
+                  )}
+                </div>
               </div>
 
               <div className="flex items-start gap-4 p-5 rounded-2xl bg-muted/20 border border-white/5">
@@ -188,12 +194,15 @@ export const WaitlistModal = ({ isOpen, onOpenChange, title = "Join the Imperial
               <Button 
                 type="submit" 
                 disabled={status === 'loading'} 
-                className="w-full h-14 rounded-xl font-bold bg-primary hover:bg-primary/90 shadow-xl shadow-primary/20 transition-all scale-[1.02] active:scale-100"
+                className="w-full h-14 rounded-xl font-bold bg-primary hover:bg-primary/90 shadow-xl shadow-primary/20 transition-all scale-[1.02] active:scale-100 group/btn"
               >
                 {status === 'loading' ? (
                   <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Authenticating...</>
                 ) : (
-                  <><Send className="mr-2 h-4 w-4" /> Secure My Spot</>
+                  <>
+                    <Send className="mr-2 h-4 w-4 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" /> 
+                    Secure My Spot
+                  </>
                 )}
               </Button>
             </DialogFooter>
