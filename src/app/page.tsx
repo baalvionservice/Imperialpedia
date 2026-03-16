@@ -1,3 +1,4 @@
+
 import React from 'react';
 import dynamic from 'next/dynamic';
 import { HeroSection } from '@/components/landing/HeroSection';
@@ -23,15 +24,7 @@ import {
   SocialProofSkeleton
 } from '@/components/landing/SectionSkeletons';
 
-// TODO: AI-driven performance analysis and bottleneck detection  
-// TODO: Dynamic loading priority based on user behavior  
-// TODO: Monitor LCP, FID, CLS metrics and optimize
-
-// TODO: AI-driven accessibility checks and suggestions  
-// TODO: Dynamic highlighting of inaccessible elements  
-// TODO: Analytics tracking for focus and navigation patterns
-
-// Dynamic imports for performance optimization with explicit export picking
+// Dynamic imports for performance optimization
 const FeaturesSection = dynamic(() => import('@/components/landing/FeaturesSection').then(mod => mod.FeaturesSection), {
   loading: () => <FeaturesSectionSkeleton />,
   ssr: true,
@@ -47,7 +40,7 @@ const PricingSection = dynamic(() => import('@/components/landing/PricingSection
   ssr: true,
 });
 
-const FaqSection = dynamic(() => import('@/components/common/FaqSection').then(mod => mod.default), {
+const FaqSection = dynamic(() => import('@/components/faq/FAQSection').then(mod => mod.default), {
   loading: () => <FAQSectionSkeleton />,
   ssr: true,
 });
@@ -61,7 +54,7 @@ const ScrollPopupCTA = dynamic(() => import('@/components/landing/ScrollPopupCTA
   ssr: true,
 });
 
-const DynamicNewsletter = dynamic(() => import('@/components/common/Newsletter').then(mod => mod.default), {
+const Newsletter = dynamic(() => import('@/components/common/Newsletter').then(mod => mod.default), {
   ssr: true,
 });
 
@@ -189,7 +182,7 @@ export default function Home() {
         </div>
       </section>
 
-      <FaqSection faqs={faqs} />
+      <FaqSection />
 
       {/* Strategic Newsletter Node */}
       <section className="py-24 bg-background relative overflow-hidden" aria-labelledby="newsletter-heading">
@@ -204,7 +197,7 @@ export default function Home() {
               Receive weekly institutional audits, real-time market sentiment pulses, and exclusive pSEO taxonomy alerts delivered to your node.
             </Text>
             <div className="pt-4">
-              <DynamicNewsletter />
+              <Newsletter />
             </div>
           </div>
         </div>
