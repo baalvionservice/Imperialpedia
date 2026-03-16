@@ -11,6 +11,7 @@ import { Article } from '@/modules/content-engine/types';
 import { JsonLd } from '@/modules/seo-engine/components/JsonLd';
 import { schemaService } from '@/modules/seo/services/schema-service';
 import { canonicalService } from '@/modules/seo/services/canonical-service';
+import { CommentIntelligenceHub } from '@/modules/content-engine/components/CommentIntelligence/CommentIntelligenceHub';
 
 interface ArticleRouteProps {
   params: Promise<{ slug: string }>;
@@ -56,6 +57,7 @@ export async function generateStaticParams() {
 
 /**
  * Dynamic Article Route Page Component.
+ * Optimized with Advanced Comment Intelligence.
  */
 export default async function Page({ params }: ArticleRouteProps) {
   const { slug } = await params;
@@ -75,7 +77,15 @@ export default async function Page({ params }: ArticleRouteProps) {
       <JsonLd data={articleSchema} />
       <Container className="py-8">
         <Breadcrumbs breadcrumb={breadcrumbs} />
-        <ArticlePage slug={slug} />
+        
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          <div className="lg:col-span-12">
+            <ArticlePage slug={slug} />
+            
+            {/* Advanced Comment Intelligence System */}
+            <CommentIntelligenceHub articleId={article.id} />
+          </div>
+        </div>
       </Container>
     </div>
   );

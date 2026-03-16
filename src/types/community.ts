@@ -24,6 +24,35 @@ export interface Comment {
   isFlagged?: boolean;
 }
 
+/**
+ * Prompt 67: Comment Intelligence Types
+ */
+export type CommentLabel = 'Top Insight' | 'Most Helpful' | 'Expert Opinion' | 'Community Favorite';
+
+export interface IntelligenceCommentNode extends Comment {
+  label?: CommentLabel;
+  isEditorPick?: boolean;
+  isCommunityFavorite?: boolean;
+  replies?: IntelligenceCommentNode[];
+}
+
+export interface CommentAnalytics {
+  total_comments: number;
+  top_commenter: string;
+  top_liked_comment: number;
+  avg_engagement: string;
+  sentiment_bias: 'Bullish' | 'Bearish' | 'Neutral';
+}
+
+export interface CommentIntelligenceData {
+  comments: IntelligenceCommentNode[];
+  analytics: CommentAnalytics;
+  highlights: {
+    editors_pick: IntelligenceCommentNode[];
+    top_community: IntelligenceCommentNode[];
+  };
+}
+
 export interface PollOption {
   option: string;
   votes: number;

@@ -19,3 +19,4 @@ export * from './CommentCard';
 export * from './PollCard';
 export * from './TrendingDiscussions';
 export * from './CommunitySection';
+export * from './CommentIntelligence/CommentIntelligenceHub';
