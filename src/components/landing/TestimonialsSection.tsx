@@ -11,43 +11,52 @@ import {
   CarouselPrevious 
 } from '@/components/ui/carousel';
 import { TestimonialCard } from '@/components/common/TestimonialCard';
-import { Quote, Star, ShieldCheck, Globe, Building } from 'lucide-react';
+import { Quote, Globe, ShieldCheck, Building } from 'lucide-react';
+
+/**
+ * @fileOverview Landing Page Testimonials Section.
+ * Showcases expert feedback via an interactive, responsive carousel.
+ *
+ * TODO: AI-powered testimonial suggestions based on user engagement (Phase 2)
+ * TODO: Dynamic carousel content for each visitor segment (Phase 2)
+ * TODO: Analytics tracking for testimonial interactions (Phase 2)
+ */
 
 const testimonials = [
   {
     name: "Marcus Thorne",
-    role: "Senior Economist",
+    designation: "Senior Economist",
     company: "Thorne Global",
     quote: "The structured data nodes are a game changer for our macro research. Imperialpedia provides the clarity needed for complex fiscal audits.",
-    avatar: "https://picsum.photos/seed/marcus/100/100",
+    image: "https://picsum.photos/seed/marcus/100/100",
   },
   {
     name: "Dr. Sarah Jenkins",
-    role: "Lead Researcher",
+    designation: "Lead Researcher",
     company: "University of Finance",
     quote: "Imperialpedia is the first platform that actually handles institutional-scale intelligence. The pSEO engine is remarkably accurate.",
-    avatar: "https://picsum.photos/seed/sarah/100/100",
+    image: "https://picsum.photos/seed/sarah/100/100",
   },
   {
     name: "James Wilson",
-    role: "Portfolio Strategist",
+    designation: "Portfolio Strategist",
     company: "Alpha Peak Assets",
     quote: "The AI analyst suite has drastically reduced our discovery time for technical benchmarks. It's an indispensable part of our daily workflow.",
-    avatar: "https://picsum.photos/seed/james/100/100",
+    image: "https://picsum.photos/seed/james/100/100",
   },
   {
     name: "Elena Rodriguez",
-    role: "Venture Partner",
+    designation: "Venture Partner",
     company: "Nexus Capital",
     quote: "The depth of the industry taxonomy allows us to perform competitive analysis across technical clusters with zero friction.",
-    avatar: "https://picsum.photos/seed/elena/100/100",
+    image: "https://picsum.photos/seed/elena/100/100",
   },
   {
     name: "Thomas Chen",
-    role: "Data Scientist",
+    designation: "Data Scientist",
     company: "Quant Logic",
     quote: "Having access to 1M+ structured nodes via API has transformed how we train our proprietary financial models.",
-    avatar: "https://picsum.photos/seed/thomas/100/100",
+    image: "https://picsum.photos/seed/thomas/100/100",
   }
 ];
 
@@ -58,17 +67,13 @@ const partners = [
   { name: "Institutional Wires", icon: Quote },
 ];
 
-/**
- * Landing Page Testimonials Section.
- * Showcases expert feedback via an interactive, responsive carousel.
- */
 export const TestimonialsSection = () => {
   return (
     <section className="py-24 bg-background overflow-hidden">
       <Container>
-        <div className="max-w-3xl mb-16 px-2">
+        <div className="max-w-3xl mb-16 px-2 space-y-4 animate-in fade-in slide-in-from-left-4 duration-700">
           <Text variant="label" className="text-secondary mb-4 uppercase tracking-widest">Early User Handshake</Text>
-          <Text variant="h2" className="text-3xl lg:text-5xl font-bold tracking-tight mb-6">Voice of the Network</Text>
+          <Text variant="h2" className="text-3xl lg:text-5xl font-bold tracking-tight">Voice of the Network</Text>
           <Text variant="body" className="text-muted-foreground text-lg leading-relaxed">
             Imperialpedia is built for the global intelligence community. Here is what our pilot testers and institutional researchers are experiencing.
           </Text>
@@ -85,7 +90,7 @@ export const TestimonialsSection = () => {
             <CarouselContent className="-ml-4 md:-ml-6">
               {testimonials.map((t, idx) => (
                 <CarouselItem key={idx} className="pl-4 md:pl-6 md:basis-1/2 lg:basis-1/3">
-                  <div className="h-full py-4">
+                  <div className="h-full py-4 animate-in fade-in slide-in-from-bottom-4 duration-700" style={{ animationDelay: `${idx * 100}ms` }}>
                     <TestimonialCard {...t} />
                   </div>
                 </CarouselItem>
@@ -96,11 +101,7 @@ export const TestimonialsSection = () => {
           </Carousel>
         </div>
 
-        {/* TODO: AI-powered testimonial suggestions based on user engagement */}
-        {/* TODO: Multi-language translation for quotes */}
-        {/* TODO: Dynamic ordering based on credibility scores */}
-
-        {/* Logo Bar */}
+        {/* Logo Bar - Institutional Trust */}
         <div className="mt-24 pt-12 border-t border-white/5">
           <Text variant="label" className="text-center text-muted-foreground/50 mb-10 uppercase tracking-[0.3em] text-[10px]">
             Trusted by Global Institutions
