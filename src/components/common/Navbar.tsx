@@ -34,7 +34,6 @@ export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState('home');
   const pathname = usePathname();
   const { t } = useTranslation('common');
 
@@ -46,7 +45,6 @@ export const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Keyboard shortcut for search handshake
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
@@ -106,19 +104,22 @@ export const Navbar = () => {
                     onClick={() => handleNavClick(link.label)}
                     className={cn(
                       "text-xs font-bold uppercase tracking-widest transition-all relative group/link outline-none rounded-sm focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4",
-                      activeSection === link.id && pathname === '/' ? "text-primary" : "text-muted-foreground hover:text-primary"
+                      pathname === link.href ? "text-primary" : "text-muted-foreground hover:text-primary"
                     )}
                   >
                     {link.label}
                     <span className={cn(
                       "absolute -bottom-1 left-0 h-0.5 bg-primary transition-all duration-300",
-                      activeSection === link.id && pathname === '/' ? "w-full" : "w-0 group-hover/link:w-full"
+                      pathname === link.href ? "w-full" : "w-0 group-hover/link:w-full"
                     )} />
                   </Link>
                 ))}
 
                 <DropdownMenu>
-                  <DropdownMenuTrigger className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-muted-foreground hover:text-primary transition-all outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-sm group">
+                  <DropdownMenuTrigger 
+                    aria-label="Toggle discovery hubs"
+                    className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-muted-foreground hover:text-primary transition-all outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-sm group"
+                  >
                     {t('nav.discovery')} <ChevronDown className="h-3 w-3 group-data-[state=open]:rotate-180 transition-transform" />
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="start" className="w-56 glass-card border-white/10 p-2">
@@ -143,9 +144,9 @@ export const Navbar = () => {
                 <button 
                   onClick={() => setIsSearchOpen(true)}
                   className="w-full relative group outline-none"
-                  aria-label="Open search index"
+                  aria-label="Open global search index"
                 >
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
                   <div className="w-full h-10 pl-10 pr-12 rounded-xl bg-background/40 border border-white/5 text-sm text-muted-foreground flex items-center text-left hover:border-primary/20 transition-all">
                     Search Imperialpedia...
                   </div>
@@ -164,8 +165,10 @@ export const Navbar = () => {
               </div>
               <Button 
                 onClick={() => setIsOpen(!isOpen)}
+                variant="ghost"
+                size="icon"
                 className="lg:hidden p-2 rounded-xl bg-card/30 border border-white/5 text-muted-foreground hover:text-primary transition-all focus-visible:ring-2 focus-visible:ring-primary outline-none"
-                aria-label={isOpen ? "Close menu" : "Open menu"}
+                aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
               >
                 {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
               </Button>
@@ -174,7 +177,6 @@ export const Navbar = () => {
         </Container>
       </nav>
 
-      {/* Global Search Interface */}
       <SearchModal open={isSearchOpen} onOpenChange={setIsSearchOpen} />
     </>
   );

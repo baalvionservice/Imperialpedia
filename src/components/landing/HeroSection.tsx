@@ -59,7 +59,7 @@ export const HeroSection = () => {
               <Text 
                 variant="display" 
                 as="h1"
-                className="text-4xl sm:text-5xl lg:text-8xl font-bold tracking-tight leading-[1.1]"
+                className="text-4xl sm:text-5xl lg:text-8xl font-bold tracking-tight leading-[1.1] text-balance"
               >
                 {t('hero.title')}
               </Text>
@@ -72,7 +72,7 @@ export const HeroSection = () => {
             >
               <Text 
                 variant="body" 
-                className="text-muted-foreground text-lg sm:text-xl lg:text-2xl max-w-2xl mx-auto leading-relaxed"
+                className="text-muted-foreground text-lg sm:text-xl lg:text-2xl max-w-2xl mx-auto leading-relaxed text-balance"
               >
                 {t('hero.subtitle')}
               </Text>
@@ -89,7 +89,8 @@ export const HeroSection = () => {
               <Button 
                 size="lg" 
                 onClick={() => handleCtaClick('Primary')}
-                className="h-16 px-10 rounded-2xl font-bold text-lg bg-primary hover:bg-primary/90 shadow-2xl shadow-primary/30 transition-all scale-105 active:scale-95 group focus-visible:ring-offset-2 focus-visible:ring-primary focus-visible:ring-2"
+                aria-label={t('hero.cta')}
+                className="h-16 px-10 rounded-2xl font-bold text-lg bg-primary text-primary-foreground hover:bg-primary/90 shadow-2xl shadow-primary/30 transition-all scale-105 active:scale-95 group focus-visible:ring-offset-2 focus-visible:ring-primary focus-visible:ring-2"
               >
                 {t('hero.cta')} <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" aria-hidden="true" />
               </Button>
@@ -97,6 +98,7 @@ export const HeroSection = () => {
                 size="lg" 
                 variant="outline" 
                 onClick={() => handleCtaClick('Secondary')}
+                aria-label={t('hero.secondary_cta')}
                 className="h-16 px-10 rounded-2xl font-bold text-lg border-white/10 bg-card/30 hover:bg-white/5 transition-all focus-visible:ring-offset-2 focus-visible:ring-primary focus-visible:ring-2"
               >
                 {t('hero.secondary_cta')}
@@ -125,6 +127,7 @@ export const HeroSection = () => {
                 fill
                 className="object-cover"
                 priority={true}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
               />
             </div>
           </motion.div>
@@ -137,7 +140,7 @@ export const HeroSection = () => {
               { icon: Activity, label: "Search Index", value: "1.2M+" }
             ].map((stat, i) => (
               <div key={i} className="flex flex-col items-center gap-1 group">
-                <stat.icon className="h-5 w-5 mb-2 text-primary group-hover:scale-110 transition-transform" />
+                <stat.icon className="h-5 w-5 mb-2 text-primary group-hover:scale-110 transition-transform" aria-hidden="true" />
                 <span className="text-xl font-bold text-foreground">{stat.value}</span>
                 <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{stat.label}</span>
               </div>

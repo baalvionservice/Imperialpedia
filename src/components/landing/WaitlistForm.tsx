@@ -12,11 +12,6 @@ import { cn } from '@/lib/utils';
 import { logEvent } from '@/lib/utils/analytics';
 import { useTranslation } from 'react-i18next';
 
-/**
- * Institutional Waitlist & Lead Capture Form.
- * Orchestrates user identity ingestion with robust validation and state management.
- * Features Framer Motion entry and success states.
- */
 export const WaitlistForm = () => {
   const { t } = useTranslation('common');
   const [email, setEmail] = useState('');
@@ -25,6 +20,8 @@ export const WaitlistForm = () => {
   const [message, setMessage] = useState('');
   const { addToast } = useToast();
   
+  const nameId = useId();
+  const emailId = useId();
   const errorId = useId();
   const successId = useId();
 
@@ -110,13 +107,13 @@ export const WaitlistForm = () => {
       >
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-2 text-left">
-            <Label htmlFor="inline-name" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">
+            <Label htmlFor={nameId} className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">
               Legal Persona (Optional)
             </Label>
             <div className="relative group">
               <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" aria-hidden="true" />
               <Input
-                id="inline-name"
+                id={nameId}
                 type="text"
                 placeholder="Full Name"
                 value={name}
@@ -128,12 +125,12 @@ export const WaitlistForm = () => {
           </div>
 
           <div className="space-y-2 text-left">
-            <Label htmlFor="inline-email" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">
+            <Label htmlFor={emailId} className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">
               Intelligence Node (Email)
             </Label>
             <div className="relative group">
               <Input
-                id="inline-email"
+                id={emailId}
                 type="email"
                 placeholder={t('waitlist.input_placeholder')}
                 value={email}
@@ -157,7 +154,8 @@ export const WaitlistForm = () => {
         <Button 
           type="submit" 
           disabled={status === 'loading'}
-          className="w-full h-14 rounded-xl font-bold bg-primary hover:bg-primary/90 shadow-xl shadow-primary/20 transition-all scale-100 active:scale-[0.98] group/btn"
+          aria-label={t('waitlist.submit_button')}
+          className="w-full h-14 rounded-xl font-bold bg-primary text-primary-foreground hover:bg-primary/90 shadow-xl shadow-primary/20 transition-all scale-100 active:scale-[0.98] group/btn"
         >
           {status === 'loading' ? (
             <Loader2 className="h-5 w-5 animate-spin mr-2" aria-hidden="true" />
@@ -169,7 +167,7 @@ export const WaitlistForm = () => {
         
         <div aria-live="polite">
           {status === 'error' && (
-            <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive text-xs font-bold animate-in fade-in slide-in-from-top-1">
+            <div id={errorId} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive text-xs font-bold animate-in fade-in slide-in-from-top-1">
               <AlertCircle className="h-3 w-3" aria-hidden="true" /> {message}
             </div>
           )}
@@ -181,12 +179,6 @@ export const WaitlistForm = () => {
           </Text>
         </div>
       </form>
-
-      {/* 
-        TODO: AI-driven lead qualification score (Phase 2)
-        TODO: Predictive analytics for conversion probability
-        TODO: Multi-language form translations
-      */}
     </div>
   );
 };
