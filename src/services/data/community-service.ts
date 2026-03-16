@@ -1,5 +1,5 @@
 import * as mockApi from '@/services/mock-api/community';
-import { ApiResponse, CommunityData, CommunityRankingsData, AssetSentiment, UserSentimentVote, DiscussionNode, ReputationSystemData } from '@/types';
+import { ApiResponse, CommunityData, CommunityRankingsData, AssetSentiment, UserSentimentVote, DiscussionNode, ReputationSystemData, DebateNode, DebateLeaderboardEntry } from '@/types';
 import { errorHandler } from '@/lib/errors/error-handler';
 
 /**
@@ -83,6 +83,24 @@ export const communityService = {
         status: appError.statusCode,
         error: appError.message,
       };
+    }
+  },
+
+  async getDebates(): Promise<ApiResponse<DebateNode[]>> {
+    try {
+      return await mockApi.getDebates();
+    } catch (error) {
+      const appError = errorHandler.handleError(error);
+      return { data: [], status: appError.statusCode, error: appError.message };
+    }
+  },
+
+  async getDebateLeaderboard(): Promise<ApiResponse<DebateLeaderboardEntry[]>> {
+    try {
+      return await mockApi.getDebateLeaderboard();
+    } catch (error) {
+      const appError = errorHandler.handleError(error);
+      return { data: [], status: appError.statusCode, error: appError.message };
     }
   }
 };
