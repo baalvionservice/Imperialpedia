@@ -158,33 +158,27 @@ export const ArticleEditor = () => {
               <CardTitle>Classification</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
-              <FormField
-                control={form.control}
-                name="category"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Financial Category</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select a category" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="Economics">Economics</SelectItem>
-                        <SelectItem value="Investing">Investing</SelectItem>
-                        <SelectItem value="Markets">Markets</SelectItem>
-                        <SelectItem value="Personal Finance">Personal Finance</SelectItem>
-                        <SelectItem value="Crypto">Crypto & Web3</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Financial Category</label>
+                <Select
+                  defaultValue={form.getValues("category")}
+                  onValueChange={(value) => form.setValue("category", value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Economics">Economics</SelectItem>
+                    <SelectItem value="Investing">Investing</SelectItem>
+                    <SelectItem value="Markets">Markets</SelectItem>
+                    <SelectItem value="Personal Finance">Personal Finance</SelectItem>
+                    <SelectItem value="Crypto">Crypto & Web3</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
 
               <div className="space-y-3">
-                <FormLabel>Intelligence Tags</FormLabel>
+                <label className="text-sm font-medium">Intelligence Tags</label>
                 <div className="flex gap-2">
                   <Input 
                     placeholder="Add tag..." 

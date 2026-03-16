@@ -1,7 +1,13 @@
 import React from "react";
 import { notFound } from "next/navigation";
+import { Zap } from "lucide-react";
+
+// Prevent prerendering for this page due to complex client components
+export const dynamic = "force-dynamic";
+
 import { ArticlePage } from "@/modules/content-engine/components";
 import { Container } from "@/design-system/layout/container";
+import { Text } from "@/design-system/typography/text";
 import { articlesService } from "@/services/data";
 import { buildMetadata } from "@/lib/seo";
 import { Metadata } from "next";
@@ -113,6 +119,3 @@ export default async function Page({ params }: ArticleRouteProps) {
     </div>
   );
 }
-
-import { Zap } from "lucide-react";
-import { Text } from "@/design-system/typography/text";

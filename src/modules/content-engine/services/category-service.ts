@@ -1,5 +1,3 @@
-"use client";
-
 import { Category } from "../types/category";
 import { Article } from "../types/article";
 import { MOCK_CATEGORIES } from "../models/category";
