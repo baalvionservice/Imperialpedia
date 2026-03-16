@@ -134,6 +134,10 @@ export default function Home() {
         }))
       }} />
 
+      {/* TODO: AI-driven meta title and description suggestions */}
+      {/* TODO: Dynamic structured data for new categories and pages */}
+      {/* TODO: Analytics tracking for SEO performance */}
+
       {/* Above the fold - Priority Loading */}
       <HeroSection />
 

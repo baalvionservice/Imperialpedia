@@ -4,22 +4,21 @@ import { buildMetadata } from '@/lib/seo/metadata-builder';
 /**
  * @fileOverview Specialized SEO utility for the Imperialpedia landing page.
  * Orchestrates the primary search engine and social signals for the platform root.
- * Aligned with Prompt 70 requirements for institutional metadata.
+ * Aligned with Prompt 81 requirements for institutional metadata.
  */
 
 export function generateLandingMetadata(): Metadata {
   return buildMetadata({
-    title: "The World’s AI Knowledge Engine | Imperialpedia",
-    description: "Research anything instantly with structured global data using Imperialpedia, the AI knowledge engine.",
+    title: "Imperialpedia — The World's AI Knowledge Engine",
+    description: "Research anything instantly with structured global data. AI-powered knowledge engine for investors, startups, journalists, and researchers.",
     keywords: [
-      "AI", 
-      "Knowledge Engine", 
-      "Research", 
-      "Data", 
-      "Imperialpedia", 
-      "Companies", 
-      "Countries", 
-      "Technologies"
+      "AI knowledge engine", 
+      "structured data", 
+      "global research", 
+      "investors", 
+      "startups", 
+      "journalists", 
+      "datasets"
     ],
     ogImage: "/og-image.png",
     ogType: "website",
@@ -27,6 +26,6 @@ export function generateLandingMetadata(): Metadata {
   });
 }
 
-// TODO: AI-driven meta tag recommendations based on trending keywords
-// TODO: Dynamic OG images per page or content type
-// // TODO: Automated SEO report generation for admin
+// TODO: AI-driven meta title and description suggestions
+// TODO: Dynamic structured data for new categories and pages
+// TODO: Analytics tracking for SEO performance
