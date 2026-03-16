@@ -8,6 +8,7 @@ import { routes } from '@/config/routes';
 import { Text } from '@/design-system/typography/text';
 
 const navLinks = [
+  { label: 'News', href: routes.public.news },
   { label: 'Market Data', href: routes.public.market },
   { label: 'Community', href: routes.public.community },
   { label: 'AI Tools', href: routes.public.aiTools },

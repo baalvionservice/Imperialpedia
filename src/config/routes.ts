@@ -8,6 +8,7 @@ import { RouteConfig } from "@/types";
 export const routes = {
   public: {
     home: "/",
+    news: "/news",
     topics: "/topics",
     articles: "/articles",
     glossary: "/glossary",
