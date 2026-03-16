@@ -4,6 +4,7 @@ import { HeroSection } from '@/components/landing/HeroSection';
 import FooterSection from '@/components/common/FooterSection';
 import { StickyCTA } from '@/components/landing/StickyCTA';
 import { CtaSection } from '@/components/landing/CtaSection';
+import SocialProofSection from '@/components/common/SocialProofSection';
 import { Text } from '@/design-system/typography/text';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -82,6 +83,8 @@ export default function Home() {
 
       <HeroSection />
 
+      <SocialProofSection />
+
       <FeaturesSection />
 
       <TestimonialsSection />
@@ -119,7 +122,7 @@ export default function Home() {
                 <CardContent>
                   <Button variant="link" className="p-0 h-auto text-primary font-bold group/link" asChild>
                     <Link href={module.href}>
-                      Explore Module <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover/link:translate-x-1" />
+                      Explore Module <ArrowRight className="ml-1 h-4 w-4 transition-all group-hover/link:translate-x-1" />
                     </Link>
                   </Button>
                 </CardContent>
