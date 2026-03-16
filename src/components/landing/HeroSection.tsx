@@ -1,22 +1,20 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Container } from '@/design-system/layout/container';
 import { Text } from '@/design-system/typography/text';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Sparkles, Zap, ArrowRight, ShieldCheck, Globe } from 'lucide-react';
+import { Sparkles, Zap, ArrowRight, ShieldCheck, Globe, Activity } from 'lucide-react';
 import { WaitlistForm } from './WaitlistForm';
+import { WaitlistModal } from './WaitlistModal';
 
 /**
  * Landing page hero section.
  * Professional, high-fidelity entry point for Imperialpedia.
  */
 export const HeroSection = () => {
-  const scrollToWaitlist = () => {
-    const el = document.getElementById('waitlist');
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-  };
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <section className="relative pt-20 pb-32 lg:pt-32 lg:pb-48 overflow-hidden">
@@ -52,10 +50,10 @@ export const HeroSection = () => {
 
           {/* CTA Area */}
           <div className="flex flex-col items-center gap-8 pt-4">
-            <div className="flex flex-col sm:flex-row items-center gap-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full">
               <Button 
                 size="lg" 
-                onClick={scrollToWaitlist}
+                onClick={() => setIsModalOpen(true)}
                 className="h-16 px-10 rounded-2xl font-bold text-lg bg-primary hover:bg-primary/90 shadow-2xl shadow-primary/30 transition-all scale-105 active:scale-95 group"
               >
                 Join the Waitlist <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
@@ -63,14 +61,17 @@ export const HeroSection = () => {
               <Button 
                 size="lg" 
                 variant="outline" 
+                onClick={() => setIsModalOpen(true)}
                 className="h-16 px-10 rounded-2xl font-bold text-lg border-white/10 bg-card/30 hover:bg-white/5 transition-all"
               >
-                Explore Pro Tier
+                Early Access
               </Button>
             </div>
 
-            {/* Email Form */}
-            <WaitlistForm />
+            {/* Email Form (Inline Fallback) */}
+            <div id="waitlist" className="w-full">
+              <WaitlistForm />
+            </div>
           </div>
 
           {/* Social Proof / Metrics */}
@@ -90,8 +91,9 @@ export const HeroSection = () => {
           </div>
         </div>
       </Container>
+
+      {/* Waitlist & Early Access Modal */}
+      <WaitlistModal isOpen={isModalOpen} onOpenChange={setIsModalOpen} />
     </section>
   );
 };
-
-import { Activity } from 'lucide-react';

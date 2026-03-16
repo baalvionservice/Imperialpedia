@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Text } from '@/design-system/typography/text';
-import { Loader2, CheckCircle2, AlertCircle, ArrowRight } from 'lucide-react';
+import { Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
 
 /**
  * Waitlist email collection form.
@@ -15,11 +15,20 @@ export const WaitlistForm = () => {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
 
+  const validateEmail = (email: string) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !email.includes('@')) {
+    if (!email) {
       setStatus('error');
-      setMessage('Please enter a valid email identity.');
+      setMessage('Please enter your email.');
+      return;
+    }
+    if (!validateEmail(email)) {
+      setStatus('error');
+      setMessage('Invalid email node detected.');
       return;
     }
 
@@ -48,7 +57,7 @@ export const WaitlistForm = () => {
   if (status === 'success') {
     return (
       <div className="p-8 rounded-[2rem] bg-emerald-500/10 border border-emerald-500/20 text-center space-y-4 animate-in zoom-in-95 duration-500">
-        <div className="w-16 h-16 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
+        <div className="w-16 h-16 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-2 shadow-inner">
           <CheckCircle2 className="h-8 w-8 text-emerald-500" />
         </div>
         <Text variant="h4" className="font-bold text-foreground">Identity Secured</Text>
@@ -65,7 +74,10 @@ export const WaitlistForm = () => {
             type="email"
             placeholder="Enter institutional email..."
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              if (status === 'error') setStatus('idle');
+            }}
             disabled={status === 'loading'}
             className="h-14 pl-6 pr-32 bg-card/50 border-white/10 rounded-2xl focus:ring-primary/20 transition-all text-base"
           />
