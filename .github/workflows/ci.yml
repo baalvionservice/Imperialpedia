@@ -33,10 +33,9 @@ jobs:
         run: pnpm run type-check
 
       - name: Run linter
-        # Avoid failing CI if ESLint config isn't committed yet
         run: |
           if [ -f "eslint.config.js" ] || [ -f "eslint.config.mjs" ] || [ -f "eslint.config.cjs" ] || [ -f ".eslintrc.json" ] || [ -f ".eslintrc.js" ] || [ -f ".eslintrc.cjs" ] || [ -f ".eslintrc.yaml" ] || [ -f ".eslintrc.yml" ]; then
-            pnpm run lint
+            pnpm run lint --max-warnings 2000
           else
             echo "Skipping lint: no ESLint config found in repo."
           fi

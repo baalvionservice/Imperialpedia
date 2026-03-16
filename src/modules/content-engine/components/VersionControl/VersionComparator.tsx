@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { ArticleVersion } from '@/types/version-control';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Text } from '@/design-system/typography/text';
-import { Badge } from '@/components/ui/badge';
-import { ArrowLeftRight, GitCompare, Minus, Plus } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import React from "react";
+import { ArticleVersion } from "@/types/version-control";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Text } from "@/design-system/typography/text";
+import { Badge } from "@/components/ui/badge";
+import { ArrowLeftRight, GitCompare, Minus, Plus } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface VersionComparatorProps {
   versionA: ArticleVersion;
@@ -16,32 +16,48 @@ interface VersionComparatorProps {
 /**
  * Split-screen comparison tool for visualizing content diffs.
  */
-export function VersionComparator({ versionA, versionB }: VersionComparatorProps) {
+export function VersionComparator({
+  versionA,
+  versionB,
+}: VersionComparatorProps) {
   // Simplified mock diff logic: identifies specific words that might change in our mocks
   const renderDiff = (text: string, isNew: boolean) => {
     // This is a simplified visual mock of a diff
-    const highlights = ["high-fidelity", "critical", "(where short term rates exceed long term)", "but an inversion", "often signals an upcoming recession", "For example, the 2023 inversion was a major focal point for macro analysts."];
-    
-    const parts = text.split(/(\.|\,)/);
-    
+    const highlights = [
+      "high-fidelity",
+      "critical",
+      "(where short term rates exceed long term)",
+      "but an inversion",
+      "often signals an upcoming recession",
+      "For example, the 2023 inversion was a major focal point for macro analysts.",
+    ];
+
+    const parts = text.split(/([.,])/);
+
     return (
       <div className="space-y-4 leading-relaxed text-sm">
         {parts.map((part, i) => {
-          const isHighlighted = highlights.some(h => part.includes(h));
+          const isHighlighted = highlights.some((h) => part.includes(h));
           if (isHighlighted) {
             return (
-              <span 
-                key={i} 
+              <span
+                key={i}
                 className={cn(
                   "px-1 rounded-sm font-medium",
-                  isNew ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30" : "bg-destructive/20 text-destructive border border-destructive/30 line-through"
+                  isNew
+                    ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
+                    : "bg-destructive/20 text-destructive border border-destructive/30 line-through"
                 )}
               >
                 {part}
               </span>
             );
           }
-          return <span key={i} className="text-muted-foreground">{part}</span>;
+          return (
+            <span key={i} className="text-muted-foreground">
+              {part}
+            </span>
+          );
         })}
       </div>
     );
@@ -54,9 +70,16 @@ export function VersionComparator({ versionA, versionB }: VersionComparatorProps
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-2">
               <Minus className="h-4 w-4 text-destructive" />
-              <CardTitle className="text-sm font-bold uppercase tracking-widest opacity-60">Version {versionA.version} (Legacy)</CardTitle>
+              <CardTitle className="text-sm font-bold uppercase tracking-widest opacity-60">
+                Version {versionA.version} (Legacy)
+              </CardTitle>
             </div>
-            <Badge variant="outline" className="text-[8px] font-bold border-white/10 uppercase">{versionA.status}</Badge>
+            <Badge
+              variant="outline"
+              className="text-[8px] font-bold border-white/10 uppercase"
+            >
+              {versionA.status}
+            </Badge>
           </div>
         </CardHeader>
         <CardContent className="p-8 h-[400px] overflow-y-auto custom-scrollbar">
@@ -69,9 +92,13 @@ export function VersionComparator({ versionA, versionB }: VersionComparatorProps
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-2">
               <Plus className="h-4 w-4 text-emerald-500" />
-              <CardTitle className="text-sm font-bold uppercase tracking-widest text-primary">Version {versionB.version} (Challenger)</CardTitle>
+              <CardTitle className="text-sm font-bold uppercase tracking-widest text-primary">
+                Version {versionB.version} (Challenger)
+              </CardTitle>
             </div>
-            <Badge className="bg-primary text-white border-none text-[8px] font-bold uppercase">{versionB.status}</Badge>
+            <Badge className="bg-primary text-white border-none text-[8px] font-bold uppercase">
+              {versionB.status}
+            </Badge>
           </div>
         </CardHeader>
         <CardContent className="p-8 h-[400px] overflow-y-auto custom-scrollbar">
