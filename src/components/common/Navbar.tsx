@@ -29,6 +29,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { WaitlistModal } from '@/components/landing/WaitlistModal';
 import { LanguageSelector } from '@/components/i18n/LanguageSelector';
+import { ThemeToggle } from '@/components/common/ThemeToggle';
 import { cn } from '@/lib/utils';
 import { useTranslation } from 'react-i18next';
 import { logEvent } from '@/lib/utils/analytics';
@@ -199,7 +200,8 @@ export const Navbar = () => {
 
             {/* Action Matrix */}
             <div className="flex items-center gap-4 shrink-0">
-              <div className="hidden sm:block">
+              <div className="hidden sm:flex items-center gap-3">
+                <ThemeToggle />
                 <LanguageSelector />
               </div>
               <Button 
@@ -264,7 +266,8 @@ export const Navbar = () => {
               ))}
             </div>
 
-            <div className="flex justify-center border-t border-white/5 pt-6">
+            <div className="flex justify-center items-center gap-6 border-t border-white/5 pt-6">
+              <ThemeToggle />
               <LanguageSelector />
             </div>
 

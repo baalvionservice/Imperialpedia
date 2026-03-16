@@ -15,12 +15,17 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
+/**
+ * Global Theme Provider for the Imperialpedia Index.
+ * Orchestrates visual modes and persistence across the identity cluster.
+ */
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [themeMode, setThemeMode] = useState<ThemeMode>('light');
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem('theme-mode') as ThemeMode;
+    // Audit for existing theme node in local storage
+    const savedTheme = localStorage.getItem('imperialpedia_theme_mode') as ThemeMode;
     if (savedTheme) {
       setThemeMode(savedTheme);
     }
@@ -29,7 +34,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (mounted) {
-      localStorage.setItem('theme-mode', themeMode);
+      localStorage.setItem('imperialpedia_theme_mode', themeMode);
       const root = window.document.documentElement;
       root.classList.remove('light', 'dark');
       
@@ -38,6 +43,10 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         : themeMode;
         
       root.classList.add(effectiveTheme);
+
+      // TODO: AI-driven theme personalization based on time of day or user behavior
+      // TODO: Analytics tracking for theme changes
+      // TODO: Dynamic dark/light assets (images, icons) for optimal contrast
     }
   }, [themeMode, mounted]);
 
