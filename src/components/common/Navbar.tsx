@@ -15,7 +15,9 @@ import {
   Globe, 
   Building, 
   Factory, 
-  Cpu
+  Cpu,
+  LayoutDashboard,
+  ShieldCheck
 } from 'lucide-react';
 import { 
   DropdownMenu, 
@@ -29,13 +31,19 @@ import { SearchModal } from '@/components/search/SearchModal';
 import { cn } from '@/lib/utils';
 import { useTranslation } from 'react-i18next';
 import { logEvent } from '@/lib/utils/analytics';
+import { useAppStore } from '@/lib/state/app-store';
 
+/**
+ * Global Platform Navigation.
+ * Orchestrates discovery hub access, search triggers, and administrative handshakes.
+ */
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const pathname = usePathname();
   const { t } = useTranslation('common');
+  const { currentUser } = useAppStore();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -74,6 +82,8 @@ export const Navbar = () => {
     logEvent("Navigation Click", "Discovery", label);
     setIsOpen(false);
   };
+
+  const isAdmin = currentUser?.role === 'admin';
 
   return (
     <>
@@ -160,6 +170,13 @@ export const Navbar = () => {
 
             <div className="flex items-center gap-4 shrink-0">
               <div className="hidden sm:flex items-center gap-3">
+                {isAdmin && (
+                  <Button variant="outline" size="sm" className="h-9 gap-2 rounded-xl border-primary/30 text-primary hover:bg-primary/5 font-bold text-[10px] uppercase tracking-widest hidden xl:flex" asChild>
+                    <Link href="/admin/dashboard">
+                      <LayoutDashboard className="h-3.5 w-3.5" /> Mission Control
+                    </Link>
+                  </Button>
+                )}
                 <ThemeToggle />
                 <LanguageSelector />
               </div>
@@ -191,6 +208,15 @@ export const Navbar = () => {
                 {link.label}
               </Link>
             ))}
+            {isAdmin && (
+              <Link 
+                href="/admin/dashboard"
+                onClick={() => setIsOpen(false)}
+                className="text-2xl font-bold text-primary flex items-center gap-3"
+              >
+                <ShieldCheck className="h-6 w-6" /> Mission Control
+              </Link>
+            )}
             <div className="pt-8 border-t border-white/5 w-full max-w-xs flex flex-col gap-4">
               <LanguageSelector />
               <ThemeToggle />

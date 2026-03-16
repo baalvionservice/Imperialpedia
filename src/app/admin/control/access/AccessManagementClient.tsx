@@ -14,33 +14,24 @@ import {
   Lock, 
   User, 
   Search, 
-  Filter, 
   Loader2, 
-  RefreshCw,
   Plus,
-  Trash2,
-  Clock,
   ArrowRight,
   ShieldAlert,
-  CheckCircle2,
-  XCircle,
   Layers,
   Settings2,
   Activity,
   Calendar,
   Sparkles,
   ChevronRight,
-  UserPlus,
   UserMinus,
   Key
 } from 'lucide-react';
 import { systemService } from '@/services/data/system-service';
-import { AccessManagementData, FeatureFlagNode, RoleAccessNode, UserAssignmentNode } from '@/types/system';
+import { AccessManagementData } from '@/types/system';
 import { cn } from '@/lib/utils';
 import { toast } from '@/hooks/use-toast';
 import { Input } from '@/components/ui/input';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Label } from '@/components/ui/label';
 
 /**
  * Feature Flags & Role-Based Access Management Client.
@@ -403,5 +394,3 @@ export function AccessManagementClient() {
     </div>
   );
 }
-
-import { PlusSquare } from 'lucide-react';

@@ -20,7 +20,8 @@ import {
   MoreVertical,
   Mail,
   ArrowRight,
-  ShieldCheck
+  ShieldCheck,
+  ArrowLeft
 } from 'lucide-react';
 import { 
   DropdownMenu, 
@@ -40,9 +41,9 @@ import {
 import { usersService } from '@/services/data/users-service';
 import { User, UserStatus, Role } from '@/types';
 import { Input } from '@/components/ui/input';
-import { format } from 'date-fns';
 import { toast } from '@/hooks/use-toast';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import Link from 'next/link';
 
 /**
  * Admin User Management Hub.
@@ -125,22 +126,23 @@ export default function UserControlDashboard() {
   return (
     <div className="space-y-8 animate-in fade-in duration-700 pb-24">
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div>
-          <div className="flex items-center gap-2 text-primary mb-1">
-            <ShieldAlert className="h-4 w-4" />
-            <Text variant="label" className="text-[10px] font-bold tracking-widest uppercase">Identity Kernel</Text>
+        <div className="flex items-center gap-4">
+          <Button variant="ghost" size="icon" className="rounded-full h-12 w-12" asChild>
+            <Link href="/admin"><ArrowLeft className="h-6 w-6" /></Link>
+          </Button>
+          <div>
+            <div className="flex items-center gap-2 text-primary mb-1">
+              <ShieldAlert className="h-4 w-4" />
+              <Text variant="label" className="text-[10px] font-bold tracking-widest uppercase">Identity Kernel</Text>
+            </div>
+            <Text variant="h1" className="text-3xl font-bold tracking-tight">User Management</Text>
           </div>
-          <Text variant="h1" className="text-3xl font-bold tracking-tight">User Management</Text>
-          <Text variant="bodySmall" className="text-muted-foreground mt-1">
-            Auditing identity nodes and Persona assignments across the Imperialpedia Index.
-          </Text>
         </div>
         <Button className="bg-primary hover:bg-primary/90 rounded-xl h-12 px-8 shadow-xl shadow-primary/20 font-bold transition-all scale-105 active:scale-95">
           <UserPlus className="mr-2 h-4 w-4" /> Provision New Identity
         </Button>
       </header>
 
-      {/* Control Toolbar */}
       <div className="flex flex-col lg:flex-row gap-4 bg-card/30 p-4 rounded-2xl border border-white/5 backdrop-blur-md sticky top-20 z-30 shadow-lg">
         <div className="relative flex-1 group">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
@@ -283,7 +285,6 @@ export default function UserControlDashboard() {
         </div>
       </Card>
 
-      {/* Strategic Governance Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card className="glass-card bg-primary/5 border-primary/20 p-8 flex flex-col gap-4 relative overflow-hidden group">
           <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity pointer-events-none">
@@ -329,5 +330,3 @@ export default function UserControlDashboard() {
     </div>
   );
 }
-
-import Link from 'next/link';
