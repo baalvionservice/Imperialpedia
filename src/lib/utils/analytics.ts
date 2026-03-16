@@ -1,6 +1,6 @@
 /**
  * @fileOverview Global Analytics & Event Tracking Utility.
- * Integrated with GA4 and GTM logic.
+ * Integrated with GA4 and GTM logic for high-fidelity behavior monitoring.
  */
 
 export interface AnalyticsEvent {
@@ -8,10 +8,12 @@ export interface AnalyticsEvent {
   action: string;
   label?: string;
   value?: number;
+  non_interaction?: boolean;
 }
 
 /**
  * Checks for user privacy consent node.
+ * Ensures compliance with GDPR/CCPA protocols before broadcasting telemetry.
  */
 export const hasConsent = () => {
   if (typeof window === 'undefined') return false;
@@ -19,13 +21,13 @@ export const hasConsent = () => {
 };
 
 /**
- * Simple event logger for GA4.
+ * Simple event logger for GA4 native integration.
+ * Utilized for quick event broadcasts.
  */
 export const logEvent = (name: string, params?: object) => {
-  // TODO: AI-powered analytics insights and predictive behavior analysis
-  // TODO: Personalized CTA recommendations based on user interaction
-  // TODO: Dynamic dashboard for admin to monitor events
-  // TODO: Analytics for page load velocity, LCP, FCP, and CLS
+  // TODO: AI-driven analytics to detect high-value users and interactions
+  // TODO: Predictive conversion event recommendations 
+  // TODO: Dynamic dashboard for admin insights tracking real-time telemetry
   
   if (hasConsent() && typeof window !== 'undefined' && (window as any).gtag) {
     (window as any).gtag('event', name, params);
@@ -34,10 +36,10 @@ export const logEvent = (name: string, params?: object) => {
 
 /**
  * Tracks a specific user interaction or system event.
- * Respects GDPR/Privacy handshake before broadcasting to the cluster.
+ * Respects the Privacy Handshake before broadcasting to the cluster.
  */
-export const trackEvent = ({ category, action, label, value }: AnalyticsEvent) => {
-  // Development Logging
+export const trackEvent = ({ category, action, label, value, non_interaction = false }: AnalyticsEvent) => {
+  // Development Logging for debugging discovery nodes
   if (process.env.NODE_ENV === 'development') {
     console.log(`[ANALYTICS] Event: ${category} | ${action} | ${label || ''}`, value !== undefined ? `| Value: ${value}` : '');
   }
@@ -48,12 +50,15 @@ export const trackEvent = ({ category, action, label, value }: AnalyticsEvent) =
       event_category: category,
       event_label: label,
       value: value,
+      non_interaction: non_interaction,
+      // Analytics for page load velocity, LCP, FCP, and CLS can be added here
     });
   }
 };
 
 /**
  * Tracks a page view event.
+ * Synchronized with the Next.js router cycle.
  */
 export const trackPageView = (path: string) => {
   if (process.env.NODE_ENV === 'development') {

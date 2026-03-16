@@ -7,9 +7,9 @@ import { Label } from '@/components/ui/label';
 import { Text } from '@/design-system/typography/text';
 import { Loader2, CheckCircle2, AlertCircle, Send, User } from 'lucide-react';
 import { useToast } from '@/components/common/ToastManager';
+import { cn } from '@/lib/utils';
 import { trackEvent } from '@/lib/utils/analytics';
 import { useTranslation } from 'react-i18next';
-import { cn } from '@/lib/utils';
 
 /**
  * Enhanced Waitlist & Early Access Form.
@@ -29,7 +29,7 @@ export const WaitlistForm = () => {
 
   // TODO: AI-driven waitlist prioritization based on user profile or behavior
   // TODO: Dynamic success message personalization
-  // TODO: Analytics tracking for submissions and conversions
+  // TODO: Analytics tracking for submissions and conversions (Phase 2)
 
   const validateEmail = (email: string) => {
     return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email);
@@ -50,7 +50,13 @@ export const WaitlistForm = () => {
     }
 
     setStatus('loading');
-    trackEvent({ category: 'Form', action: 'Submit', label: 'Landing Page Waitlist' });
+    
+    // Broadcast conversion attempt to analytics cluster
+    trackEvent({ 
+      category: 'Conversion', 
+      action: 'Waitlist Submission', 
+      label: 'Landing Page Form' 
+    });
 
     try {
       const res = await fetch('/api/waitlist', {
@@ -69,6 +75,13 @@ export const WaitlistForm = () => {
         addToast({
           message: "Identity Secured: You have been indexed for early access.",
           type: "success",
+        });
+
+        // Track successful conversion
+        trackEvent({ 
+          category: 'Conversion', 
+          action: 'Waitlist Success', 
+          label: email 
         });
       } else {
         throw new Error(data.message || 'Verification failure');

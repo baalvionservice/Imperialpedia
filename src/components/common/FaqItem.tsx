@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Minus } from "lucide-react";
 import { Text } from "@/design-system/typography/text";
 import { cn } from "@/lib/utils";
-import { trackEvent } from '@/lib/utils/analytics';
+import { trackEvent, logEvent } from '@/lib/utils/analytics';
 
 interface FaqItemProps {
   question: string;
@@ -25,10 +25,14 @@ export default function FaqItem({ question, answer }: FaqItemProps) {
   const handleToggle = () => {
     const nextState = !isOpen;
     setIsOpen(nextState);
+    
+    // Broadcast interaction to the analytics cluster
     if (nextState) {
+      logEvent("FAQ Toggle", { category: 'Interaction', label: question });
+      
       trackEvent({
         category: 'FAQ',
-        action: 'faq_toggle',
+        action: 'faq_open',
         label: question
       });
     }
@@ -71,7 +75,7 @@ export default function FaqItem({ question, answer }: FaqItemProps) {
               </Text>
               
               {/* TODO: AI-generated follow-up research nodes or deeper context links */}
-              {/* TODO: Analytics tracking for keyboard and screen reader interactions */}
+              {/* TODO: Analytics tracking for keyboard and screen reader interactions (Phase 2) */}
             </div>
           </motion.div>
         )}

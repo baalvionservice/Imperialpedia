@@ -7,7 +7,7 @@ import { Text } from '@/design-system/typography/text';
 import { Loader2, CheckCircle2, AlertCircle, Send, User } from 'lucide-react';
 import { useToast } from '@/components/common/ToastManager';
 import { cn } from '@/lib/utils';
-import { trackEvent } from '@/lib/utils/analytics';
+import { trackEvent, logEvent } from '@/lib/utils/analytics';
 
 /**
  * Institutional newsletter subscription form.
@@ -47,10 +47,12 @@ export const NewsletterForm = () => {
     }
 
     setStatus('loading');
+    
+    // Broadcast engagement to analytics
     trackEvent({ 
-      category: 'Form', 
-      action: 'newsletter_signup', 
-      label: 'Landing Page Newsletter' 
+      category: 'Interaction', 
+      action: 'Newsletter Signup Attempt', 
+      label: 'Footer Form' 
     });
 
     try {
@@ -72,11 +74,8 @@ export const NewsletterForm = () => {
           type: "success",
         });
 
-        trackEvent({ 
-          category: 'Conversion', 
-          action: 'newsletter_success', 
-          label: 'Landing Page' 
-        });
+        // Log specific conversion event
+        logEvent("Newsletter Signup", { category: "Conversion", label: email });
       } else {
         throw new Error(data.message || 'Verification failure');
       }
