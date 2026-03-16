@@ -23,6 +23,10 @@ export const hasConsent = () => {
  * Aligned with Prompt 64 requirements.
  */
 export const logEvent = (name: string, params?: object) => {
+  // TODO: AI-powered analytics insights and predictive behavior analysis
+  // TODO: Personalized CTA recommendations based on user interaction
+  // TODO: Dynamic dashboard for admin to monitor events
+  
   if (hasConsent() && typeof window !== 'undefined' && (window as any).gtag) {
     (window as any).gtag('event', name, params);
   }
@@ -46,12 +50,6 @@ export const trackEvent = ({ category, action, label, value }: AnalyticsEvent) =
       value: value,
     });
   }
-  
-  // TODO: AI-driven analytics insights and predictive behavior analysis
-  // TODO: Personalized CTA recommendations based on user interaction
-  // TODO: Dynamic dashboard for admin to monitor events
-  // TODO: AI-powered engagement insights in Phase 2
-  // TODO: Predictive churn modeling based on interaction velocity
 };
 
 /**
@@ -67,6 +65,4 @@ export const trackPageView = (path: string) => {
       page_path: path,
     });
   }
-  
-  // TODO: Track entity page views and API usage for 1M+ indexable nodes
 };

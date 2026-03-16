@@ -18,6 +18,10 @@ export const CookieConsent = () => {
   const [isVisible, setIsVisible] = useState(false);
   const bannerRef = useRef<HTMLDivElement>(null);
 
+  // TODO: AI-driven consent personalization and auto-optimize banner
+  // TODO: Show different messages based on region (GDPR, CCPA, etc.)
+  // TODO: Analytics tracking for consent choices
+
   useEffect(() => {
     const consent = localStorage.getItem('imperialpedia_cookie_consent');
     if (!consent) {
@@ -32,11 +36,14 @@ export const CookieConsent = () => {
     localStorage.setItem('imperialpedia_cookie_consent', choice);
     setIsVisible(false);
     
-    trackEvent({
-      category: 'Compliance',
-      action: choice === 'accepted' ? 'Accept Cookies' : 'Decline Cookies',
-      label: 'GDPR Banner Choice'
-    });
+    // Broadcast event if accepted
+    if (choice === 'accepted') {
+      trackEvent({
+        category: 'Compliance',
+        action: 'Accept Cookies',
+        label: 'GDPR Banner Choice'
+      });
+    }
 
     toast({
       title: choice === 'accepted' ? "Privacy Handshake Complete" : "Preferences Updated",
@@ -47,7 +54,6 @@ export const CookieConsent = () => {
   };
 
   const handleManage = () => {
-    trackEvent({ category: 'Compliance', action: 'Manage Preferences', label: 'GDPR Banner' });
     toast({
       title: "Preference Manager",
       description: "Advanced cookie categorization will be available in Phase 2.",
@@ -88,7 +94,7 @@ export const CookieConsent = () => {
               onClick={handleManage}
               aria-label="Manage detailed cookie preferences"
             >
-              <Settings2 className="h-3 w-3 mr-1.5" aria-hidden="true" /> Manage
+              <Settings2 className="h-3.5 w-3.5 mr-1.5" aria-hidden="true" /> Manage
             </Button>
             <Button 
               variant="ghost" 
@@ -108,9 +114,6 @@ export const CookieConsent = () => {
           </div>
         </div>
       </Container>
-      
-      {/* TODO: AI-driven cookie consent messaging based on user region in Phase 2 */}
-      {/* TODO: Analytics tracking for keyboard and screen reader interactions */}
     </div>
   );
 };
