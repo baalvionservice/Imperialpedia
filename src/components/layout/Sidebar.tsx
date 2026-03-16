@@ -77,7 +77,8 @@ import {
   Filter,
   LineChart,
   ClipboardList,
-  UserCheck
+  UserCheck,
+  Scale
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 import { useAppStore } from '@/lib/state/app-store';
@@ -250,6 +251,11 @@ const Sidebar = ({ className }: { className?: string }) => {
     { icon: CalcIcon, label: 'Financial Tools', href: '/financial-tools' },
   ];
 
+  const trustItems = [
+    { icon: Scale, label: 'Transparency Hub', href: '/transparency' },
+    { icon: ShieldCheck, label: 'Trust framework', href: '/creators/trust' },
+  ];
+
   return (
     <aside className={cn('w-64 border-r h-full bg-card/30 flex flex-col p-4', className)}>
       <div className="mb-8 px-4">
@@ -259,8 +265,24 @@ const Sidebar = ({ className }: { className?: string }) => {
       </div>
 
       <div className="space-y-6 flex-grow overflow-y-auto">
-        {/* Personal User Section */}
+        {/* Platform Trust Section */}
         <div>
+          <Text variant="label" className="px-4 mb-3 text-[10px] text-emerald-500 font-bold uppercase tracking-widest">
+            Platform Trust
+          </Text>
+          <div className="space-y-1">
+            {trustItems.map((item) => (
+              <SidebarItem
+                key={item.href}
+                {...item}
+                isActive={pathname === item.href}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Personal User Section */}
+        <div className="pt-4 border-t border-white/5">
           <Text variant="label" className="px-4 mb-3 text-[10px] text-muted-foreground/50 font-bold uppercase tracking-widest">
             Personal System
           </Text>

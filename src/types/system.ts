@@ -609,3 +609,56 @@ export interface AlertsSystemData {
   notification_channels: NotificationChannelNode[];
   alert_rules: AlertRuleNode[];
 }
+
+/**
+ * Prompt 73: Platform Transparency Report Types
+ */
+export interface TransparencyMetrics {
+  articles_published: number;
+  contributors: number;
+  editorial_reviews: number;
+  moderation_actions: number;
+  community_reports: number;
+  revisions_made: number;
+}
+
+export interface TransparencyReportNode {
+  id: string;
+  title: string;
+  period: string;
+  summary: string;
+}
+
+export interface TransparencyData {
+  metrics: TransparencyMetrics;
+  moderation: {
+    removed: number;
+    flagged: number;
+    warnings: number;
+    restricted: number;
+    resolved: number;
+    trends: { date: string; removed: number; flagged: number }[];
+  };
+  editorial: {
+    submitted: number;
+    approved: number;
+    rejected: number;
+    revised: number;
+    trends: { date: string; approved: number; revised: number }[];
+  };
+  community: {
+    discussions: number;
+    comments: number;
+    votes: number;
+    predictions: number;
+    trends: { date: string; engagement: number }[];
+  };
+  quality: {
+    avg_score: number;
+    verified_pct: number;
+    needs_improvement: number;
+    top_rated: number;
+    trends: { date: string; score: number }[];
+  };
+  reports: TransparencyReportNode[];
+}
