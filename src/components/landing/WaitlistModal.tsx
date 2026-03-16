@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Dialog, 
   DialogContent, 
@@ -14,7 +14,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Text } from '@/design-system/typography/text';
 import { Loader2, CheckCircle2, AlertCircle, Send, Sparkles, ShieldCheck, Info } from 'lucide-react';
-import { toast } from '@/hooks/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 
@@ -27,11 +27,13 @@ interface WaitlistModalProps {
 /**
  * Waitlist & Early Access Modal.
  * High-fidelity form for capturing institutional early access requests.
+ * Integrated with the global toast system for Phase 1.
  */
 export const WaitlistModal = ({ isOpen, onOpenChange, title = "Join the Imperialpedia Waitlist" }: WaitlistModalProps) => {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
+  const { toast } = useToast();
 
   const validateEmail = (email: string) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -62,6 +64,8 @@ export const WaitlistModal = ({ isOpen, onOpenChange, title = "Join the Imperial
       if (data.success) {
         setStatus('success');
         setMessage(data.message);
+        
+        // Trigger Global Success Toast
         toast({
           title: "Identity Secured",
           description: data.message,
@@ -69,12 +73,30 @@ export const WaitlistModal = ({ isOpen, onOpenChange, title = "Join the Imperial
       } else {
         setStatus('error');
         setMessage(data.message);
+        
+        // Trigger Global Error Toast
+        toast({
+          variant: "destructive",
+          title: "Synchronization Error",
+          description: data.message,
+        });
       }
     } catch (err) {
       setStatus('error');
-      setMessage('Network handshake failed. Try again shortly.');
+      const errorMsg = 'Network handshake failed. Try again shortly.';
+      setMessage(errorMsg);
+      
+      toast({
+        variant: "destructive",
+        title: "System Exception",
+        description: errorMsg,
+      });
     }
   };
+
+  // TODO: Integrate AI-powered alerts and suggestions in Phase 2
+  // TODO: Track analytics for user interactions with toasts
+  // TODO: Add contextual toasts for entity search and API responses
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
@@ -162,10 +184,6 @@ export const WaitlistModal = ({ isOpen, onOpenChange, title = "Join the Imperial
             </DialogFooter>
           </form>
         )}
-        
-        {/* TODO: Connect to real backend / database */}
-        {/* TODO: Integrate analytics for waitlist signups */}
-        {/* TODO: Add AI-assisted form suggestions */}
       </DialogContent>
     </Dialog>
   );

@@ -5,23 +5,24 @@ import { Button } from '@/components/ui/button';
 import { Text } from '@/design-system/typography/text';
 import { X, Sparkles, ArrowRight } from 'lucide-react';
 import { WaitlistModal } from './WaitlistModal';
+import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 
 /**
  * Sticky CTA Banner for high-conversion user acquisition.
  * Features persistent dismissal and integration with the Waitlist logic.
+ * Enhanced with global toast feedback for clicks.
  */
 export const StickyCTA = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isDismissed, setIsDismissed] = useState(true); // Default to true to prevent flash before mount
+  const [isDismissed, setIsDismissed] = useState(true);
+  const { toast } = useToast();
 
   useEffect(() => {
-    // Check if user has already dismissed the banner in this browser node
     const dismissedStatus = localStorage.getItem('imperialpedia_cta_dismissed');
     if (!dismissedStatus) {
       setIsDismissed(false);
-      // Reveal banner after a short discovery period
       const timer = setTimeout(() => setIsVisible(true), 2000);
       return () => clearTimeout(timer);
     }
@@ -30,10 +31,23 @@ export const StickyCTA = () => {
   const handleDismiss = () => {
     setIsVisible(false);
     localStorage.setItem('imperialpedia_cta_dismissed', 'true');
-    setTimeout(() => setIsDismissed(true), 500); // Wait for transition
+    setTimeout(() => setIsDismissed(true), 500);
+  };
+
+  const handleSignUpClick = () => {
+    setIsModalOpen(true);
+    
+    // Feedback toast for high-velocity engagement
+    toast({
+      title: "Establishing Handshake",
+      description: "Opening secure waitlist portal...",
+    });
   };
 
   if (isDismissed) return null;
+
+  // TODO: Integrate AI suggestions for personalized CTA in Phase 2
+  // TODO: Track analytics for click tracking
 
   return (
     <>
@@ -44,7 +58,6 @@ export const StickyCTA = () => {
         )}
       >
         <div className="glass-card bg-primary/10 border-primary/30 shadow-2xl shadow-primary/20 rounded-[2rem] p-4 pr-12 relative group">
-          {/* Internal Progress logic for Phase 2 A/B Testing could go here */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-4 py-2">
             <div className="flex items-center gap-4">
               <div className="p-2.5 rounded-xl bg-primary/20 text-primary shadow-inner">
@@ -61,7 +74,7 @@ export const StickyCTA = () => {
             </div>
 
             <Button 
-              onClick={() => setIsModalOpen(true)}
+              onClick={handleSignUpClick}
               className="h-11 px-8 rounded-xl font-bold bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20 transition-all scale-105 active:scale-95 group/btn"
             >
               Secure My Spot <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
@@ -75,12 +88,6 @@ export const StickyCTA = () => {
           >
             <X className="h-4 w-4" />
           </button>
-
-          {/* 
-            TODO: Integrate analytics for click tracking 
-            TODO: A/B test banner text and placement 
-            TODO: Trigger AI suggestions for personalized CTA
-          */}
         </div>
       </div>
 

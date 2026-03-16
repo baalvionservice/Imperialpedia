@@ -5,15 +5,19 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Text } from '@/design-system/typography/text';
 import { Loader2, CheckCircle2, AlertCircle, Send } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+import { cn } from '@/lib/utils';
 
 /**
  * Institutional newsletter subscription form.
  * Handles state transitions for capturing interest in intelligence updates.
+ * Integrated with the global toast system.
  */
 export const NewsletterForm = () => {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
+  const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,13 +40,31 @@ export const NewsletterForm = () => {
         setStatus('success');
         setMessage(data.message);
         setEmail('');
+        
+        toast({
+          title: "Subscription Active",
+          description: data.message,
+        });
       } else {
         setStatus('error');
         setMessage(data.message);
+        
+        toast({
+          variant: "destructive",
+          title: "Handshake Failed",
+          description: data.message,
+        });
       }
     } catch (err) {
       setStatus('error');
-      setMessage('Network handshake failed.');
+      const errorMsg = 'Network handshake failed.';
+      setMessage(errorMsg);
+      
+      toast({
+        variant: "destructive",
+        title: "System Exception",
+        description: errorMsg,
+      });
     }
   };
 
@@ -54,7 +76,10 @@ export const NewsletterForm = () => {
             type="email"
             placeholder="Analyst email..."
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              if (status === 'error') setStatus('idle');
+            }}
             disabled={status === 'loading' || status === 'success'}
             className="h-11 bg-background/50 border-white/10 rounded-xl focus:ring-primary/20 transition-all text-sm"
           />
@@ -91,5 +116,3 @@ export const NewsletterForm = () => {
     </div>
   );
 };
-
-import { cn } from '@/lib/utils';

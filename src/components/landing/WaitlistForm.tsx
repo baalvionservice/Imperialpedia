@@ -5,15 +5,18 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Text } from '@/design-system/typography/text';
 import { Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 /**
  * Waitlist email collection form.
  * Handles state transitions for institutional early access requests.
+ * Connected to global toast notifications.
  */
 export const WaitlistForm = () => {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
+  const { toast } = useToast();
 
   const validateEmail = (email: string) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -44,13 +47,31 @@ export const WaitlistForm = () => {
       if (data.success) {
         setStatus('success');
         setMessage(data.message);
+        
+        toast({
+          title: "Identity Secured",
+          description: data.message,
+        });
       } else {
         setStatus('error');
         setMessage(data.message);
+        
+        toast({
+          variant: "destructive",
+          title: "Screener Failure",
+          description: data.message,
+        });
       }
     } catch (err) {
       setStatus('error');
-      setMessage('Network handshake failed. Try again shortly.');
+      const errorMsg = 'Network handshake failed. Try again shortly.';
+      setMessage(errorMsg);
+      
+      toast({
+        variant: "destructive",
+        title: "Connection Alert",
+        description: errorMsg,
+      });
     }
   };
 
