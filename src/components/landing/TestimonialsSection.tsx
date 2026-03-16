@@ -13,25 +13,25 @@ import { Quote, Globe, ShieldCheck, Building, Sparkles } from 'lucide-react';
 
 const testimonials = [
   {
-    name: "Marcus Thorne",
-    role: "Senior Economist",
-    company: "Thorne Global",
-    content: "The structured data nodes are a game changer for our macro research. Imperialpedia provides the clarity needed for complex fiscal audits.",
-    photoUrl: "https://picsum.photos/seed/marcus/100/100",
+    name: "Alice Johnson",
+    role: "Market Analyst",
+    company: "Capital Insights",
+    content: "Imperialpedia’s AI knowledge engine accelerated our research like never before. The structured data nodes are a game changer.",
+    photoUrl: "https://picsum.photos/seed/alice/100/100",
   },
   {
-    name: "Dr. Sarah Jenkins",
-    role: "Lead Researcher",
-    company: "University of Finance",
-    content: "Imperialpedia is the first platform that actually handles institutional-scale intelligence. The pSEO engine is remarkably accurate.",
-    photoUrl: "https://picsum.photos/seed/sarah/100/100",
+    name: "David Lee",
+    role: "Startup Founder",
+    company: "NextGen Fintech",
+    content: "Instant insights and structured data saved our team weeks of work. It is the architectural foundation we needed.",
+    photoUrl: "https://picsum.photos/seed/david/100/100",
   },
   {
-    name: "James Wilson",
-    role: "Portfolio Strategist",
-    company: "Alpha Peak Assets",
-    content: "The AI analyst suite has drastically reduced our discovery time for technical benchmarks. It's an indispensable part of our daily workflow.",
-    photoUrl: "https://picsum.photos/seed/james/100/100",
+    name: "Maria Garcia",
+    role: "Investor",
+    company: "Global Assets",
+    content: "A must-have tool for decision-making and market research. The AI analyst suite has drastically reduced our discovery time.",
+    photoUrl: "https://picsum.photos/seed/maria/100/100",
   }
 ];
 
@@ -56,12 +56,14 @@ export const TestimonialsSection = () => {
             <Sparkles className="h-4 w-4" />
             <Text variant="label" className="text-[10px] font-bold uppercase tracking-widest">Early User Handshake</Text>
           </div>
-          <Text variant="h2" id="testimonials-heading" className="text-3xl lg:text-5xl font-bold tracking-tight">Voice of the Network</Text>
+          <Text variant="h2" id="testimonials-heading" className="text-3xl lg:text-5xl font-bold tracking-tight">What Our Users Say</Text>
           <Text variant="body" className="text-muted-foreground text-lg leading-relaxed">
-            Imperialpedia is built for the global intelligence community. Here is what our pilot testers and institutional researchers are experiencing.
+            Imperialpedia is built for the global intelligence community. Here is what our institutional researchers and startup founders are experiencing.
           </Text>
         </div>
 
+        {/* TODO: AI-generated testimonial content based on user activity */}
+        {/* TODO: Analytics tracking for testimonial visibility and interactions */}
         <div className="relative">
           <TestimonialCarousel testimonials={testimonials} />
         </div>
