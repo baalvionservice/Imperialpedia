@@ -1,7 +1,7 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import { HeroSection } from '@/components/landing/HeroSection';
-import { LandingFooter } from '@/components/landing/Footer';
+import FooterSection from '@/components/common/FooterSection';
 import { StickyCTA } from '@/components/landing/StickyCTA';
 import { CtaSection } from '@/components/landing/CtaSection';
 import { Text } from '@/design-system/typography/text';
@@ -135,7 +135,7 @@ export default function Home() {
 
       <CtaSection />
 
-      <LandingFooter />
+      <FooterSection />
 
       <StickyCTA />
     </div>
