@@ -1,300 +1,182 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Text } from '@/design-system/typography/text';
 import { 
-  LayoutDashboard, 
-  FileText, 
   Users, 
+  FileText, 
+  DollarSign, 
+  Zap, 
   TrendingUp, 
-  ShieldAlert, 
   Loader2,
-  ChevronRight,
-  Plus,
-  Zap,
   Activity,
-  Globe,
-  ShieldCheck,
-  Terminal,
-  Edit,
-  Trash2,
-  Sparkles,
-  ArrowRight,
-  Clock
+  ArrowUpRight,
+  Bell,
+  ChevronRight,
+  BarChart3,
+  Globe
 } from 'lucide-react';
+import { 
+  AreaChart, 
+  Area, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip, 
+  ResponsiveContainer 
+} from 'recharts';
+import { systemService } from '@/services/data/system-service';
+import { AdminHomeOverview } from '@/types/system';
 import Link from 'next/link';
-import { getCmsDashboardData } from '@/services/mock-api/admin-cms';
-import { CMSDashboardData } from '@/types/system';
-import { cn } from '@/lib/utils';
-import { toast } from '@/hooks/use-toast';
-import { Progress } from '@/components/ui/progress';
 
-/**
- * Institutional Mission Control.
- * Central command hub for platform-wide governance and intelligence auditing.
- */
-export default function AdminCmsDashboardPage() {
-  const [data, setData] = useState<CMSDashboardData | null>(null);
+export default function AdminDashboardOverview() {
+  const [data, setData] = useState<AdminHomeOverview | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function loadData() {
-      try {
-        const response = await getCmsDashboardData();
-        setData(response.data);
-      } catch (e) {
-        console.error('Governance sync failure', e);
-      } finally {
-        setLoading(false);
-      }
+      const response = await systemService.getAdminHomeOverview();
+      if (response.data) setData(response.data);
+      setLoading(false);
     }
     loadData();
   }, []);
-
-  const handleAction = (title: string, action: string) => {
-    toast({
-      title: `Action Initiated: ${action}`,
-      description: `Targeting node: "${title}" across clusters.`,
-    });
-  };
 
   if (loading || !data) {
     return (
       <div className="py-40 flex flex-col items-center justify-center space-y-4">
         <Loader2 className="h-12 w-12 text-primary animate-spin" />
         <Text variant="bodySmall" className="animate-pulse font-bold tracking-widest uppercase text-muted-foreground">
-          Establishing Governance Handshake...
+          Establishing Command Handshake...
         </Text>
       </div>
     );
   }
 
-  const vitals = [
-    { label: 'Network Reach', value: '1.2M+', icon: Globe, color: 'text-primary' },
-    { label: 'Active Experts', value: '156', icon: Users, color: 'text-secondary' },
-    { label: 'Integrity Tasks', value: '5', icon: ShieldAlert, color: 'text-destructive' },
-    { label: 'Node Health', value: 'Optimal', icon: Activity, color: 'text-emerald-500' },
+  const mockChartData = [
+    { date: 'Mon', views: 12000, revenue: 450 },
+    { date: 'Tue', views: 15000, revenue: 520 },
+    { date: 'Wed', views: 14000, revenue: 480 },
+    { date: 'Thu', views: 18000, revenue: 610 },
+    { date: 'Fri', views: 22000, revenue: 750 },
+    { date: 'Sat', views: 19000, revenue: 680 },
+    { date: 'Sun', views: 25000, revenue: 820 },
   ];
 
   return (
-    <div className="space-y-10 pb-24 animate-in fade-in duration-700">
+    <div className="space-y-10 animate-in fade-in duration-700">
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 px-2">
         <div>
-          <div className="flex items-center gap-2 text-primary mb-1">
-            <LayoutDashboard className="h-4 w-4" />
-            <Text variant="label" className="text-[10px] font-bold tracking-widest uppercase">Platform Command</Text>
-          </div>
+          <Text variant="label" className="text-primary font-bold uppercase tracking-widest text-[10px] mb-1">Global Intelligence</Text>
           <Text variant="h1" className="text-3xl font-bold tracking-tight">Mission Control</Text>
-          <Text variant="bodySmall" className="text-muted-foreground mt-1">
-            Orchestrating the discovery of 1M+ intelligence nodes across the global index.
-          </Text>
         </div>
         <div className="flex items-center gap-3">
-          <Button variant="outline" className="rounded-xl border-white/10 h-11 px-6 bg-card/30" asChild>
-            <Link href="/admin/analytics">
-              <Activity className="mr-2 h-4 w-4" /> Real-time Vitals
-            </Link>
+          <Button variant="outline" className="rounded-xl border-white/10 bg-card/30">
+            <Bell className="mr-2 h-4 w-4" /> Notifications
           </Button>
-          <Button className="rounded-xl shadow-lg shadow-primary/20 font-bold bg-primary hover:bg-primary/90 h-11 px-8 transition-all scale-105 active:scale-95">
-            <Plus className="mr-2 h-4 w-4" /> Provision Node
+          <Button className="rounded-xl shadow-lg shadow-primary/20 font-bold bg-primary hover:bg-primary/90 h-11 px-8">
+            Trigger Audit
           </Button>
         </div>
       </header>
 
-      {/* Aggregate Vitals Matrix */}
+      {/* Widget Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {vitals.map((v) => (
-          <Card key={v.label} className="glass-card border-none shadow-xl group hover:border-primary/20 transition-all">
+        {[
+          { label: 'Total Users', value: data.totalUsers.toLocaleString(), icon: Users, color: 'text-primary', trend: '+12%' },
+          { label: 'Indexed Nodes', value: '1.2M+', icon: Globe, color: 'text-secondary', trend: '+45k' },
+          { label: 'Daily Revenue', value: '$4,250', icon: DollarSign, color: 'text-emerald-500', trend: '+8%' },
+          { label: 'AI Content', value: '15.4k', icon: Zap, color: 'text-amber-500', trend: '+24%' },
+        ].map((w) => (
+          <Card key={w.label} className="glass-card border-none shadow-xl group hover:scale-[1.02] transition-all">
             <CardContent className="p-6">
               <div className="flex justify-between items-start mb-4">
-                <div className={cn("p-2 rounded-xl bg-background/50 border border-white/5 group-hover:scale-110 transition-transform", v.color)}>
-                  <v.icon className="h-5 w-5" />
+                <div className={cn("p-2 rounded-xl bg-background/50 border border-white/5", w.color)}>
+                  <w.icon className="h-5 w-5" />
                 </div>
-                <Badge variant="outline" className="text-[8px] font-bold uppercase tracking-widest border-white/10 bg-black/20">{v.label}</Badge>
+                <Badge variant="outline" className="text-[8px] font-bold border-white/10 uppercase bg-black/20">{w.trend}</Badge>
               </div>
-              <div className="text-3xl font-bold tracking-tighter">{v.value}</div>
-              <Text variant="label" className="text-[10px] opacity-50 uppercase font-bold tracking-widest mt-1">Live Node Status</Text>
+              <div className="text-3xl font-bold tracking-tighter">{w.value}</div>
+              <Text variant="label" className="text-[10px] opacity-50 uppercase font-bold tracking-widest mt-1">{w.label}</Text>
             </CardContent>
           </Card>
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-        
-        {/* INTELLIGENCE MANAGEMENT HUB */}
-        <div className="lg:col-span-8 space-y-8">
-          <Card className="glass-card border-none shadow-2xl overflow-hidden">
-            <CardHeader className="bg-card/30 border-b border-white/5 p-8 flex flex-row items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="p-2.5 rounded-xl bg-primary/10 text-primary">
-                  <FileText className="h-6 w-6" />
-                </div>
-                <div>
-                  <CardTitle className="text-xl">Intelligence Lifecycle</CardTitle>
-                  <CardDescription>Managing research nodes and expert output across the index.</CardDescription>
-                </div>
-              </div>
-              <Button variant="ghost" size="sm" className="text-primary font-bold text-xs uppercase group" asChild>
-                <Link href="/admin/queue">
-                  Full Queue <ChevronRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Link>
-              </Button>
-            </CardHeader>
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow className="bg-muted/20 border-b border-white/5">
-                    <TableHead className="pl-8 font-bold text-[10px] uppercase tracking-widest py-6">Intelligence Title</TableHead>
-                    <TableHead className="font-bold text-[10px] uppercase tracking-widest">Expert Node</TableHead>
-                    <TableHead className="font-bold text-[10px] uppercase tracking-widest text-center">Lifecycle</TableHead>
-                    <TableHead className="text-right pr-8 font-bold text-[10px] uppercase tracking-widest">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {data.cms_content.map((item) => (
-                    <TableRow key={item.content_id} className="group hover:bg-white/5 transition-colors border-b border-white/5">
-                      <TableCell className="py-5 pl-8">
-                        <div className="flex flex-col">
-                          <span className="text-sm font-bold text-foreground/90 group-hover:text-primary transition-colors truncate max-w-[300px] block">{item.title}</span>
-                          <span className="text-[9px] text-muted-foreground font-mono uppercase mt-1">Modified: {item.last_updated}</span>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-2">
-                          <div className="w-7 h-7 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-bold text-[10px]">
-                            {item.author.charAt(0)}
-                          </div>
-                          <span className="text-xs font-medium">{item.author}</span>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex justify-center">
-                          <Badge className={cn(
-                            "text-[9px] font-bold uppercase border-none h-5 px-2",
-                            item.status === 'Published' ? "bg-emerald-500/10 text-emerald-500" : 
-                            item.status === 'Review' ? "bg-amber-500/10 text-amber-500" : "bg-muted text-muted-foreground"
-                          )}>
-                            {item.status}
-                          </Badge>
-                        </div>
-                      </TableCell>
-                      <TableCell className="text-right pr-8">
-                        <div className="flex justify-end gap-2">
-                          <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg hover:text-primary transition-all" onClick={() => handleAction(item.title, 'Refine')}>
-                            <Edit className="h-3.5 w-3.5" />
-                          </Button>
-                          <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg hover:text-destructive transition-all" onClick={() => handleAction(item.title, 'Purge')}>
-                            <Trash2 className="h-3.5 w-3.5" />
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        {/* Performance Chart */}
+        <Card className="lg:col-span-8 glass-card border-none shadow-2xl overflow-hidden">
+          <CardHeader className="bg-card/30 border-b border-white/5 p-8 flex flex-row items-center justify-between">
+            <div>
+              <CardTitle className="text-xl">Network Momentum</CardTitle>
+              <CardDescription>Daily reach vs. revenue velocity across the index.</CardDescription>
             </div>
+            <Badge className="bg-primary/10 text-primary border-primary/20 text-[10px] font-bold">LIVE SYNC</Badge>
+          </CardHeader>
+          <CardContent className="p-8 h-[400px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={mockChartData}>
+                <defs>
+                  <linearGradient id="colorViews" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#8272F2" stopOpacity={0.3}/>
+                    <stop offset="95%" stopColor="#8272F2" stopOpacity={0}/>
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="#ffffff05" vertical={false} />
+                <XAxis dataKey="date" stroke="#888888" fontSize={10} tickLine={false} axisLine={false} />
+                <YAxis stroke="#888888" fontSize={10} tickLine={false} axisLine={false} />
+                <Tooltip contentStyle={{ backgroundColor: '#1C1822', border: '1px solid #ffffff10', borderRadius: '12px' }} />
+                <Area type="monotone" dataKey="views" name="Global Reach" stroke="#8272F2" fillOpacity={1} fill="url(#colorViews)" strokeWidth={3} />
+              </AreaChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+
+        {/* Sidebar Insights */}
+        <div className="lg:col-span-4 space-y-8">
+          <Card className="glass-card border-none shadow-xl bg-primary/5 p-8 relative overflow-hidden group">
+            <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform">
+              <Zap className="h-24 w-24 text-primary" />
+            </div>
+            <div className="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-widest mb-4">
+              <Activity className="h-4 w-4" /> System Pulse
+            </div>
+            <Text variant="caption" className="text-muted-foreground leading-relaxed italic block">
+              "The AI ingestion pipeline is processing 120 nodes/minute. Discovery velocity has increased by 15% following the Q1 taxonomy re-sharding."
+            </Text>
+            <Button variant="link" className="p-0 h-auto text-primary font-bold text-xs mt-4 group/link" asChild>
+              <Link href="/admin/ai">Enter AI Workspace <ChevronRight className="ml-1 h-3 w-3 transition-transform group-hover/link:translate-x-1" /></Link>
+            </Button>
           </Card>
 
-          {/* DYNAMIC SYSTEM LOGS */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <Card className="glass-card border-none shadow-xl bg-primary/5 relative overflow-hidden group">
-              <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:scale-110 transition-transform">
-                <Sparkles className="h-32 w-32 text-primary rotate-12" />
-              </div>
-              <CardContent className="p-8 space-y-4">
-                <div className="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-widest">
-                  <Zap className="h-4 w-4" /> Strategy Insight
-                </div>
-                <Text variant="caption" className="text-muted-foreground leading-relaxed italic block">
-                  "Platform reach is currently peaking in the **Economics** taxonomy. Recommend prioritizing expert verification for candidates with macro-economic credentials."
-                </Text>
-                <Button variant="link" className="p-0 h-auto text-primary font-bold text-xs uppercase group/link" asChild>
-                  <Link href="/admin/analytics">
-                    Review Growth Analytics <ArrowRight className="ml-1.5 h-3 w-3 transition-transform group-hover/link:translate-x-1" />
-                  </Link>
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="glass-card border-none bg-background/30 shadow-xl overflow-hidden h-full flex flex-col">
-              <CardHeader className="pb-4 border-b border-white/5">
-                <CardTitle className="text-xs font-bold uppercase tracking-widest text-primary flex items-center gap-2">
-                  <Activity className="h-4 w-4" /> Cluster Pulse
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-6 space-y-4 flex-grow flex flex-col justify-center">
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-[10px] font-bold uppercase text-muted-foreground">
-                      <span>Index Sync</span>
-                      <span className="text-emerald-500">Nominal</span>
-                    </div>
-                    <Progress value={98} className="h-1 bg-white/5" />
-                  </div>
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-[10px] font-bold uppercase text-muted-foreground">
-                      <span>Traversal Latency</span>
-                      <span className="text-primary">18ms</span>
-                    </div>
-                    <Progress value={85} className="h-1 bg-white/5" />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-
-        {/* GOVERNANCE AUDIT SIDEBAR */}
-        <aside className="lg:col-span-4 space-y-10">
-          <Card className="glass-card border-none shadow-2xl overflow-hidden h-full flex flex-col">
-            <CardHeader className="bg-card/30 border-b border-white/5 p-6">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-sm font-bold uppercase tracking-widest text-primary flex items-center gap-2">
-                  <Terminal className="h-4 w-4" /> Audit Ledger
-                </CardTitle>
-                <Badge variant="outline" className="border-primary/20 text-primary text-[8px] font-bold h-5 px-2">LIVE STREAM</Badge>
-              </div>
+          <Card className="glass-card border-none shadow-xl">
+            <CardHeader className="pb-2 border-b border-white/5">
+              <CardTitle className="text-sm font-bold uppercase tracking-widest text-secondary flex items-center gap-2">
+                <ShieldCheck className="h-4 w-4" /> Recent Audits
+              </CardTitle>
             </CardHeader>
-            <CardContent className="p-0 flex-grow">
-              <div className="divide-y divide-white/5 max-h-[600px] overflow-y-auto no-scrollbar">
-                {data.system_logs.map((log, i) => (
-                  <div key={i} className="p-5 hover:bg-white/5 transition-colors space-y-3 group cursor-default">
-                    <div className="flex justify-between items-start">
-                      <Text variant="caption" className="font-bold text-foreground/90 group-hover:text-primary transition-colors leading-relaxed">
-                        {log.event}
-                      </Text>
-                    </div>
-                    <div className="flex justify-between items-center text-[10px] text-muted-foreground font-mono uppercase tracking-tighter">
-                      <div className="flex items-center gap-1.5"><Users className="h-2.5 w-2.5" /> {log.user}</div>
-                      <div className="flex items-center gap-1.5"><Clock className="h-2.5 w-2.5" /> {log.timestamp.split(' ')[1]}</div>
+            <CardContent className="p-0">
+              <div className="divide-y divide-white/5">
+                {[
+                  { user: "Eleanor Vance", action: "Approved AI Node: Fed Policy", time: "10m ago" },
+                  { user: "Julian Wealth", action: "Suspended Vendor #42", time: "1h ago" },
+                  { user: "System", action: "Rotated API Gateway Keys", time: "2h ago" }
+                ].map((act, i) => (
+                  <div key={i} className="p-4 flex flex-col gap-1 hover:bg-white/5 transition-colors cursor-default">
+                    <Text variant="bodySmall" weight="bold" className="text-foreground/90">{act.action}</Text>
+                    <div className="flex justify-between items-center text-[10px] text-muted-foreground">
+                      <span>{act.user}</span>
+                      <span className="font-mono">{act.time}</span>
                     </div>
                   </div>
                 ))}
               </div>
             </CardContent>
-            <CardFooter className="p-4 bg-muted/10 border-t border-white/5">
-              <Button variant="ghost" className="w-full h-10 text-[9px] font-bold uppercase tracking-widest text-muted-foreground hover:text-primary rounded-none" asChild>
-                <Link href="/admin/control/audit-trail">Full Governance Logs</Link>
-              </Button>
-            </CardFooter>
           </Card>
-
-          <div className="p-8 rounded-[3rem] border border-secondary/20 bg-secondary/5 space-y-4 relative overflow-hidden group">
-            <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none group-hover:rotate-12 transition-transform duration-700">
-              <ShieldCheck className="h-24 w-24 text-secondary" />
-            </div>
-            <div className="flex items-center gap-2 text-secondary font-bold text-sm uppercase tracking-widest">
-              <Lock className="h-4 w-4" /> Identity Sealed
-            </div>
-            <Text variant="caption" className="text-muted-foreground leading-relaxed italic block">
-              "Your administrative session is cryptographically signed. All node modifications are immutable and mirrored to the secondary governance cluster."
-            </Text>
-          </div>
-        </aside>
+        </div>
       </div>
     </div>
   );

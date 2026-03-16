@@ -3,142 +3,93 @@
 import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
-  SelectValue 
-} from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import { Text } from '@/design-system/typography/text';
 import { 
   Users as UsersIcon, 
-  UserPlus, 
   Search, 
-  MoreVertical, 
-  Mail, 
+  Filter, 
+  Loader2, 
   ShieldCheck, 
-  Edit, 
-  Trash2,
-  Loader2,
+  UserPlus, 
+  MoreVertical,
   CheckCircle2,
-  AlertCircle,
+  XCircle,
   Ban,
-  UserCircle,
   ArrowRight,
-  ShieldAlert
+  ShieldAlert,
+  ChevronRight,
+  UserCheck
 } from 'lucide-react';
-import { usersService } from '@/services/data/users-service';
-import { User, Role, UserStatus } from '@/types';
-import { toast } from '@/hooks/use-toast';
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuLabel, 
-  DropdownMenuSeparator, 
-  DropdownMenuTrigger 
-} from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { cn } from '@/lib/utils';
+import { toast } from '@/hooks/use-toast';
 
-/**
- * User Management and RBAC Dashboard.
- * Allows administrators to manage CMS users, assign roles, and control account status.
- */
-export default function UserManagementPage() {
-  const [users, setUsers] = useState<User[]>([]);
+export default function UserIdentityRegistry() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
 
+  // Mock Identity Matrix
+  const [users, setUsers] = useState([
+    { id: 'u-1', name: "Eleanor Vance", email: "e.vance@imperialpedia.com", role: "Super Admin", tier: "Root", status: "Active" },
+    { id: 'u-2', name: "Julian Wealth", email: "j.wealth@institutional.com", role: "Editor", tier: "Elite", status: "Active" },
+    { id: 'u-3', name: "Sarah Crypto", email: "sarah@defi.io", role: "Expert Author", tier: "Pro", status: "Active" },
+    { id: 'u-4', name: "Node Vendor #42", email: "vendor.42@discovery.com", role: "Data Vendor", tier: "Standard", status: "Suspended" },
+  ]);
+
   useEffect(() => {
-    async function loadUsers() {
-      try {
-        const response = await usersService.getUsers();
-        setUsers(response.data);
-      } catch (e) {
-        console.error(e);
-      } finally {
-        setLoading(false);
-      }
-    }
-    loadUsers();
+    setTimeout(() => setLoading(false), 600);
   }, []);
 
-  const handleRoleChange = (userId: string, newRole: Role) => {
-    setUsers(prev => prev.map(u => u.id === userId ? { ...u, role: newRole } : u));
-    toast({
-      title: "Role Updated",
-      description: `User role has been changed to ${newRole}.`,
-    });
+  const handleStatusToggle = (id: string) => {
+    setUsers(prev => prev.map(u => 
+      u.id === id ? { ...u, status: u.status === 'Active' ? 'Suspended' : 'Active' } : u
+    ));
+    toast({ title: "Identity State Shifted", description: "Status change synchronized across all identity nodes." });
   };
 
-  const handleStatusToggle = (userId: string, currentStatus: UserStatus = 'active') => {
-    const newStatus: UserStatus = currentStatus === 'active' ? 'suspended' : 'active';
-    setUsers(prev => prev.map(u => u.id === userId ? { ...u, status: newStatus } : u));
-    
-    toast({
-      title: newStatus === 'suspended' ? "User Suspended" : "User Reactivated",
-      description: `Access status for the user has been updated to ${newStatus}.`,
-      variant: newStatus === 'suspended' ? 'destructive' : 'default',
-    });
-  };
-
-  const handleDelete = (userId: string) => {
-    setUsers(prev => prev.filter(u => u.id !== userId));
-    toast({
-      title: "User Purged",
-      description: "User identity has been removed from the platform index.",
-      variant: "destructive",
-    });
-  };
-
-  const filteredUsers = users.filter(u => 
-    u.name.toLowerCase().includes(search.toLowerCase()) || 
-    u.email.toLowerCase().includes(search.toLowerCase())
-  );
-
-  const getStatusBadge = (status: UserStatus = 'active') => {
-    switch (status) {
-      case 'active':
-        return <Badge variant="outline" className="bg-emerald-500/10 text-emerald-500 border-emerald-500/20 text-[10px] font-bold uppercase tracking-tighter"><CheckCircle2 className="h-3 w-3 mr-1" /> Active</Badge>;
-      case 'suspended':
-        return <Badge variant="destructive" className="text-[10px] font-bold uppercase tracking-tighter"><Ban className="h-3 w-3 mr-1" /> Suspended</Badge>;
-      default:
-        return <Badge variant="outline" className="text-[10px] font-bold uppercase">{status}</Badge>;
+  const getTierBadge = (tier: string) => {
+    switch (tier) {
+      case 'Root': return <Badge className="bg-primary text-white border-none text-[8px] font-bold uppercase h-5 px-2">Root Node</Badge>;
+      case 'Elite': return <Badge className="bg-secondary/20 text-secondary border-secondary/30 text-[8px] font-bold uppercase h-5 px-2">Elite</Badge>;
+      default: return <Badge variant="outline" className="text-[8px] border-white/10 uppercase h-5 px-2">{tier}</Badge>;
     }
   };
 
+  const filtered = users.filter(u => u.name.toLowerCase().includes(search.toLowerCase()) || u.email.toLowerCase().includes(search.toLowerCase()));
+
   return (
-    <div className="space-y-8 pb-12 animate-in fade-in duration-700">
-      <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div className="space-y-10 pb-24 animate-in fade-in duration-700">
+      <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 px-2">
         <div>
           <div className="flex items-center gap-2 text-primary mb-1">
-            <ShieldAlert className="h-4 w-4" />
-            <Text variant="label" className="text-[10px] font-bold tracking-widest uppercase">Platform Governance</Text>
+            <UsersIcon className="h-4 w-4" />
+            <Text variant="label" className="text-[10px] font-bold tracking-widest uppercase">Identity Orchestration</Text>
           </div>
-          <Text variant="h1" className="text-3xl font-bold">User Administration</Text>
-          <Text variant="bodySmall" className="text-muted-foreground mt-1">
-            Manage expert identities, administrative roles, and platform-wide access status.
-          </Text>
+          <Text variant="h1" className="text-3xl font-bold tracking-tight">Identity Registry</Text>
         </div>
-        <Button className="bg-primary hover:bg-primary/90 rounded-xl h-11 px-6 shadow-lg shadow-primary/20">
-          <UserPlus className="mr-2 h-4 w-4" /> Add CMS User
+        <Button className="rounded-xl shadow-lg shadow-primary/20 font-bold bg-primary hover:bg-primary/90 h-11 px-8 transition-all scale-105 active:scale-95">
+          <UserPlus className="mr-2 h-4 w-4" /> Provision Identity
         </Button>
       </header>
 
       {/* Toolbar */}
-      <div className="flex flex-col md:flex-row gap-4 bg-card/30 p-4 rounded-xl border border-white/5 backdrop-blur-sm">
-        <div className="relative flex-1 group">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
+      <div className="bg-card/30 p-4 rounded-2xl border border-white/5 backdrop-blur-sm flex flex-col md:flex-row gap-4 items-center">
+        <div className="relative flex-1 w-full group">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
           <Input 
-            placeholder="Search directory by name or communication node..." 
-            className="pl-10 bg-background/50 h-11 border-white/10 rounded-xl" 
+            placeholder="Search by name, email, or institutional ID..." 
+            className="pl-12 bg-background/50 h-12 border-white/10 rounded-xl text-sm"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
+        </div>
+        <div className="flex gap-2">
+          <Button variant="outline" className="h-12 px-6 rounded-xl border-white/10 bg-background/30 gap-2 font-bold text-xs">
+            <Filter className="h-4 w-4 text-primary" /> Filter Segment
+          </Button>
         </div>
       </div>
 
@@ -146,101 +97,55 @@ export default function UserManagementPage() {
         <div className="overflow-x-auto">
           <Table>
             <TableHeader>
-              <TableRow className="bg-muted/20 hover:bg-muted/20 border-b border-white/5">
-                <TableHead className="pl-6 font-bold text-[10px] uppercase tracking-widest">User Identity</TableHead>
-                <TableHead className="font-bold text-[10px] uppercase tracking-widest text-center">System Role</TableHead>
-                <TableHead className="font-bold text-[10px] uppercase tracking-widest text-center">Access Status</TableHead>
-                <TableHead className="text-right pr-6 font-bold text-[10px] uppercase tracking-widest">Administrative Actions</TableHead>
+              <TableRow className="bg-muted/20 border-b border-white/5">
+                <TableHead className="pl-8 font-bold text-[10px] uppercase tracking-widest py-6">Handshake Identity</TableHead>
+                <TableHead className="font-bold text-[10px] uppercase tracking-widest">Platform Persona</TableHead>
+                <TableHead className="font-bold text-[10px] uppercase tracking-widest text-center">Trust Tier</TableHead>
+                <TableHead className="font-bold text-[10px] uppercase tracking-widest text-center">Lifecycle Status</TableHead>
+                <TableHead className="text-right pr-8 font-bold text-[10px] uppercase tracking-widest">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {loading ? (
                 <TableRow>
-                  <TableCell colSpan={4} className="h-64 text-center">
-                    <div className="flex flex-col items-center justify-center space-y-4">
-                      <Loader2 className="h-10 w-10 text-primary animate-spin" />
-                      <Text variant="caption" className="animate-pulse">Syncing User Directory...</Text>
-                    </div>
+                  <TableCell colSpan={5} className="h-64 text-center">
+                    <Loader2 className="h-10 w-10 text-primary animate-spin mx-auto" />
+                    <Text variant="caption" className="mt-4 block animate-pulse font-bold tracking-widest uppercase">Syncing Identity Matrix...</Text>
                   </TableCell>
                 </TableRow>
-              ) : filteredUsers.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={4} className="h-48 text-center text-muted-foreground italic">
-                    No users found matching your discovery parameters.
-                  </TableCell>
-                </TableRow>
-              ) : filteredUsers.map((user) => (
-                <TableRow key={user.id} className="group hover:bg-muted/10 transition-colors border-b border-white/5">
-                  <TableCell className="py-5 pl-6">
+              ) : filtered.map((user) => (
+                <TableRow key={user.id} className="group hover:bg-white/5 transition-colors border-b border-white/5">
+                  <TableCell className="py-5 pl-8">
                     <div className="flex items-center gap-4">
-                      <Avatar className="h-11 w-11 rounded-2xl border-2 border-white/5 group-hover:border-primary/30 transition-colors">
-                        <AvatarImage src={user.avatar} />
-                        <AvatarFallback className="bg-primary/10 text-primary font-bold">{user.name.charAt(0)}</AvatarFallback>
+                      <Avatar className="h-10 w-10 rounded-xl border-2 border-background ring-1 ring-white/10 shadow-xl group-hover:border-primary/30 transition-all">
+                        <AvatarFallback className="bg-primary/10 text-primary font-bold text-xs uppercase">{user.name.charAt(0)}</AvatarFallback>
                       </Avatar>
                       <div className="flex flex-col">
-                        <span className="text-sm font-bold flex items-center gap-1.5">
-                          {user.name}
-                          {user.role === 'admin' && <ShieldCheck className="h-3.5 w-3.5 text-primary" />}
-                        </span>
-                        <span className="text-[10px] text-muted-foreground flex items-center gap-1 uppercase tracking-tighter">
-                          <Mail className="h-2.5 w-2.5" /> {user.email}
-                        </span>
+                        <span className="text-sm font-bold text-foreground/90 group-hover:text-primary transition-colors">{user.name}</span>
+                        <span className="text-[9px] text-muted-foreground font-mono truncate max-w-[150px]">{user.email}</span>
                       </div>
                     </div>
                   </TableCell>
                   <TableCell>
-                    <div className="flex justify-center">
-                      <Select 
-                        defaultValue={user.role} 
-                        onValueChange={(val) => handleRoleChange(user.id, val as Role)}
-                      >
-                        <SelectTrigger className="w-[140px] h-9 text-[10px] font-bold uppercase tracking-widest bg-background/50 border-white/10 rounded-lg">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="admin">Administrator</SelectItem>
-                          <SelectItem value="editor">Editor</SelectItem>
-                          <SelectItem value="creator">Creator</SelectItem>
-                          <SelectItem value="viewer">Viewer</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
+                    <span className="text-xs font-medium text-foreground/70 uppercase tracking-tight">{user.role}</span>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex justify-center">{getTierBadge(user.tier)}</div>
                   </TableCell>
                   <TableCell>
                     <div className="flex justify-center">
-                      {getStatusBadge(user.status)}
+                      <Badge className={cn(
+                        "text-[8px] font-bold uppercase border-none px-2 h-5",
+                        user.status === 'Active' ? "bg-emerald-500/10 text-emerald-500" : "bg-destructive/10 text-destructive"
+                      )}>{user.status}</Badge>
                     </div>
                   </TableCell>
-                  <TableCell className="text-right pr-6">
+                  <TableCell className="text-right pr-8">
                     <div className="flex justify-end gap-2">
-                      <Button variant="ghost" size="sm" className="h-9 px-3 text-xs font-bold gap-2 text-muted-foreground hover:text-primary transition-colors">
-                        <Edit className="h-3.5 w-3.5" /> View
+                      <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg hover:text-primary"><Edit className="h-3.5 w-3.5" /></Button>
+                      <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg hover:text-destructive" onClick={() => handleStatusToggle(user.id)}>
+                        {user.status === 'Active' ? <Ban className="h-3.5 w-3.5" /> : <UserCheck className="h-3.5 w-3.5" />}
                       </Button>
-                      
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon" className="h-9 w-9 rounded-lg border border-transparent hover:border-white/10">
-                            <MoreVertical className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-52">
-                          <DropdownMenuLabel className="text-[10px] uppercase font-bold tracking-widest opacity-50">Quick Management</DropdownMenuLabel>
-                          <DropdownMenuItem onClick={() => handleStatusToggle(user.id, user.status)}>
-                            {user.status === 'suspended' ? (
-                              <><CheckCircle2 className="mr-2 h-4 w-4 text-emerald-500" /> Reactivate Account</>
-                            ) : (
-                              <><Ban className="mr-2 h-4 w-4 text-destructive" /> Suspend Access</>
-                            )}
-                          </DropdownMenuItem>
-                          <DropdownMenuItem>
-                            <ShieldCheck className="mr-2 h-4 w-4" /> Force Password Reset
-                          </DropdownMenuItem>
-                          <DropdownMenuSeparator />
-                          <DropdownMenuItem className="text-destructive focus:bg-destructive/10" onClick={() => handleDelete(user.id)}>
-                            <Trash2 className="mr-2 h-4 w-4" /> Delete Identity
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
                     </div>
                   </TableCell>
                 </TableRow>
@@ -250,42 +155,39 @@ export default function UserManagementPage() {
         </div>
       </Card>
 
-      {/* Role Summary Grid */}
+      {/* Segment Insights */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card className="glass-card bg-primary/5 border-primary/20 p-6 flex flex-col gap-4 relative overflow-hidden">
-          <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
-            <ShieldCheck className="h-16 w-16" />
+        <Card className="glass-card bg-primary/5 border-primary/20 p-8 flex flex-col gap-4 relative overflow-hidden group">
+          <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none group-hover:scale-110 transition-transform">
+            <UsersIcon className="h-24 w-24 text-primary" />
           </div>
-          <div>
-            <Text variant="bodySmall" weight="bold" className="text-primary flex items-center gap-2">
-              <ShieldCheck className="h-4 w-4" /> System Control (Admins)
-            </Text>
-            <Text variant="caption" className="text-muted-foreground mt-2 leading-relaxed">
-              {users.filter(u => u.role === 'admin').length} Active. Full system governance, taxonomy control, and global SEO auditing.
-            </Text>
-          </div>
+          <Text variant="bodySmall" weight="bold" className="text-primary flex items-center gap-2 uppercase tracking-widest text-[10px]">
+            <ShieldAlert className="h-4 w-4" /> Behavioral Audit
+          </Text>
+          <Text variant="caption" className="text-muted-foreground leading-relaxed">
+            Identity churn is down 15% following the deployment of the **Expert Rewards** node. 92% of Pro users are engaging with the AI workspace weekly.
+          </Text>
         </Card>
 
-        <Card className="glass-card bg-secondary/5 border-secondary/20 p-6 flex flex-col gap-4">
-          <div>
-            <Text variant="bodySmall" weight="bold" className="text-secondary flex items-center gap-2">
-              <UserCircle className="h-4 w-4" /> Expert Creators
-            </Text>
-            <Text variant="caption" className="text-muted-foreground mt-2 leading-relaxed">
-              {users.filter(u => u.role === 'creator').length} Active. Verified research publication and audience monetization capabilities.
-            </Text>
-          </div>
+        <Card className="glass-card bg-secondary/5 border-secondary/20 p-8 flex flex-col gap-4">
+          <Text variant="bodySmall" weight="bold" className="text-secondary flex items-center gap-2 uppercase tracking-widest text-[10px]">
+            <CheckCircle2 className="h-4 w-4" /> Vetting Queue
+          </Text>
+          <Text variant="caption" className="text-muted-foreground leading-relaxed">
+            There are **12 expert candidates** awaiting institutional verification. 85% of applicants meet the Phase 2 credential matrix standards.
+          </Text>
+          <Button variant="link" className="p-0 h-auto text-secondary text-[10px] font-bold w-fit group">
+            Open Vetting Hub <ChevronRight className="ml-1 h-3 w-3 transition-transform group-hover:translate-x-1" />
+          </Button>
         </Card>
 
-        <Card className="glass-card border-white/5 p-6 flex flex-col gap-4 bg-muted/5">
-          <div>
-            <Text variant="bodySmall" weight="bold" className="text-muted-foreground flex items-center gap-2">
-              <UsersIcon className="h-4 w-4" /> Global Viewers
-            </Text>
-            <Text variant="caption" className="text-muted-foreground mt-2 leading-relaxed">
-              Managing high-scale reader registration and community interaction status.
-            </Text>
-          </div>
+        <Card className="glass-card bg-emerald-500/5 border-emerald-500/20 p-8 flex flex-col gap-4">
+          <Text variant="bodySmall" weight="bold" className="text-emerald-500 flex items-center gap-2 uppercase tracking-widest text-[10px]">
+            <Globe className="h-4 w-4" /> Regional Mapping
+          </Text>
+          <Text variant="caption" className="text-muted-foreground leading-relaxed">
+            Institutional adoption is peaking in the **London Cluster**. Recommend provision of 3 additional localized compliance nodes for Q3.
+          </Text>
         </Card>
       </div>
     </div>
