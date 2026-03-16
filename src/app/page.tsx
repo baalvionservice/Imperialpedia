@@ -23,7 +23,7 @@ import {
   SocialProofSkeleton
 } from '@/components/landing/SectionSkeletons';
 
-// Dynamic imports for performance optimization - reducing initial JS bundle
+// Dynamic imports for performance optimization
 const FeaturesSection = dynamic(() => import('@/components/landing/FeaturesSection').then(mod => mod.FeaturesSection), {
   loading: () => <FeaturesSectionSkeleton />,
   ssr: true,
@@ -47,6 +47,10 @@ const FaqSection = dynamic(() => import('@/components/common/FaqSection'), {
 const DynamicSocialProof = dynamic(() => import('@/components/common/SocialProofSection'), {
   loading: () => <SocialProofSkeleton />,
   ssr: true,
+});
+
+const ScrollPopupCTA = dynamic(() => import('@/components/landing/ScrollPopupCTA').then(mod => mod.ScrollPopupCTA), {
+  ssr: false, // Client-side scroll logic
 });
 
 /**
@@ -186,7 +190,9 @@ export default function Home() {
 
       <FooterSection />
 
+      {/* Persistence Nodes */}
       <StickyCTA />
+      <ScrollPopupCTA />
     </div>
   );
 }

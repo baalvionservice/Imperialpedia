@@ -11,8 +11,7 @@ import { trackEvent } from '@/lib/utils/analytics';
 
 /**
  * Sticky CTA Banner for high-conversion user acquisition.
- * Features persistent dismissal and integration with the Waitlist logic.
- * Enhanced with global toast feedback and event tracking.
+ * Refined with optimized scroll thresholds and institutional styling.
  */
 export const StickyCTA = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -20,29 +19,43 @@ export const StickyCTA = () => {
   const [isDismissed, setIsDismissed] = useState(true);
   const { addToast } = useToast();
 
-  // TODO: AI-powered CTA text and placement optimization in Phase 2
-  // TODO: Personalized CTA based on traversal history
-  // TODO: Dynamic conversion tracking for premium tier targeting
-
   useEffect(() => {
     const dismissedStatus = localStorage.getItem('imperialpedia_cta_dismissed');
     if (!dismissedStatus) {
       setIsDismissed(false);
-      const timer = setTimeout(() => setIsVisible(true), 2000);
-      return () => clearTimeout(timer);
+      
+      const handleScroll = () => {
+        // Show after 300px scroll threshold
+        if (window.scrollY > 300) {
+          setIsVisible(true);
+        } else {
+          setIsVisible(false);
+        }
+      };
+
+      window.addEventListener('scroll', handleScroll);
+      return () => window.removeEventListener('scroll', handleScroll);
     }
   }, []);
 
   const handleDismiss = () => {
     setIsVisible(false);
     localStorage.setItem('imperialpedia_cta_dismissed', 'true');
-    trackEvent({ category: 'CTA', action: 'Dismiss', label: 'Sticky Banner' });
+    trackEvent({ 
+      category: 'CTA', 
+      action: 'Dismiss', 
+      label: 'Sticky Banner' 
+    });
     setTimeout(() => setIsDismissed(true), 500);
   };
 
   const handleSignUpClick = () => {
     setIsModalOpen(true);
-    trackEvent({ category: 'CTA', action: 'Click', label: 'Sticky Banner Signup' });
+    trackEvent({ 
+      category: 'CTA', 
+      action: 'Click', 
+      label: 'Sticky Banner Signup' 
+    });
     
     addToast({
       message: "Establishing Handshake: Opening secure waitlist portal...",
@@ -57,7 +70,7 @@ export const StickyCTA = () => {
       <div 
         className={cn(
           "fixed bottom-6 left-1/2 -translate-x-1/2 z-40 w-[calc(100%-2rem)] max-w-3xl transition-all duration-700 ease-out transform",
-          isVisible ? "translate-y-0 opacity-100" : "translate-y-20 opacity-0"
+          isVisible ? "translate-y-0 opacity-100" : "translate-y-20 opacity-0 pointer-events-none"
         )}
       >
         <div className="glass-card bg-primary/10 border-primary/30 shadow-2xl shadow-primary/20 rounded-[2rem] p-4 pr-12 relative group pointer-events-auto">
@@ -78,7 +91,7 @@ export const StickyCTA = () => {
 
             <Button 
               onClick={handleSignUpClick}
-              className="h-11 px-8 rounded-xl font-bold bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20 transition-all scale-105 active:scale-95 group/btn"
+              className="h-11 px-8 rounded-xl font-bold bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20 transition-all scale-105 active:scale-95 group/btn focus-visible:ring-offset-2 focus-visible:ring-primary"
             >
               Secure My Spot <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
             </Button>
@@ -86,7 +99,7 @@ export const StickyCTA = () => {
 
           <button 
             onClick={handleDismiss}
-            className="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-muted-foreground hover:text-foreground transition-colors"
+            className="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-muted-foreground hover:text-foreground transition-colors rounded-full focus-visible:ring-2 focus-visible:ring-primary outline-none"
             aria-label="Dismiss banner"
           >
             <X className="h-4 w-4" />
@@ -95,6 +108,10 @@ export const StickyCTA = () => {
       </div>
 
       <WaitlistModal isOpen={isModalOpen} onOpenChange={setIsModalOpen} />
+      
+      {/* TODO: AI-driven dynamic CTA text based on user behavior and region */}
+      {/* TODO: A/B testing framework for CTA variants */}
+      {/* TODO: Analytics tracking for impressions, clicks, and conversions */}
     </>
   );
 };
