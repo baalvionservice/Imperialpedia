@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { Container } from '@/design-system/layout/container';
 import { Text } from '@/design-system/typography/text';
@@ -13,17 +13,10 @@ import {
   ChevronRight,
   ShieldCheck
 } from 'lucide-react';
-import { WaitlistModal } from '@/components/landing/WaitlistModal';
 import Newsletter from '@/components/common/Newsletter';
 import { logEvent } from '@/lib/utils/analytics';
 
-/**
- * Global Platform Footer.
- * Central hub for navigation, institutional trust signals, and legal compliance.
- */
 export default function Footer() {
-  const [isWaitlistOpen, setIsWaitlistOpen] = useState(false);
-
   const handleSocialClick = (platform: string) => {
     logEvent("Social Click", "Engagement", platform);
   };
@@ -58,29 +51,29 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-24 mb-20">
           <div className="lg:col-span-4 space-y-8">
             <div>
-              <Link href="/" className="text-2xl font-bold text-primary tracking-tighter inline-block group outline-none">
+              <Link href="/" className="text-2xl font-bold text-primary tracking-tighter inline-block group outline-none" aria-label="Imperialpedia Home">
                 Imperial<span className="text-foreground transition-colors group-hover:text-primary">pedia</span>
               </Link>
               <Text variant="bodySmall" className="text-muted-foreground mt-4 leading-relaxed max-w-sm">
-                The world's most scalable AI-powered financial intelligence engine. Providing deep-dive research across 1,000,000+ programmatic knowledge nodes.
+                The world's most scalable AI-powered financial intelligence engine. Providing deep-dive research across 1,000,000+ knowledge nodes.
               </Text>
             </div>
 
             <div className="flex items-center gap-3">
-              <Button onClick={() => handleSocialClick('Twitter')} variant="ghost" size="icon" className="h-10 w-10 rounded-xl hover:bg-primary/10 hover:text-primary">
+              <Button onClick={() => handleSocialClick('Twitter')} variant="ghost" size="icon" className="h-10 w-10 rounded-xl hover:text-primary" aria-label="Follow us on Twitter">
                 <Twitter className="h-5 w-5" />
               </Button>
-              <Button onClick={() => handleSocialClick('LinkedIn')} variant="ghost" size="icon" className="h-10 w-10 rounded-xl hover:bg-primary/10 hover:text-primary">
+              <Button onClick={() => handleSocialClick('LinkedIn')} variant="ghost" size="icon" className="h-10 w-10 rounded-xl hover:text-primary" aria-label="Follow us on LinkedIn">
                 <Linkedin className="h-5 w-5" />
               </Button>
-              <Button onClick={() => handleSocialClick('GitHub')} variant="ghost" size="icon" className="h-10 w-10 rounded-xl hover:bg-primary/10 hover:text-primary">
+              <Button onClick={() => handleSocialClick('GitHub')} variant="ghost" size="icon" className="h-10 w-10 rounded-xl hover:text-primary" aria-label="Follow us on GitHub">
                 <Github className="h-5 w-5" />
               </Button>
             </div>
           </div>
 
           <div className="lg:col-span-5 grid grid-cols-2 gap-8">
-            <nav className="space-y-6">
+            <nav className="space-y-6" aria-label="Footer Quick Links">
               <Text variant="label" className="text-[10px] font-bold text-foreground/60 tracking-[0.2em] uppercase">Quick Links</Text>
               <ul className="space-y-4">
                 {navLinks.platform.map((link) => (
@@ -93,7 +86,7 @@ export default function Footer() {
                 ))}
               </ul>
             </nav>
-            <nav className="space-y-6">
+            <nav className="space-y-6" aria-label="Footer Governance Links">
               <Text variant="label" className="text-[10px] font-bold text-foreground/60 tracking-[0.2em] uppercase">Governance</Text>
               <ul className="space-y-4">
                 {navLinks.governance.map((link) => (
@@ -129,8 +122,6 @@ export default function Footer() {
           </div>
         </div>
       </Container>
-
-      <WaitlistModal isOpen={isWaitlistOpen} onOpenChange={setIsWaitlistOpen} />
     </footer>
   );
 }

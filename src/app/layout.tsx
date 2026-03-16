@@ -19,12 +19,15 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import { trackPageView } from '@/lib/utils/analytics';
 import { I18nProvider } from '@/components/i18n/I18nProvider';
 
+/**
+ * Root Layout for Imperialpedia.
+ * Optimized for institutional performance and accessibility.
+ */
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   const pathname = usePathname();
 
-  // Track page views on route change
   useEffect(() => {
     trackPageView(pathname);
   }, [pathname]);
@@ -32,6 +35,8 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <title>Imperialpedia | Global AI Knowledge Infrastructure</title>
+        <meta name="description" content="Research 1M+ programmatic nodes with institutional-grade AI intelligence." />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
@@ -39,7 +44,6 @@ export default function RootLayout({
           rel="stylesheet"
         />
 
-        {/* GA4 Handshake - Phase 1 Foundation */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-IMP-INDEX-42"
           strategy="afterInteractive"

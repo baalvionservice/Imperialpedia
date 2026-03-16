@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Text } from '@/design-system/typography/text';
+import { Label } from '@/components/ui/label';
 import { Loader2, CheckCircle2, AlertCircle, Send, Sparkles } from 'lucide-react';
 import { useToast } from '@/components/common/ToastManager';
 import { cn } from '@/lib/utils';
@@ -12,13 +13,7 @@ import { logEvent } from '@/lib/utils/analytics';
 
 /**
  * Institutional Newsletter Subscription Node.
- * Features validation, real-time feedback, and strategic placeholders for Phase 2.
- * 
- * // TODO: AI-driven newsletter content personalization
- * // TODO: Suggest topics based on user traversal history
- * // TODO: AI-driven dynamic newsletter text and suggestions
- * // TODO: Backend integration for subscription management
- * // TODO: Analytics tracking for newsletter submissions
+ * Optimized for accessibility and performance.
  */
 export default function Newsletter() {
   const [email, setEmail] = useState('');
@@ -26,6 +21,7 @@ export default function Newsletter() {
   const [message, setMessage] = useState('');
   const { addToast } = useToast();
   
+  const inputId = useId();
   const errorId = useId();
   const successId = useId();
 
@@ -61,7 +57,7 @@ export default function Newsletter() {
 
       if (data.success) {
         setStatus('success');
-        setMessage("Thank you for signing up! You are now synchronized with the wire.");
+        setMessage("Synchronization complete. You are now subscribed.");
         setEmail('');
         
         addToast({
@@ -90,39 +86,25 @@ export default function Newsletter() {
         id={successId}
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        role="alert" 
-        className="p-8 rounded-[2rem] bg-emerald-500/10 border border-emerald-500/20 text-center space-y-4 shadow-xl"
+        role="status" 
+        className="p-8 rounded-[2rem] bg-emerald-500/10 border border-emerald-500/20 text-center space-y-4"
       >
-        <div className="w-16 h-16 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-2 shadow-inner">
-          <CheckCircle2 className="h-8 w-8 text-emerald-500" />
-        </div>
-        <Text variant="h4" className="font-bold text-foreground">Handshake Complete</Text>
-        <Text variant="bodySmall" className="text-muted-foreground leading-relaxed">
-          {message}
-        </Text>
+        <CheckCircle2 className="h-8 w-8 text-emerald-500 mx-auto" aria-hidden="true" />
+        <Text variant="h4" className="font-bold">Subscription Node Active</Text>
+        <Text variant="bodySmall" className="text-muted-foreground">{message}</Text>
       </motion.div>
     );
   }
 
   return (
-    <motion.div 
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6 }}
-      className="w-full max-w-2xl mx-auto space-y-6"
-    >
-      <form 
-        onSubmit={handleSubmit} 
-        className="flex flex-col sm:flex-row gap-3" 
-        noValidate 
-        aria-label="Newsletter subscription form"
-      >
+    <div className="w-full max-w-2xl mx-auto space-y-6">
+      <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
         <div className="relative flex-1 group">
+          <Label htmlFor={inputId} className="sr-only">Institutional Email</Label>
           <Input
+            id={inputId}
             type="email"
             placeholder="analyst@institution.com"
-            aria-label="Institutional email address"
             value={email}
             onChange={(e) => {
               setEmail(e.target.value);
@@ -132,7 +114,7 @@ export default function Newsletter() {
             aria-invalid={status === 'error'}
             aria-describedby={status === 'error' ? errorId : undefined}
             className={cn(
-              "h-14 bg-card/30 border-white/10 rounded-2xl focus-visible:ring-2 focus-visible:ring-primary/20 transition-all text-lg pl-6 shadow-inner",
+              "h-14 bg-card/30 border-white/10 rounded-2xl text-lg pl-6",
               status === 'error' && "border-destructive/50"
             )}
             required
@@ -141,34 +123,28 @@ export default function Newsletter() {
         <Button 
           type="submit" 
           disabled={status === 'loading'}
-          className="h-14 px-10 rounded-2xl font-bold bg-primary hover:bg-primary/90 shadow-xl shadow-primary/20 transition-all scale-100 active:scale-[0.98] group/btn"
+          className="h-14 px-10 rounded-2xl font-bold bg-primary hover:bg-primary/90 shadow-xl"
         >
-          {status === 'loading' ? (
-            <Loader2 className="h-5 w-5 animate-spin mr-2" />
-          ) : (
-            <Send className="h-4 w-4 mr-2 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
-          )}
-          {status === 'loading' ? 'Transmitting...' : 'Subscribe'}
+          {status === 'loading' ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-4 w-4 mr-2" />}
+          {status === 'loading' ? 'Processing...' : 'Subscribe'}
         </Button>
       </form>
       
-      <div aria-live="polite">
-        {status === 'error' && (
-          <div id={errorId} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive text-xs font-bold animate-in fade-in slide-in-from-top-1">
-            <AlertCircle className="h-3 w-3" aria-hidden="true" /> {message}
-          </div>
-        )}
-      </div>
+      {status === 'error' && (
+        <div id={errorId} role="alert" className="flex items-center gap-2 px-4 py-2 rounded-lg bg-destructive/10 text-destructive text-xs font-bold animate-in fade-in">
+          <AlertCircle className="h-3 w-3" /> {message}
+        </div>
+      )}
       
       <div className="flex items-center justify-center gap-6 pt-2 opacity-40">
         <div className="flex items-center gap-2 text-[9px] font-bold uppercase tracking-widest">
-          <Sparkles className="h-3 w-3" /> Weekly Market Audits
+          <Sparkles className="h-3 w-3" /> Market Audits
         </div>
         <div className="w-1 h-1 rounded-full bg-white/20" />
         <div className="flex items-center gap-2 text-[9px] font-bold uppercase tracking-widest">
-          <Sparkles className="h-3 w-3" /> pSEO Taxonomy Alerts
+          <Sparkles className="h-3 w-3" /> pSEO Alerts
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
