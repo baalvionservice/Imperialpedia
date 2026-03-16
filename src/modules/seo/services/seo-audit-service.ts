@@ -1,11 +1,15 @@
-'use client';
+"use client";
 
-import { articlesService, glossaryService, calculatorsService } from '@/services/data';
-import { getTags } from '@/modules/content-engine/services/tag-service';
-import { getCategories } from '@/modules/content-engine/services/category-service';
-import { canonicalService, ContentType } from './canonical-service';
-import { sitemapService } from './sitemap-service';
-import { logger } from '@/lib/errors/logger';
+import {
+  articlesService,
+  glossaryService,
+  calculatorsService,
+} from "@/services/data";
+import { getTags } from "@/modules/content-engine/services/tag-service";
+import { getCategories } from "@/modules/content-engine/services/category-service";
+import { canonicalService, ContentType } from "./canonical-service";
+import { sitemapService } from "./sitemap-service";
+import { logger } from "@/lib/errors/logger";
 
 /**
  * @fileOverview Automated SEO Audit Service for programmatic pages.
@@ -35,7 +39,10 @@ export const seoAuditService = {
   /**
    * Runs a comprehensive SEO audit for a specific programmatic page.
    */
-  async runAuditForPage(slug: string, type: ContentType): Promise<SEOAuditResult> {
+  async runAuditForPage(
+    slug: string,
+    type: ContentType
+  ): Promise<SEOAuditResult> {
     const issues: string[] = [];
     let hasMetadata = false;
     let hasFAQSchema = false; // Simplified check for mock data
@@ -43,44 +50,50 @@ export const seoAuditService = {
     // 1. Check Metadata and Existence based on type
     try {
       switch (type) {
-        case 'article':
+        case "article": {
           const art = await articlesService.getArticleBySlug(slug);
           hasMetadata = !!(art.data?.title && art.data?.description);
           break;
-        case 'glossary':
+        }
+        case "glossary": {
           const term = await glossaryService.getTermBySlug(slug);
           hasMetadata = !!(term.data?.term && term.data?.definition);
           break;
-        case 'tool':
+        }
+        case "tool": {
           const tools = await calculatorsService.getCalculatorList();
-          const tool = tools.data.find(t => t.slug === slug);
+          const tool = tools.data.find((t) => t.slug === slug);
           hasMetadata = !!(tool?.name && tool?.description);
           break;
-        case 'category':
+        }
+        case "category": {
           const cat = await getCategoryBySlug(slug);
           hasMetadata = !!(cat.data?.name && cat.data?.description);
           break;
-        case 'tag':
+        }
+        case "tag": {
           const tag = await getTagBySlug(slug);
-          hasMetadata = !!(tag.data?.name);
+          hasMetadata = !!tag.data?.name;
           break;
+        }
       }
     } catch (e) {
       issues.push(`Page data retrieval failed for slug: ${slug}`);
     }
 
-    if (!hasMetadata) issues.push('Missing critical SEO metadata (title or description)');
+    if (!hasMetadata)
+      issues.push("Missing critical SEO metadata (title or description)");
 
     // 2. Canonical Check
     const canonical = canonicalService.getCanonicalTag(slug, type);
-    const hasCanonical = !!canonical && canonical.startsWith('http');
-    if (!hasCanonical) issues.push('Invalid or missing canonical URL');
+    const hasCanonical = !!canonical && canonical.startsWith("http");
+    if (!hasCanonical) issues.push("Invalid or missing canonical URL");
 
     // 3. Sitemap Inclusion Check (Simplified Logic)
     // In a real app, this would check if the URL exists in the generated XML
     const sitemap = await sitemapService.generateSitemap();
     const includedInSitemap = sitemap.includes(slug);
-    if (!includedInSitemap) issues.push('Not found in dynamic XML sitemap');
+    if (!includedInSitemap) issues.push("Not found in dynamic XML sitemap");
 
     // 4. Breadcrumb Logic Check
     // We check if the slug is valid for breadcrumb generation
@@ -103,48 +116,55 @@ export const seoAuditService = {
    */
   async runAuditForAllPages(): Promise<SEOAuditReport> {
     const start = Date.now();
-    logger.info('Starting full platform SEO audit...');
+    logger.info("Starting full platform SEO audit...");
 
-    const [articles, glossary, calculators, categories, tags] = await Promise.all([
-      articlesService.getArticles(1, 1000),
-      glossaryService.getTerms(1, 1000),
-      calculatorsService.getCalculatorList(),
-      getCategories(),
-      getTags(),
-    ]);
+    const [articles, glossary, calculators, categories, tags] =
+      await Promise.all([
+        articlesService.getArticles(1, 1000),
+        glossaryService.getTerms(1, 1000),
+        calculatorsService.getCalculatorList(),
+        getCategories(),
+        getTags(),
+      ]);
 
     const results: SEOAuditResult[] = [];
 
     // Collect all audit tasks
     const tasks: Promise<SEOAuditResult>[] = [
-      ...articles.data.map(p => this.runAuditForPage(p.slug, 'article')),
-      ...glossary.data.map(p => this.runAuditForPage(p.slug, 'glossary')),
-      ...calculators.data.map(p => this.runAuditForPage(p.slug, 'tool')),
-      ...categories.data.map(p => this.runAuditForPage(p.slug, 'category')),
-      ...tags.data.map(p => this.runAuditForPage(p.slug, 'tag')),
+      ...articles.data.map((p) => this.runAuditForPage(p.slug, "article")),
+      ...glossary.data.map((p) => this.runAuditForPage(p.slug, "glossary")),
+      ...calculators.data.map((p) => this.runAuditForPage(p.slug, "tool")),
+      ...categories.data.map((p) => this.runAuditForPage(p.slug, "category")),
+      ...tags.data.map((p) => this.runAuditForPage(p.slug, "tag")),
     ];
 
     const allResults = await Promise.all(tasks);
-    
-    const failed = allResults.filter(r => r.issues.length > 0);
+
+    const failed = allResults.filter((r) => r.issues.length > 0);
     const report: SEOAuditReport = {
       totalPages: allResults.length,
       passed: allResults.length - failed.length,
       failed: failed.length,
-      failedPages: failed.map(f => ({ slug: f.slug, type: f.type, issues: f.issues })),
+      failedPages: failed.map((f) => ({
+        slug: f.slug,
+        type: f.type,
+        issues: f.issues,
+      })),
       timestamp: new Date().toISOString(),
     };
 
     const duration = Date.now() - start;
     logger.info(`SEO Audit completed in ${duration}ms.`);
     logger.info(`Report: ${report.passed}/${report.totalPages} pages passed.`);
-    
+
     if (report.failed > 0) {
-      logger.warn(`SEO Audit found issues on ${report.failed} pages. Check report for details.`);
+      logger.warn(
+        `SEO Audit found issues on ${report.failed} pages. Check report for details.`
+      );
     }
 
     return report;
-  }
+  },
 };
 
 /**
@@ -152,10 +172,10 @@ export const seoAuditService = {
  */
 async function getCategoryBySlug(slug: string) {
   const cats = await getCategories();
-  return { data: cats.data.find(c => c.slug === slug) || null };
+  return { data: cats.data.find((c) => c.slug === slug) || null };
 }
 
 async function getTagBySlug(slug: string) {
   const tags = await getTags();
-  return { data: tags.data.find(t => t.slug === slug) || null };
+  return { data: tags.data.find((t) => t.slug === slug) || null };
 }
