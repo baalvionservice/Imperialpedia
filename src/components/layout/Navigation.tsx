@@ -12,8 +12,6 @@ const navLinks = [
   { label: 'Market Data', href: routes.public.market },
   { label: 'Community', href: routes.public.community },
   { label: 'AI Tools', href: routes.public.aiTools },
-  { label: 'Glossary', href: routes.public.glossary },
-  { label: 'Calculators', href: routes.public.calculators },
   { label: 'Experts', href: routes.public.creators },
 ];
 
@@ -25,7 +23,7 @@ const Navigation = () => {
   const pathname = usePathname();
 
   return (
-    <nav className="hidden xl:flex items-center space-x-8">
+    <nav className="hidden lg:flex items-center space-x-8">
       {navLinks.map((link) => {
         const isActive = pathname.startsWith(link.href);
         return (

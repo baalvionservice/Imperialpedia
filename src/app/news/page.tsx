@@ -39,7 +39,7 @@ function CategoryBadge({ category }: { category: NewsCategory }) {
 function FeaturedArticleCard({ article }: { article: NewsArticle }) {
     return (
         <Link href={`/news/${article.slug}`} className="group block">
-            <div className="relative w-full md:mt-6 overflow-hidden rounded-xl aspect-[16/9] lg:aspect-[21/9]">
+            <div className="relative w-full md:mt-6 overflow-hidden aspect-[16/9] lg:aspect-[21/9]">
                 <Image
                     src={article.imageUrl}
                     alt={article.title}
@@ -51,20 +51,18 @@ function FeaturedArticleCard({ article }: { article: NewsArticle }) {
                 {/* gradient overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
 
-                {/* text */}
-                <div className="absolute bottom-0 left-0 p-5 md:p-8 space-y-3">
-                    <CategoryBadge category={article.category} />
-                    <h2 className="text-white text-2xl md:text-3xl font-bold leading-snug max-w-2xl group-hover:underline underline-offset-4">
-                        {article.title}
-                    </h2>
-                    <p className="text-gray-300 text-sm md:text-base line-clamp-2 max-w-xl">
-                        {article.excerpt}
-                    </p>
-                    <p className="text-gray-400 text-xs">
-                        By {article.author.name} · {formatDate(article.publishedAt)} ·{" "}
-                        {article.readTimeMinutes} min read
-                    </p>
-                </div>
+
+            </div>
+            {/* text */}
+            <div className="py-5 space-y-3">
+                <CategoryBadge category={article.category} />
+                <h2 className="text-black text-2xl md:text-3xl font-bold leading-snug max-w-2xl group-hover:underline underline-offset-4">
+                    {article.title}
+                </h2>
+
+                <p className="text-gray-500 text-xs">
+                    By {article.author.name}
+                </p>
             </div>
         </Link>
     );
@@ -77,7 +75,7 @@ function HorizontalArticleCard({ article }: { article: NewsArticle }) {
             href={`/news/${article.slug}`}
             className="group flex gap-3 items-center py-4 border-b border-gray-100 last:border-none"
         >
-            <div className="relative flex-shrink-0 w-24 h-full rounded-lg overflow-hidden">
+            <div className="relative flex-shrink-0 w-32 h-full overflow-hidden">
                 <Image
                     src={article.imageUrl}
                     alt={article.title}
@@ -88,12 +86,13 @@ function HorizontalArticleCard({ article }: { article: NewsArticle }) {
             </div>
             <div className="flex-1 min-w-0 space-y-1">
                 <CategoryBadge category={article.category} />
-                <h3 className="text-sm font-semibold text-gray-900 leading-snug line-clamp-2 group-hover:text-blue-600 transition-colors">
+                <h3 className="text-sm font-semibold text-gray-900 leading-snug group-hover:underline line-clamp-2">
                     {article.title}
                 </h3>
-                <p className="text-xs text-gray-500">
-                    {formatDate(article.publishedAt)} · {article.readTimeMinutes} min
-                </p>
+                <div className="text-neutral-400 text-sm">
+                    By <span className="">{article.author.name}</span>
+
+                </div>
             </div>
         </Link>
     );
@@ -136,25 +135,23 @@ export default function NewsPage() {
     return (
         <div className="bg-white min-h-screen">
             {/* ── Hero header ── */}
-            <div className=" py-14 lg:py-20 text-center px-4">
-                <h1 className="text-3xl lg:text-4xl font-bold tracking-tight">
-                    Latest Financial News
+            <div className=" pt-14  pb-5 lg:pt-20 text-center px-4">
+                <h1 className="text-3xl lg:text-4xl font-bold tracking-wide">
+                    News
                 </h1>
-                <p className="mt-3 text-gray-400 text-base lg:text-lg max-w-2xl mx-auto">
-                    Follow the latest market-moving news and the companies making it happen.
+                <p className="mt-3 text-gray-800 text-base lg:text-lg max-w-2xl mx-auto">
+                    Follow the latest market-moving news and the companies that are making it happen.
                 </p>
             </div>
 
             {/* ── Main content ── */}
-            <div className="max-w-7xl mx-auto px-4 py-10 space-y-12">
+            <div className="max-w-7xl mx-auto px-4 py-4 space-y-12">
 
                 {/* ── Top section: featured + sidebar ── */}
                 <section className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     {/* Sidebar latest */}
                     <aside className="flex flex-col">
-                        <h2 className="text-sm font-bold uppercase tracking-widest text-gray-400 mb-2 border-b border-gray-200 pb-2">
-                            Latest News
-                        </h2>
+
                         {sidebarArticles.map((article) => (
                             <HorizontalArticleCard key={article.id} article={article} />
                         ))}
@@ -162,13 +159,12 @@ export default function NewsPage() {
                     {/* Featured (takes 2/3 width) */}
                     <div className="lg:col-span-2">
                         <FeaturedArticleCard article={featured} />
+
                     </div>
 
 
                 </section>
 
-                {/* ── Divider ── */}
-                <hr className="border-gray-200" />
 
                 {/* ── Article grid ── */}
                 <section>
