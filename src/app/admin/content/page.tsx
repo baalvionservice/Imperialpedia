@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -20,7 +19,8 @@ import {
   Layers,
   ArrowRight,
   Clock,
-  ShieldCheck
+  ShieldCheck,
+  CheckCircle2
 } from 'lucide-react';
 import { getCmsDashboardData } from '@/services/mock-api/admin-cms';
 import { CMSContentItem } from '@/types/system';
@@ -184,7 +184,7 @@ export default function ContentManagementPage() {
           <div>
             <Text variant="bodySmall" weight="bold" className="text-secondary flex items-center gap-2">
               <Clock className="h-4 w-4" /> Global Scheduling
-            </div>
+            </Text>
             <Text variant="caption" className="text-muted-foreground mt-2 leading-relaxed">
               Manage multi-region release cycles. Target specific discovery peak hours in New York, London, and Singapore clusters.
             </Text>
