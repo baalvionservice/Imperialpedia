@@ -6,11 +6,12 @@ import { Input } from '@/components/ui/input';
 import { Text } from '@/design-system/typography/text';
 import { Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { trackEvent } from '@/lib/utils/analytics';
 
 /**
- * Waitlist email collection form.
+ * Waitlist email collection form (Inline Version).
  * Handles state transitions for institutional early access requests.
- * Connected to global toast notifications.
+ * Connected to global toast notifications and event tracking.
  */
 export const WaitlistForm = () => {
   const [email, setEmail] = useState('');
@@ -19,7 +20,7 @@ export const WaitlistForm = () => {
   const { toast } = useToast();
 
   const validateEmail = (email: string) => {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -36,7 +37,12 @@ export const WaitlistForm = () => {
     }
 
     setStatus('loading');
+    
+    // TODO: AI-powered waitlist insights in Phase 2
+    trackEvent({ category: 'Form', action: 'Submit', label: 'Inline Waitlist' });
+
     try {
+      // TODO: Connect to real backend API endpoint
       const res = await fetch('/api/waitlist', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -88,7 +94,7 @@ export const WaitlistForm = () => {
   }
 
   return (
-    <div id="waitlist" className="w-full max-w-md mx-auto scroll-mt-32">
+    <div id="waitlist-inline" className="w-full max-w-md mx-auto scroll-mt-32">
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="relative group">
           <Input
@@ -120,7 +126,7 @@ export const WaitlistForm = () => {
         )}
         
         <Text variant="caption" className="text-muted-foreground text-center block px-4 leading-relaxed">
-          Join 142,000+ analysts receiving high-fidelity intelligence nodes.
+          Join 142,000+ analysts receiving high-fidelity intelligence nodes. No spam, only alpha.
         </Text>
       </form>
     </div>

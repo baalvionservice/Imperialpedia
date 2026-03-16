@@ -36,7 +36,8 @@ export const WaitlistModal = ({ isOpen, onOpenChange, title = "Join the Imperial
   const { toast } = useToast();
 
   const validateEmail = (email: string) => {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    // Specific regex for standard email validation
+    return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -48,14 +49,17 @@ export const WaitlistModal = ({ isOpen, onOpenChange, title = "Join the Imperial
     }
     if (!validateEmail(email)) {
       setStatus('error');
-      setMessage('Invalid email format detected.');
+      setMessage('Please enter a valid institutional email address.');
       return;
     }
 
     setStatus('loading');
+    
+    // TODO: AI-powered early access segmentation and prioritization in Phase 2
     trackEvent({ category: 'Form', action: 'Submit Start', label: 'Waitlist Modal' });
 
     try {
+      // TODO: Connect to backend API endpoint for persistent email storage
       const res = await fetch('/api/waitlist', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -97,8 +101,20 @@ export const WaitlistModal = ({ isOpen, onOpenChange, title = "Join the Imperial
     }
   };
 
+  // Reset form when modal closes
+  const handleOpenChange = (open: boolean) => {
+    onOpenChange(open);
+    if (!open) {
+      setTimeout(() => {
+        setStatus('idle');
+        setEmail('');
+        setMessage('');
+      }, 300);
+    }
+  };
+
   return (
-    <Dialog open={isOpen} onOpenChange={onOpenChange}>
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogContent className="max-w-md bg-card border-white/10 p-0 overflow-hidden shadow-2xl">
         {status === 'success' ? (
           <div className="p-12 text-center space-y-6 animate-in zoom-in-95 duration-500">
@@ -106,12 +122,12 @@ export const WaitlistModal = ({ isOpen, onOpenChange, title = "Join the Imperial
               <CheckCircle2 className="h-12 w-12" />
             </div>
             <div className="space-y-2">
-              <Text variant="h3" className="text-2xl font-bold">Access Secured</Text>
+              <Text variant="h2" className="text-2xl font-bold">Access Secured</Text>
               <Text variant="bodySmall" className="text-muted-foreground leading-relaxed">
-                Thank you for joining the waitlist! You are now part of the 142,000+ analysts receiving high-fidelity intelligence nodes.
+                Your spot in the intelligence matrix has been reserved. You are now part of the 142,000+ analysts receiving high-fidelity updates.
               </Text>
             </div>
-            <Button onClick={() => onOpenChange(false)} className="w-full rounded-xl bg-emerald-600 hover:bg-emerald-700 font-bold h-12">
+            <Button onClick={() => handleOpenChange(false)} className="w-full rounded-xl bg-emerald-600 hover:bg-emerald-700 font-bold h-12">
               Return to Discovery
             </Button>
           </div>
@@ -163,7 +179,7 @@ export const WaitlistModal = ({ isOpen, onOpenChange, title = "Join the Imperial
               <div className="flex items-start gap-4 p-5 rounded-2xl bg-muted/20 border border-white/5">
                 <Info className="h-5 w-5 text-muted-foreground shrink-0 mt-0.5" />
                 <Text variant="caption" className="text-muted-foreground leading-relaxed italic">
-                  "Your data traversal is cryptographically signed. We respect institutional privacy by default."
+                  "Your data traversal is cryptographically signed. We respect institutional privacy by default. No data is shared with third-party aggregators."
                 </Text>
               </div>
             </div>
