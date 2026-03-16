@@ -103,7 +103,7 @@ export default function Footer() {
           {/* Brand & Identity Node */}
           <div className="lg:col-span-4 space-y-8">
             <div>
-              <Link href="/" className="text-2xl font-bold text-primary tracking-tighter inline-block group focus-visible:ring-2 focus-visible:ring-primary rounded-lg outline-none" aria-label="Imperialpedia home">
+              <Link href="/" className="text-2xl font-bold text-primary tracking-tighter inline-block group focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4 rounded-lg outline-none" aria-label="Imperialpedia home">
                 Imperial<span className="text-foreground transition-colors group-hover:text-primary">pedia</span>
               </Link>
               <Text variant="bodySmall" className="text-muted-foreground mt-4 leading-relaxed max-w-sm">
@@ -115,33 +115,35 @@ export default function Footer() {
               <Text variant="label" className="text-[10px] font-bold text-foreground/60 tracking-[0.2em] uppercase">Contact Hub</Text>
               <div className="space-y-3">
                 <div className="flex items-center gap-3 text-sm text-muted-foreground group">
-                  <Mail className="h-4 w-4 text-primary" />
-                  <a href="mailto:governance@imperialpedia.com" className="hover:text-primary transition-colors focus-visible:ring-2 focus-visible:ring-primary rounded-sm px-1 -ml-1">governance@imperialpedia.com</a>
+                  <Mail className="h-4 w-4 text-primary" aria-hidden="true" />
+                  <a href="mailto:governance@imperialpedia.com" className="hover:text-primary transition-colors focus-visible:ring-2 focus-visible:ring-primary rounded-sm px-1 -ml-1 outline-none">governance@imperialpedia.com</a>
                 </div>
                 <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                  <Phone className="h-4 w-4 text-primary" />
+                  <Phone className="h-4 w-4 text-primary" aria-hidden="true" />
+                  <span className="sr-only">Phone number:</span>
                   <span>+1 (800) IMP-DATA</span>
                 </div>
                 <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                  <MapPin className="h-4 w-4 text-primary" />
+                  <MapPin className="h-4 w-4 text-primary" aria-hidden="true" />
+                  <span className="sr-only">Location:</span>
                   <span>Financial District, New York, NY</span>
                 </div>
               </div>
             </div>
 
-            <div className="flex items-center gap-3">
-              <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl hover:bg-primary/10 hover:text-primary transition-all focus-visible:ring-2 focus-visible:ring-primary" aria-label="Follow us on Twitter" asChild>
-                <a href="https://twitter.com/imperialpedia" target="_blank" rel="noopener noreferrer">
+            <div className="flex items-center gap-3" aria-label="Social media links">
+              <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl hover:bg-primary/10 hover:text-primary transition-all focus-visible:ring-2 focus-visible:ring-primary outline-none" asChild>
+                <a href="https://twitter.com/imperialpedia" target="_blank" rel="noopener noreferrer" aria-label="Follow us on Twitter">
                   <Twitter className="h-5 w-5" aria-hidden="true" />
                 </a>
               </Button>
-              <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl hover:bg-primary/10 hover:text-primary transition-all focus-visible:ring-2 focus-visible:ring-primary" aria-label="Connect on LinkedIn" asChild>
-                <a href="https://linkedin.com/company/imperialpedia" target="_blank" rel="noopener noreferrer">
+              <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl hover:bg-primary/10 hover:text-primary transition-all focus-visible:ring-2 focus-visible:ring-primary outline-none" asChild>
+                <a href="https://linkedin.com/company/imperialpedia" target="_blank" rel="noopener noreferrer" aria-label="Connect on LinkedIn">
                   <Linkedin className="h-5 w-5" aria-hidden="true" />
                 </a>
               </Button>
-              <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl hover:bg-primary/10 hover:text-primary transition-all focus-visible:ring-2 focus-visible:ring-primary" aria-label="View our GitHub repositories" asChild>
-                <a href="https://github.com/imperialpedia" target="_blank" rel="noopener noreferrer">
+              <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl hover:bg-primary/10 hover:text-primary transition-all focus-visible:ring-2 focus-visible:ring-primary outline-none" asChild>
+                <a href="https://github.com/imperialpedia" target="_blank" rel="noopener noreferrer" aria-label="View our GitHub repositories">
                   <Github className="h-5 w-5" aria-hidden="true" />
                 </a>
               </Button>
@@ -155,7 +157,7 @@ export default function Footer() {
               <ul className="space-y-4">
                 {navLinks.platform.map((link) => (
                   <li key={link.label}>
-                    <Link href={link.href} className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 group outline-none focus-visible:text-primary">
+                    <Link href={link.href} className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 group outline-none focus-visible:text-primary rounded-sm px-1 -mx-1">
                       <ChevronRight className="h-3 w-3 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-primary" aria-hidden="true" />
                       {link.label}
                     </Link>
@@ -163,12 +165,12 @@ export default function Footer() {
                 ))}
               </ul>
             </nav>
-            <nav className="space-y-6" aria-label="Governance links">
+            <nav className="space-y-6" aria-label="Governance and membership links">
               <Text variant="label" className="text-[10px] font-bold text-foreground/60 tracking-[0.2em] uppercase">Trust Node</Text>
               <ul className="space-y-4">
                 {navLinks.governance.map((link) => (
                   <li key={link.label}>
-                    <Link href={link.href} className="text-sm text-muted-foreground hover:text-primary transition-colors outline-none focus-visible:text-primary">
+                    <Link href={link.href} className="text-sm text-muted-foreground hover:text-primary transition-colors outline-none focus-visible:text-primary rounded-sm px-1 -mx-1">
                       {link.label}
                     </Link>
                   </li>
@@ -176,7 +178,7 @@ export default function Footer() {
                 <li>
                   <button 
                     onClick={() => setIsWaitlistOpen(true)}
-                    className="text-sm text-primary font-bold hover:underline underline-offset-4 outline-none focus-visible:underline"
+                    className="text-sm text-primary font-bold hover:underline underline-offset-4 outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-sm"
                     aria-label="Join the waiting list for early access"
                   >
                     Join the Waitlist
@@ -195,25 +197,25 @@ export default function Footer() {
               </Text>
             </div>
             
-            <form onSubmit={handleSubscribe} className="space-y-3" aria-label="Newsletter subscription">
+            <form onSubmit={handleSubscribe} className="space-y-3" aria-label="Newsletter subscription form">
               <div className="relative group">
                 <Input
                   type="email"
                   placeholder="analyst@institution.com"
-                  aria-label="Email address for newsletter"
+                  aria-label="Institutional email address"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   disabled={status === 'loading' || status === 'success'}
-                  className="h-12 bg-background/50 border-white/10 rounded-xl focus:ring-primary/20 transition-all text-sm"
+                  className="h-12 bg-background/50 border-white/10 rounded-xl focus:ring-primary/20 transition-all text-sm outline-none focus-visible:ring-2 focus-visible:ring-primary"
                   required
                 />
                 <Button 
                   type="submit" 
                   size="icon"
-                  aria-label="Subscribe"
+                  aria-label={status === 'success' ? 'Subscribed successfully' : 'Subscribe to newsletter'}
                   disabled={status === 'loading' || status === 'success'}
                   className={cn(
-                    "absolute right-1.5 top-1.5 h-9 w-9 rounded-lg transition-all focus-visible:ring-offset-0",
+                    "absolute right-1.5 top-1.5 h-9 w-9 rounded-lg transition-all focus-visible:ring-offset-0 focus-visible:ring-2 focus-visible:ring-primary outline-none",
                     status === 'success' ? "bg-emerald-600 hover:bg-emerald-600" : "bg-primary hover:bg-primary/90"
                   )}
                 >
@@ -222,7 +224,7 @@ export default function Footer() {
                    <ArrowRight className="h-4 w-4" />}
                 </Button>
               </div>
-              <div aria-live="polite">
+              <div aria-live="polite" role="status">
                 {status === 'success' && (
                   <Text variant="caption" className="text-emerald-500 font-bold animate-in fade-in slide-in-from-top-1 px-1">
                     Handshake successful. You are subscribed.
@@ -239,13 +241,14 @@ export default function Footer() {
               &copy; {new Date().getFullYear()} Imperialpedia. All rights reserved.
             </Text>
             <div className="hidden md:flex items-center gap-2 text-emerald-500/40 text-[9px] font-bold uppercase tracking-[0.2em]">
-              <ShieldCheck className="h-3.5 w-3.5" /> Data Traversal Encrypted
+              <ShieldCheck className="h-3.5 w-3.5" aria-hidden="true" /> 
+              <span>Data Traversal Encrypted</span>
             </div>
           </div>
           
           <nav className="flex items-center gap-8" aria-label="Legal navigation">
             {navLinks.legal.map((link) => (
-              <Link key={link.label} href={link.href} className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors outline-none focus-visible:text-foreground">
+              <Link key={link.label} href={link.href} className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors outline-none focus-visible:text-foreground rounded-sm">
                 {link.label}
               </Link>
             ))}

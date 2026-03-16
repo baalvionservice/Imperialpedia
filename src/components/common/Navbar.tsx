@@ -112,7 +112,7 @@ export const Navbar = () => {
         <Container>
           <div className="flex items-center justify-between gap-8">
             {/* Logo Node */}
-            <Link href="/" className="shrink-0 group focus-visible:ring-2 focus-visible:ring-primary rounded-lg outline-none" aria-label="Imperialpedia Home">
+            <Link href="/" className="shrink-0 group focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4 rounded-lg outline-none" aria-label="Imperialpedia Home">
               <Text variant="h3" className="font-bold tracking-tighter text-2xl group-hover:text-primary transition-colors">
                 Imperial<span className="text-foreground/60 group-hover:text-foreground">pedia</span>
               </Text>
@@ -143,22 +143,22 @@ export const Navbar = () => {
                 {/* Entities Discovery Dropdown */}
                 <DropdownMenu>
                   <DropdownMenuTrigger 
-                    className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-muted-foreground hover:text-primary transition-all outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4 rounded-sm"
-                    aria-label="Discovery categories"
+                    className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-muted-foreground hover:text-primary transition-all outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4 rounded-sm group"
+                    aria-label="Toggle discovery taxonomy menu"
                   >
-                    {t('nav.discovery')} <ChevronDown className="h-3 w-3" />
+                    {t('nav.discovery')} <ChevronDown className="h-3 w-3 group-data-[state=open]:rotate-180 transition-transform" />
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="start" className="w-56 glass-card border-white/10 p-2 animate-in slide-in-from-top-2 duration-300">
                     <div className="px-3 py-2 mb-1">
                       <Text variant="label" className="text-[9px] opacity-50 tracking-[0.2em]">Intelligence Hubs</Text>
                     </div>
                     {entityLinks.map((link) => (
-                      <DropdownMenuItem key={link.label} asChild className="rounded-xl focus:bg-primary/10 group">
-                        <Link href={link.href} className="flex items-center gap-3 p-3 cursor-pointer outline-none">
-                          <div className={cn("p-2 rounded-lg bg-background/50 border border-white/5 transition-transform group-hover:scale-110", link.color)}>
+                      <DropdownMenuItem key={link.label} asChild className="rounded-xl focus:bg-primary/10 group focus:text-primary outline-none">
+                        <Link href={link.href} className="flex items-center gap-3 p-3 cursor-pointer">
+                          <div className={cn("p-2 rounded-lg bg-background/50 border border-white/5 transition-transform group-hover:scale-110 group-focus:scale-110", link.color)}>
                             <link.icon className="h-4 w-4" aria-hidden="true" />
                           </div>
-                          <span className="text-sm font-bold text-foreground/80 group-hover:text-foreground">{link.label}</span>
+                          <span className="text-sm font-bold text-foreground/80 group-hover:text-foreground group-focus:text-foreground">{link.label}</span>
                         </Link>
                       </DropdownMenuItem>
                     ))}
@@ -174,7 +174,7 @@ export const Navbar = () => {
                     type="text" 
                     placeholder="Search Imperialpedia..." 
                     disabled
-                    aria-label="Search the knowledge index"
+                    aria-label="Global search index (Locked during pilot)"
                     className="w-full h-10 pl-10 pr-4 rounded-xl bg-background/40 border border-white/5 text-sm focus:outline-none opacity-60 cursor-not-allowed"
                   />
                   <div className="absolute right-2 top-1/2 -translate-y-1/2">
@@ -191,14 +191,14 @@ export const Navbar = () => {
               </div>
               <Button 
                 variant="ghost" 
-                className="hidden sm:flex font-bold text-xs uppercase tracking-widest hover:text-primary transition-colors focus-visible:ring-offset-2 focus-visible:ring-primary focus-visible:ring-2"
+                className="hidden sm:flex font-bold text-xs uppercase tracking-widest hover:text-primary transition-colors focus-visible:ring-offset-2 focus-visible:ring-primary focus-visible:ring-2 rounded-xl h-10"
                 aria-label="Log in to your account"
               >
                 Log In
               </Button>
               <Button 
                 onClick={() => setIsWaitlistOpen(true)}
-                className="rounded-xl h-10 px-6 font-bold text-xs uppercase tracking-widest bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20 transition-all scale-105 active:scale-95 focus-visible:ring-offset-2 focus-visible:ring-primary focus-visible:ring-2"
+                className="rounded-xl h-10 px-6 font-bold text-xs uppercase tracking-widest bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/20 transition-all scale-105 active:scale-95 focus-visible:ring-offset-2 focus-visible:ring-primary focus-visible:ring-2"
                 aria-label="Join the waitlist for early access"
               >
                 {t('nav.waitlist')}
@@ -207,10 +207,10 @@ export const Navbar = () => {
               {/* Mobile Trigger */}
               <button 
                 onClick={() => setIsOpen(!isOpen)}
-                className="lg:hidden p-2 rounded-xl bg-card/30 border border-white/5 text-muted-foreground hover:text-primary transition-all focus-visible:ring-2 focus-visible:ring-primary"
+                className="lg:hidden p-2 rounded-xl bg-card/30 border border-white/5 text-muted-foreground hover:text-primary transition-all focus-visible:ring-2 focus-visible:ring-primary outline-none"
                 aria-expanded={isOpen}
                 aria-controls="mobile-menu"
-                aria-label={isOpen ? "Close menu" : "Open menu"}
+                aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
               >
                 {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
               </button>
@@ -239,7 +239,7 @@ export const Navbar = () => {
                   )}
                 >
                   <Text variant="body" weight="bold" className={cn(
-                    "transition-colors",
+                    "transition-colors uppercase text-xs tracking-widest",
                     activeSection === link.id && pathname === '/' ? "text-primary" : "group-hover:text-primary"
                   )}>{link.label}</Text>
                   <ArrowRight className={cn(
@@ -267,7 +267,7 @@ export const Navbar = () => {
                     <div className={cn("p-2 rounded-lg bg-background/50 border border-white/5 w-fit group-hover:scale-110 transition-transform", link.color)}>
                       <link.icon className="h-4 w-4" aria-hidden="true" />
                     </div>
-                    <Text variant="caption" weight="bold" className="block group-hover:text-primary transition-colors">{link.label}</Text>
+                    <Text variant="caption" weight="bold" className="block group-hover:text-primary transition-colors text-[10px] uppercase tracking-wider">{link.label}</Text>
                   </Link>
                 ))}
               </div>
@@ -275,7 +275,7 @@ export const Navbar = () => {
 
             <div className="pt-6 border-t border-white/5 flex flex-col gap-4">
               <Button 
-                className="w-full h-14 rounded-2xl font-bold bg-primary focus-visible:ring-offset-2 focus-visible:ring-primary focus-visible:ring-2" 
+                className="w-full h-14 rounded-2xl font-bold bg-primary text-primary-foreground focus-visible:ring-offset-2 focus-visible:ring-primary focus-visible:ring-2 outline-none" 
                 onClick={() => { setIsOpen(false); setIsWaitlistOpen(true); }}
                 aria-label="Secure your spot on the waitlist"
               >
@@ -289,10 +289,6 @@ export const Navbar = () => {
           </div>
         </div>
       </nav>
-
-      {/* TODO: AI-driven accessibility adjustments per user preference */}
-      {/* TODO: Dynamic contrast adjustment for light/dark modes */}
-      {/* TODO: Accessibility analytics for page interactions */}
 
       <WaitlistModal isOpen={isWaitlistOpen} onOpenChange={setIsWaitlistOpen} />
     </>

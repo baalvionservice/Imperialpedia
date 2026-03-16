@@ -43,7 +43,7 @@ export default function FaqItem({ question, answer }: FaqItemProps) {
       <button
         id={buttonId}
         onClick={handleToggle}
-        className="w-full text-left flex justify-between items-center py-4 px-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4 focus-visible:ring-offset-background rounded-xl transition-all group"
+        className="w-full text-left flex justify-between items-center py-4 px-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4 focus-visible:ring-offset-background rounded-xl transition-all group outline-none"
         aria-expanded={isOpen}
         aria-controls={contentId}
       >
@@ -75,7 +75,7 @@ export default function FaqItem({ question, answer }: FaqItemProps) {
               </Text>
               
               {/* TODO: AI-generated follow-up research nodes or deeper context links */}
-              {/* TODO: Analytics tracking for keyboard and screen reader interactions (Phase 2) */}
+              {/* TODO: Analytics tracking for keyboard and screen reader interactions */}
             </div>
           </motion.div>
         )}

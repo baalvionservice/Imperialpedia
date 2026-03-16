@@ -27,6 +27,10 @@ import {
 // TODO: Dynamic loading priority based on user behavior  
 // TODO: Monitor LCP, FID, CLS metrics and optimize
 
+// TODO: AI-driven accessibility checks and suggestions  
+// TODO: Dynamic highlighting of inaccessible elements  
+// TODO: Analytics tracking for focus and navigation patterns
+
 // Dynamic imports for performance optimization with explicit export picking
 const FeaturesSection = dynamic(() => import('@/components/landing/FeaturesSection').then(mod => mod.FeaturesSection), {
   loading: () => <FeaturesSectionSkeleton />,
@@ -149,11 +153,11 @@ export default function Home() {
       <TestimonialsSection />
 
       {/* Discovery Hubs Triage */}
-      <section className="py-24 bg-card/20 border-y border-white/5">
+      <section className="py-24 bg-card/20 border-y border-white/5" aria-labelledby="hubs-heading">
         <div className="container mx-auto px-4">
           <header className="mb-16 max-w-2xl px-2">
             <Text variant="label" className="text-primary mb-4 uppercase tracking-widest">Structured Ecosystem</Text>
-            <Text variant="h2" className="text-3xl lg:text-5xl font-bold tracking-tight mb-6">Discovery Hubs</Text>
+            <Text variant="h2" id="hubs-heading" className="text-3xl lg:text-5xl font-bold tracking-tight mb-6">Discovery Hubs</Text>
             <Text variant="body" className="text-muted-foreground leading-relaxed">
               Audit the world's most scalable intelligence infrastructure. Explore our specialized modules designed for professional-tier research.
             </Text>
@@ -161,21 +165,21 @@ export default function Home() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {modules.map((module, idx) => (
-              <Card key={idx} className="glass-card p-4 hover:border-primary/40 transition-all duration-500 group relative overflow-hidden">
+              <Card key={idx} className="glass-card p-4 hover:border-primary/40 transition-all duration-500 group relative overflow-hidden focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-4 focus-within:ring-offset-background outline-none">
                 <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                  <module.icon size={80} />
+                  <module.icon size={80} aria-hidden="true" />
                 </div>
                 <CardHeader>
                   <div className={cn("p-3 rounded-2xl bg-background/50 border border-white/5 w-fit mb-4 group-hover:scale-110 transition-transform", module.color)}>
-                    <module.icon className="h-6 w-6" />
+                    <module.icon className="h-6 w-6" aria-hidden="true" />
                   </div>
                   <CardTitle className="text-xl font-bold group-hover:text-primary transition-colors">{module.title}</CardTitle>
                   <CardDescription className="text-muted-foreground leading-relaxed">{module.desc}</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <Button variant="link" className="p-0 h-auto text-primary font-bold group/link" asChild>
+                  <Button variant="link" className="p-0 h-auto text-primary font-bold group/link focus-visible:underline" asChild>
                     <Link href={module.href}>
-                      Explore Module <ArrowRight className="ml-1 h-4 w-4 transition-all group-hover/link:translate-x-1" />
+                      Explore Module <ArrowRight className="ml-1 h-4 w-4 transition-all group-hover/link:translate-x-1" aria-hidden="true" />
                     </Link>
                   </Button>
                 </CardContent>
@@ -188,14 +192,14 @@ export default function Home() {
       <FaqSection faqs={faqs} />
 
       {/* Strategic Newsletter Node */}
-      <section className="py-24 bg-background relative overflow-hidden" aria-label="Newsletter Signup">
+      <section className="py-24 bg-background relative overflow-hidden" aria-labelledby="newsletter-heading">
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl mx-auto text-center space-y-8">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary/10 border border-secondary/20 text-secondary mb-2">
-              <Newspaper className="h-4 w-4" />
+              <Newspaper className="h-4 w-4" aria-hidden="true" />
               <span className="text-[10px] font-bold uppercase tracking-widest">Intelligence Wire</span>
             </div>
-            <Text variant="h2" className="text-3xl lg:text-5xl font-bold tracking-tight">Stay Synchronized with the Hub</Text>
+            <Text variant="h2" id="newsletter-heading" className="text-3xl lg:text-5xl font-bold tracking-tight">Stay Synchronized with the Hub</Text>
             <Text variant="body" className="text-muted-foreground text-lg">
               Receive weekly institutional audits, real-time market sentiment pulses, and exclusive pSEO taxonomy alerts delivered to your node.
             </Text>
@@ -204,7 +208,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full max-w-4xl pointer-events-none blur-[150px] opacity-[0.05] z-0">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full max-w-4xl pointer-events-none blur-[150px] opacity-[0.05] z-0" aria-hidden="true">
           <div className="absolute top-0 left-0 w-96 h-96 bg-primary rounded-full" />
           <div className="absolute bottom-0 right-0 w-96 h-96 bg-secondary rounded-full" />
         </div>
