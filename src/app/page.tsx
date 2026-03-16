@@ -12,6 +12,7 @@ import { ArrowRight, BookOpen, Database, PenTool, ShieldCheck, Activity, Zap } f
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { generateLandingMetadata } from '@/lib/utils/landingSEO';
+import { JsonLd } from '@/modules/seo-engine/components/JsonLd';
 
 // Skeleton fallbacks for lazy loading
 import { 
@@ -21,7 +22,7 @@ import {
   PricingSectionSkeleton 
 } from '@/components/landing/SectionSkeletons';
 
-// Dynamic imports for performance optimization (Phase 1)
+// Dynamic imports for performance optimization
 const FeaturesSection = dynamic(() => import('@/components/landing/FeaturesSection').then(mod => mod.FeaturesSection), {
   loading: () => <FeaturesSectionSkeleton />,
 });
@@ -41,21 +42,37 @@ const PricingSection = dynamic(() => import('@/components/landing/PricingSection
 /**
  * Landing Page Metadata.
  * Optimized for institutional-grade SEO and social sharing.
- * Aligned with Prompt 39 specific values.
+ * Aligned with Prompt 51 specific values.
  */
 export const metadata = generateLandingMetadata();
 
 /**
  * The main Home page for Imperialpedia.
  * Orchestrates the full landing page experience with performance-optimized lazy loading.
+ * 
+ * TODO: AI-powered SEO meta suggestions (Phase 2)
+ * TODO: Dynamic structured data for AI-generated content (Phase 2)
+ * TODO: Automated performance reporting for pages (Phase 2)
  */
 export default function Home() {
-  // TODO: AI-powered prefetching for predicted user interactions in Phase 2
-  // TODO: Lazy-load AI-generated entity cards only when scrolled into view
-  // TODO: Optimize third-party scripts dynamically based on engagement signals
+  // Institutional Structured Data for Sitelinks Searchbox
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Imperialpedia",
+    "url": "https://imperialpedia.com",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://imperialpedia.com/search?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  };
 
   return (
     <div className="flex flex-col w-full">
+      {/* SEO Injection Node */}
+      <JsonLd data={websiteSchema} />
+
       {/* Hero is loaded statically as it contains LCP elements */}
       <HeroSection />
 
