@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -16,23 +16,22 @@ import {
   ChevronRight,
   Plus,
   Zap,
-  BarChart3,
-  History,
-  Terminal,
-  Edit,
-  CheckCircle2,
-  Trash2,
   Activity,
   Globe,
   ShieldCheck,
-  Search,
-  Sparkles
+  Terminal,
+  Edit,
+  Trash2,
+  Sparkles,
+  ArrowRight,
+  Clock
 } from 'lucide-react';
 import Link from 'next/link';
 import { getCmsDashboardData } from '@/services/mock-api/admin-cms';
 import { CMSDashboardData } from '@/types/system';
 import { cn } from '@/lib/utils';
 import { toast } from '@/hooks/use-toast';
+import { Progress } from '@/components/ui/progress';
 
 /**
  * Institutional Mission Control.
@@ -74,6 +73,13 @@ export default function AdminCmsDashboardPage() {
     );
   }
 
+  const vitals = [
+    { label: 'Network Reach', value: '1.2M+', icon: Globe, color: 'text-primary' },
+    { label: 'Active Experts', value: '156', icon: Users, color: 'text-secondary' },
+    { label: 'Integrity Tasks', value: '5', icon: ShieldAlert, color: 'text-destructive' },
+    { label: 'Node Health', value: 'Optimal', icon: Activity, color: 'text-emerald-500' },
+  ];
+
   return (
     <div className="space-y-10 pb-24 animate-in fade-in duration-700">
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 px-2">
@@ -84,12 +90,14 @@ export default function AdminCmsDashboardPage() {
           </div>
           <Text variant="h1" className="text-3xl font-bold tracking-tight">Mission Control</Text>
           <Text variant="bodySmall" className="text-muted-foreground mt-1">
-            Orchestrating the discovery of 1M+ intelligence nodes.
+            Orchestrating the discovery of 1M+ intelligence nodes across the global index.
           </Text>
         </div>
         <div className="flex items-center gap-3">
-          <Button variant="outline" className="rounded-xl border-white/10 h-11 px-6 bg-card/30">
-            <Globe className="mr-2 h-4 w-4" /> Global View
+          <Button variant="outline" className="rounded-xl border-white/10 h-11 px-6 bg-card/30" asChild>
+            <Link href="/admin/analytics">
+              <Activity className="mr-2 h-4 w-4" /> Real-time Vitals
+            </Link>
           </Button>
           <Button className="rounded-xl shadow-lg shadow-primary/20 font-bold bg-primary hover:bg-primary/90 h-11 px-8 transition-all scale-105 active:scale-95">
             <Plus className="mr-2 h-4 w-4" /> Provision Node
@@ -99,12 +107,7 @@ export default function AdminCmsDashboardPage() {
 
       {/* Aggregate Vitals Matrix */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {[
-          { label: 'Network Reach', value: '1.2M+', icon: Globe, color: 'text-primary' },
-          { label: 'Active Experts', value: '156', icon: Users, color: 'text-secondary' },
-          { label: 'Integrity Tasks', value: '5', icon: ShieldAlert, color: 'text-destructive' },
-          { label: 'Node Health', value: 'Optimal', icon: Activity, color: 'text-emerald-500' },
-        ].map((v) => (
+        {vitals.map((v) => (
           <Card key={v.label} className="glass-card border-none shadow-xl group hover:border-primary/20 transition-all">
             <CardContent className="p-6">
               <div className="flex justify-between items-start mb-4">
@@ -135,8 +138,10 @@ export default function AdminCmsDashboardPage() {
                   <CardDescription>Managing research nodes and expert output across the index.</CardDescription>
                 </div>
               </div>
-              <Button variant="ghost" size="sm" className="text-primary font-bold text-xs uppercase group">
-                Full Matrix <ChevronRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
+              <Button variant="ghost" size="sm" className="text-primary font-bold text-xs uppercase group" asChild>
+                <Link href="/admin/queue">
+                  Full Queue <ChevronRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Link>
               </Button>
             </CardHeader>
             <div className="overflow-x-auto">
@@ -264,7 +269,7 @@ export default function AdminCmsDashboardPage() {
                       </Text>
                     </div>
                     <div className="flex justify-between items-center text-[10px] text-muted-foreground font-mono uppercase tracking-tighter">
-                      <div className="flex items-center gap-1.5"><User className="h-2.5 w-2.5" /> {log.user}</div>
+                      <div className="flex items-center gap-1.5"><Users className="h-2.5 w-2.5" /> {log.user}</div>
                       <div className="flex items-center gap-1.5"><Clock className="h-2.5 w-2.5" /> {log.timestamp.split(' ')[1]}</div>
                     </div>
                   </div>
@@ -285,7 +290,7 @@ export default function AdminCmsDashboardPage() {
             <div className="flex items-center gap-2 text-secondary font-bold text-sm uppercase tracking-widest">
               <Lock className="h-4 w-4" /> Identity Sealed
             </div>
-            <Text variant="caption" className="text-muted-foreground leading-relaxed italic">
+            <Text variant="caption" className="text-muted-foreground leading-relaxed italic block">
               "Your administrative session is cryptographically signed. All node modifications are immutable and mirrored to the secondary governance cluster."
             </Text>
           </div>
@@ -294,5 +299,3 @@ export default function AdminCmsDashboardPage() {
     </div>
   );
 }
-
-import { User } from 'lucide-react';

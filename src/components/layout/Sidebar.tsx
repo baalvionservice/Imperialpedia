@@ -1,8 +1,3 @@
-/**
- * Institutional Platform Sidebar.
- * Grouped navigation for Governance, Intelligence, and System clusters.
- */
-
 'use client';
 
 import React from 'react';
@@ -14,18 +9,13 @@ import {
   Settings, 
   BarChart3, 
   Users as UsersIcon,
-  Search,
-  FileEdit,
   ShieldAlert,
-  Bell,
   ShieldCheck,
-  History,
+  RotateCcw,
   Lock,
-  Megaphone,
   Activity,
   Globe,
   Zap,
-  Sparkles,
   Layers,
   ChevronRight,
   Database,
@@ -37,6 +27,7 @@ import {
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 import { useAppStore } from '@/lib/state/app-store';
+import { Badge } from '@/components/ui/badge';
 
 interface SidebarItemProps {
   icon: React.ElementType;
@@ -164,7 +155,7 @@ const Sidebar = ({ className }: { className?: string }) => {
           </Badge>
         </div>
         
-        <button className="flex items-center gap-3 px-4 py-2 w-full text-muted-foreground hover:text-destructive transition-colors group">
+        <button className="flex items-center gap-3 px-4 py-2 w-full text-muted-foreground hover:text-destructive transition-colors group outline-none">
           <Terminal className="h-4 w-4 group-hover:text-destructive" />
           <span className="text-[10px] font-bold uppercase tracking-widest">Sign out of node</span>
         </button>
@@ -174,5 +165,3 @@ const Sidebar = ({ className }: { className?: string }) => {
 };
 
 export default Sidebar;
-
-import { RotateCcw } from 'lucide-react';
