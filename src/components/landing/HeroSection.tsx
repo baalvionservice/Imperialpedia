@@ -37,7 +37,11 @@ export const HeroSection = () => {
   };
 
   return (
-    <section className="relative pt-20 pb-32 lg:pt-32 lg:pb-48 overflow-hidden">
+    <section 
+      role="banner"
+      aria-label="Imperialpedia Hero"
+      className="relative pt-20 pb-32 lg:pt-32 lg:pb-48 overflow-hidden"
+    >
       {/* Background Architectural Grid */}
       <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none" 
            style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '40px 40px' }} 
@@ -54,7 +58,7 @@ export const HeroSection = () => {
           
           {/* Animated Status Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary animate-in fade-in slide-in-from-top-4 duration-700 fill-mode-both">
-            <Sparkles className="h-4 w-4 animate-pulse" />
+            <Sparkles className="h-4 w-4 animate-pulse" aria-hidden="true" />
             <Text variant="label" className="text-[10px] font-bold uppercase tracking-[0.2em]">{t('hero.badge')}</Text>
           </div>
 
@@ -62,6 +66,7 @@ export const HeroSection = () => {
           <div className="space-y-6">
             <Text 
               variant="display" 
+              as="h1"
               className="text-5xl lg:text-8xl font-bold tracking-tight leading-[1.1] animate-in fade-in slide-in-from-bottom-8 duration-1000 fill-mode-both"
             >
               {t('hero.title')}
@@ -80,16 +85,18 @@ export const HeroSection = () => {
               <Button 
                 size="lg" 
                 onClick={() => handleCtaClick('Primary')}
-                className="h-16 px-10 rounded-2xl font-bold text-lg bg-primary hover:bg-primary/90 shadow-2xl shadow-primary/30 transition-all scale-105 active:scale-95 group relative overflow-hidden"
+                className="h-16 px-10 rounded-2xl font-bold text-lg bg-primary hover:bg-primary/90 shadow-2xl shadow-primary/30 transition-all scale-105 active:scale-95 group relative overflow-hidden focus-visible:ring-offset-2 focus-visible:ring-primary focus-visible:ring-2"
+                aria-label={`${t('hero.cta')} - Opens waitlist portal`}
               >
                 <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-                {t('hero.cta')} <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+                {t('hero.cta')} <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" aria-hidden="true" />
               </Button>
               <Button 
                 size="lg" 
                 variant="outline" 
                 onClick={() => handleCtaClick('Secondary')}
-                className="h-16 px-10 rounded-2xl font-bold text-lg border-white/10 bg-card/30 hover:bg-white/5 hover:border-primary/30 transition-all"
+                className="h-16 px-10 rounded-2xl font-bold text-lg border-white/10 bg-card/30 hover:bg-white/5 hover:border-primary/30 transition-all focus-visible:ring-offset-2 focus-visible:ring-primary focus-visible:ring-2"
+                aria-label={`${t('hero.secondary_cta')} - Learn more about early access`}
               >
                 {t('hero.secondary_cta')}
               </Button>
@@ -112,13 +119,17 @@ export const HeroSection = () => {
                 priority={true}
                 data-ai-hint={heroImage?.imageHint || "financial data"}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-60" />
-              <div className="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-[3rem]" />
+              <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-60" aria-hidden="true" />
+              <div className="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-[3rem]" aria-hidden="true" />
             </div>
           </div>
 
           {/* Institutional Telemetry Grid */}
-          <div className="pt-16 grid grid-cols-2 md:grid-cols-4 gap-8 opacity-60 animate-in fade-in duration-1000 delay-1000 fill-mode-both">
+          <div 
+            className="pt-16 grid grid-cols-2 md:grid-cols-4 gap-8 opacity-60 animate-in fade-in duration-1000 delay-1000 fill-mode-both"
+            role="group"
+            aria-label="Platform Statistics"
+          >
             {[
               { icon: Globe, label: "Sovereign Nodes", value: "200+" },
               { icon: ShieldCheck, label: "Expert Analysts", value: "156" },
@@ -126,7 +137,7 @@ export const HeroSection = () => {
               { icon: Activity, label: "Search Index", value: "1.2M+" }
             ].map((stat, i) => (
               <div key={i} className="flex flex-col items-center gap-1 group cursor-default">
-                <stat.icon className="h-5 w-5 mb-2 text-primary group-hover:scale-110 transition-transform" />
+                <stat.icon className="h-5 w-5 mb-2 text-primary group-hover:scale-110 transition-transform" aria-hidden="true" />
                 <span className="text-xl font-bold text-foreground">{stat.value}</span>
                 <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{stat.label}</span>
               </div>

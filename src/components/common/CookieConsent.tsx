@@ -20,7 +20,7 @@ export const CookieConsent = () => {
 
   // TODO: AI-driven consent personalization and auto-optimize banner
   // TODO: Show different messages based on region (GDPR, CCPA, etc.)
-  // TODO: Analytics tracking for consent choices
+  // TODO: Analytics tracking for keyboard and screen reader interactions
 
   useEffect(() => {
     const consent = localStorage.getItem('imperialpedia_cookie_consent');
@@ -90,7 +90,7 @@ export const CookieConsent = () => {
             <Button 
               variant="ghost" 
               size="sm"
-              className="flex-1 md:flex-none h-11 px-4 rounded-xl text-[10px] font-bold uppercase tracking-widest text-muted-foreground hover:text-primary transition-all focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              className="flex-1 md:flex-none h-11 px-4 rounded-xl text-[10px] font-bold uppercase tracking-widest text-muted-foreground hover:text-primary transition-all focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background outline-none"
               onClick={handleManage}
               aria-label="Manage detailed cookie preferences"
             >
@@ -98,14 +98,14 @@ export const CookieConsent = () => {
             </Button>
             <Button 
               variant="ghost" 
-              className="flex-1 md:flex-none h-11 px-6 rounded-xl text-xs font-bold uppercase tracking-widest text-muted-foreground hover:text-foreground border border-white/5 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              className="flex-1 md:flex-none h-11 px-6 rounded-xl text-xs font-bold uppercase tracking-widest text-muted-foreground hover:text-foreground border border-white/5 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background outline-none"
               onClick={() => handleChoice('declined')}
               aria-label="Reject non-essential cookies"
             >
               Decline
             </Button>
             <Button 
-              className="flex-1 md:flex-none h-11 px-8 rounded-xl bg-primary hover:bg-primary/90 text-white font-bold text-xs uppercase tracking-widest shadow-lg shadow-primary/20 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              className="flex-1 md:flex-none h-11 px-8 rounded-xl bg-primary hover:bg-primary/90 text-white font-bold text-xs uppercase tracking-widest shadow-lg shadow-primary/20 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background outline-none"
               onClick={() => handleChoice('accepted')}
               aria-label="Accept all cookies and continue"
             >

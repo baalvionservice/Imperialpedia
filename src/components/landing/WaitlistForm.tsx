@@ -104,7 +104,12 @@ export const WaitlistForm = () => {
 
   return (
     <div id="waitlist-inline" className="w-full max-w-lg mx-auto scroll-mt-32">
-      <form onSubmit={handleSubmit} className="space-y-4" noValidate aria-label="Waitlist registration form">
+      <form 
+        onSubmit={handleSubmit} 
+        className="space-y-4" 
+        noValidate 
+        aria-label="Waitlist registration form"
+      >
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-2 text-left">
             <Label htmlFor="inline-name" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">
@@ -119,7 +124,7 @@ export const WaitlistForm = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 disabled={status === 'loading'}
-                className="h-12 pl-10 bg-card/50 border-white/10 rounded-xl focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background transition-all text-sm"
+                className="h-12 pl-10 bg-card/50 border-white/10 rounded-xl focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background transition-all text-sm outline-none"
               />
             </div>
           </div>
@@ -143,7 +148,7 @@ export const WaitlistForm = () => {
                 aria-invalid={status === 'error'}
                 aria-describedby={status === 'error' ? errorId : undefined}
                 className={cn(
-                  "h-12 bg-card/50 border-white/10 rounded-xl focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background transition-all text-sm",
+                  "h-12 bg-card/50 border-white/10 rounded-xl focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background transition-all text-sm outline-none",
                   status === 'error' && "border-destructive/50"
                 )}
                 required
@@ -156,7 +161,7 @@ export const WaitlistForm = () => {
           type="submit" 
           disabled={status === 'loading'}
           aria-label={status === 'loading' ? 'Transmitting waitlist request' : 'Join the waitlist'}
-          className="w-full h-12 rounded-xl font-bold bg-primary hover:bg-primary/90 shadow-xl shadow-primary/20 transition-all scale-100 active:scale-[0.98] group/btn focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          className="w-full h-12 rounded-xl font-bold bg-primary hover:bg-primary/90 shadow-xl shadow-primary/20 transition-all scale-100 active:scale-[0.98] group/btn focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background outline-none"
         >
           {status === 'loading' ? (
             <Loader2 className="h-4 w-4 animate-spin mr-2" aria-hidden="true" />

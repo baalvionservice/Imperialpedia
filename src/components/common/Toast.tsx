@@ -17,6 +17,7 @@ export interface ToastProps {
 /**
  * High-fidelity Intelligence Alert Component.
  * Features institutional styling, animated entry, and automatic temporal decay.
+ * Enhanced with ARIA alert roles for real-time accessibility.
  */
 export const Toast = ({ id, message, type = 'info', duration = 5000, onClose }: ToastProps) => {
   useEffect(() => {
@@ -48,8 +49,9 @@ export const Toast = ({ id, message, type = 'info', duration = 5000, onClose }: 
       )}
       role="alert"
       aria-live="assertive"
+      aria-atomic="true"
     >
-      <div className="shrink-0">{icons[type]}</div>
+      <div className="shrink-0" aria-hidden="true">{icons[type]}</div>
       <div className="flex-1">
         <Text variant="bodySmall" weight="bold" className="text-foreground/90">
           {message}
@@ -57,10 +59,10 @@ export const Toast = ({ id, message, type = 'info', duration = 5000, onClose }: 
       </div>
       <button 
         onClick={() => onClose(id)}
-        className="absolute right-4 top-1/2 -translate-y-1/2 p-1 text-muted-foreground hover:text-foreground transition-colors"
+        className="absolute right-4 top-1/2 -translate-y-1/2 p-1 text-muted-foreground hover:text-foreground transition-colors outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-lg"
         aria-label="Dismiss alert"
       >
-        <X className="h-4 w-4" />
+        <X className="h-4 w-4" aria-hidden="true" />
       </button>
       
       {/* TODO: AI-driven personalized notifications per user behavior */}

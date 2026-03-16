@@ -191,14 +191,14 @@ export const Navbar = () => {
               </div>
               <Button 
                 variant="ghost" 
-                className="hidden sm:flex font-bold text-xs uppercase tracking-widest hover:text-primary transition-colors focus-visible:ring-offset-2"
+                className="hidden sm:flex font-bold text-xs uppercase tracking-widest hover:text-primary transition-colors focus-visible:ring-offset-2 focus-visible:ring-primary focus-visible:ring-2"
                 aria-label="Log in to your account"
               >
                 Log In
               </Button>
               <Button 
                 onClick={() => setIsWaitlistOpen(true)}
-                className="rounded-xl h-10 px-6 font-bold text-xs uppercase tracking-widest bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20 transition-all scale-105 active:scale-95"
+                className="rounded-xl h-10 px-6 font-bold text-xs uppercase tracking-widest bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20 transition-all scale-105 active:scale-95 focus-visible:ring-offset-2 focus-visible:ring-primary focus-visible:ring-2"
                 aria-label="Join the waitlist for early access"
               >
                 {t('nav.waitlist')}
@@ -275,7 +275,7 @@ export const Navbar = () => {
 
             <div className="pt-6 border-t border-white/5 flex flex-col gap-4">
               <Button 
-                className="w-full h-14 rounded-2xl font-bold bg-primary" 
+                className="w-full h-14 rounded-2xl font-bold bg-primary focus-visible:ring-offset-2 focus-visible:ring-primary focus-visible:ring-2" 
                 onClick={() => { setIsOpen(false); setIsWaitlistOpen(true); }}
                 aria-label="Secure your spot on the waitlist"
               >
@@ -290,9 +290,9 @@ export const Navbar = () => {
         </div>
       </nav>
 
-      {/* TODO: AI-powered suggested sections based on user behavior */}
-      {/* TODO: Dynamic ARIA attributes for AI-generated content */}
-      {/* TODO: Accessibility reporting dashboard for admins */}
+      {/* TODO: AI-driven accessibility adjustments per user preference */}
+      {/* TODO: Dynamic contrast adjustment for light/dark modes */}
+      {/* TODO: Accessibility analytics for page interactions */}
 
       <WaitlistModal isOpen={isWaitlistOpen} onOpenChange={setIsWaitlistOpen} />
     </>

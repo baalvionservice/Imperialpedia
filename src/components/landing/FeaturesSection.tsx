@@ -49,11 +49,16 @@ export const FeaturesSection = () => {
   ];
 
   return (
-    <section id="features" className="py-24 bg-background scroll-mt-20">
+    <section 
+      id="features" 
+      role="region"
+      aria-labelledby="features-heading"
+      className="py-24 bg-background scroll-mt-20"
+    >
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mb-16 px-2 space-y-4">
           <Text variant="label" className="text-primary font-bold uppercase tracking-[0.2em]">{t('features.label')}</Text>
-          <Text variant="h2" className="text-3xl lg:text-5xl font-bold tracking-tight">{t('features.title')}</Text>
+          <Text variant="h2" id="features-heading" className="text-3xl lg:text-5xl font-bold tracking-tight">{t('features.title')}</Text>
           <Text variant="body" className="text-muted-foreground text-lg lg:text-xl leading-relaxed">
             {t('features.subtitle')}
           </Text>
