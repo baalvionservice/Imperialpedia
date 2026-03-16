@@ -20,7 +20,8 @@ import {
   ArrowRight,
   ShieldAlert,
   ChevronRight,
-  UserCheck
+  UserCheck,
+  Globe
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -176,8 +177,10 @@ export default function UserIdentityRegistry() {
           <Text variant="caption" className="text-muted-foreground leading-relaxed">
             There are **12 expert candidates** awaiting institutional verification. 85% of applicants meet the Phase 2 credential matrix standards.
           </Text>
-          <Button variant="link" className="p-0 h-auto text-secondary text-[10px] font-bold w-fit group">
-            Open Vetting Hub <ChevronRight className="ml-1 h-3 w-3 transition-transform group-hover:translate-x-1" />
+          <Button variant="link" className="p-0 h-auto text-secondary text-[10px] font-bold w-fit group" asChild>
+            <Link href="/admin/creators/verification">
+              Open Vetting Hub <ChevronRight className="ml-1 h-3 w-3 transition-transform group-hover:translate-x-1" />
+            </Link>
           </Button>
         </Card>
 
