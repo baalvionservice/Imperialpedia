@@ -24,7 +24,8 @@ import {
   Terminal,
   RefreshCw,
   Plus,
-  Target
+  Target,
+  ChevronRight
 } from 'lucide-react';
 import { getMediaAdminData } from '@/services/mock-api/admin-media';
 import { MediaAdminDashboardData } from '@/types/admin-media';

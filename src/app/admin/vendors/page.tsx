@@ -103,7 +103,7 @@ export default function VendorManagementHub() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input 
               placeholder="Filter by vendor ID or type..." 
-              className="pl-10 bg-background/50 h-11 border-white/10 rounded-xl text-xs"
+              className="pl-10 h-11 bg-background/50 border-white/10 rounded-xl text-xs"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />

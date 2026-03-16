@@ -19,11 +19,13 @@ import {
   Activity,
   Terminal,
   ChevronRight,
-  Database
+  Database,
+  DollarSign
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
+import { cn } from '@/lib/utils';
 import { toast } from '@/hooks/use-toast';
 
 export default function PlatformGovernanceSettings() {

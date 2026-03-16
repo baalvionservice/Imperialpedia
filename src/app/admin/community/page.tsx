@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -173,7 +172,7 @@ export default function CommunityModerationHub() {
               "Users with an average precision score below 40% are automatically throttled in high-velocity debate rooms to maintain index integrity."
             </Text>
           </Card>
-        </div>
+        </aside>
       </div>
     </div>
   );
