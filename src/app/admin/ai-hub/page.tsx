@@ -23,13 +23,13 @@ import {
   Layout,
   Terminal,
   RefreshCw,
-  Plus
+  Plus,
+  Target
 } from 'lucide-react';
 import { getMediaAdminData } from '@/services/mock-api/admin-media';
-import { MediaAdminDashboardData, AIConsentNode } from '@/types/admin-media';
+import { MediaAdminDashboardData } from '@/types/admin-media';
 import { cn } from '@/lib/utils';
 import { toast } from '@/hooks/use-toast';
-import { Input } from '@/components/ui/input';
 import { Progress } from '@/components/ui/progress';
 
 export default function AIIntegrationHubPage() {
