@@ -7,11 +7,11 @@ import { Text } from '@/design-system/typography/text';
 import { Loader2, CheckCircle2, AlertCircle, Send } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import { trackEvent } from '@/lib/utils/analytics';
 
 /**
  * Institutional newsletter subscription form.
  * Handles state transitions for capturing interest in intelligence updates.
- * Integrated with the global toast system.
  */
 export const NewsletterForm = () => {
   const [email, setEmail] = useState('');
@@ -28,6 +28,8 @@ export const NewsletterForm = () => {
     }
 
     setStatus('loading');
+    trackEvent({ category: 'Form', action: 'Submit', label: 'Newsletter Footer' });
+
     try {
       const res = await fetch('/api/newsletter', {
         method: 'POST',

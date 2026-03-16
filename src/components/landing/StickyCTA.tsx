@@ -7,11 +7,12 @@ import { X, Sparkles, ArrowRight } from 'lucide-react';
 import { WaitlistModal } from './WaitlistModal';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import { trackEvent } from '@/lib/utils/analytics';
 
 /**
  * Sticky CTA Banner for high-conversion user acquisition.
  * Features persistent dismissal and integration with the Waitlist logic.
- * Enhanced with global toast feedback for clicks.
+ * Enhanced with global toast feedback and event tracking.
  */
 export const StickyCTA = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -31,13 +32,14 @@ export const StickyCTA = () => {
   const handleDismiss = () => {
     setIsVisible(false);
     localStorage.setItem('imperialpedia_cta_dismissed', 'true');
+    trackEvent({ category: 'CTA', action: 'Dismiss', label: 'Sticky Banner' });
     setTimeout(() => setIsDismissed(true), 500);
   };
 
   const handleSignUpClick = () => {
     setIsModalOpen(true);
+    trackEvent({ category: 'CTA', action: 'Click', label: 'Sticky Banner Signup' });
     
-    // Feedback toast for high-velocity engagement
     toast({
       title: "Establishing Handshake",
       description: "Opening secure waitlist portal...",
@@ -45,9 +47,6 @@ export const StickyCTA = () => {
   };
 
   if (isDismissed) return null;
-
-  // TODO: Integrate AI suggestions for personalized CTA in Phase 2
-  // TODO: Track analytics for click tracking
 
   return (
     <>

@@ -8,6 +8,7 @@ import { Text } from '@/design-system/typography/text';
 import { CheckCircle2, Zap, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { WaitlistModal } from './WaitlistModal';
+import { trackEvent } from '@/lib/utils/analytics';
 
 const plans = [
   {
@@ -56,7 +57,6 @@ const plans = [
 
 /**
  * Landing Page Pricing Section.
- * Showcases upcoming subscription tiers and strategic features.
  */
 export const PricingSection = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -65,6 +65,7 @@ export const PricingSection = () => {
   const handleCtaClick = (planName: string) => {
     setSelectedPlan(planName);
     setIsModalOpen(true);
+    trackEvent({ category: 'CTA', action: 'Select Plan', label: planName });
   };
 
   return (

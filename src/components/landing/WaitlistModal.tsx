@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   Dialog, 
   DialogContent, 
@@ -16,7 +16,7 @@ import { Text } from '@/design-system/typography/text';
 import { Loader2, CheckCircle2, AlertCircle, Send, Sparkles, ShieldCheck, Info } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
-import { Badge } from '@/components/ui/badge';
+import { trackEvent } from '@/lib/utils/analytics';
 
 interface WaitlistModalProps {
   isOpen: boolean;
@@ -27,7 +27,7 @@ interface WaitlistModalProps {
 /**
  * Waitlist & Early Access Modal.
  * High-fidelity form for capturing institutional early access requests.
- * Integrated with the global toast system for Phase 1.
+ * Integrated with the global toast and analytics system.
  */
 export const WaitlistModal = ({ isOpen, onOpenChange, title = "Join the Imperialpedia Waitlist" }: WaitlistModalProps) => {
   const [email, setEmail] = useState('');
@@ -53,6 +53,8 @@ export const WaitlistModal = ({ isOpen, onOpenChange, title = "Join the Imperial
     }
 
     setStatus('loading');
+    trackEvent({ category: 'Form', action: 'Submit Start', label: 'Waitlist Modal' });
+
     try {
       const res = await fetch('/api/waitlist', {
         method: 'POST',
@@ -64,8 +66,8 @@ export const WaitlistModal = ({ isOpen, onOpenChange, title = "Join the Imperial
       if (data.success) {
         setStatus('success');
         setMessage(data.message);
+        trackEvent({ category: 'Form', action: 'Submit Success', label: 'Waitlist Modal' });
         
-        // Trigger Global Success Toast
         toast({
           title: "Identity Secured",
           description: data.message,
@@ -73,8 +75,8 @@ export const WaitlistModal = ({ isOpen, onOpenChange, title = "Join the Imperial
       } else {
         setStatus('error');
         setMessage(data.message);
+        trackEvent({ category: 'Form', action: 'Submit Error', label: 'Waitlist Modal' });
         
-        // Trigger Global Error Toast
         toast({
           variant: "destructive",
           title: "Synchronization Error",
@@ -85,6 +87,7 @@ export const WaitlistModal = ({ isOpen, onOpenChange, title = "Join the Imperial
       setStatus('error');
       const errorMsg = 'Network handshake failed. Try again shortly.';
       setMessage(errorMsg);
+      trackEvent({ category: 'Form', action: 'Connection Error', label: 'Waitlist Modal' });
       
       toast({
         variant: "destructive",
@@ -93,10 +96,6 @@ export const WaitlistModal = ({ isOpen, onOpenChange, title = "Join the Imperial
       });
     }
   };
-
-  // TODO: Integrate AI-powered alerts and suggestions in Phase 2
-  // TODO: Track analytics for user interactions with toasts
-  // TODO: Add contextual toasts for entity search and API responses
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>

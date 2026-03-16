@@ -1,23 +1,29 @@
-import type { Metadata } from 'next';
+'use client';
+
+import React, { useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import { Navbar } from '@/components/common/Navbar';
 import { Footer } from '@/components/common/Footer';
+import { CookieConsent } from '@/components/common/CookieConsent';
 import { GlobalStoreProvider } from '@/lib/state';
-import { generateMetadata } from '@/lib/seo/metadata';
 import { ThemeProvider } from '@/design-system/themes/theme-provider';
 import { TooltipProvider } from '@/components/ui/tooltip';
-
-export const metadata: Metadata = generateMetadata({
-  title: 'Imperialpedia — AI Knowledge Infrastructure',
-  description: 'The world\'s most scalable financial intelligence engine. Explore over 1,000,000 pages of deep financial insights, creator insights, and programmatic SEO driven knowledge.',
-});
+import { trackPageView } from '@/lib/utils/analytics';
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const pathname = usePathname();
+
+  // Track page views on route change
+  useEffect(() => {
+    trackPageView(pathname);
+  }, [pathname]);
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -30,6 +36,7 @@ export default function RootLayout({
           <ThemeProvider>
             <TooltipProvider>
               <Navbar />
+              <CookieConsent />
               <main className="flex-grow">
                 {children}
               </main>
