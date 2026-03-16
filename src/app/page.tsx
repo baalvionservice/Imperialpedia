@@ -1,9 +1,6 @@
 import React from 'react';
+import dynamic from 'next/dynamic';
 import { HeroSection } from '@/components/landing/HeroSection';
-import { FeaturesSection } from '@/components/landing/FeaturesSection';
-import { TestimonialsSection } from '@/components/landing/TestimonialsSection';
-import { FAQSection } from '@/components/landing/FAQSection';
-import { PricingSection } from '@/components/landing/PricingSection';
 import { WaitlistForm } from '@/components/landing/WaitlistForm';
 import { LandingFooter } from '@/components/landing/Footer';
 import { StickyCTA } from '@/components/landing/StickyCTA';
@@ -17,14 +14,30 @@ import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { generateLandingMetadata } from '@/lib/utils/landingSEO';
 
-// --- Phase 2 Loading Components ---
-// import { 
-//   HeroSectionSkeleton, 
-//   FeaturesSectionSkeleton, 
-//   TestimonialsSectionSkeleton, 
-//   FAQSectionSkeleton, 
-//   PricingSectionSkeleton 
-// } from '@/components/landing/SectionSkeletons';
+// Skeleton fallbacks for lazy loading
+import { 
+  FeaturesSectionSkeleton, 
+  TestimonialsSectionSkeleton, 
+  FAQSectionSkeleton, 
+  PricingSectionSkeleton 
+} from '@/components/landing/SectionSkeletons';
+
+// Dynamic imports for performance optimization (Phase 1)
+const FeaturesSection = dynamic(() => import('@/components/landing/FeaturesSection').then(mod => mod.FeaturesSection), {
+  loading: () => <FeaturesSectionSkeleton />,
+});
+
+const TestimonialsSection = dynamic(() => import('@/components/landing/TestimonialsSection').then(mod => mod.TestimonialsSection), {
+  loading: () => <TestimonialsSectionSkeleton />,
+});
+
+const FAQSection = dynamic(() => import('@/components/landing/FAQSection').then(mod => mod.FAQSection), {
+  loading: () => <FAQSectionSkeleton />,
+});
+
+const PricingSection = dynamic(() => import('@/components/landing/PricingSection').then(mod => mod.PricingSection), {
+  loading: () => <PricingSectionSkeleton />,
+});
 
 /**
  * Landing Page Metadata.
@@ -34,20 +47,19 @@ export const metadata = generateLandingMetadata();
 
 /**
  * The main Home page for Imperialpedia.
- * Orchestrates the full landing page experience from initial value prop to acquisition.
+ * Orchestrates the full landing page experience with performance-optimized lazy loading.
  */
 export default function Home() {
-  // TODO: Implement Phase 2 dynamic loading state
-  // const isLoading = false;
+  // TODO: AI-powered prefetching for predicted user interactions in Phase 2
+  // TODO: Lazy-load AI-generated entity cards only when scrolled into view
+  // TODO: Optimize third-party scripts dynamically based on engagement signals
 
   return (
     <div className="flex flex-col w-full">
-      {/* 
-        TODO: In Phase 2, wrap these in loading logic:
-        {isLoading ? <HeroSectionSkeleton /> : <HeroSection />}
-      */}
+      {/* Hero is loaded statically as it contains LCP elements */}
       <HeroSection />
 
+      {/* Heavy sections are lazy-loaded to improve initial load performance */}
       <FeaturesSection />
 
       <TestimonialsSection />
