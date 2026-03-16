@@ -24,8 +24,8 @@ export const hasConsent = () => {
  * Standard event logger for GA4.
  * Orchestrates the dispatch of custom events to the analytics cluster.
  * 
- * // TODO: AI-driven analytics insights
- * // TODO: Dynamic reporting of top-performing sections and CTAs
+ * // TODO: AI-driven analytics insights  
+ * // TODO: Dynamic reporting of top-performing sections and CTAs  
  * // TODO: Predictive analytics for user behavior and conversion
  */
 export const logEvent = (action: string, category: string, label?: string, value?: number) => {
@@ -36,16 +36,12 @@ export const logEvent = (action: string, category: string, label?: string, value
       value: value,
     });
   }
-  
-  if (process.env.NODE_ENV === 'development') {
-    console.log(`[ANALYTICS] Event: ${action} | Category: ${category} | Label: ${label || ''} | Value: ${value || ''}`);
-  }
 };
 
 /**
  * Legacy wrapper for AnalyticsEvent object structure.
  */
-export const trackEvent = ({ category, action, label, value, non_interaction = false }: AnalyticsEvent) => {
+export const trackEvent = ({ category, action, label, value }: AnalyticsEvent) => {
   logEvent(action, category, label, value);
 };
 
@@ -54,10 +50,6 @@ export const trackEvent = ({ category, action, label, value, non_interaction = f
  * Synchronized with the Next.js router cycle.
  */
 export const trackPageView = (path: string) => {
-  if (process.env.NODE_ENV === 'development') {
-    console.log(`[ANALYTICS] Page View: ${path}`);
-  }
-  
   if (hasConsent() && typeof window !== 'undefined' && (window as any).gtag) {
     (window as any).gtag('config', 'G-IMP-INDEX-42', {
       page_path: path,

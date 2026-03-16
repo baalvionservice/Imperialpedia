@@ -28,7 +28,7 @@ export default function FaqItem({ question, answer }: FaqItemProps) {
     
     // Broadcast interaction to the analytics cluster
     if (nextState) {
-      logEvent("FAQ Toggle", { category: 'Interaction', label: question });
+      logEvent("faq_open", "Interaction", question);
       
       trackEvent({
         category: 'FAQ',
@@ -73,9 +73,6 @@ export default function FaqItem({ question, answer }: FaqItemProps) {
               <Text variant="bodySmall" className="text-muted-foreground leading-relaxed text-base">
                 {answer}
               </Text>
-              
-              {/* TODO: AI-generated follow-up research nodes or deeper context links */}
-              {/* TODO: Analytics tracking for keyboard and screen reader interactions */}
             </div>
           </motion.div>
         )}

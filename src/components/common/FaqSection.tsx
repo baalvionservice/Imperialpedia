@@ -19,7 +19,6 @@ interface FaqSectionProps {
  * Orchestrates the discovery of platform knowledge via a high-fidelity accordion.
  */
 export default function FaqSection({ faqs }: FaqSectionProps) {
-  // Generate SEO schema for search engines
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -72,7 +71,7 @@ export default function FaqSection({ faqs }: FaqSectionProps) {
           </button>
         </div>
 
-        {/* TODO: AI-driven FAQ personalization based on user behavior */}
+        {/* TODO: AI-generated FAQ personalization based on user behavior */}
         {/* TODO: Dynamic FAQ ranking based on search queries */}
         {/* TODO: Analytics tracking for FAQ interactions */}
       </Container>
