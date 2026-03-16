@@ -7,7 +7,7 @@ import { NextResponse } from 'next/server';
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { email } = body;
+    const { email, name } = body;
 
     if (!email || !email.includes('@')) {
       return NextResponse.json(
@@ -17,7 +17,7 @@ export async function POST(request: Request) {
     }
 
     // Mock successful handshake
-    console.log(`[NEWSLETTER] New subscriber registered: ${email}`);
+    console.log(`[NEWSLETTER] New subscriber registered: ${name || 'Anonymous'} <${email}>`);
 
     return NextResponse.json({
       success: true,
