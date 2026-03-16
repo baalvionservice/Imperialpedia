@@ -1,5 +1,5 @@
 /**
- * UPDATED SIDEBAR - ADDED CONTENT QUALITY AUDIT
+ * UPDATED SIDEBAR - ADDED CONTENT QUALITY AUDIT & AI MODERATION
  */
 
 'use client';
@@ -157,6 +157,7 @@ const Sidebar = ({ className }: { className?: string }) => {
     { icon: LayoutDashboard, label: 'Admin Dashboard', href: '/admin/dashboard' },
     { icon: BarChart3, label: 'Analytics Overview', href: '/admin/analytics/full-overview' },
     { icon: ShieldCheck, label: 'Content Quality Audit', href: '/admin/analytics/content-quality' },
+    { icon: ShieldAlert, label: 'AI Moderation Hub', href: '/admin/control/moderation/ai-hub' },
     { icon: ShieldAlert, label: 'Incident Response', href: '/admin/control/incidents' },
     { icon: Bell, label: 'Alerts System', href: '/admin/control/alerts-system' },
     { icon: Key, label: 'Access Orchestration', href: '/admin/control/access' },

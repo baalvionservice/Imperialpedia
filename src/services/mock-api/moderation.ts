@@ -1,4 +1,5 @@
 import { ApiResponse, ModerationItem, ModerationApproval } from '@/types';
+import { AIModerationHubData } from '@/types/moderation';
 
 /**
  * @fileOverview Mock service for content moderation data.
@@ -42,6 +43,66 @@ let mockApprovals: ModerationApproval[] = [
   },
 ];
 
+/**
+ * Prompt 69: AI Moderation Hub Mock Data
+ */
+const mockAIModerationData: AIModerationHubData = {
+  moderation_metrics: {
+    flagged_content: 124,
+    articles_under_review: 18,
+    flagged_comments: 72,
+    user_reports: 35,
+    resolved_cases: 209
+  },
+  flagged_content: [
+    {
+      id: 'flag-1',
+      type: 'Comment',
+      author: 'TraderMike',
+      reason: 'Possible misinformation',
+      risk_score: 84,
+      status: 'Pending',
+      date: '2024-03-15T10:00:00Z',
+      content_preview: 'I have heard from inside sources that XYZ is about to be delisted. Better dump it all now before it hits zero.',
+      engagement: { views: 420, likes: 12 },
+      risk_analysis: { spam: 12, misinformation: 84, toxicity: 5, manipulation: 78 }
+    },
+    {
+      id: 'flag-2',
+      type: 'Article',
+      author: 'FinanceGuru',
+      reason: 'Spam promotion',
+      risk_score: 76,
+      status: 'Under Review',
+      date: '2024-03-15T09:30:00Z',
+      content_preview: 'Click here to join my private signals group where I guarantee 500% returns in under 30 days. No experience required!',
+      engagement: { views: 1250, likes: 45 },
+      risk_analysis: { spam: 92, misinformation: 45, toxicity: 2, manipulation: 65 }
+    },
+    {
+      id: 'flag-3',
+      type: 'Discussion',
+      author: 'MarketAggressor',
+      reason: 'Toxic language',
+      risk_score: 91,
+      status: 'Pending',
+      date: '2024-03-15T11:15:00Z',
+      content_preview: 'Anyone who thinks this stock is a buy is a complete idiot and should leave this platform immediately.',
+      engagement: { views: 85, likes: 0 },
+      risk_analysis: { spam: 5, misinformation: 10, toxicity: 91, manipulation: 15 }
+    }
+  ],
+  history: [
+    { id: 'h-1', moderator: 'Eleanor Vance', action: 'Removed', type: 'Comment', date: '2024-03-14T16:00:00Z' },
+    { id: 'h-2', moderator: 'Expert Editor', action: 'Approved', type: 'Article', date: '2024-03-14T14:30:00Z' },
+    { id: 'h-3', moderator: 'Platform Lead', action: 'User Warned', type: 'Discussion', date: '2024-03-14T11:00:00Z' }
+  ],
+  community_reports: [
+    { id: 'rep-1', reporter: 'User_42', content_title: 'XYZ delisting rumor', reason: 'False claims', timestamp: '2024-03-15T10:05:00Z', status: 'Open' },
+    { id: 'rep-2', reporter: 'JulianWealth', content_title: '500% returns ad', reason: 'Scam content', timestamp: '2024-03-15T09:45:00Z', status: 'Open' }
+  ]
+};
+
 export const getPendingContent = async (): Promise<ApiResponse<any[]>> => {
   await new Promise((resolve) => setTimeout(resolve, 400));
   return {
@@ -81,5 +142,13 @@ export const moderateContent = async (contentId: string, action: 'Approve' | 'Re
     data: null,
     status: 404,
     message: 'Content node not found.'
+  };
+};
+
+export const getAIModerationHubData = async (): Promise<ApiResponse<AIModerationHubData>> => {
+  await new Promise((resolve) => setTimeout(resolve, 600));
+  return {
+    data: mockAIModerationData,
+    status: 200,
   };
 };
