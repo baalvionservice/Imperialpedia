@@ -15,7 +15,9 @@ import {
   AssetSentiment,
   UserSentimentVote,
   DiscussionNode,
-  TrendingTopic
+  TrendingTopic,
+  ReputationSystemData,
+  ReputationUser
 } from '@/types/community';
 
 /**
@@ -220,6 +222,43 @@ const mockUserSentimentHistory: UserSentimentVote[] = [
   { id: 'uv-2', asset: 'Tesla', ticker: 'TSLA', vote: 'Bear', date: '2026-03-14', currentBullish: 55 },
   { id: 'uv-3', asset: 'Apple', ticker: 'AAPL', vote: 'Bull', date: '2026-03-12', currentBullish: 68 },
 ];
+
+/**
+ * Prompt 65: Reputation Data
+ */
+const mockReputationData: ReputationSystemData = {
+  currentUser: {
+    id: 'u-current',
+    name: 'Eleanor Vance',
+    username: 'econvance',
+    avatar: 'https://picsum.photos/seed/eleanor/200/200',
+    reputation_score: 92,
+    level: 'Community Authority',
+    followers: 21500,
+    articles: 84,
+    comments: 520,
+    helpful_votes: 1240,
+    engagement_score: 96
+  },
+  leaderboard: [
+    { id: 'u-1', name: 'Olivia Parker', username: 'oparker', avatar: 'https://picsum.photos/seed/olivia/200/200', reputation_score: 92, level: 'Community Authority', followers: 21500, articles: 84, comments: 520, helpful_votes: 1240, engagement_score: 96, rank: 1 },
+    { id: 'u-2', name: 'James Thornton', username: 'jthornton', avatar: 'https://picsum.photos/seed/james/200/200', reputation_score: 78, level: 'Expert Contributor', followers: 14300, articles: 56, comments: 410, helpful_votes: 850, engagement_score: 88, rank: 2 },
+    { id: 'u-3', name: 'Sarah Miller', username: 'smiller', avatar: 'https://picsum.photos/seed/sarah/200/200', reputation_score: 65, level: 'Expert Contributor', followers: 8900, articles: 42, comments: 310, helpful_votes: 620, engagement_score: 82, rank: 3 },
+    { id: 'u-4', name: 'Daniel Kim', username: 'dkim', avatar: 'https://picsum.photos/seed/daniel/200/200', reputation_score: 55, level: 'Trusted Member', followers: 5200, articles: 24, comments: 180, helpful_votes: 410, engagement_score: 75, rank: 4 },
+    { id: 'u-5', name: 'Ava Wilson', username: 'awilson', avatar: 'https://picsum.photos/seed/ava/200/200', reputation_score: 42, level: 'Trusted Member', followers: 3100, articles: 12, comments: 95, helpful_votes: 240, engagement_score: 68, rank: 5 },
+  ],
+  history: [
+    { date: '2026-01', score: 75, contributions: 12 },
+    { date: '2026-02', score: 82, contributions: 18 },
+    { date: '2026-03', score: 92, contributions: 24 },
+  ],
+  available_badges: ["Top Author", "Market Expert", "Community Helper", "Research Specialist", "Discussion Leader"]
+};
+
+export const getReputationData = async (): Promise<ApiResponse<ReputationSystemData>> => {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  return { data: mockReputationData, status: 200 };
+};
 
 export const getAssetSentiment = async (): Promise<ApiResponse<AssetSentiment[]>> => {
   await new Promise((resolve) => setTimeout(resolve, 400));

@@ -59,6 +59,39 @@ export interface UserReputation {
 }
 
 /**
+ * Prompt 65: Reputation Engine Types
+ */
+export type ReputationLevelLabel = 'Beginner' | 'Contributor' | 'Trusted Member' | 'Expert Contributor' | 'Community Authority';
+
+export interface ReputationUser {
+  id: string;
+  name: string;
+  username: string;
+  avatar: string;
+  reputation_score: number;
+  level: ReputationLevelLabel;
+  followers: number;
+  articles: number;
+  comments: number;
+  helpful_votes: number;
+  engagement_score: number;
+  rank?: number;
+}
+
+export interface ReputationHistoryNode {
+  date: string;
+  score: number;
+  contributions: number;
+}
+
+export interface ReputationSystemData {
+  currentUser: ReputationUser;
+  leaderboard: ReputationUser[];
+  history: ReputationHistoryNode[];
+  available_badges: string[];
+}
+
+/**
  * Prompt 62: Prediction Contest Types
  */
 export interface UserPrediction {
