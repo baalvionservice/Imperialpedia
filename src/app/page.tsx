@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { ArrowRight, BookOpen, PenTool, Database, PieChart, ShieldCheck, Activity } from 'lucide-react';
 import { HeroSection } from '@/components/landing/HeroSection';
 import { FeaturesSection } from '@/components/landing/FeaturesSection';
+import { TestimonialsSection } from '@/components/landing/TestimonialsSection';
 import { Text } from '@/design-system/typography/text';
 import { cn } from '@/lib/utils';
 
@@ -19,6 +20,9 @@ export default function Home() {
 
       {/* Core Features & Benefits */}
       <FeaturesSection />
+
+      {/* Social Proof / Testimonials */}
+      <TestimonialsSection />
 
       {/* Discovery Matrix Section */}
       <section className="py-24 bg-card/20 border-y border-white/5">
