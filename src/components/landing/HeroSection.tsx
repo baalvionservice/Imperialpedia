@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { Container } from '@/design-system/layout/container';
 import { Text } from '@/design-system/typography/text';
 import { Button } from '@/components/ui/button';
@@ -9,14 +10,23 @@ import { Sparkles, Zap, ArrowRight, ShieldCheck, Globe, Activity } from 'lucide-
 import { WaitlistForm } from './WaitlistForm';
 import { WaitlistModal } from './WaitlistModal';
 import { useTranslation } from 'react-i18next';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 /**
- * Landing page hero section.
- * Professional, high-fidelity entry point for Imperialpedia.
+ * Enhanced Landing Page Hero Section.
+ * Features animated typography, high-fidelity CTAs, and responsive visual intelligence.
+ * Optimized for institutional-grade discovery.
  */
 export const HeroSection = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { t } = useTranslation('common');
+  
+  // Retrieve hero image from institutional placeholder registry
+  const heroImage = PlaceHolderImages.find(img => img.id === 'hero-bg');
+
+  // TODO: AI-personalized hero headings based on user location or interest in Phase 2
+  // TODO: Dynamic CTA text variations based on engagement telemetry
+  // TODO: Animated hero background with AI-generated visual content
 
   return (
     <section className="relative pt-20 pb-32 lg:pt-32 lg:pb-48 overflow-hidden">
@@ -32,51 +42,75 @@ export const HeroSection = () => {
       </div>
 
       <Container className="relative z-10">
-        <div className="max-w-4xl mx-auto text-center space-y-10">
-          {/* Status Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary animate-in fade-in slide-in-from-top-4 duration-700">
-            <Sparkles className="h-4 w-4" />
+        <div className="max-w-5xl mx-auto text-center space-y-10">
+          
+          {/* Animated Status Badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary animate-in fade-in slide-in-from-top-4 duration-700 fill-mode-both">
+            <Sparkles className="h-4 w-4 animate-pulse" />
             <Text variant="label" className="text-[10px] font-bold uppercase tracking-[0.2em]">{t('hero.badge')}</Text>
           </div>
 
-          {/* Headlines */}
+          {/* Precision Headlines with Entrance Animations */}
           <div className="space-y-6">
-            <Text variant="display" className="text-5xl lg:text-8xl font-bold tracking-tight leading-[1.1]">
+            <Text 
+              variant="display" 
+              className="text-5xl lg:text-8xl font-bold tracking-tight leading-[1.1] animate-in fade-in slide-in-from-bottom-8 duration-1000 fill-mode-both"
+            >
               {t('hero.title')}
             </Text>
-            <Text variant="body" className="text-muted-foreground text-xl lg:text-2xl max-w-2xl mx-auto leading-relaxed">
+            <Text 
+              variant="body" 
+              className="text-muted-foreground text-xl lg:text-2xl max-w-2xl mx-auto leading-relaxed animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-300 fill-mode-both"
+            >
               {t('hero.subtitle')}
             </Text>
           </div>
 
-          {/* CTA Area */}
-          <div className="flex flex-col items-center gap-8 pt-4">
+          {/* Interactive CTA Hub */}
+          <div className="flex flex-col items-center gap-8 pt-4 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-500 fill-mode-both">
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full">
               <Button 
                 size="lg" 
                 onClick={() => setIsModalOpen(true)}
-                className="h-16 px-10 rounded-2xl font-bold text-lg bg-primary hover:bg-primary/90 shadow-2xl shadow-primary/30 transition-all scale-105 active:scale-95 group"
+                className="h-16 px-10 rounded-2xl font-bold text-lg bg-primary hover:bg-primary/90 shadow-2xl shadow-primary/30 transition-all scale-105 active:scale-95 group relative overflow-hidden"
               >
+                <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                 {t('hero.cta')} <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
               </Button>
               <Button 
                 size="lg" 
                 variant="outline" 
                 onClick={() => setIsModalOpen(true)}
-                className="h-16 px-10 rounded-2xl font-bold text-lg border-white/10 bg-card/30 hover:bg-white/5 transition-all"
+                className="h-16 px-10 rounded-2xl font-bold text-lg border-white/10 bg-card/30 hover:bg-white/5 hover:border-primary/30 transition-all"
               >
                 {t('hero.secondary_cta')}
               </Button>
             </div>
 
-            {/* Email Form (Inline Fallback) */}
+            {/* Email Acquisition Handshake */}
             <div id="waitlist" className="w-full">
               <WaitlistForm />
             </div>
           </div>
 
-          {/* Social Proof / Metrics */}
-          <div className="pt-16 grid grid-cols-2 md:grid-cols-4 gap-8 opacity-60">
+          {/* Responsive Visual Intelligence Layer */}
+          <div className="pt-16 lg:pt-24 animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-700 fill-mode-both">
+            <div className="relative aspect-[21/9] w-full rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl shadow-primary/5 bg-card/30 group">
+              <Image 
+                src={heroImage?.imageUrl || "https://picsum.photos/seed/hero/1200/600"}
+                alt={heroImage?.description || "Imperialpedia Intelligence Index Interface"}
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                priority
+                data-ai-hint={heroImage?.imageHint || "financial data"}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-60" />
+              <div className="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-[3rem]" />
+            </div>
+          </div>
+
+          {/* Institutional Telemetry Grid */}
+          <div className="pt-16 grid grid-cols-2 md:grid-cols-4 gap-8 opacity-60 animate-in fade-in duration-1000 delay-1000 fill-mode-both">
             {[
               { icon: Globe, label: "Sovereign Nodes", value: "200+" },
               { icon: ShieldCheck, label: "Expert Analysts", value: "156" },
@@ -93,7 +127,7 @@ export const HeroSection = () => {
         </div>
       </Container>
 
-      {/* Waitlist & Early Access Modal */}
+      {/* Early Access Handshake Modal */}
       <WaitlistModal isOpen={isModalOpen} onOpenChange={setIsModalOpen} />
     </section>
   );
