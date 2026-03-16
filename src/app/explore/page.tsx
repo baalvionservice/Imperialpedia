@@ -1,121 +1,95 @@
 import React from 'react';
 import { Container } from '@/design-system/layout/container';
 import { Section } from '@/components/ui/Section';
-import { Button } from '@/components/ui/button';
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
-import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
 import { Text } from '@/design-system/typography/text';
+import { SearchBar } from '@/components/search/SearchBar';
+import { ExploreCategories } from '@/components/explore/ExploreCategories';
+import { buildMetadata } from '@/lib/seo/metadata-builder';
+import { Metadata } from 'next';
+import { Sparkles, TrendingUp, ArrowRight } from 'lucide-react';
+import Link from 'next/link';
+import { Badge } from '@/components/ui/badge';
+
+export const metadata: Metadata = buildMetadata({
+  title: 'Explore Global Knowledge',
+  description: 'Navigate the Imperialpedia Index. Discover countries, companies, industries, and technologies across our 1M+ intelligence nodes.',
+});
 
 /**
- * Knowledge Explorer Page - Testing ground for UI components.
+ * The Explore Discovery Hub.
+ * Acts as the high-fidelity entry point for platform-wide knowledge traversal.
  */
 export default function ExplorePage() {
   return (
-    <main className="min-h-screen bg-background pt-20 pb-20">
+    <main className="min-h-screen bg-background pt-20 pb-32">
       <Container>
-        <header className="mb-12">
-          <Text variant="h1" className="text-4xl lg:text-6xl font-bold tracking-tight">Knowledge Explorer</Text>
-          <Text variant="body" className="text-muted-foreground mt-4 text-xl">
-            Discover and navigate the Imperialpedia global index of countries, companies, and technologies.
+        {/* Hero Section */}
+        <header className="mb-20 max-w-4xl">
+          <div className="flex items-center gap-2 text-primary mb-6 animate-in fade-in slide-in-from-left-4 duration-700">
+            <Sparkles size={20} />
+            <Text variant="label" className="font-bold tracking-widest">Knowledge Discovery Engine</Text>
+          </div>
+          <Text variant="h1" className="text-5xl lg:text-7xl font-bold mb-6 tracking-tight leading-tight">
+            Explore <span className="text-primary">Global Knowledge</span>
           </Text>
+          <Text variant="body" className="text-muted-foreground text-xl leading-relaxed max-w-2xl mb-12">
+            Audit the world's most scalable intelligence network. Traverse interconnected nodes across every financial and technical domain.
+          </Text>
+
+          {/* Expanded Search Entry */}
+          <div className="max-w-2xl">
+            <div className="p-4 bg-card/30 border border-white/5 rounded-3xl shadow-2xl backdrop-blur-sm">
+              <SearchBar />
+            </div>
+            <Text variant="caption" className="mt-4 ml-2 text-muted-foreground italic">
+              "Try searching for 'NVIDIA', 'Japan', or 'Generative AI'"
+            </Text>
+          </div>
         </header>
 
-        {/* UI Component Testing Section */}
-        <Section 
-          title="UI Component Matrix" 
-          description="A demonstration of the reusable component system built for the Imperialpedia infrastructure."
-        >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            {/* Buttons & Badges */}
-            <Card className="glass-card">
-              <CardHeader>
-                <CardTitle>Interactive Elements</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-8">
-                <div className="space-y-4">
-                  <Text variant="bodySmall" className="font-bold uppercase tracking-wider text-primary">Button Variants</Text>
-                  <div className="flex flex-wrap gap-3">
-                    <Button variant="default">Join Waitlist</Button>
-                    <Button variant="secondary">Start Research</Button>
-                    <Button variant="outline">Learn More</Button>
-                    <Button variant="ghost">View Code</Button>
-                  </div>
-                </div>
-                <div className="space-y-4">
-                  <Text variant="bodySmall" className="font-bold uppercase tracking-wider text-primary">Badge Taxonomy</Text>
-                  <div className="flex flex-wrap gap-3">
-                    <Badge variant="default">Industry</Badge>
-                    <Badge variant="secondary">Technology</Badge>
-                    <Badge variant="outline">Country</Badge>
-                    <Badge className="bg-emerald-500 text-white border-none">Success</Badge>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+        {/* Discovery Categories */}
+        <ExploreCategories />
 
-            {/* Inputs */}
-            <Card className="glass-card">
-              <CardHeader>
-                <CardTitle>Data Ingestion</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="space-y-2">
-                  <Text variant="label">Global Search</Text>
-                  <Input placeholder="Search keywords..." />
+        {/* Trending Section */}
+        <Section title="High-Impact Topics" className="mt-24 pt-12 border-t border-white/5">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              { label: 'Artificial Intelligence', href: '/technologies/generative-ai' },
+              { label: 'Semiconductors', href: '/industries/semiconductors' },
+              { label: 'Global Finance', href: '/industries/finance' },
+              { label: 'Economic Benchmarks', href: '/countries/united-states' }
+            ].map((topic) => (
+              <Link key={topic.label} href={topic.href} className="group">
+                <div className="p-6 rounded-2xl bg-card/30 border border-white/5 hover:border-primary/30 transition-all flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                    <Text variant="bodySmall" weight="bold" className="group-hover:text-primary transition-colors">{topic.label}</Text>
+                  </div>
+                  <ArrowRight size={16} className="text-muted-foreground opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
                 </div>
-                <div className="space-y-2">
-                  <Text variant="label">AI Research Prompt</Text>
-                  <Input placeholder="Ask the analyst anything..." />
-                </div>
-              </CardContent>
-              <CardFooter>
-                <Button className="w-full">Initialize Query</Button>
-              </CardFooter>
-            </Card>
-          </div>
-
-          <div className="mt-12">
-            <Card className="glass-card">
-              <CardHeader>
-                <CardTitle>Market Data Feed</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Entity</TableHead>
-                      <TableHead>Sector</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead className="text-right">Valuation</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell className="font-medium">NVIDIA</TableCell>
-                      <TableCell><Badge variant="outline">AI/Chips</Badge></TableCell>
-                      <TableCell className="text-emerald-500">Bullish</TableCell>
-                      <TableCell className="text-right">$2.2T</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell className="font-medium">Japan</TableCell>
-                      <TableCell><Badge variant="outline">Economy</Badge></TableCell>
-                      <TableCell className="text-amber-500">Stable</TableCell>
-                      <TableCell className="text-right">$4.2T</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell className="font-medium">Blockchain</TableCell>
-                      <TableCell><Badge variant="outline">Finance</Badge></TableCell>
-                      <TableCell className="text-secondary">Growth</TableCell>
-                      <TableCell className="text-right">Variable</TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </CardContent>
-            </Card>
+              </Link>
+            ))}
           </div>
         </Section>
+
+        {/* Scalability Callout */}
+        <footer className="mt-32 p-12 lg:p-20 rounded-[3.5rem] bg-primary/5 border border-primary/20 relative overflow-hidden text-center">
+          <div className="absolute top-0 right-0 p-10 opacity-5 pointer-events-none">
+            <TrendingUp size={300} className="text-primary" />
+          </div>
+          <div className="relative z-10 space-y-6 max-w-2xl mx-auto">
+            <Badge variant="outline" className="border-primary/30 text-primary uppercase font-bold tracking-widest text-[10px] px-4 h-7 mb-4">Scale Telemetry</Badge>
+            <Text variant="h2" className="text-3xl font-bold">1,000,000+ Intelligence Nodes</Text>
+            <Text variant="body" className="text-muted-foreground">
+              Our programmatic SEO engine index is constantly expanding. Every node is cross-referenced via our institutional-grade knowledge graph to ensure structural data integrity.
+            </Text>
+            <div className="pt-6">
+              <Button size="lg" className="rounded-2xl h-14 px-10 font-bold shadow-xl shadow-primary/20">
+                Register for Analyst Access
+              </Button>
+            </div>
+          </div>
+        </footer>
       </Container>
     </main>
   );
