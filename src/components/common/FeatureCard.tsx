@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Text } from '@/design-system/typography/text';
 import { LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
 
 interface FeatureCardProps {
   icon: LucideIcon;
@@ -29,37 +30,46 @@ export const FeatureCard = ({
   index = 0
 }: FeatureCardProps) => {
   return (
-    <Card 
-      className={cn(
-        "glass-card border-none shadow-xl hover:border-primary/20 transition-all duration-500 group overflow-hidden",
-        "animate-in fade-in slide-in-from-bottom-8 duration-700 fill-mode-both"
-      )}
-      style={{ animationDelay: `${index * 150}ms` }}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, delay: index * 0.1 }}
+      className="h-full"
     >
-      <CardContent className="p-8 space-y-6">
-        <div 
-          className={cn(
-            "p-4 rounded-2xl w-fit transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3 shadow-inner", 
-            bgColor, 
-            color
-          )}
-          aria-hidden="true"
-        >
-          <Icon size={28} />
-        </div>
+      <Card 
+        className={cn(
+          "glass-card border-none shadow-xl hover:border-primary/20 transition-all duration-500 group overflow-hidden h-full",
+        )}
+      >
+        <CardContent className="p-8 space-y-6">
+          <div 
+            className={cn(
+              "p-4 rounded-2xl w-fit transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 shadow-inner", 
+              bgColor, 
+              color
+            )}
+            aria-hidden="true"
+          >
+            <Icon size={28} />
+          </div>
+          
+          <div className="space-y-3">
+            <Text variant="h3" className="text-xl font-bold group-hover:text-primary transition-colors duration-300">
+              {title}
+            </Text>
+            <Text variant="bodySmall" className="text-muted-foreground leading-relaxed group-hover:text-foreground transition-colors duration-300">
+              {description}
+            </Text>
+          </div>
+
+          {/* TODO: AI-driven feature description generation */}
+          {/* TODO: Dynamic icons and animations based on user behavior */}
+        </CardContent>
         
-        <div className="space-y-3">
-          <Text variant="h3" className="text-xl font-bold group-hover:text-primary transition-colors duration-300">
-            {title}
-          </Text>
-          <Text variant="bodySmall" className="text-muted-foreground leading-relaxed group-hover:text-foreground transition-colors duration-300">
-            {description}
-          </Text>
-        </div>
-      </CardContent>
-      
-      {/* Decorative gradient overlay on hover */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" aria-hidden="true" />
-    </Card>
+        {/* Decorative gradient overlay on hover */}
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" aria-hidden="true" />
+      </Card>
+    </motion.div>
   );
 };
