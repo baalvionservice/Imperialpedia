@@ -169,16 +169,18 @@ export const Navbar = () => {
             </div>
 
             <div className="flex items-center gap-4 shrink-0">
-              <div className="hidden sm:flex items-center gap-3">
+              <div className="hidden md:flex items-center gap-3">
                 {isAdmin && (
-                  <Button variant="outline" size="sm" className="h-9 gap-2 rounded-xl border-primary/30 text-primary hover:bg-primary/5 font-bold text-[10px] uppercase tracking-widest hidden xl:flex" asChild>
+                  <Button variant="outline" size="sm" className="h-9 gap-2 rounded-xl border-primary/30 text-primary hover:bg-primary/5 font-bold text-[10px] uppercase tracking-widest" asChild>
                     <Link href="/admin/dashboard">
                       <LayoutDashboard className="h-3.5 w-3.5" /> Mission Control
                     </Link>
                   </Button>
                 )}
-                <ThemeToggle />
-                <LanguageSelector />
+                <div className="hidden lg:flex items-center gap-3">
+                  <ThemeToggle />
+                  <LanguageSelector />
+                </div>
               </div>
               <Button 
                 onClick={() => setIsOpen(!isOpen)}
