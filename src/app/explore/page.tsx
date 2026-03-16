@@ -10,8 +10,11 @@ export default function ExplorePage() {
         <Section spacing="sm">
           <Text variant="h1">Knowledge Explorer</Text>
           <Text variant="body" className="text-muted-foreground mt-4">
-            Discover and navigate the Imperialpedia global index.
+            Discover and navigate the Imperialpedia global index of countries, companies, and technologies.
           </Text>
+          <div className="mt-12 h-64 border-2 border-dashed rounded-3xl flex items-center justify-center text-muted-foreground">
+            Explore grid placeholder
+          </div>
         </Section>
       </Container>
     </main>
