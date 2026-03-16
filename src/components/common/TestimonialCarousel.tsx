@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { TestimonialCard } from './TestimonialCard';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 interface Testimonial {
   name: string;
@@ -25,10 +26,6 @@ interface TestimonialCarouselProps {
 export default function TestimonialCarousel({ testimonials }: TestimonialCarouselProps) {
   const [current, setCurrent] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-
-  // TODO: AI-driven testimonial selection based on user region or behavior
-  // TODO: Dynamic testimonial ranking based on engagement
-  // TODO: Analytics tracking for testimonial views and interactions
 
   useEffect(() => {
     if (!isAutoPlaying) return;
@@ -109,5 +106,3 @@ export default function TestimonialCarousel({ testimonials }: TestimonialCarouse
     </div>
   );
 }
-
-import { cn } from '@/lib/utils';

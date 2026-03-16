@@ -1,7 +1,6 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import { HeroSection } from '@/components/landing/HeroSection';
-import FooterSection from '@/components/common/FooterSection';
 import { StickyCTA } from '@/components/landing/StickyCTA';
 import { CtaSection } from '@/components/landing/CtaSection';
 import { Text } from '@/design-system/typography/text';
@@ -13,6 +12,7 @@ import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { generateLandingMetadata } from '@/lib/utils/landingSEO';
 import { JsonLd } from '@/modules/seo-engine/components/JsonLd';
+import { Toaster } from '@/components/ui/toaster';
 
 // Skeleton fallbacks for lazy loading
 import { 
@@ -23,7 +23,7 @@ import {
   SocialProofSkeleton
 } from '@/components/landing/SectionSkeletons';
 
-// Dynamic imports for performance optimization
+// Dynamic imports for performance optimization with explicit export picking
 const FeaturesSection = dynamic(() => import('@/components/landing/FeaturesSection').then(mod => mod.FeaturesSection), {
   loading: () => <FeaturesSectionSkeleton />,
   ssr: true,
@@ -39,12 +39,12 @@ const PricingSection = dynamic(() => import('@/components/landing/PricingSection
   ssr: true,
 });
 
-const FaqSection = dynamic(() => import('@/components/common/FaqSection'), {
+const FaqSection = dynamic(() => import('@/components/common/FaqSection').then(mod => mod.default), {
   loading: () => <FAQSectionSkeleton />,
   ssr: true,
 });
 
-const DynamicSocialProof = dynamic(() => import('@/components/common/SocialProofSection'), {
+const DynamicSocialProof = dynamic(() => import('@/components/common/SocialProofSection').then(mod => mod.default), {
   loading: () => <SocialProofSkeleton />,
   ssr: true,
 });
@@ -53,7 +53,7 @@ const ScrollPopupCTA = dynamic(() => import('@/components/landing/ScrollPopupCTA
   ssr: true,
 });
 
-const Newsletter = dynamic(() => import('@/components/common/Newsletter'), {
+const DynamicNewsletter = dynamic(() => import('@/components/common/Newsletter').then(mod => mod.default), {
   ssr: true,
 });
 
@@ -86,51 +86,53 @@ export default function Home() {
     }
   ];
 
-  // Structured Data Nodes
-  const websiteSchema = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "Imperialpedia",
-    "url": "https://imperialpedia.com",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": "https://imperialpedia.com/search?q={search_term_string}",
-      "query-input": "required name=search_term_string"
-    }
-  };
-
-  const organizationSchema = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "Imperialpedia",
-    "url": "https://www.imperialpedia.com",
-    "logo": "https://www.imperialpedia.com/logo.png",
-    "sameAs": [
-      "https://www.linkedin.com/company/imperialpedia",
-      "https://twitter.com/imperialpedia",
-      "https://www.facebook.com/imperialpedia"
-    ]
-  };
-
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": faqs.map(faq => ({
-      "@type": "Question",
-      "name": faq.question,
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": faq.answer
-      }
-    }))
-  };
+  const modules = [
+    { title: 'Content Engine', desc: 'Robust publishing system for financial articles and expert insights.', icon: BookOpen, color: 'text-primary', href: '/articles' },
+    { title: 'pSEO Engine', desc: 'Programmatic infrastructure for 1M+ indexable knowledge nodes.', icon: Database, color: 'text-secondary', href: '/explore' },
+    { title: 'Creator Economy', desc: 'Tools for experts to build audience and intelligence revenue.', icon: PenTool, color: 'text-primary', href: '/creators' },
+    { title: 'Financial Glossary', desc: 'Deep dictionary of 5,000+ market terms and economic definitions.', icon: ShieldCheck, color: 'text-secondary', href: '/glossary' },
+    { title: 'Calculators', desc: 'Precision instruments for everyday planning and wealth modeling.', icon: Zap, color: 'text-primary', href: '/financial-tools' },
+    { title: 'Analytics Hub', desc: 'Real-time platform insights and market trajectory telemetry.', icon: Activity, color: 'text-secondary', href: '/admin/analytics' }
+  ];
 
   return (
     <div className="flex flex-col w-full">
       {/* Institutional SEO Handshake */}
-      <JsonLd data={websiteSchema} />
-      <JsonLd data={organizationSchema} />
-      <JsonLd data={faqSchema} />
+      <JsonLd data={{
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Imperialpedia",
+        "url": "https://imperialpedia.com",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://imperialpedia.com/search?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }} />
+      <JsonLd data={{
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Imperialpedia",
+        "url": "https://www.imperialpedia.com",
+        "logo": "https://www.imperialpedia.com/logo.png",
+        "sameAs": [
+          "https://www.linkedin.com/company/imperialpedia",
+          "https://twitter.com/imperialpedia",
+          "https://www.facebook.com/imperialpedia"
+        ]
+      }} />
+      <JsonLd data={{
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": faqs.map(faq => ({
+          "@type": "Question",
+          "name": faq.question,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": faq.answer
+          }
+        }))
+      }} />
 
       {/* Above the fold - Priority Loading */}
       <HeroSection />
@@ -154,14 +156,7 @@ export default function Home() {
           </header>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              { title: 'Content Engine', desc: 'Robust publishing system for financial articles and expert insights.', icon: BookOpen, color: 'text-primary', href: '/articles' },
-              { title: 'pSEO Engine', desc: 'Programmatic infrastructure for 1M+ indexable knowledge nodes.', icon: Database, color: 'text-secondary', href: '/explore' },
-              { title: 'Creator Economy', desc: 'Tools for experts to build audience and intelligence revenue.', icon: PenTool, color: 'text-primary', href: '/creators' },
-              { title: 'Financial Glossary', desc: 'Deep dictionary of 5,000+ market terms and economic definitions.', icon: ShieldCheck, color: 'text-secondary', href: '/glossary' },
-              { title: 'Calculators', desc: 'Precision instruments for everyday planning and wealth modeling.', icon: Zap, color: 'text-primary', href: '/financial-tools' },
-              { title: 'Analytics Hub', desc: 'Real-time platform insights and market trajectory telemetry.', icon: Activity, color: 'text-secondary', href: '/admin/analytics' }
-            ].map((module, idx) => (
+            {modules.map((module, idx) => (
               <Card key={idx} className="glass-card p-4 hover:border-primary/40 transition-all duration-500 group relative overflow-hidden">
                 <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
                   <module.icon size={80} />
@@ -201,7 +196,7 @@ export default function Home() {
               Receive weekly institutional audits, real-time market sentiment pulses, and exclusive pSEO taxonomy alerts delivered to your node.
             </Text>
             <div className="pt-4">
-              <Newsletter />
+              <DynamicNewsletter />
             </div>
           </div>
         </div>
@@ -215,7 +210,7 @@ export default function Home() {
 
       <CtaSection />
 
-      <FooterSection />
+      <Toaster />
 
       {/* Persistence Nodes */}
       <StickyCTA />

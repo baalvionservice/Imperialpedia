@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -26,7 +26,8 @@ import {
   Target,
   FileText,
   ShieldCheck,
-  SearchX
+  SearchX,
+  ExternalLink
 } from 'lucide-react';
 import Link from 'next/link';
 import { analyticsService } from '@/services/data/analytics-service';
@@ -45,6 +46,7 @@ import {
 } from 'recharts';
 import { cn } from '@/lib/utils';
 import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 /**
  * SEO Authority & Search Performance Dashboard.
@@ -353,7 +355,7 @@ export default function SeoAuthorityDashboardPage() {
               Launch Detailed Audit Matrix <ArrowRight className="ml-1.5 h-3 w-3 transition-transform group-hover/link:translate-x-1" />
             </Button>
           </Card>
-        </div>
+        </aside>
       </div>
 
       {/* TOP PERFORMING SEARCH CONTENT LIST */}
@@ -425,6 +427,3 @@ export default function SeoAuthorityDashboardPage() {
     </div>
   );
 }
-
-import { ExternalLink } from 'lucide-react';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';

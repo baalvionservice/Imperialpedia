@@ -16,7 +16,10 @@ import {
   ArrowRight,
   ChevronRight,
   Loader2,
-  AlertCircle
+  Mail,
+  MapPin,
+  Phone,
+  Zap
 } from 'lucide-react';
 import { WaitlistModal } from '@/components/landing/WaitlistModal';
 import { cn } from '@/lib/utils';
@@ -26,18 +29,17 @@ import { trackEvent } from '@/lib/utils/analytics';
 /**
  * Global Platform Footer.
  * Central hub for navigation, institutional trust signals, and legal compliance.
- * Optimized for WCAG 2.1 accessibility.
+ * Optimized for WCAG 2.1 accessibility and SEO traversal.
  */
-export const Footer = () => {
+export default function Footer() {
   const { t } = useTranslation('common');
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-  const [message, setMessage] = useState('');
   const [isWaitlistOpen, setIsWaitlistOpen] = useState(false);
 
-  // TODO: AI-powered dynamic footer links based on user behavior
-  // TODO: Footer localization for multi-language support has been integrated
-  // TODO: Translation suggestions for AI-generated knowledge pages
+  // TODO: AI-driven dynamic footer links based on user location or role
+  // TODO: Display popular resources or latest updates dynamically
+  // TODO: Analytics tracking for footer link clicks and social media interactions
 
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,6 +55,7 @@ export const Footer = () => {
       if (res.ok) {
         setStatus('success');
         setEmail('');
+        trackEvent({ category: 'Conversion', action: 'Footer Newsletter', label: email });
       } else {
         setStatus('error');
       }
@@ -62,6 +65,13 @@ export const Footer = () => {
   };
 
   const navLinks = {
+    platform: [
+      { label: 'Home', href: '/' },
+      { label: 'Features', href: '/#features' },
+      { label: 'Pricing', href: '/#pricing' },
+      { label: 'FAQ', href: '/#faq' },
+      { label: 'Contact', href: '/contact' },
+    ],
     intelligence: [
       { label: 'Discovery Index', href: '/explore' },
       { label: 'Market Sentiment', href: '/community/sentiment' },
@@ -77,44 +87,73 @@ export const Footer = () => {
     legal: [
       { label: 'Privacy Policy', href: '/privacy-policy' },
       { label: 'Terms of Service', href: '/terms-of-service' },
-      { label: 'Contact', href: '/contact' },
       { label: 'Security Audit', href: '#' },
     ]
   };
 
   return (
     <footer className="bg-card/30 border-t border-white/5 pt-20 pb-12 relative overflow-hidden" role="contentinfo">
+      {/* Background Architectural Grid Element */}
       <div className="absolute -bottom-24 -left-24 opacity-[0.02] pointer-events-none" aria-hidden="true">
         <Globe size={480} />
       </div>
 
       <Container>
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 mb-20">
-          <div className="lg:col-span-4 space-y-6">
-            <Link href="/" className="text-2xl font-bold text-primary tracking-tighter inline-block group focus-visible:ring-2 focus-visible:ring-primary rounded-lg outline-none" aria-label="Imperialpedia home">
-              Imperial<span className="text-foreground transition-colors group-hover:text-primary">pedia</span>
-            </Link>
-            <Text variant="bodySmall" className="text-muted-foreground leading-relaxed max-w-sm">
-              {t('footer.description')}
-            </Text>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-24 mb-20">
+          {/* Brand & Identity Node */}
+          <div className="lg:col-span-4 space-y-8">
+            <div>
+              <Link href="/" className="text-2xl font-bold text-primary tracking-tighter inline-block group focus-visible:ring-2 focus-visible:ring-primary rounded-lg outline-none" aria-label="Imperialpedia home">
+                Imperial<span className="text-foreground transition-colors group-hover:text-primary">pedia</span>
+              </Link>
+              <Text variant="bodySmall" className="text-muted-foreground mt-4 leading-relaxed max-w-sm">
+                The world's most scalable AI-powered financial intelligence engine. Providing deep-dive research across 1,000,000+ programmatic knowledge nodes.
+              </Text>
+            </div>
+
+            <div className="space-y-4">
+              <Text variant="label" className="text-[10px] font-bold text-foreground/60 tracking-[0.2em] uppercase">Contact Hub</Text>
+              <div className="space-y-3">
+                <div className="flex items-center gap-3 text-sm text-muted-foreground group">
+                  <Mail className="h-4 w-4 text-primary" />
+                  <a href="mailto:governance@imperialpedia.com" className="hover:text-primary transition-colors focus-visible:ring-2 focus-visible:ring-primary rounded-sm px-1 -ml-1">governance@imperialpedia.com</a>
+                </div>
+                <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                  <Phone className="h-4 w-4 text-primary" />
+                  <span>+1 (800) IMP-DATA</span>
+                </div>
+                <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                  <MapPin className="h-4 w-4 text-primary" />
+                  <span>Financial District, New York, NY</span>
+                </div>
+              </div>
+            </div>
+
             <div className="flex items-center gap-3">
-              <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl hover:bg-primary/10 hover:text-primary transition-all focus-visible:ring-offset-2" aria-label="Follow us on Twitter">
-                <Twitter className="h-5 w-5" aria-hidden="true" />
+              <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl hover:bg-primary/10 hover:text-primary transition-all focus-visible:ring-2 focus-visible:ring-primary" aria-label="Follow us on Twitter" asChild>
+                <a href="https://twitter.com/imperialpedia" target="_blank" rel="noopener noreferrer">
+                  <Twitter className="h-5 w-5" aria-hidden="true" />
+                </a>
               </Button>
-              <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl hover:bg-primary/10 hover:text-primary transition-all focus-visible:ring-offset-2" aria-label="Connect on LinkedIn">
-                <Linkedin className="h-5 w-5" aria-hidden="true" />
+              <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl hover:bg-primary/10 hover:text-primary transition-all focus-visible:ring-2 focus-visible:ring-primary" aria-label="Connect on LinkedIn" asChild>
+                <a href="https://linkedin.com/company/imperialpedia" target="_blank" rel="noopener noreferrer">
+                  <Linkedin className="h-5 w-5" aria-hidden="true" />
+                </a>
               </Button>
-              <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl hover:bg-primary/10 hover:text-primary transition-all focus-visible:ring-offset-2" aria-label="View our GitHub repositories">
-                <Github className="h-5 w-5" aria-hidden="true" />
+              <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl hover:bg-primary/10 hover:text-primary transition-all focus-visible:ring-2 focus-visible:ring-primary" aria-label="View our GitHub repositories" asChild>
+                <a href="https://github.com/imperialpedia" target="_blank" rel="noopener noreferrer">
+                  <Github className="h-5 w-5" aria-hidden="true" />
+                </a>
               </Button>
             </div>
           </div>
 
+          {/* Navigation Matrix */}
           <div className="lg:col-span-5 grid grid-cols-2 gap-8">
             <nav className="space-y-6" aria-label="Platform directory">
-              <Text variant="label" className="text-[10px] font-bold text-foreground/60 tracking-[0.2em] uppercase">Intelligence</Text>
+              <Text variant="label" className="text-[10px] font-bold text-foreground/60 tracking-[0.2em] uppercase">Quick Links</Text>
               <ul className="space-y-4">
-                {navLinks.intelligence.map((link) => (
+                {navLinks.platform.map((link) => (
                   <li key={link.label}>
                     <Link href={link.href} className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 group outline-none focus-visible:text-primary">
                       <ChevronRight className="h-3 w-3 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-primary" aria-hidden="true" />
@@ -147,11 +186,12 @@ export const Footer = () => {
             </nav>
           </div>
 
+          {/* Sync Node */}
           <div className="lg:col-span-3 space-y-6">
             <div className="space-y-2">
-              <Text variant="label" className="text-[10px] font-bold text-foreground/60 tracking-[0.2em] uppercase">{t('footer.stay_synced')}</Text>
-              <Text variant="caption" className="text-muted-foreground leading-relaxed block">
-                {t('footer.sync_desc')}
+              <Text variant="label" className="text-[10px] font-bold text-foreground/60 tracking-[0.2em] uppercase">Stay Synchronized</Text>
+              <Text variant="caption" className="text-muted-foreground leading-relaxed block max-w-sm">
+                Subscribe to the Intelligence Wire for real-time market audits and pSEO alerts.
               </Text>
             </div>
             
@@ -196,10 +236,10 @@ export const Footer = () => {
         <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-6">
             <Text variant="caption" className="text-muted-foreground font-medium">
-              {t('footer.copyright', { year: new Date().getFullYear() })}
+              &copy; {new Date().getFullYear()} Imperialpedia. AI Knowledge Infrastructure.
             </Text>
             <div className="hidden md:flex items-center gap-2 text-emerald-500/40 text-[9px] font-bold uppercase tracking-[0.2em]">
-              <ShieldCheck className="h-3.5 w-3.5" /> {t('footer.enc_status')}
+              <ShieldCheck className="h-3.5 w-3.5" /> Data Traversal Encrypted
             </div>
           </div>
           
@@ -216,4 +256,4 @@ export const Footer = () => {
       <WaitlistModal isOpen={isWaitlistOpen} onOpenChange={setIsWaitlistOpen} />
     </footer>
   );
-};
+}
