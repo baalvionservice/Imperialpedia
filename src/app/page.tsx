@@ -9,6 +9,7 @@ import { FAQSection } from '@/components/landing/FAQSection';
 import { PricingSection } from '@/components/landing/PricingSection';
 import { WaitlistForm } from '@/components/landing/WaitlistForm';
 import { LandingFooter } from '@/components/landing/Footer';
+import { StickyCTA } from '@/components/landing/StickyCTA';
 import { Text } from '@/design-system/typography/text';
 import { Container } from '@/design-system/layout/container';
 import { cn } from '@/lib/utils';
@@ -105,6 +106,9 @@ export default function Home() {
 
       {/* Primary Footer Section */}
       <LandingFooter />
+
+      {/* Persistent Conversion Node */}
+      <StickyCTA />
     </div>
   );
 }
