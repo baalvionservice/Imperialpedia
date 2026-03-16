@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import { Navbar } from '@/components/common/Navbar';
-import Footer from '@/components/layout/Footer';
+import { Footer } from '@/components/common/Footer';
 import { GlobalStoreProvider } from '@/lib/state';
 import { generateMetadata } from '@/lib/seo/metadata';
 import { ThemeProvider } from '@/design-system/themes/theme-provider';
