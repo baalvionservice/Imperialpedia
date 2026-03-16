@@ -7,7 +7,7 @@ import { Text } from '@/design-system/typography/text';
 import { Loader2, CheckCircle2, AlertCircle, Send, Sparkles } from 'lucide-react';
 import { useToast } from '@/components/common/ToastManager';
 import { cn } from '@/lib/utils';
-import { trackEvent } from '@/lib/utils/analytics';
+import { logEvent } from '@/lib/utils/analytics';
 
 /**
  * Institutional Newsletter Subscription Node.
@@ -21,10 +21,6 @@ export default function Newsletter() {
   
   const errorId = useId();
   const successId = useId();
-
-  // TODO: AI-driven newsletter content personalization  
-  // TODO: Suggest topics based on user behavior  
-  // TODO: Analytics tracking for impressions and conversions
 
   const validateEmail = (email: string) => {
     return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email);
@@ -46,13 +42,7 @@ export default function Newsletter() {
     }
 
     setStatus('loading');
-    
-    // Broadcast conversion to the analytics cluster
-    trackEvent({ 
-      category: 'Conversion', 
-      action: 'Newsletter Signup', 
-      label: email 
-    });
+    logEvent("Newsletter Signup Attempt", "Engagement", email);
 
     try {
       const res = await fetch('/api/newsletter', {
@@ -71,6 +61,8 @@ export default function Newsletter() {
           message: "Handshake Successful: Subscription active.",
           type: "success",
         });
+
+        logEvent("Newsletter Signup", "Conversion", email);
       } else {
         throw new Error(data.message || 'Verification failure');
       }
@@ -148,7 +140,7 @@ export default function Newsletter() {
       <div aria-live="polite">
         {status === 'error' && (
           <div id={errorId} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive text-xs font-bold animate-in fade-in slide-in-from-top-1">
-            <AlertCircle className="h-3 w-3" /> {message}
+            <AlertCircle className="h-3 w-3" aria-hidden="true" /> {message}
           </div>
         )}
       </div>

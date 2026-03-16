@@ -39,12 +39,12 @@ export default function RootLayout({
           rel="stylesheet"
         />
 
-        {/* GA4 Handshake */}
+        {/* GA4 Handshake - Phase 1 Foundation */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-IMP-INDEX-42"
           strategy="afterInteractive"
         />
-        <Script id="google-analytics" strategy="afterInteractive">
+        <Script id="gtag-init" strategy="afterInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}

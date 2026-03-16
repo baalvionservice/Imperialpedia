@@ -11,7 +11,7 @@ import { Sparkles, Zap, ArrowRight, ShieldCheck, Globe, Activity } from 'lucide-
 import { WaitlistModal } from './WaitlistModal';
 import { useTranslation } from 'react-i18next';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { trackEvent } from '@/lib/utils/analytics';
+import { logEvent } from '@/lib/utils/analytics';
 
 // Performance Optimization: Defer form until main thread is idle
 const WaitlistForm = dynamic(() => import('./WaitlistForm').then(mod => mod.WaitlistForm), {
@@ -23,7 +23,6 @@ const WaitlistForm = dynamic(() => import('./WaitlistForm').then(mod => mod.Wait
  * Enhanced Landing Page Hero Section.
  * Features animated typography, high-fidelity CTAs, and optimized visual intelligence.
  * priority={true} is set on the hero image to optimize LCP.
- * // TODO: AI-driven predictive pre-loading for above-the-fold content
  */
 export const HeroSection = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -33,11 +32,7 @@ export const HeroSection = () => {
   const heroImage = PlaceHolderImages.find(img => img.id === 'hero-bg');
 
   const handleCtaClick = (type: 'Primary' | 'Secondary') => {
-    trackEvent({
-      category: 'CTA',
-      action: 'Click',
-      label: `Hero ${type} - ${type === 'Primary' ? 'Waitlist' : 'Early Access'}`
-    });
+    logEvent("CTA Click", "Engagement", `Hero ${type} Button`);
     setIsModalOpen(true);
   };
 

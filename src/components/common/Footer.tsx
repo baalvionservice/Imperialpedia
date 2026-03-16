@@ -24,12 +24,11 @@ import {
 import { WaitlistModal } from '@/components/landing/WaitlistModal';
 import { cn } from '@/lib/utils';
 import { useTranslation } from 'react-i18next';
-import { trackEvent } from '@/lib/utils/analytics';
+import { logEvent } from '@/lib/utils/analytics';
 
 /**
  * Global Platform Footer.
  * Central hub for navigation, institutional trust signals, and legal compliance.
- * Optimized for WCAG 2.1 accessibility and SEO traversal.
  */
 export default function Footer() {
   const { t } = useTranslation('common');
@@ -37,15 +36,13 @@ export default function Footer() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [isWaitlistOpen, setIsWaitlistOpen] = useState(false);
 
-  // TODO: AI-driven dynamic footer links based on user location or role
-  // TODO: Display popular resources or latest updates dynamically
-  // TODO: Analytics tracking for footer link clicks and social media interactions
-
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !email.includes('@')) return;
 
     setStatus('loading');
+    logEvent("Newsletter Signup Attempt", "Engagement", "Footer Form");
+    
     try {
       const res = await fetch('/api/newsletter', {
         method: 'POST',
@@ -55,13 +52,22 @@ export default function Footer() {
       if (res.ok) {
         setStatus('success');
         setEmail('');
-        trackEvent({ category: 'Conversion', action: 'Footer Newsletter', label: email });
+        logEvent("Newsletter Signup", "Conversion", email);
       } else {
         setStatus('error');
       }
     } catch (err) {
       setStatus('error');
     }
+  };
+
+  const handleSocialClick = (platform: string) => {
+    logEvent("Social Click", "Engagement", platform);
+  };
+
+  const handleWaitlistClick = () => {
+    logEvent("CTA Click", "Conversion", "Footer Waitlist");
+    setIsWaitlistOpen(true);
   };
 
   const navLinks = {
@@ -132,17 +138,17 @@ export default function Footer() {
             </div>
 
             <div className="flex items-center gap-3" aria-label="Social media links">
-              <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl hover:bg-primary/10 hover:text-primary transition-all focus-visible:ring-2 focus-visible:ring-primary outline-none" asChild>
+              <Button onClick={() => handleSocialClick('Twitter')} variant="ghost" size="icon" className="h-10 w-10 rounded-xl hover:bg-primary/10 hover:text-primary transition-all focus-visible:ring-2 focus-visible:ring-primary outline-none" asChild>
                 <a href="https://twitter.com/imperialpedia" target="_blank" rel="noopener noreferrer" aria-label="Follow us on Twitter">
                   <Twitter className="h-5 w-5" aria-hidden="true" />
                 </a>
               </Button>
-              <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl hover:bg-primary/10 hover:text-primary transition-all focus-visible:ring-2 focus-visible:ring-primary outline-none" asChild>
+              <Button onClick={() => handleSocialClick('LinkedIn')} variant="ghost" size="icon" className="h-10 w-10 rounded-xl hover:bg-primary/10 hover:text-primary transition-all focus-visible:ring-2 focus-visible:ring-primary outline-none" asChild>
                 <a href="https://linkedin.com/company/imperialpedia" target="_blank" rel="noopener noreferrer" aria-label="Connect on LinkedIn">
                   <Linkedin className="h-5 w-5" aria-hidden="true" />
                 </a>
               </Button>
-              <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl hover:bg-primary/10 hover:text-primary transition-all focus-visible:ring-2 focus-visible:ring-primary outline-none" asChild>
+              <Button onClick={() => handleSocialClick('GitHub')} variant="ghost" size="icon" className="h-10 w-10 rounded-xl hover:bg-primary/10 hover:text-primary transition-all focus-visible:ring-2 focus-visible:ring-primary outline-none" asChild>
                 <a href="https://github.com/imperialpedia" target="_blank" rel="noopener noreferrer" aria-label="View our GitHub repositories">
                   <Github className="h-5 w-5" aria-hidden="true" />
                 </a>
@@ -177,7 +183,7 @@ export default function Footer() {
                 ))}
                 <li>
                   <button 
-                    onClick={() => setIsWaitlistOpen(true)}
+                    onClick={handleWaitlistClick}
                     className="text-sm text-primary font-bold hover:underline underline-offset-4 outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-sm"
                     aria-label="Join the waiting list for early access"
                   >

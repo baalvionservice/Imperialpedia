@@ -8,7 +8,7 @@ import { Text } from '@/design-system/typography/text';
 import { Loader2, CheckCircle2, AlertCircle, Send, User } from 'lucide-react';
 import { useToast } from '@/components/common/ToastManager';
 import { cn } from '@/lib/utils';
-import { trackEvent } from '@/lib/utils/analytics';
+import { logEvent } from '@/lib/utils/analytics';
 import { useTranslation } from 'react-i18next';
 
 /**
@@ -26,10 +26,6 @@ export const WaitlistForm = () => {
   
   const errorId = useId();
   const successId = useId();
-
-  // TODO: AI-driven waitlist prioritization based on user profile or behavior
-  // TODO: Dynamic success message personalization
-  // TODO: Analytics tracking for submissions and conversions (Phase 2)
 
   const validateEmail = (email: string) => {
     return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email);
@@ -50,13 +46,7 @@ export const WaitlistForm = () => {
     }
 
     setStatus('loading');
-    
-    // Broadcast conversion attempt to analytics cluster
-    trackEvent({ 
-      category: 'Conversion', 
-      action: 'Waitlist Submission', 
-      label: 'Landing Page Form' 
-    });
+    logEvent("Waitlist Submission Attempt", "Engagement", "Landing Page Form");
 
     try {
       const res = await fetch('/api/waitlist', {
@@ -69,20 +59,13 @@ export const WaitlistForm = () => {
       if (data.success) {
         setStatus('success');
         setMessage(data.message);
-        setEmail('');
-        setName('');
         
         addToast({
           message: "Identity Secured: You have been indexed for early access.",
           type: "success",
         });
 
-        // Track successful conversion
-        trackEvent({ 
-          category: 'Conversion', 
-          action: 'Waitlist Success', 
-          label: email 
-        });
+        logEvent("Waitlist Submission", "Conversion", email);
       } else {
         throw new Error(data.message || 'Verification failure');
       }
@@ -137,7 +120,7 @@ export const WaitlistForm = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 disabled={status === 'loading'}
-                className="h-12 pl-10 bg-card/50 border-white/10 rounded-xl focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background transition-all text-sm outline-none"
+                className="h-12 pl-10 bg-card/30 border-white/10 rounded-xl focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background transition-all text-sm outline-none"
               />
             </div>
           </div>
@@ -161,7 +144,7 @@ export const WaitlistForm = () => {
                 aria-invalid={status === 'error'}
                 aria-describedby={status === 'error' ? errorId : undefined}
                 className={cn(
-                  "h-12 bg-card/50 border-white/10 rounded-xl focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background transition-all text-sm outline-none",
+                  "h-12 bg-card/30 border-white/10 rounded-xl focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background transition-all text-sm outline-none",
                   status === 'error' && "border-destructive/50"
                 )}
                 required
@@ -192,9 +175,11 @@ export const WaitlistForm = () => {
           )}
         </div>
         
-        <Text variant="caption" className="text-muted-foreground text-center block px-4 leading-relaxed text-[10px]">
-          {t('waitlist.caption')}
-        </Text>
+        <div className="pt-2">
+          <Text variant="caption" className="text-muted-foreground text-center block px-4 leading-relaxed text-[10px]">
+            {t('waitlist.caption')}
+          </Text>
+        </div>
       </form>
     </div>
   );

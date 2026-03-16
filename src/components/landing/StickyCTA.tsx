@@ -7,7 +7,7 @@ import { X, Sparkles, ArrowRight } from 'lucide-react';
 import { WaitlistModal } from './WaitlistModal';
 import { useToast } from '@/components/common/ToastManager';
 import { cn } from '@/lib/utils';
-import { trackEvent } from '@/lib/utils/analytics';
+import { logEvent } from '@/lib/utils/analytics';
 
 /**
  * Sticky CTA Banner for high-conversion user acquisition.
@@ -41,21 +41,13 @@ export const StickyCTA = () => {
   const handleDismiss = () => {
     setIsVisible(false);
     localStorage.setItem('imperialpedia_cta_dismissed', 'true');
-    trackEvent({ 
-      category: 'CTA', 
-      action: 'Dismiss', 
-      label: 'Sticky Banner' 
-    });
+    logEvent("CTA Dismiss", "Engagement", "Sticky Banner");
     setTimeout(() => setIsDismissed(true), 500);
   };
 
   const handleSignUpClick = () => {
     setIsModalOpen(true);
-    trackEvent({ 
-      category: 'CTA', 
-      action: 'Click', 
-      label: 'Sticky Banner Signup' 
-    });
+    logEvent("CTA Click", "Engagement", "Sticky Banner Button");
     
     addToast({
       message: "Establishing Handshake: Opening secure waitlist portal...",
@@ -77,7 +69,7 @@ export const StickyCTA = () => {
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-4 py-2">
             <div className="flex items-center gap-4">
               <div className="p-2.5 rounded-xl bg-primary/20 text-primary shadow-inner">
-                <Sparkles className="h-5 w-5 animate-pulse" />
+                <Sparkles className="h-5 w-5 animate-pulse" aria-hidden="true" />
               </div>
               <div className="space-y-0.5">
                 <Text variant="bodySmall" weight="bold" className="text-foreground">
@@ -108,10 +100,6 @@ export const StickyCTA = () => {
       </div>
 
       <WaitlistModal isOpen={isModalOpen} onOpenChange={setIsModalOpen} />
-      
-      {/* TODO: AI-driven dynamic CTA text based on user behavior and region */}
-      {/* TODO: A/B testing framework for CTA variants */}
-      {/* TODO: Analytics tracking for impressions, clicks, and conversions */}
     </>
   );
 };

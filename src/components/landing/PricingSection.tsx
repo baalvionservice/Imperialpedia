@@ -1,3 +1,8 @@
+/**
+ * Landing Page Pricing Section.
+ * Orchestrates tiered plans with dynamic rendering and conversion triggers.
+ */
+
 'use client';
 
 import React, { useState } from 'react';
@@ -5,18 +10,10 @@ import { Container } from '@/design-system/layout/container';
 import { Text } from '@/design-system/typography/text';
 import { Zap } from 'lucide-react';
 import { WaitlistModal } from './WaitlistModal';
-import { trackEvent } from '@/lib/utils/analytics';
+import { logEvent } from '@/lib/utils/analytics';
 import { PricingCard } from '@/components/common/PricingCard';
 import { useTranslation } from 'react-i18next';
 
-/**
- * Landing Page Pricing Section.
- * Orchestrates tiered plans with dynamic rendering and conversion triggers.
- * 
- * TODO: AI-driven pricing adjustments based on user behavior
- * TODO: Dynamic feature recommendations per user segment
- * TODO: Analytics tracking for plan clicks and conversions
- */
 export const PricingSection = () => {
   const { t } = useTranslation('common');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -69,12 +66,8 @@ export const PricingSection = () => {
 
   const handleCtaClick = (planName: string) => {
     setSelectedPlan(planName);
+    logEvent("Pricing Click", "Engagement", planName);
     setIsModalOpen(true);
-    trackEvent({ 
-      category: 'CTA', 
-      action: 'Pricing Selection', 
-      label: planName 
-    });
   };
 
   return (

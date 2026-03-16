@@ -21,39 +21,32 @@ export const hasConsent = () => {
 };
 
 /**
- * Simple event logger for GA4 native integration.
- * Utilized for quick event broadcasts.
+ * Standard event logger for GA4.
+ * Orchestrates the dispatch of custom events to the analytics cluster.
+ * 
+ * TODO: AI-driven analytics insights
+ * TODO: Dynamic reporting of top-performing sections and CTAs
+ * TODO: Predictive analytics for user behavior and conversion
  */
-export const logEvent = (name: string, params?: object) => {
-  // TODO: AI-driven analytics to detect high-value users and interactions
-  // TODO: Predictive conversion event recommendations 
-  // TODO: Dynamic dashboard for admin insights tracking real-time telemetry
-  
-  if (hasConsent() && typeof window !== 'undefined' && (window as any).gtag) {
-    (window as any).gtag('event', name, params);
-  }
-};
-
-/**
- * Tracks a specific user interaction or system event.
- * Respects the Privacy Handshake before broadcasting to the cluster.
- */
-export const trackEvent = ({ category, action, label, value, non_interaction = false }: AnalyticsEvent) => {
-  // Development Logging for debugging discovery nodes
-  if (process.env.NODE_ENV === 'development') {
-    console.log(`[ANALYTICS] Event: ${category} | ${action} | ${label || ''}`, value !== undefined ? `| Value: ${value}` : '');
-  }
-  
-  // Production Handshake (GA4)
+export const logEvent = (action: string, category: string, label?: string, value?: number) => {
   if (hasConsent() && typeof window !== 'undefined' && (window as any).gtag) {
     (window as any).gtag('event', action, {
       event_category: category,
       event_label: label,
       value: value,
-      non_interaction: non_interaction,
-      // Analytics for page load velocity, LCP, FCP, and CLS can be added here
     });
   }
+  
+  if (process.env.NODE_ENV === 'development') {
+    console.log(`[ANALYTICS] Event: ${action} | Category: ${category} | Label: ${label || ''} | Value: ${value || ''}`);
+  }
+};
+
+/**
+ * Legacy wrapper for AnalyticsEvent object structure.
+ */
+export const trackEvent = ({ category, action, label, value, non_interaction = false }: AnalyticsEvent) => {
+  logEvent(action, category, label, value);
 };
 
 /**

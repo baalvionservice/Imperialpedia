@@ -31,11 +31,11 @@ import { WaitlistModal } from '@/components/landing/WaitlistModal';
 import { LanguageSelector } from '@/components/i18n/LanguageSelector';
 import { cn } from '@/lib/utils';
 import { useTranslation } from 'react-i18next';
+import { logEvent } from '@/lib/utils/analytics';
 
 /**
  * Global Site Navigation Header.
  * Orchestrates platform-wide discovery and landing page triage.
- * Optimized for institutional-grade discovery and WCAG accessibility.
  */
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -45,7 +45,6 @@ export const Navbar = () => {
   const pathname = usePathname();
   const { t } = useTranslation('common');
 
-  // Handle scroll telemetry for background effects and shrinking
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
@@ -54,7 +53,6 @@ export const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Track active section based on scroll position
   useEffect(() => {
     if (pathname !== '/') return;
 
@@ -97,6 +95,20 @@ export const Navbar = () => {
     { label: 'Technologies', href: '/technologies', icon: Cpu, color: 'text-amber-500' },
   ];
 
+  const handleNavClick = (label: string) => {
+    logEvent("Navigation Click", "Discovery", label);
+    setIsOpen(false);
+  };
+
+  const handleLoginClick = () => {
+    logEvent("CTA Click", "Auth", "Navbar Login");
+  };
+
+  const handleWaitlistClick = () => {
+    logEvent("CTA Click", "Conversion", "Navbar Waitlist");
+    setIsWaitlistOpen(true);
+  };
+
   return (
     <>
       <nav 
@@ -125,6 +137,7 @@ export const Navbar = () => {
                   <Link 
                     key={link.id} 
                     href={link.href}
+                    onClick={() => handleNavClick(link.label)}
                     className={cn(
                       "text-xs font-bold uppercase tracking-widest transition-all relative group/link outline-none rounded-sm focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4",
                       activeSection === link.id && pathname === '/'
@@ -154,7 +167,7 @@ export const Navbar = () => {
                     </div>
                     {entityLinks.map((link) => (
                       <DropdownMenuItem key={link.label} asChild className="rounded-xl focus:bg-primary/10 group focus:text-primary outline-none">
-                        <Link href={link.href} className="flex items-center gap-3 p-3 cursor-pointer">
+                        <Link href={link.href} onClick={() => handleNavClick(`Hub: ${link.label}`)} className="flex items-center gap-3 p-3 cursor-pointer">
                           <div className={cn("p-2 rounded-lg bg-background/50 border border-white/5 transition-transform group-hover:scale-110 group-focus:scale-110", link.color)}>
                             <link.icon className="h-4 w-4" aria-hidden="true" />
                           </div>
@@ -193,11 +206,12 @@ export const Navbar = () => {
                 variant="ghost" 
                 className="hidden sm:flex font-bold text-xs uppercase tracking-widest hover:text-primary transition-colors focus-visible:ring-offset-2 focus-visible:ring-primary focus-visible:ring-2 rounded-xl h-10"
                 aria-label="Log in to your account"
+                onClick={handleLoginClick}
               >
                 Log In
               </Button>
               <Button 
-                onClick={() => setIsWaitlistOpen(true)}
+                onClick={handleWaitlistClick}
                 className="rounded-xl h-10 px-6 font-bold text-xs uppercase tracking-widest bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/20 transition-all scale-105 active:scale-95 focus-visible:ring-offset-2 focus-visible:ring-primary focus-visible:ring-2"
                 aria-label="Join the waitlist for early access"
               >
@@ -232,7 +246,7 @@ export const Navbar = () => {
                 <Link 
                   key={link.id} 
                   href={link.href} 
-                  onClick={() => setIsOpen(false)}
+                  onClick={() => handleNavClick(link.label)}
                   className={cn(
                     "flex items-center justify-between p-4 rounded-2xl bg-card/30 border border-white/5 group outline-none focus-visible:ring-2 focus-visible:ring-primary",
                     activeSection === link.id && pathname === '/' ? "border-primary/40 bg-primary/5" : ""
@@ -261,7 +275,7 @@ export const Navbar = () => {
                   <Link 
                     key={link.label} 
                     href={link.href} 
-                    onClick={() => setIsOpen(false)}
+                    onClick={() => handleNavClick(`Hub: ${link.label}`)}
                     className="p-4 rounded-2xl bg-card/30 border border-white/5 space-y-3 group outline-none focus-visible:ring-2 focus-visible:ring-primary"
                   >
                     <div className={cn("p-2 rounded-lg bg-background/50 border border-white/5 w-fit group-hover:scale-110 transition-transform", link.color)}>
@@ -276,7 +290,7 @@ export const Navbar = () => {
             <div className="pt-6 border-t border-white/5 flex flex-col gap-4">
               <Button 
                 className="w-full h-14 rounded-2xl font-bold bg-primary text-primary-foreground focus-visible:ring-offset-2 focus-visible:ring-primary focus-visible:ring-2 outline-none" 
-                onClick={() => { setIsOpen(false); setIsWaitlistOpen(true); }}
+                onClick={handleWaitlistClick}
                 aria-label="Secure your spot on the waitlist"
               >
                 {t('nav.waitlist')}

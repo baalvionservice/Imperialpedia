@@ -7,7 +7,7 @@ import { Text } from '@/design-system/typography/text';
 import { Card, CardContent } from '@/components/ui/card';
 import { X, Sparkles, ArrowRight, Zap } from 'lucide-react';
 import { WaitlistModal } from './WaitlistModal';
-import { trackEvent } from '@/lib/utils/analytics';
+import { logEvent } from '@/lib/utils/analytics';
 
 /**
  * Scroll-triggered Popup CTA.
@@ -37,22 +37,14 @@ export const ScrollPopupCTA = () => {
   }, [isDismissed]);
 
   const handleCtaClick = () => {
-    trackEvent({
-      category: 'CTA',
-      action: 'Click',
-      label: 'Scroll Popup - Get Early Access'
-    });
+    logEvent("CTA Click", "Engagement", "Scroll Popup Button");
     setIsModalOpen(true);
   };
 
   const handleDismiss = () => {
     setShow(false);
     setIsDismissed(true);
-    trackEvent({
-      category: 'CTA',
-      action: 'Dismiss',
-      label: 'Scroll Popup'
-    });
+    logEvent("CTA Dismiss", "Engagement", "Scroll Popup");
   };
 
   return (
@@ -97,10 +89,6 @@ export const ScrollPopupCTA = () => {
                   Get Early Access <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </CardContent>
-              
-              {/* TODO: AI-driven dynamic CTA text based on user behavior and region */}
-              {/* TODO: A/B testing framework for CTA variants */}
-              {/* TODO: Analytics tracking for impressions, clicks, and conversions */}
             </Card>
           </motion.div>
         )}
