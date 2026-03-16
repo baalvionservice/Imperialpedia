@@ -13,6 +13,7 @@ import { trackEvent } from '@/lib/utils/analytics';
  * Institutional newsletter subscription form.
  * Handles state transitions for capturing interest in intelligence updates.
  * Optimized for accessibility and search engine visibility.
+ * // TODO: Analytics tracking for loading time and skeleton visibility
  */
 export const NewsletterForm = () => {
   const [email, setEmail] = useState('');

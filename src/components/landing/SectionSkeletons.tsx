@@ -1,11 +1,12 @@
 'use client';
 
 import React from 'react';
-import { Skeleton } from '@/components/ui/skeleton';
+import Skeleton from '@/components/common/Skeleton';
 import { Container } from '@/design-system/layout/container';
 
 /**
  * Skeleton for the Landing Page Hero Section.
+ * // TODO: AI-driven predictive pre-loading for above-the-fold content
  */
 export const HeroSectionSkeleton = () => (
   <section className="relative pt-20 pb-32 lg:pt-32 lg:pb-48 overflow-hidden">
@@ -38,6 +39,7 @@ export const HeroSectionSkeleton = () => (
 
 /**
  * Skeleton for the Features Grid Section.
+ * // TODO: Dynamic skeleton layouts based on user device
  */
 export const FeaturesSectionSkeleton = () => (
   <section className="py-24 bg-background">
@@ -65,6 +67,7 @@ export const FeaturesSectionSkeleton = () => (
 
 /**
  * Skeleton for the Testimonials Section.
+ * // TODO: Analytics tracking for loading time and skeleton visibility
  */
 export const TestimonialsSectionSkeleton = () => (
   <section className="py-24 bg-background">
@@ -161,4 +164,35 @@ export const PricingSectionSkeleton = () => (
       </div>
     </Container>
   </section>
+);
+
+/**
+ * Skeleton for the Social Proof Logo Bar.
+ */
+export const SocialProofSkeleton = () => (
+  <section className="py-12 border-y border-white/5 bg-card/10">
+    <Container>
+      <div className="flex flex-col items-center space-y-10">
+        <Skeleton className="h-4 w-64" />
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-8 w-full">
+          {[1, 2, 3, 4, 5, 6].map(i => (
+            <Skeleton key={i} className="h-8 w-full max-w-[120px] mx-auto" />
+          ))}
+        </div>
+      </div>
+    </Container>
+  </section>
+);
+
+/**
+ * Skeleton for the Newsletter Ingestion Form.
+ */
+export const NewsletterSkeleton = () => (
+  <div className="w-full max-w-sm space-y-4">
+    <Skeleton className="h-11 w-full rounded-xl" />
+    <div className="flex gap-2">
+      <Skeleton className="h-11 flex-1 rounded-xl" />
+      <Skeleton className="h-11 w-20 rounded-xl" />
+    </div>
+  </div>
 );

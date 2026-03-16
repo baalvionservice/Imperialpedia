@@ -4,7 +4,6 @@ import { HeroSection } from '@/components/landing/HeroSection';
 import FooterSection from '@/components/common/FooterSection';
 import { StickyCTA } from '@/components/landing/StickyCTA';
 import { CtaSection } from '@/components/landing/CtaSection';
-import SocialProofSection from '@/components/common/SocialProofSection';
 import { Text } from '@/design-system/typography/text';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -19,10 +18,13 @@ import { JsonLd } from '@/modules/seo-engine/components/JsonLd';
 import { 
   FeaturesSectionSkeleton, 
   TestimonialsSectionSkeleton, 
-  PricingSectionSkeleton 
+  PricingSectionSkeleton,
+  FAQSectionSkeleton,
+  SocialProofSkeleton
 } from '@/components/landing/SectionSkeletons';
 
 // Dynamic imports for performance optimization - reducing initial JS bundle
+// TODO: AI-driven predictive pre-loading for above-the-fold content
 const FeaturesSection = dynamic(() => import('@/components/landing/FeaturesSection').then(mod => mod.FeaturesSection), {
   loading: () => <FeaturesSectionSkeleton />,
   ssr: true,
@@ -39,6 +41,12 @@ const PricingSection = dynamic(() => import('@/components/landing/PricingSection
 });
 
 const FaqSection = dynamic(() => import('@/components/common/FaqSection'), {
+  loading: () => <FAQSectionSkeleton />,
+  ssr: true,
+});
+
+const DynamicSocialProof = dynamic(() => import('@/components/common/SocialProofSection'), {
+  loading: () => <SocialProofSkeleton />,
   ssr: true,
 });
 
@@ -67,7 +75,7 @@ export default function Home() {
     },
     {
       question: "When will the full AI suite be active?",
-      answer: "Phase 2 of the Imperialpedia rollout will introduce real-time research synthesis, automated fiscal audits, and predictive catalyst scanning."
+      answer: "Phase 2 of the Imperialpedia rollout will introduce the full Generative AI suite, including real-time research synthesis, automated fiscal audits, and predictive catalyst scanning."
     }
   ];
 
@@ -134,7 +142,7 @@ export default function Home() {
       {/* Above the fold - Priority Loading */}
       <HeroSection />
 
-      <SocialProofSection />
+      <DynamicSocialProof />
 
       {/* Below the fold - Lazy Loaded via dynamic imports */}
       <FeaturesSection />
