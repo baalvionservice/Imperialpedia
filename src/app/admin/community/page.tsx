@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -13,24 +14,24 @@ import {
   Loader2, 
   CheckCircle2, 
   XCircle, 
-  Flag,
-  ArrowRight,
-  MoreVertical,
+  ChevronRight,
   ShieldAlert,
   Flame,
-  Users,
-  Target
+  Plus
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
 import { toast } from '@/hooks/use-toast';
 
+/**
+ * Community Moderation Hub.
+ * Specialized terminal for managing crowdsourced intelligence and network dialogue.
+ */
 export default function CommunityModerationHub() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
 
-  // Mock Moderation Queue
   const [comments, setComments] = useState([
     { id: 'c-1', user: "TraderMike", text: "The yield curve inversion is a classic signal. NVDA is looking top-heavy here.", status: "Flagged", reason: "Possible Spam", date: "10m ago" },
     { id: 'c-2', user: "CryptoLina", text: "Bullish on the next BTC halving. Institutional absorption is real.", status: "Pending", reason: "New User", date: "42m ago" },
@@ -70,7 +71,6 @@ export default function CommunityModerationHub() {
         </div>
       </header>
 
-      {/* Main Queue */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
         <div className="lg:col-span-8 space-y-6">
           <div className="bg-card/30 p-4 rounded-2xl border border-white/5 backdrop-blur-sm flex flex-col md:flex-row gap-4 items-center">
@@ -167,7 +167,7 @@ export default function CommunityModerationHub() {
               <ShieldAlert className="h-24 w-24 text-primary rotate-12" />
             </div>
             <div className="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-widest mb-4">
-              <Target className="h-4 w-4" /> Community Rep
+              <Plus className="h-4 w-4" /> Community Rep
             </div>
             <Text variant="caption" className="text-muted-foreground leading-relaxed italic block">
               "Users with an average precision score below 40% are automatically throttled in high-velocity debate rooms to maintain index integrity."

@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -7,7 +8,6 @@ import { Badge } from '@/components/ui/badge';
 import { Text } from '@/design-system/typography/text';
 import { 
   Users, 
-  FileText, 
   DollarSign, 
   Zap, 
   TrendingUp, 
@@ -17,7 +17,10 @@ import {
   Bell,
   ChevronRight,
   BarChart3,
-  Globe
+  Globe,
+  LayoutDashboard,
+  ShieldCheck,
+  FileText
 } from 'lucide-react';
 import { 
   AreaChart, 
@@ -30,17 +33,27 @@ import {
 } from 'recharts';
 import { systemService } from '@/services/data/system-service';
 import { AdminHomeOverview } from '@/types/system';
+import { cn } from '@/lib/utils';
 import Link from 'next/link';
 
+/**
+ * Enhanced Admin Mission Control.
+ * High-density triage hub for platform governance and intelligence performance.
+ */
 export default function AdminDashboardOverview() {
   const [data, setData] = useState<AdminHomeOverview | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function loadData() {
-      const response = await systemService.getAdminHomeOverview();
-      if (response.data) setData(response.data);
-      setLoading(false);
+      try {
+        const response = await systemService.getAdminHomeOverview();
+        if (response.data) setData(response.data);
+      } catch (e) {
+        console.error('Handshake failure', e);
+      } finally {
+        setLoading(false);
+      }
     }
     loadData();
   }, []);
@@ -66,35 +79,40 @@ export default function AdminDashboardOverview() {
     { date: 'Sun', views: 25000, revenue: 820 },
   ];
 
+  const widgets = [
+    { label: 'Total Users', value: data.totalUsers.toLocaleString(), icon: Users, color: 'text-primary', trend: '+12.4%' },
+    { label: 'Indexed Nodes', value: '1.2M+', icon: Globe, color: 'text-secondary', trend: '+45k' },
+    { label: 'Active Experts', value: data.totalCreators, icon: ShieldCheck, color: 'text-emerald-500', trend: 'Verified' },
+    { label: 'Alerts Active', value: data.alertsActive, icon: Zap, color: 'text-amber-500', trend: 'Priority' },
+  ];
+
   return (
     <div className="space-y-10 animate-in fade-in duration-700">
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 px-2">
         <div>
-          <Text variant="label" className="text-primary font-bold uppercase tracking-widest text-[10px] mb-1">Global Intelligence</Text>
-          <Text variant="h1" className="text-3xl font-bold tracking-tight">Mission Control</Text>
+          <div className="flex items-center gap-2 text-primary mb-1">
+            <LayoutDashboard className="h-4 w-4" />
+            <Text variant="label" className="text-[10px] font-bold tracking-widest uppercase">Global Mission Control</Text>
+          </div>
+          <Text variant="h1" className="text-3xl font-bold tracking-tight">Governance Overview</Text>
         </div>
         <div className="flex items-center gap-3">
-          <Button variant="outline" className="rounded-xl border-white/10 bg-card/30">
-            <Bell className="mr-2 h-4 w-4" /> Notifications
+          <Button variant="outline" className="rounded-xl border-white/10 bg-card/30 h-11">
+            <Bell className="mr-2 h-4 w-4 text-primary" /> Notifications
           </Button>
           <Button className="rounded-xl shadow-lg shadow-primary/20 font-bold bg-primary hover:bg-primary/90 h-11 px-8">
-            Trigger Audit
+            Trigger Bulk Audit
           </Button>
         </div>
       </header>
 
-      {/* Widget Grid */}
+      {/* Widget Matrix */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {[
-          { label: 'Total Users', value: data.totalUsers.toLocaleString(), icon: Users, color: 'text-primary', trend: '+12%' },
-          { label: 'Indexed Nodes', value: '1.2M+', icon: Globe, color: 'text-secondary', trend: '+45k' },
-          { label: 'Daily Revenue', value: '$4,250', icon: DollarSign, color: 'text-emerald-500', trend: '+8%' },
-          { label: 'AI Content', value: '15.4k', icon: Zap, color: 'text-amber-500', trend: '+24%' },
-        ].map((w) => (
-          <Card key={w.label} className="glass-card border-none shadow-xl group hover:scale-[1.02] transition-all">
+        {widgets.map((w) => (
+          <Card key={w.label} className="glass-card border-none shadow-xl group hover:border-primary/20 transition-all">
             <CardContent className="p-6">
               <div className="flex justify-between items-start mb-4">
-                <div className={cn("p-2 rounded-xl bg-background/50 border border-white/5", w.color)}>
+                <div className={cn("p-2.5 rounded-xl bg-background/50 border border-white/5 transition-transform group-hover:scale-110", w.color)}>
                   <w.icon className="h-5 w-5" />
                 </div>
                 <Badge variant="outline" className="text-[8px] font-bold border-white/10 uppercase bg-black/20">{w.trend}</Badge>
@@ -107,14 +125,14 @@ export default function AdminDashboardOverview() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* Performance Chart */}
+        {/* Momentum Chart Section */}
         <Card className="lg:col-span-8 glass-card border-none shadow-2xl overflow-hidden">
           <CardHeader className="bg-card/30 border-b border-white/5 p-8 flex flex-row items-center justify-between">
             <div>
               <CardTitle className="text-xl">Network Momentum</CardTitle>
-              <CardDescription>Daily reach vs. revenue velocity across the index.</CardDescription>
+              <CardDescription>Daily discovery reach across the 1M+ node index.</CardDescription>
             </div>
-            <Badge className="bg-primary/10 text-primary border-primary/20 text-[10px] font-bold">LIVE SYNC</Badge>
+            <Badge className="bg-primary/10 text-primary border-primary/20 text-[10px] font-bold uppercase px-3 h-7">Live Pulse</Badge>
           </CardHeader>
           <CardContent className="p-8 h-[400px]">
             <ResponsiveContainer width="100%" height="100%">
@@ -135,46 +153,25 @@ export default function AdminDashboardOverview() {
           </CardContent>
         </Card>
 
-        {/* Sidebar Insights */}
+        {/* Action Sidebar */}
         <div className="lg:col-span-4 space-y-8">
-          <Card className="glass-card border-none shadow-xl bg-primary/5 p-8 relative overflow-hidden group">
-            <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform">
+          <Card className="glass-card border-none shadow-xl bg-primary/5 p-8 relative overflow-hidden group h-full">
+            <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform duration-1000">
               <Zap className="h-24 w-24 text-primary" />
             </div>
-            <div className="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-widest mb-4">
+            <div className="flex items-center gap-3 text-primary font-bold text-xs uppercase tracking-widest mb-6">
               <Activity className="h-4 w-4" /> System Pulse
             </div>
-            <Text variant="caption" className="text-muted-foreground leading-relaxed italic block">
-              "The AI ingestion pipeline is processing 120 nodes/minute. Discovery velocity has increased by 15% following the Q1 taxonomy re-sharding."
+            <Text variant="bodySmall" className="text-muted-foreground leading-relaxed italic block">
+              "The intelligence engine is currently indexing 120 research nodes per minute. Global search visibility is up 15% following the Q1 taxonomy re-sharding."
             </Text>
-            <Button variant="link" className="p-0 h-auto text-primary font-bold text-xs mt-4 group/link" asChild>
-              <Link href="/admin/ai">Enter AI Workspace <ChevronRight className="ml-1 h-3 w-3 transition-transform group-hover/link:translate-x-1" /></Link>
-            </Button>
-          </Card>
-
-          <Card className="glass-card border-none shadow-xl">
-            <CardHeader className="pb-2 border-b border-white/5">
-              <CardTitle className="text-sm font-bold uppercase tracking-widest text-secondary flex items-center gap-2">
-                <ShieldCheck className="h-4 w-4" /> Recent Audits
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-0">
-              <div className="divide-y divide-white/5">
-                {[
-                  { user: "Eleanor Vance", action: "Approved AI Node: Fed Policy", time: "10m ago" },
-                  { user: "Julian Wealth", action: "Suspended Vendor #42", time: "1h ago" },
-                  { user: "System", action: "Rotated API Gateway Keys", time: "2h ago" }
-                ].map((act, i) => (
-                  <div key={i} className="p-4 flex flex-col gap-1 hover:bg-white/5 transition-colors cursor-default">
-                    <Text variant="bodySmall" weight="bold" className="text-foreground/90">{act.action}</Text>
-                    <div className="flex justify-between items-center text-[10px] text-muted-foreground">
-                      <span>{act.user}</span>
-                      <span className="font-mono">{act.time}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
+            <div className="pt-8 space-y-4">
+              <Button variant="outline" className="w-full h-11 rounded-xl border-primary/20 text-primary bg-transparent font-bold text-xs uppercase group/btn" asChild>
+                <Link href="/admin/ai">
+                  Launch AI Workspace <ChevronRight className="ml-1 h-3 w-3 transition-transform group-hover/btn:translate-x-1" />
+                </Link>
+              </Button>
+            </div>
           </Card>
         </div>
       </div>
