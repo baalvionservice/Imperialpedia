@@ -24,6 +24,7 @@ interface CalculatorResultModalProps {
 
 /**
  * A high-fidelity modal for presenting calculator results.
+ * Optimized for institutional-grade visual hierarchy and accessibility.
  */
 export const CalculatorResultModal = ({ 
   isOpen, 
@@ -36,6 +37,13 @@ export const CalculatorResultModal = ({
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="max-w-md glass-card border-primary/20 p-0 overflow-hidden">
+        <DialogHeader className="sr-only">
+          <DialogTitle>{title}</DialogTitle>
+          <DialogDescription>
+            {description}
+          </DialogDescription>
+        </DialogHeader>
+        
         <div className="bg-primary/5 p-8 text-center border-b border-white/5 relative">
           <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-secondary" />
           <div className="w-16 h-16 bg-emerald-500/10 rounded-full flex items-center justify-center mx-auto mb-6">

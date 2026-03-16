@@ -1,11 +1,16 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogHeader, 
+  DialogTitle, 
+  DialogDescription 
+} from '@/components/ui/dialog';
 import { SearchBar } from './SearchBar';
 import { SearchResults } from './SearchResults';
 import { SearchResult } from '@/types/search';
-import { Text } from '@/design-system/typography/text';
 import { Command } from 'lucide-react';
 
 /**
@@ -48,6 +53,12 @@ export const SearchModal = ({ open, onOpenChange }: { open: boolean; onOpenChang
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl p-0 overflow-hidden bg-card border-white/10 shadow-3xl">
+        <DialogHeader className="sr-only">
+          <DialogTitle>Global Search Matrix</DialogTitle>
+          <DialogDescription>
+            Search across millions of institutional knowledge nodes.
+          </DialogDescription>
+        </DialogHeader>
         <div className="p-4 border-b border-white/5">
           <SearchBar 
             value={query} 
