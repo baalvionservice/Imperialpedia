@@ -10,12 +10,12 @@ import { trackEvent } from '@/lib/utils/analytics';
 import { toast } from '@/hooks/use-toast';
 
 /**
- * GDPR-compliant Cookie Consent Banner.
+ * GDPR & CCPA compliant cookie consent banner.
  * Manages user privacy preferences and persists choices across sessions.
  * 
- * TODO: AI-driven consent personalization per region or behavior
- * TODO: Dynamic banner content based on GDPR/CCPA requirements
- * TODO: Analytics tracking for consent accept/reject rates
+ * // TODO: AI-driven privacy notifications based on region
+ * // TODO: Automatic updates for GDPR/CCPA compliance
+ * // TODO: Analytics tracking for consent acceptance/rejection
  */
 export const CookieConsent = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -37,6 +37,7 @@ export const CookieConsent = () => {
     setIsVisible(false);
     
     if (choice === 'accepted') {
+      // Broadcast engagement to the analytics cluster
       trackEvent({
         category: 'Compliance',
         action: 'Accept Cookies',

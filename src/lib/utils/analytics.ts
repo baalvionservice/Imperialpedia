@@ -24,9 +24,9 @@ export const hasConsent = () => {
  * Standard event logger for GA4.
  * Orchestrates the dispatch of custom events to the analytics cluster.
  * 
- * TODO: AI-driven analytics insights
- * TODO: Dynamic reporting of top-performing sections and CTAs
- * TODO: Predictive analytics for user behavior and conversion
+ * // TODO: AI-driven analytics insights
+ * // TODO: Dynamic reporting of top-performing sections and CTAs
+ * // TODO: Predictive analytics for user behavior and conversion
  */
 export const logEvent = (action: string, category: string, label?: string, value?: number) => {
   if (hasConsent() && typeof window !== 'undefined' && (window as any).gtag) {
