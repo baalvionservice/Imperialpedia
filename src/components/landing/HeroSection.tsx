@@ -11,6 +11,7 @@ import { WaitlistForm } from './WaitlistForm';
 import { WaitlistModal } from './WaitlistModal';
 import { useTranslation } from 'react-i18next';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { trackEvent } from '@/lib/utils/analytics';
 
 /**
  * Enhanced Landing Page Hero Section.
@@ -24,9 +25,14 @@ export const HeroSection = () => {
   // Retrieve hero image from institutional placeholder registry
   const heroImage = PlaceHolderImages.find(img => img.id === 'hero-bg');
 
-  // TODO: AI-personalized hero headings based on user location or interest in Phase 2
-  // TODO: Dynamic CTA text variations based on engagement telemetry
-  // TODO: Animated hero background with AI-generated visual content
+  const handleCtaClick = (type: 'Primary' | 'Secondary') => {
+    trackEvent({
+      category: 'CTA',
+      action: 'Click',
+      label: `Hero ${type} - ${type === 'Primary' ? 'Waitlist' : 'Early Access'}`
+    });
+    setIsModalOpen(true);
+  };
 
   return (
     <section className="relative pt-20 pb-32 lg:pt-32 lg:pb-48 overflow-hidden">
@@ -71,7 +77,7 @@ export const HeroSection = () => {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full">
               <Button 
                 size="lg" 
-                onClick={() => setIsModalOpen(true)}
+                onClick={() => handleCtaClick('Primary')}
                 className="h-16 px-10 rounded-2xl font-bold text-lg bg-primary hover:bg-primary/90 shadow-2xl shadow-primary/30 transition-all scale-105 active:scale-95 group relative overflow-hidden"
               >
                 <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -80,7 +86,7 @@ export const HeroSection = () => {
               <Button 
                 size="lg" 
                 variant="outline" 
-                onClick={() => setIsModalOpen(true)}
+                onClick={() => handleCtaClick('Secondary')}
                 className="h-16 px-10 rounded-2xl font-bold text-lg border-white/10 bg-card/30 hover:bg-white/5 hover:border-primary/30 transition-all"
               >
                 {t('hero.secondary_cta')}

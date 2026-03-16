@@ -2,6 +2,7 @@
 
 import React, { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
+import Script from 'next/script';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import { Navbar } from '@/components/common/Navbar';
@@ -31,6 +32,22 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet" />
+        
+        {/* GA4 Handshake - Phase 1 Foundation */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-IMP-INDEX-42"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-IMP-INDEX-42', {
+              page_path: window.location.pathname,
+            });
+          `}
+        </Script>
       </head>
       <body className="font-body bg-background text-foreground antialiased min-h-screen flex flex-col">
         <I18nProvider>

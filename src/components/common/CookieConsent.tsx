@@ -32,10 +32,12 @@ export const CookieConsent = () => {
     localStorage.setItem('imperialpedia_cookie_consent', choice);
     setIsVisible(false);
     
+    // Explicitly allow tracking for this specific interaction even if consent wasn't set yet
+    // because this event marks the decision itself.
     trackEvent({
       category: 'Compliance',
       action: choice === 'accepted' ? 'Accept Cookies' : 'Decline Cookies',
-      label: 'GDPR Banner'
+      label: 'GDPR Banner Choice'
     });
 
     toast({
@@ -47,6 +49,7 @@ export const CookieConsent = () => {
   };
 
   const handleManage = () => {
+    trackEvent({ category: 'Compliance', action: 'Manage Preferences', label: 'GDPR Banner' });
     toast({
       title: "Preference Manager",
       description: "Advanced cookie categorization will be available in Phase 2.",
@@ -107,8 +110,8 @@ export const CookieConsent = () => {
         </div>
       </Container>
       
-      {/* TODO: AI-driven cookie consent messaging based on user region */}
-      {/* TODO: Accessibility reporting dashboard for admins */}
+      {/* TODO: AI-driven cookie consent messaging based on user region in Phase 2 */}
+      {/* TODO: Dynamic cookie categories (analytics, marketing, functional) */}
     </div>
   );
 };
