@@ -78,7 +78,7 @@ export const PricingCard = ({
           </div>
           <div className="pt-6 flex items-baseline gap-1">
             <span className="text-5xl font-bold tracking-tighter text-foreground" aria-label={`Price: ${price} per month`}>{price}</span>
-            {price !== "$0" && <span className="text-muted-foreground font-medium" aria-hidden="true">/mo</span>}
+            {price !== "$0" && <span className="text-muted-foreground font-medium" aria-hidden="true">/node</span>}
           </div>
         </CardHeader>
 
@@ -93,7 +93,7 @@ export const PricingCard = ({
                     <div className="mt-1 p-0.5 rounded-full bg-emerald-500/10 text-emerald-500 group-hover/item:bg-emerald-500 group-hover/item:text-white transition-all duration-300">
                       <CheckCircle2 className="h-3 w-3" aria-hidden="true" />
                     </div>
-                    <Text variant="caption" className="text-muted-foreground group-hover/item:text-foreground transition-colors leading-relaxed">
+                    <Text variant="caption" className="text-muted-foreground group-hover:text-foreground transition-colors leading-relaxed">
                       {feature}
                     </Text>
                   </li>
