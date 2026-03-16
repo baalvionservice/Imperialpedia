@@ -49,7 +49,7 @@ export const NewsletterForm = () => {
     setStatus('loading');
     trackEvent({ 
       category: 'Form', 
-      action: 'Submit', 
+      action: 'newsletter_signup', 
       label: 'Landing Page Newsletter' 
     });
 
@@ -74,7 +74,7 @@ export const NewsletterForm = () => {
 
         trackEvent({ 
           category: 'Conversion', 
-          action: 'newsletter_signup', 
+          action: 'newsletter_success', 
           label: 'Landing Page' 
         });
       } else {

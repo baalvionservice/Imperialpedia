@@ -8,6 +8,7 @@ import { Text } from '@/design-system/typography/text';
 import { CheckCircle2, Zap, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
+import { trackEvent } from '@/lib/utils/analytics';
 
 interface PricingCardProps {
   name: string;
@@ -22,7 +23,7 @@ interface PricingCardProps {
 /**
  * Enhanced Pricing Card Component.
  * Features sophisticated Framer Motion animations and institutional-grade styling.
- * Optimized for WCAG accessibility with clear action labels and semantic structures.
+ * Optimized for WCAG accessibility and integrated with conversion analytics.
  */
 export const PricingCard = ({ 
   name, 
@@ -33,6 +34,15 @@ export const PricingCard = ({
   recommended, 
   onCtaClick 
 }: PricingCardProps) => {
+  const handleCta = () => {
+    trackEvent({
+      category: 'Pricing',
+      action: 'pricing_selection',
+      label: name
+    });
+    onCtaClick(name);
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -95,7 +105,7 @@ export const PricingCard = ({
 
         <CardFooter className="p-8 pt-0">
           <Button 
-            onClick={() => onCtaClick(name)}
+            onClick={handleCta}
             aria-label={`${ctaText} for ${name} plan`}
             className={cn(
               "w-full h-14 rounded-2xl font-bold uppercase tracking-widest text-[10px] transition-all scale-100 active:scale-95 shadow-lg focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",

@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Minus } from "lucide-react";
 import { Text } from "@/design-system/typography/text";
 import { cn } from "@/lib/utils";
+import { trackEvent } from '@/lib/utils/analytics';
 
 interface FaqItemProps {
   question: string;
@@ -14,18 +15,30 @@ interface FaqItemProps {
 /**
  * Individual FAQ node with smooth accordion transitions.
  * Optimized for institutional-grade information discovery.
- * Enhanced with ARIA attributes for accessibility.
+ * Enhanced with ARIA attributes for accessibility and analytics tracking.
  */
 export default function FaqItem({ question, answer }: FaqItemProps) {
   const [isOpen, setIsOpen] = useState(false);
   const contentId = useId();
   const buttonId = useId();
 
+  const handleToggle = () => {
+    const nextState = !isOpen;
+    setIsOpen(nextState);
+    if (nextState) {
+      trackEvent({
+        category: 'FAQ',
+        action: 'faq_toggle',
+        label: question
+      });
+    }
+  };
+
   return (
     <div className="border-b border-white/5 py-4 last:border-0">
       <button
         id={buttonId}
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={handleToggle}
         className="w-full text-left flex justify-between items-center py-4 px-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4 focus-visible:ring-offset-background rounded-xl transition-all group"
         aria-expanded={isOpen}
         aria-controls={contentId}

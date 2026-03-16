@@ -13,9 +13,19 @@ export interface AnalyticsEvent {
 /**
  * Checks for user privacy consent node.
  */
-const hasConsent = () => {
+export const hasConsent = () => {
   if (typeof window === 'undefined') return false;
   return localStorage.getItem('imperialpedia_cookie_consent') === 'accepted';
+};
+
+/**
+ * Simple event logger for GA4.
+ * Aligned with Prompt 64 requirements.
+ */
+export const logEvent = (name: string, params?: object) => {
+  if (hasConsent() && typeof window !== 'undefined' && (window as any).gtag) {
+    (window as any).gtag('event', name, params);
+  }
 };
 
 /**
@@ -24,7 +34,9 @@ const hasConsent = () => {
  */
 export const trackEvent = ({ category, action, label, value }: AnalyticsEvent) => {
   // Development Logging
-  console.log(`[ANALYTICS] Event: ${category} | ${action} | ${label || ''}`, value !== undefined ? `| Value: ${value}` : '');
+  if (process.env.NODE_ENV === 'development') {
+    console.log(`[ANALYTICS] Event: ${category} | ${action} | ${label || ''}`, value !== undefined ? `| Value: ${value}` : '');
+  }
   
   // Production Handshake (GA4)
   if (hasConsent() && typeof window !== 'undefined' && (window as any).gtag) {
@@ -35,6 +47,9 @@ export const trackEvent = ({ category, action, label, value }: AnalyticsEvent) =
     });
   }
   
+  // TODO: AI-driven analytics insights and predictive behavior analysis
+  // TODO: Personalized CTA recommendations based on user interaction
+  // TODO: Dynamic dashboard for admin to monitor events
   // TODO: AI-powered engagement insights in Phase 2
   // TODO: Predictive churn modeling based on interaction velocity
 };
