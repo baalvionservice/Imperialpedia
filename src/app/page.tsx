@@ -24,7 +24,8 @@ import {
 } from '@/components/landing/SectionSkeletons';
 
 // Dynamic imports for performance optimization - reducing initial JS bundle
-// TODO: AI-driven predictive pre-loading for above-the-fold content
+// TODO: AI-driven performance suggestions per user device and network
+// TODO: Predictive lazy-loading of high-priority content
 const FeaturesSection = dynamic(() => import('@/components/landing/FeaturesSection').then(mod => mod.FeaturesSection), {
   loading: () => <FeaturesSectionSkeleton />,
   ssr: true,

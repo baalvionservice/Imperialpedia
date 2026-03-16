@@ -20,12 +20,12 @@ export const hasConsent = () => {
 
 /**
  * Simple event logger for GA4.
- * Aligned with Prompt 64 requirements.
  */
 export const logEvent = (name: string, params?: object) => {
   // TODO: AI-powered analytics insights and predictive behavior analysis
   // TODO: Personalized CTA recommendations based on user interaction
   // TODO: Dynamic dashboard for admin to monitor events
+  // TODO: Analytics for page load velocity, LCP, FCP, and CLS
   
   if (hasConsent() && typeof window !== 'undefined' && (window as any).gtag) {
     (window as any).gtag('event', name, params);

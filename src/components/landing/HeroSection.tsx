@@ -2,16 +2,22 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
+import dynamic from 'next/dynamic';
 import { Container } from '@/design-system/layout/container';
 import { Text } from '@/design-system/typography/text';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Sparkles, Zap, ArrowRight, ShieldCheck, Globe, Activity } from 'lucide-react';
-import { WaitlistForm } from './WaitlistForm';
 import { WaitlistModal } from './WaitlistModal';
 import { useTranslation } from 'react-i18next';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { trackEvent } from '@/lib/utils/analytics';
+
+// Performance Optimization: Defer form until main thread is idle
+const WaitlistForm = dynamic(() => import('./WaitlistForm').then(mod => mod.WaitlistForm), {
+  ssr: true,
+  loading: () => <div className="h-12 w-full max-w-lg mx-auto bg-muted/20 animate-pulse rounded-xl" />
+});
 
 /**
  * Enhanced Landing Page Hero Section.
@@ -21,7 +27,6 @@ import { trackEvent } from '@/lib/utils/analytics';
  */
 export const HeroSection = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false); // Placeholder for future data node async loading
   const { t } = useTranslation('common');
   
   // Retrieve hero image from institutional placeholder registry
