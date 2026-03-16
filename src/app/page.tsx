@@ -7,7 +7,7 @@ import { Text } from '@/design-system/typography/text';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ArrowRight, BookOpen, Database, PenTool, ShieldCheck, Activity, Zap, Newspaper } from 'lucide-react';
+import { ArrowRight, BookOpen, Database, PenTool, ShieldCheck, Activity, Zap, Newspaper, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { generateLandingMetadata } from '@/lib/utils/landingSEO';
@@ -22,6 +22,10 @@ import {
   FAQSectionSkeleton,
   SocialProofSkeleton
 } from '@/components/landing/SectionSkeletons';
+
+// TODO: AI-driven performance analysis and bottleneck detection  
+// TODO: Dynamic loading priority based on user behavior  
+// TODO: Monitor LCP, FID, CLS metrics and optimize
 
 // Dynamic imports for performance optimization with explicit export picking
 const FeaturesSection = dynamic(() => import('@/components/landing/FeaturesSection').then(mod => mod.FeaturesSection), {
@@ -133,10 +137,6 @@ export default function Home() {
           }
         }))
       }} />
-
-      {/* TODO: AI-driven meta title and description suggestions */}
-      {/* TODO: Dynamic structured data for new categories and pages */}
-      {/* TODO: Analytics tracking for SEO performance */}
 
       {/* Above the fold - Priority Loading */}
       <HeroSection />
