@@ -1,5 +1,5 @@
 /**
- * UPDATED SIDEBAR - REFINED EDITORIAL WORKFLOW NAVIGATION
+ * UPDATED SIDEBAR - REFINED KNOWLEDGE GRAPH INTEGRATION
  */
 
 'use client';
@@ -78,7 +78,8 @@ import {
   LineChart,
   ClipboardList,
   UserCheck,
-  Scale
+  Scale,
+  Share2
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 import { useAppStore } from '@/lib/state/app-store';
@@ -227,6 +228,7 @@ const Sidebar = ({ className }: { className?: string }) => {
 
   const publishingItems = [
     { icon: PenTool, label: 'Content Engine', href: '/articles' },
+    { icon: Globe, label: 'Knowledge Map', href: '/knowledge-map' },
     { icon: Layout, label: 'AI Asset Summary', href: '/ai-analyst/asset-summary' },
     { icon: Zap, label: 'Event Intelligence', href: '/ai-analyst/event-intelligence' },
     { icon: Newspaper, label: 'Daily AI Briefing', href: '/ai-analyst/daily-briefing' },
