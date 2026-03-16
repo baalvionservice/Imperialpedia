@@ -1,5 +1,5 @@
 /**
- * UPDATED SIDEBAR - ADDED CONTENT QUALITY AUDIT & AI MODERATION
+ * UPDATED SIDEBAR - REFINED EDITORIAL WORKFLOW NAVIGATION
  */
 
 'use client';
@@ -75,7 +75,9 @@ import {
   Languages,
   PieChart as PieIcon,
   Filter,
-  LineChart
+  LineChart,
+  ClipboardList,
+  UserCheck
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 import { useAppStore } from '@/lib/state/app-store';
@@ -201,12 +203,12 @@ const Sidebar = ({ className }: { className?: string }) => {
   ];
 
   const editorItems = [
-    { icon: LayoutDashboard, label: 'Editor Home', href: '/editor' },
-    { icon: GitPullRequest, label: 'Editorial Workflow', href: '/editor/workflow' },
-    { icon: Search, label: 'Pending Reviews', href: '/editor/pending' },
-    { icon: History, label: 'Review History', href: '/editor/history' },
+    { icon: LayoutDashboard, label: 'Editorial Dashboard', href: '/editor/dashboard' },
+    { icon: ClipboardList, label: 'Review Queue', href: '/editor/queue' },
+    { icon: UserCheck, label: 'Auditor Assignments', href: '/editor/assignments' },
+    { icon: History, label: 'Audit Trail', href: '/editor/activity-log' },
     { icon: CheckCircle, label: 'Approved Index', href: '/editor/approved' },
-    { icon: MessageSquare, label: 'Editorial Chat', href: '/editor/messages' },
+    { icon: MessageSquare, label: 'Auditor Dialogue', href: '/editor/messages' },
   ];
 
   const creatorItems = [
@@ -327,7 +329,7 @@ const Sidebar = ({ className }: { className?: string }) => {
         {isEditor && (pathname.startsWith('/editor') || pathname === '/editor') && (
           <div className="pt-4 border-t border-white/5">
             <Text variant="label" className="px-4 mb-3 text-[10px] text-muted-foreground/50 font-bold uppercase tracking-widest">
-              Editorial Intelligence
+              Editorial Hub
             </Text>
             <div className="space-y-1">
               {editorItems.map((item) => (
