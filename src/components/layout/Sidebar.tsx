@@ -23,7 +23,12 @@ import {
   Cpu,
   Network,
   Scale,
-  Key
+  Key,
+  Brain,
+  DollarSign,
+  FileText,
+  Search,
+  Sparkles
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 import { useAppStore } from '@/lib/state/app-store';
@@ -68,30 +73,34 @@ const Sidebar = ({ className }: { className?: string }) => {
   const pathname = usePathname();
   const { currentUser } = useAppStore();
   
-  const governanceItems = [
+  const mediaEmpireItems = [
     { icon: LayoutDashboard, label: 'Mission Control', href: '/admin/dashboard' },
-    { icon: Key, label: 'Access Hub', href: '/admin/control/access' },
-    { icon: UsersIcon, label: 'Identity Matrix', href: '/admin/control/users' },
-    { icon: ShieldCheck, label: 'Audit Trail', href: '/admin/control/audit-trail' },
-    { icon: ShieldAlert, label: 'Incident Command', href: '/admin/control/incidents' },
+    { icon: FileText, label: 'Content Empire', href: '/admin/control/content' },
+    { icon: Brain, label: 'AI Synthesis Hub', href: '/admin/ai-hub' },
+    { icon: DollarSign, label: 'Monetization Hub', href: '/admin/monetization' },
   ];
 
   const intelligenceItems = [
-    { icon: BarChart3, label: 'Analytics Hub', href: '/admin/analytics' },
-    { icon: Globe, label: 'SEO & Discovery', href: '/admin/control/seo' },
-    { icon: Scale, label: 'Moderation', href: '/admin/moderation' },
+    { icon: BarChart3, label: 'Intelligence Hub', href: '/admin/analytics' },
+    { icon: Search, label: 'SEO & pSEO Logic', href: '/admin/control/seo' },
+    { icon: Scale, label: 'Moderation Gate', href: '/admin/moderation' },
     { icon: UsersIcon, label: 'Expert Vetting', href: '/admin/creators/verification' },
   ];
 
-  const systemItems = [
-    { icon: Cpu, label: 'Infrastructure', href: '/admin/control/infrastructure' },
-    { icon: Network, label: 'Distribution', href: '/admin/control/edge' },
-    { icon: RotateCcw, label: 'Backups', href: '/admin/control/backups' },
-    { icon: Settings, label: 'Kernel Logic', href: '/admin/settings' },
+  const governanceItems = [
+    { icon: Key, label: 'Access Orchestration', href: '/admin/control/access' },
+    { icon: ShieldCheck, label: 'Audit Kernel', href: '/admin/control/audit-trail' },
+    { icon: ShieldAlert, label: 'Incident Command', href: '/admin/control/incidents' },
+  ];
+
+  const infrastructureItems = [
+    { icon: Cpu, label: 'Scaling Hub', href: '/admin/control/infrastructure' },
+    { icon: Network, label: 'Edge Distribution', href: '/admin/control/edge' },
+    { icon: Settings, label: 'System Logic', href: '/admin/settings' },
   ];
 
   return (
-    <aside className={cn('w-64 border-r h-full bg-card/30 flex flex-col p-4 backdrop-blur-xl', className)}>
+    <aside className={cn('w-64 border-r h-full bg-card/30 flex flex-col p-4 backdrop-blur-xl sticky top-0', className)}>
       <div className="mb-10 px-4 py-4 border-b border-white/5">
         <Link href="/" className="text-2xl font-headline font-bold text-primary tracking-tighter">
           Imperial<span className="text-foreground">pedia</span>
@@ -100,11 +109,11 @@ const Sidebar = ({ className }: { className?: string }) => {
       </div>
 
       <div className="space-y-8 flex-grow overflow-y-auto no-scrollbar">
-        {/* Governance Group */}
+        {/* Media Empire Group */}
         <div className="space-y-3">
-          <Text variant="label" className="px-4 text-[9px] text-primary/60 font-bold uppercase tracking-[0.2em]">Governance</Text>
+          <Text variant="label" className="px-4 text-[9px] text-emerald-500/60 font-bold uppercase tracking-[0.2em]">Media Empire</Text>
           <div className="space-y-1">
-            {governanceItems.map((item) => (
+            {mediaEmpireItems.map((item) => (
               <SidebarItem
                 key={item.href}
                 {...item}
@@ -116,7 +125,7 @@ const Sidebar = ({ className }: { className?: string }) => {
 
         {/* Intelligence Group */}
         <div className="space-y-3">
-          <Text variant="label" className="px-4 text-[9px] text-secondary/60 font-bold uppercase tracking-[0.2em]">Intelligence</Text>
+          <Text variant="label" className="px-4 text-[9px] text-primary/60 font-bold uppercase tracking-[0.2em]">Intelligence Hub</Text>
           <div className="space-y-1">
             {intelligenceItems.map((item) => (
               <SidebarItem
@@ -128,11 +137,25 @@ const Sidebar = ({ className }: { className?: string }) => {
           </div>
         </div>
 
-        {/* System Group */}
+        {/* Governance Group */}
+        <div className="space-y-3">
+          <Text variant="label" className="px-4 text-[9px] text-secondary/60 font-bold uppercase tracking-[0.2em]">Governance</Text>
+          <div className="space-y-1">
+            {governanceItems.map((item) => (
+              <SidebarItem
+                key={item.href}
+                {...item}
+                isActive={pathname === item.href}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Infrastructure Group */}
         <div className="space-y-3">
           <Text variant="label" className="px-4 text-[9px] text-muted-foreground/50 font-bold uppercase tracking-[0.2em]">Infrastructure</Text>
           <div className="space-y-1">
-            {systemItems.map((item) => (
+            {infrastructureItems.map((item) => (
               <SidebarItem
                 key={item.href}
                 {...item}
