@@ -7,6 +7,9 @@ import { EntityOverview } from '@/components/knowledge/EntityOverview';
 import { DataTable } from '@/components/knowledge/DataTable';
 import { RelatedEntities } from '@/components/knowledge/RelatedEntities';
 import { getIndustryBySlug } from '@/lib/data/loaders';
+import { QuickStats } from '@/components/entity/QuickStats';
+import { RelatedHighlights } from '@/components/entity/RelatedHighlights';
+import { AIInsight } from '@/components/ai/AIInsight';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -41,29 +44,41 @@ export default async function Page({ params }: PageProps) {
     ['Primary Taxonomies', industry.tags.join(', ')]
   ];
 
+  const quickStats = [
+    { label: 'Global Size', value: industry.global_market_size },
+    { label: 'Growth Target', value: industry.growth_rate },
+    { label: 'Active Hubs', value: industry.top_countries.length }
+  ];
+
   return (
     <main className="min-h-screen bg-background pt-20 pb-32">
       <Container>
         <EntityHeader name={industry.name} type="Industry" tags={industry.tags} />
         
-        <EntityOverview 
-          description={industry.description} 
-          stats={[
-            { label: 'Global Size', value: industry.global_market_size },
-            { label: 'CAGR Target', value: industry.growth_rate },
-            { label: 'Active Hubs', value: industry.top_countries.length }
-          ]} 
-        />
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mt-12">
+          <div className="lg:col-span-8 space-y-12">
+            <EntityOverview description={industry.description} />
+            
+            <QuickStats stats={quickStats} />
+            
+            <DataTable title="Market Architecture" headers={['Strategic Node', 'Value']} rows={technicalData} />
 
-        <DataTable title="Market Architecture" headers={['Strategic Node', 'Value']} rows={technicalData} />
+            <RelatedEntities 
+              entities={[
+                ...industry.top_countries.map((c: string) => ({ name: c.replace('-', ' '), slug: c, type: 'country' })),
+                ...industry.key_companies.map((k: string) => ({ name: k.charAt(0).toUpperCase() + k.slice(1), slug: k, type: 'company' })),
+                ...industry.related_technologies.map((t: string) => ({ name: t.replace('-', ' '), slug: t, type: 'technology' }))
+              ]} 
+            />
+          </div>
 
-        <RelatedEntities 
-          entities={[
-            ...industry.top_countries.map((c: string) => ({ name: c.replace('-', ' '), slug: c, type: 'country' })),
-            ...industry.key_companies.map((k: string) => ({ name: k.charAt(0).toUpperCase() + k.slice(1), slug: k, type: 'company' })),
-            ...industry.related_technologies.map((t: string) => ({ name: t.replace('-', ' '), slug: t, type: 'technology' }))
-          ]} 
-        />
+          <aside className="lg:col-span-4 space-y-10">
+            <div className="sticky top-24 space-y-10">
+              <AIInsight />
+              <RelatedHighlights entityId={industry.id} />
+            </div>
+          </aside>
+        </div>
       </Container>
     </main>
   );

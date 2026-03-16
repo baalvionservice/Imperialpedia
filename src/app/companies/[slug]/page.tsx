@@ -7,12 +7,13 @@ import { EntityOverview } from '@/components/knowledge/EntityOverview';
 import { DataTable } from '@/components/knowledge/DataTable';
 import { RelatedEntities } from '@/components/knowledge/RelatedEntities';
 import { Section } from '@/components/ui/Section';
-import { Sparkles, Activity } from 'lucide-react';
-import { Text } from '@/design-system/typography/text';
 import { getCompanyBySlug } from '@/lib/data/loaders';
 import { generateEntityMetadata } from '@/lib/seo/metadata';
 import { structuredData } from '@/lib/seo/structuredData';
 import { JsonLd } from '@/modules/seo-engine/components/JsonLd';
+import { QuickStats } from '@/components/entity/QuickStats';
+import { RelatedHighlights } from '@/components/entity/RelatedHighlights';
+import { AIInsight } from '@/components/ai/AIInsight';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -41,6 +42,12 @@ export default async function Page({ params }: PageProps) {
     ['Website', <a href={company.website} target="_blank" className="text-primary hover:underline">{company.website.replace('https://', '')}</a>]
   ];
 
+  const quickStats = [
+    { label: 'Founded', value: company.founded_year },
+    { label: 'Employees', value: company.employees.toLocaleString() },
+    { label: 'Status', value: 'Institutional' }
+  ];
+
   const schema = structuredData.entity(company, 'company');
 
   return (
@@ -49,41 +56,24 @@ export default async function Page({ params }: PageProps) {
       <Container>
         <EntityHeader name={company.name} type="Company" tags={company.tags} />
         
-        <EntityOverview 
-          description={company.description} 
-          stats={[
-            { label: 'Market Cap', value: 'Institutional' },
-            { label: 'Industry Hub', value: company.industry.charAt(0).toUpperCase() + company.industry.slice(1) },
-            { label: 'Headquarters', value: company.headquarters }
-          ]} 
-        />
-
-        <DataTable title="Institutional Handshake" headers={['Attribute', 'Value']} rows={technicalData} />
-
-        {/* 
-          Related entities are currently mapped via specific fields in JSON. 
-          Knowledge Graph integration handles more complex relations.
-        */}
-        <RelatedEntities entities={[]} />
-
-        <Section title="AI Intelligence Synthesis">
-          <div className="p-10 rounded-[3rem] bg-primary/5 border border-primary/20 relative overflow-hidden group">
-            <div className="absolute top-0 right-0 p-10 opacity-5 pointer-events-none group-hover:scale-110 transition-transform duration-1000">
-              <Sparkles size={120} className="text-primary" />
-            </div>
-            <div className="flex items-start gap-6 relative z-10">
-              <div className="p-4 rounded-3xl bg-primary/10 text-primary shrink-0 shadow-lg">
-                <Activity size={32} />
-              </div>
-              <div className="space-y-4">
-                <Text variant="h3" className="text-2xl font-bold">Analyst Forecast</Text>
-                <Text variant="body" className="text-muted-foreground italic leading-relaxed max-w-2xl">
-                  "Our generative engine is currently indexing real-time sentiment and longitudinal market data for {company.name}. Full strategic audit nodes will be available following the next re-sharding cycle."
-                </Text>
-              </div>
-            </div>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mt-12">
+          <div className="lg:col-span-8 space-y-12">
+            <EntityOverview description={company.description} />
+            
+            <QuickStats stats={quickStats} />
+            
+            <DataTable title="Institutional Handshake" headers={['Attribute', 'Value']} rows={technicalData} />
+            
+            <RelatedEntities entities={[]} />
           </div>
-        </Section>
+
+          <aside className="lg:col-span-4 space-y-10">
+            <div className="sticky top-24 space-y-10">
+              <AIInsight />
+              <RelatedHighlights entityId={company.id} />
+            </div>
+          </aside>
+        </div>
       </Container>
     </main>
   );

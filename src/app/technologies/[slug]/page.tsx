@@ -7,6 +7,9 @@ import { EntityOverview } from '@/components/knowledge/EntityOverview';
 import { DataTable } from '@/components/knowledge/DataTable';
 import { RelatedEntities } from '@/components/knowledge/RelatedEntities';
 import { getTechnologyBySlug } from '@/lib/data/loaders';
+import { QuickStats } from '@/components/entity/QuickStats';
+import { RelatedHighlights } from '@/components/entity/RelatedHighlights';
+import { AIInsight } from '@/components/ai/AIInsight';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -41,28 +44,40 @@ export default async function Page({ params }: PageProps) {
     ['Core Applications', tech.applications.join(', ')]
   ];
 
+  const quickStats = [
+    { label: 'Inception', value: tech.invented_year },
+    { label: 'App Nodes', value: tech.applications.length },
+    { label: 'Domain', value: tech.category }
+  ];
+
   return (
     <main className="min-h-screen bg-background pt-20 pb-32">
       <Container>
         <EntityHeader name={tech.name} type="Technology" tags={tech.tags} />
         
-        <EntityOverview 
-          description={tech.description} 
-          stats={[
-            { label: 'Innovation Node', value: tech.invented_year },
-            { label: 'Application Scale', value: tech.applications.length },
-            { label: 'Industry Vertical', value: tech.category }
-          ]} 
-        />
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mt-12">
+          <div className="lg:col-span-8 space-y-12">
+            <EntityOverview description={tech.description} />
+            
+            <QuickStats stats={quickStats} />
+            
+            <DataTable title="Instructional Layer" headers={['Technical Node', 'Value']} rows={technicalData} />
 
-        <DataTable title="Instructional Layer" headers={['Technical Node', 'Value']} rows={technicalData} />
+            <RelatedEntities 
+              entities={[
+                ...tech.key_companies.map((k: string) => ({ name: k.charAt(0).toUpperCase() + k.slice(1), slug: k, type: 'company' })),
+                ...tech.related_technologies.map((t: string) => ({ name: t.replace('-', ' '), slug: t, type: 'technology' }))
+              ]} 
+            />
+          </div>
 
-        <RelatedEntities 
-          entities={[
-            ...tech.key_companies.map((k: string) => ({ name: k.charAt(0).toUpperCase() + k.slice(1), slug: k, type: 'company' })),
-            ...tech.related_technologies.map((t: string) => ({ name: t.replace('-', ' '), slug: t, type: 'technology' }))
-          ]} 
-        />
+          <aside className="lg:col-span-4 space-y-10">
+            <div className="sticky top-24 space-y-10">
+              <AIInsight />
+              <RelatedHighlights entityId={tech.id} />
+            </div>
+          </aside>
+        </div>
       </Container>
     </main>
   );

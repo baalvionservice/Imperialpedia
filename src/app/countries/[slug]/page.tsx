@@ -10,6 +10,9 @@ import { getCountryBySlug } from '@/lib/data/loaders';
 import { generateEntityMetadata } from '@/lib/seo/metadata';
 import { structuredData } from '@/lib/seo/structuredData';
 import { JsonLd } from '@/modules/seo-engine/components/JsonLd';
+import { QuickStats } from '@/components/entity/QuickStats';
+import { RelatedHighlights } from '@/components/entity/RelatedHighlights';
+import { AIInsight } from '@/components/ai/AIInsight';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -38,6 +41,12 @@ export default async function Page({ params }: PageProps) {
     ['Identity Language', country.official_language]
   ];
 
+  const quickStats = [
+    { label: 'Nominal GDP', value: country.gdp },
+    { label: 'Population', value: (country.population / 1000000).toFixed(1) + 'M' },
+    { label: 'Currency', value: country.currency }
+  ];
+
   const schema = structuredData.entity(country, 'country');
 
   return (
@@ -46,23 +55,29 @@ export default async function Page({ params }: PageProps) {
       <Container>
         <EntityHeader name={country.name} type="Country" tags={country.tags} />
         
-        <EntityOverview 
-          description={country.description} 
-          stats={[
-            { label: 'Nominal GDP', value: country.gdp },
-            { label: 'Global Region', value: country.region },
-            { label: 'Population Index', value: country.population.toLocaleString() }
-          ]} 
-        />
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mt-12">
+          <div className="lg:col-span-8 space-y-12">
+            <EntityOverview description={country.description} />
+            
+            <QuickStats stats={quickStats} />
+            
+            <DataTable title="Sovereign Vitals" headers={['Matrix Node', 'Value']} rows={technicalData} />
 
-        <DataTable title="Sovereign Vitals" headers={['Matrix Node', 'Value']} rows={technicalData} />
+            <RelatedEntities 
+              entities={[
+                ...country.industries.map((i: string) => ({ name: i.charAt(0).toUpperCase() + i.slice(1), slug: i, type: 'industry' })),
+                ...country.technologies.map((t: string) => ({ name: t.replace('-', ' '), slug: t, type: 'technology' }))
+              ]} 
+            />
+          </div>
 
-        <RelatedEntities 
-          entities={[
-            ...country.industries.map((i: string) => ({ name: i.charAt(0).toUpperCase() + i.slice(1), slug: i, type: 'industry' })),
-            ...country.technologies.map((t: string) => ({ name: t.replace('-', ' '), slug: t, type: 'technology' }))
-          ]} 
-        />
+          <aside className="lg:col-span-4 space-y-10">
+            <div className="sticky top-24 space-y-10">
+              <AIInsight />
+              <RelatedHighlights entityId={country.id} />
+            </div>
+          </aside>
+        </div>
       </Container>
     </main>
   );
