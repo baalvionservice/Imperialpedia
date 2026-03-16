@@ -246,7 +246,7 @@ export default function CategoryEngagementDashboard() {
               ))}
               <Button variant="ghost" size="sm" className="w-full text-primary font-bold text-[10px] mt-2 group" asChild>
                 <Link href="/admin/categories">
-                  Audit Taxonomy Settings <ChevronRight className="ml-1 h-3 w-3 transition-transform group-hover:translate-x-1" />
+                  Audit Taxonomy Settings <ChevronRight className="ml-1 h-3 w-3 transition-transform group-hover/link:translate-x-1" />
                 </Link>
               </Button>
             </CardContent>

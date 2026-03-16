@@ -25,7 +25,8 @@ import {
   ExternalLink,
   ChevronRight,
   ShieldCheck,
-  RefreshCw
+  RefreshCw,
+  Plus
 } from 'lucide-react';
 import { systemService } from '@/services/data/system-service';
 import { IncidentResponseData, IncidentNode, SystemAlertNode, IncidentDetail } from '@/types/system';
@@ -40,6 +41,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Progress } from '@/components/ui/progress';
+import Link from 'next/link';
 
 /**
  * Incident Response & Alerts Management Hub Client.
@@ -50,7 +53,6 @@ export function IncidentResponseClient() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [selectedIncident, setSelectedIncident] = useState<IncidentNode | null>(null);
-  const [activeTab, setActiveTab] = useState<'incidents' | 'alerts'>('incidents');
 
   useEffect(() => {
     async function loadData() {
@@ -290,7 +292,7 @@ export function IncidentResponseClient() {
             <div className="flex items-center gap-2 text-secondary font-bold text-sm uppercase tracking-widest">
               <ShieldCheck className="h-4 w-4" /> Compliance Guard
             </div>
-            <Text variant="caption" className="text-muted-foreground leading-relaxed italic">
+            <Text variant="caption" className="text-muted-foreground leading-relaxed italic block">
               "The current SLA buffer is maintaining stability. Any deviation in MTTR exceeding 20% will automatically initiate a fallback state to the secondary US-West region node."
             </Text>
             <Button variant="link" className="p-0 h-auto text-secondary text-xs font-bold group/link" asChild>
@@ -319,7 +321,7 @@ export function IncidentResponseClient() {
             </DialogDescription>
           </DialogHeader>
           
-          <div className="p-8 space-y-8">
+          <div className="p-8 space-y-8 max-h-[60vh] overflow-y-auto no-scrollbar bg-background/50">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-4">
                 <div className="flex items-center gap-2 text-primary font-bold text-[10px] uppercase tracking-widest">

@@ -30,7 +30,9 @@ import {
   MessageSquare,
   History,
   Terminal,
-  Scale
+  Scale,
+  Heart,
+  TrendingUp
 } from 'lucide-react';
 import Link from 'next/link';
 import { moderationService } from '@/services/data/moderation-service';
@@ -318,7 +320,7 @@ export default function AIModerationHubPage() {
               "The **Manipulation Detection Engine** is currently benchmarking at 94% precision. Suspicious 'Pump and Dump' narratives are auto-throttled in the discovery feed."
             </Text>
           </div>
-        </div>
+        </aside>
       </div>
 
       {/* MODERATION HISTORY SECTION */}
@@ -396,7 +398,7 @@ export default function AIModerationHubPage() {
             </DialogDescription>
           </DialogHeader>
           
-          <div className="p-8 space-y-8 max-h-[60vh] overflow-y-auto no-scrollbar">
+          <div className="p-8 space-y-8 max-h-[60vh] overflow-y-auto no-scrollbar bg-background/50">
             {/* Raw Content Payload */}
             <div className="space-y-4">
               <div className="flex items-center gap-2 text-primary font-bold text-[10px] uppercase tracking-widest">
@@ -480,6 +482,3 @@ export default function AIModerationHubPage() {
     </div>
   );
 }
-
-import { Heart } from 'lucide-react';
-

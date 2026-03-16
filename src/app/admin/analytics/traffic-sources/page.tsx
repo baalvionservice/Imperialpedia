@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -20,7 +20,9 @@ import {
   ExternalLink,
   Target,
   Zap,
-  Activity
+  Activity,
+  Heart,
+  MessageSquare
 } from 'lucide-react';
 import Link from 'next/link';
 import { analyticsService } from '@/services/data/analytics-service';
@@ -117,7 +119,7 @@ export default function TrafficSourcesPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <Card className="glass-card border-none shadow-xl">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Organic Reach</KeyCardTitle>
+            <CardTitle className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Organic Reach</CardTitle>
             <Search className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
@@ -130,7 +132,7 @@ export default function TrafficSourcesPage() {
 
         <Card className="glass-card border-none shadow-xl">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Direct Loyalty</KeyCardTitle>
+            <CardTitle className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Direct Loyalty</CardTitle>
             <Zap className="h-4 w-4 text-secondary" />
           </CardHeader>
           <CardContent>
@@ -143,7 +145,7 @@ export default function TrafficSourcesPage() {
 
         <Card className="glass-card border-none shadow-xl">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Social Velocity</KeyCardTitle>
+            <CardTitle className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Social Velocity</CardTitle>
             <Share2 className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
@@ -156,7 +158,7 @@ export default function TrafficSourcesPage() {
 
         <Card className="glass-card border-none shadow-xl">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Referral Integrity</KeyCardTitle>
+            <CardTitle className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Referral Integrity</CardTitle>
             <ExternalLink className="h-4 w-4 text-secondary" />
           </CardHeader>
           <CardContent>

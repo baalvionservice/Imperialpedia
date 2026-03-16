@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
 import { Text } from '@/design-system/typography/text';
 import { 
   BarChart3, 
@@ -28,7 +29,9 @@ import {
   Target,
   AlertTriangle,
   Flame,
-  Layout
+  Layout,
+  Clock,
+  ShieldAlert
 } from 'lucide-react';
 import { 
   AreaChart, 
@@ -38,8 +41,6 @@ import {
   CartesianGrid, 
   Tooltip, 
   ResponsiveContainer,
-  BarChart,
-  Bar,
   PieChart,
   Pie,
   Cell,
@@ -303,7 +304,7 @@ export function AnalyticsCommandCenterClient() {
               ))}
             </div>
           </div>
-        </div>
+        </aside>
       </div>
 
       {/* STRATEGIC HUB FOOTER */}

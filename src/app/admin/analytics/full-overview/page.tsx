@@ -27,7 +27,9 @@ import {
   Zap,
   Globe,
   Monitor,
-  Target
+  Target,
+  Clock,
+  ArrowLeft
 } from 'lucide-react';
 import { 
   Accordion, 
@@ -228,7 +230,7 @@ export default function FullAnalyticsOverviewPage() {
                 </div>
               ))}
               <Button variant="ghost" size="sm" className="w-full text-primary font-bold text-[10px] mt-2 group" asChild>
-                <Link href="/admin/analytics/content">View Full Index <ChevronRight className="ml-1 h-3 w-3 transition-transform group-hover:translate-x-1" /></Link>
+                <Link href="/admin/analytics/content">View Full Index <ChevronRight className="ml-1 h-3 w-3 transition-transform group-hover/btn:translate-x-1" /></Link>
               </Button>
             </CardContent>
           </Card>
@@ -368,7 +370,7 @@ export default function FullAnalyticsOverviewPage() {
         </div>
 
         <div className="p-6 rounded-[2rem] bg-secondary/5 border border-secondary/20 flex items-center gap-4">
-          <div className="p-3 rounded-2xl bg-secondary/10 text-secondary">
+          <div className="p-3 rounded-2xl bg-secondary/10 w-fit text-secondary">
             <Target className="h-6 w-6" />
           </div>
           <div>
