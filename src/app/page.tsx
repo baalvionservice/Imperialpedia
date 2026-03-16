@@ -14,7 +14,6 @@ import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { generateLandingMetadata } from '@/lib/utils/landingSEO';
 import { JsonLd } from '@/modules/seo-engine/components/JsonLd';
-import FaqSection from '@/components/common/FaqSection';
 
 // Skeleton fallbacks for lazy loading
 import { 
@@ -23,17 +22,24 @@ import {
   PricingSectionSkeleton 
 } from '@/components/landing/SectionSkeletons';
 
-// Dynamic imports for performance optimization
+// Dynamic imports for performance optimization - reducing initial JS bundle
 const FeaturesSection = dynamic(() => import('@/components/landing/FeaturesSection').then(mod => mod.FeaturesSection), {
   loading: () => <FeaturesSectionSkeleton />,
+  ssr: true,
 });
 
 const TestimonialsSection = dynamic(() => import('@/components/landing/TestimonialsSection').then(mod => mod.TestimonialsSection), {
   loading: () => <TestimonialsSectionSkeleton />,
+  ssr: true,
 });
 
 const PricingSection = dynamic(() => import('@/components/landing/PricingSection').then(mod => mod.PricingSection), {
   loading: () => <PricingSectionSkeleton />,
+  ssr: true,
+});
+
+const FaqSection = dynamic(() => import('@/components/common/FaqSection'), {
+  ssr: true,
 });
 
 /**
@@ -43,7 +49,7 @@ export const metadata = generateLandingMetadata();
 
 /**
  * The main Home page for Imperialpedia.
- * Orchestrates the full landing page experience with performance-optimized lazy loading and pSEO metadata.
+ * Optimized for institutional-grade performance with dynamic imports and high-priority LCP handling.
  */
 export default function Home() {
   const faqs = [
@@ -125,10 +131,12 @@ export default function Home() {
       <JsonLd data={faqSchema} />
       <JsonLd data={breadcrumbSchema} />
 
+      {/* Above the fold - Priority Loading */}
       <HeroSection />
 
       <SocialProofSection />
 
+      {/* Below the fold - Lazy Loaded via dynamic imports */}
       <FeaturesSection />
 
       <TestimonialsSection />
@@ -187,9 +195,9 @@ export default function Home() {
 
       <StickyCTA />
 
-      {/* TODO: AI-generated dynamic SEO content suggestions */}
-      {/* TODO: Personalized metadata based on visitor location or interest */}
-      {/* TODO: Analytics tracking for SEO and social sharing interactions */}
+      {/* TODO: AI-driven performance monitoring and auto-optimization suggestions */}
+      {/* TODO: Personalized lazy loading or prefetching based on user behavior */}
+      {/* TODO: Analytics tracking for loading times and Core Web Vitals */}
     </div>
   );
 }

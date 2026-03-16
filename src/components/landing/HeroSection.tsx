@@ -15,8 +15,8 @@ import { trackEvent } from '@/lib/utils/analytics';
 
 /**
  * Enhanced Landing Page Hero Section.
- * Features animated typography, high-fidelity CTAs, and responsive visual intelligence.
- * Optimized for institutional-grade discovery.
+ * Features animated typography, high-fidelity CTAs, and optimized visual intelligence.
+ * priority={true} is set on the hero image to optimize LCP.
  */
 export const HeroSection = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -99,7 +99,7 @@ export const HeroSection = () => {
             </div>
           </div>
 
-          {/* Responsive Visual Intelligence Layer */}
+          {/* Responsive Visual Intelligence Layer - priority={true} for LCP optimization */}
           <div className="pt-16 lg:pt-24 animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-700 fill-mode-both">
             <div className="relative aspect-[21/9] w-full rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl shadow-primary/5 bg-card/30 group">
               <Image 
@@ -107,7 +107,7 @@ export const HeroSection = () => {
                 alt={heroImage?.description || "Imperialpedia Intelligence Index Interface"}
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
-                priority
+                priority={true}
                 data-ai-hint={heroImage?.imageHint || "financial data"}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-60" />
@@ -133,7 +133,6 @@ export const HeroSection = () => {
         </div>
       </Container>
 
-      {/* Early Access Handshake Modal */}
       <WaitlistModal isOpen={isModalOpen} onOpenChange={setIsModalOpen} />
     </section>
   );
