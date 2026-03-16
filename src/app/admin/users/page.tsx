@@ -21,12 +21,14 @@ import {
   ShieldAlert,
   ChevronRight,
   UserCheck,
-  Globe
+  Globe,
+  Edit
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
 import { toast } from '@/hooks/use-toast';
+import Link from 'next/link';
 
 export default function UserIdentityRegistry() {
   const [loading, setLoading] = useState(true);
