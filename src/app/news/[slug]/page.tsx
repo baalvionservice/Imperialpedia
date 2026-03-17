@@ -1,4 +1,5 @@
 import { NewsArticle, newsArticles, NewsBodyBlock, NewsCategory } from "@/lib/data.news";
+import { stocksPageData } from "@/lib/data/data.stocks";
 import { buildMetadata } from "@/lib/seo";
 import { formatDate } from "@/services/format-date";
 import Image from "next/image";
@@ -141,15 +142,18 @@ export default async function SingleNewsPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const article = newsArticles.find((a) => a.slug === slug);
+  let article = newsArticles.find((a) => a.slug === slug);
+  if (!article) {
+    stocksPageData.featured.slug === slug ? article = stocksPageData.featured :
+      article = stocksPageData.latest.find((a) => a.slug === slug);
+  };
   if (!article) notFound();
 
-  
 
 
   return (
     <div className="bg-white min-h-screen">
-  
+
 
       <div className="max-w-7xl mx-auto px-4 py-10">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-12 xl:gap-16">
@@ -159,21 +163,21 @@ export default async function SingleNewsPage({
 
             {/* Category + title */}
             <div className="my-2">
-              
+
               <h1 className="text-gray-900 text-3xl md:text-5xl font-extrabold leading-4 tracking-wider">
                 {article.title}
               </h1>
             </div>
 
-           
+
 
             {/* Byline */}
             <div className={`flex flex-wrap items-center gap-x-4 gap-y-2 py-4  mb-2 text-sm text-gray-500`}>
               <div className="flex items-center gap-2">
-               
+
                 <div>
-                By <span className="font-semibold text-gray-800 ">{article.author.name}</span>
-                 
+                  By <span className="font-semibold text-gray-800 ">{article.author.name}</span>
+
                 </div>
               </div>
               <span className="text-black">Published {formatDate(article.publishedAt)}</span>
@@ -203,7 +207,7 @@ export default async function SingleNewsPage({
               )}
             </figure>
 
-          
+
 
             {/* Article body */}
             <div className="prose-none">
@@ -212,12 +216,12 @@ export default async function SingleNewsPage({
               ))}
             </div>
 
-          
-           
-           
+
+
+
           </article>
 
-          
+
         </div>
       </div>
     </div>

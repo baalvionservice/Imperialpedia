@@ -26,6 +26,8 @@ type ExploreValue =
   | "personal-finance"
   | "more";
 
+
+
 const MAIN_TABS: Array<{
   value: Exclude<ExploreValue, "more">;
   label: string;
