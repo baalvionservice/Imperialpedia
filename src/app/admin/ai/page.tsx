@@ -2,58 +2,44 @@
 
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
+import { Text } from '@/design-system/typography/text';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Text } from '@/design-system/typography/text';
 import { 
-  Brain, 
-  Zap, 
-  Sparkles, 
-  Loader2, 
-  Search, 
-  CheckCircle2, 
-  Target,
-  FileText,
-  Terminal,
-  RefreshCw,
-  Plus,
-  Layers,
-  ArrowRight,
-  TrendingUp,
-  Cpu,
-  ChevronRight,
-  Info
+  Brain, Sparkles, Zap, Search, Target, Layout, 
+  ArrowRight, Loader2, RefreshCw, Send, Settings2,
+  CheckCircle2, Info
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
 import { toast } from '@/hooks/use-toast';
 
-export default function AIOrchestrationPage() {
+export default function AIContentLab() {
   const [generating, setGenerating] = useState(false);
-  const [activeModel, setActiveModel] = useState('Claude 3.5 Sonnet');
+  const [activeTab, setActiveTab] = useState('draft');
 
   const handleGenerate = async () => {
     setGenerating(true);
-    toast({ title: "Synthesis Initiated", description: "Claude is traversing the global market wire for breaking updates..." });
+    toast({ title: "Synthesis Initiated", description: "Analyst Kernel v4.2 is traversing global news clusters..." });
     await new Promise(r => setTimeout(r, 2000));
     setGenerating(false);
-    toast({ title: "Draft Synchronized", description: "Algorithmic research node ready for audit." });
+    toast({ title: "Draft Synchronized", description: "AI intelligence node ready for human audit." });
   };
 
   return (
     <div className="space-y-10 pb-24 animate-in fade-in duration-700">
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 px-2">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2 text-primary">
+        <div>
+          <div className="flex items-center gap-2 text-primary mb-1">
             <Brain className="h-4 w-4" />
-            <Text variant="label" className="text-[10px] font-bold tracking-widest uppercase">Intelligence Orchestration</Text>
+            <Text variant="label" className="text-[10px] font-bold tracking-widest uppercase">Intelligence Synthesis</Text>
           </div>
-          <Text variant="h1" className="text-3xl font-bold tracking-tight">AI Workspace</Text>
+          <Text variant="h1" className="text-3xl font-bold tracking-tight">AI Content Lab</Text>
         </div>
         <div className="flex items-center gap-3">
-          <Button variant="outline" className="rounded-xl border-white/10 bg-card/30 h-11">
-            <Terminal className="mr-2 h-4 w-4 text-primary" /> Model Registry
+          <Button variant="outline" className="rounded-xl border-white/10 bg-card/30 h-11 px-6">
+            <Settings2 className="mr-2 h-4 w-4 text-primary" /> Kernel Config
           </Button>
           <Button 
             onClick={handleGenerate}
@@ -61,7 +47,7 @@ export default function AIOrchestrationPage() {
             className="rounded-xl shadow-lg shadow-primary/20 font-bold bg-primary hover:bg-primary/90 h-11 px-8 transition-all scale-105 active:scale-95"
           >
             {generating ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
-            Generate Intelligence
+            Generate Strategy Draft
           </Button>
         </div>
       </header>
@@ -70,103 +56,92 @@ export default function AIOrchestrationPage() {
         {/* Main Workspace */}
         <div className="lg:col-span-8 space-y-8">
           <Card className="glass-card border-none shadow-2xl overflow-hidden">
-            <CardHeader className="bg-card/30 border-b border-white/5 p-8 flex flex-row items-center justify-between">
-              <div className="space-y-1">
-                <CardTitle>Algorithmic Draft Queue</CardTitle>
-                <CardDescription>Review and refine automatically generated research nodes.</CardDescription>
-              </div>
-              <div className="flex items-center gap-3">
-                <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20 text-[9px] uppercase font-bold h-6">Priority Ingestion</Badge>
+            <CardHeader className="bg-card/30 border-b border-white/5 p-8">
+              <div className="flex items-center justify-between">
+                <CardTitle>Drafting Matrix</CardTitle>
+                <div className="flex bg-background/50 border border-white/5 p-1 rounded-xl h-10">
+                  {['Research', 'News Summary', 'FAQ Gen'].map(t => (
+                    <button 
+                      key={t}
+                      onClick={() => setActiveTab(t.toLowerCase())}
+                      className={cn(
+                        "px-4 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all",
+                        activeTab === t.toLowerCase() ? "bg-primary text-white shadow-lg" : "text-muted-foreground hover:text-foreground"
+                      )}
+                    >
+                      {t}
+                    </button>
+                  ))}
+                </div>
               </div>
             </CardHeader>
-            <div className="p-0">
-              <div className="divide-y divide-white/5">
-                {[
-                  { topic: "The Impact of QT on Tech Multiples", model: "Claude 3.5", score: 94, status: "Ready" },
-                  { topic: "Yield Curve Inversion: A 50-Year Audit", model: "Gemini 1.5 Pro", score: 88, status: "Reviewing" },
-                  { topic: "DeFi Liquidity Hub Adoption", model: "Claude 3.5", score: 91, status: "Ready" }
-                ].map((item, i) => (
-                  <div key={i} className="p-6 hover:bg-white/5 transition-all flex items-center justify-between group cursor-pointer">
-                    <div className="flex items-center gap-5">
-                      <div className="p-3 rounded-2xl bg-background/50 border border-white/5 text-muted-foreground group-hover:text-primary transition-all">
-                        <FileText className="h-5 w-5" />
-                      </div>
-                      <div className="space-y-1">
-                        <Text variant="body" weight="bold" className="group-hover:text-primary transition-colors">{item.topic}</Text>
-                        <div className="flex items-center gap-3 text-[10px] text-muted-foreground uppercase font-bold tracking-widest">
-                          <span>{item.model}</span>
-                          <span className="w-1 h-1 rounded-full bg-white/20" />
-                          <span className="text-emerald-500">{item.score}% SEO Score</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <Badge className={cn(
-                        "text-[8px] font-bold uppercase border-none px-2 h-5",
-                        item.status === 'Ready' ? "bg-emerald-500/10 text-emerald-500" : "bg-amber-500/10 text-amber-500"
-                      )}>{item.status}</Badge>
-                      <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-all" />
-                    </div>
-                  </div>
-                ))}
+            <CardContent className="p-10 space-y-8">
+              <div className="space-y-4">
+                <Text variant="h3" className="font-bold text-2xl">Proposed Node: Analyzing the Q2 Bond Yield Divergence</Text>
+                <div className="flex flex-wrap gap-2">
+                  {['Macro', 'Bonds', 'Fed', 'Liquidity'].map(tag => (
+                    <Badge key={tag} variant="secondary" className="bg-primary/5 text-primary border-none text-[10px] px-3 h-6">#{tag}</Badge>
+                  ))}
+                </div>
               </div>
-            </div>
-            <CardFooter className="p-4 bg-muted/10 border-t border-white/5 justify-center">
-              <Button variant="ghost" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground hover:text-primary">
-                Explore Full Ingestion Matrix
+
+              <div className="p-8 rounded-3xl bg-background/50 border border-white/5 space-y-6 italic text-foreground/80 leading-relaxed">
+                <p>"As we traverse into the second fiscal cycle of 2026, the structural decoupling between short-term treasury nodes and long-tail inflation expectations has reached a critical threshold..."</p>
+                <p>"The analyst engine suggests focusing on the **Institutional Liquidity Buffer** as the primary driver for this divergence. Cross-linking to the 'Yield Curve Inversion' glossary node is recommended for optimal pSEO discoverability..."</p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t border-white/5">
+                <div className="space-y-2">
+                  <div className="flex justify-between items-end mb-1">
+                    <Text variant="label" className="text-[9px] opacity-50 uppercase font-bold tracking-widest">SEO Score</Text>
+                    <span className="text-sm font-mono font-bold text-emerald-500">92/100</span>
+                  </div>
+                  <Progress value={92} className="h-1 bg-white/5" />
+                </div>
+                <div className="space-y-2">
+                  <div className="flex justify-between items-end mb-1">
+                    <Text variant="label" className="text-[9px] opacity-50 uppercase font-bold tracking-widest">Readability</Text>
+                    <span className="text-sm font-mono font-bold text-primary">Master Tier</span>
+                  </div>
+                  <Progress value={85} className="h-1 bg-white/5" />
+                </div>
+                <div className="space-y-2">
+                  <div className="flex justify-between items-end mb-1">
+                    <Text variant="label" className="text-[9px] opacity-50 uppercase font-bold tracking-widest">Link Depth</Text>
+                    <span className="text-sm font-mono font-bold text-secondary">8 Nodes</span>
+                  </div>
+                  <Progress value={60} className="h-1 bg-white/5" />
+                </div>
+              </div>
+            </CardContent>
+            <CardFooter className="p-6 bg-muted/10 border-t border-white/5 flex justify-end gap-3">
+              <Button variant="ghost" className="rounded-xl h-11 px-6 font-bold text-xs uppercase">Discard</Button>
+              <Button className="rounded-xl h-11 px-10 font-bold bg-primary hover:bg-primary/90 shadow-xl shadow-primary/20">
+                Commit to Editorial Queue <ArrowRight size={14} className="ml-2" />
               </Button>
             </CardFooter>
           </Card>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <Card className="glass-card border-none bg-primary/5 p-8 relative overflow-hidden group">
-              <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform">
-                <Zap className="h-24 w-24 text-primary" />
-              </div>
-              <div className="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-widest mb-4">
-                <TrendingUp className="h-4 w-4" /> Growth Directives
-              </div>
-              <Text variant="caption" className="text-muted-foreground leading-relaxed italic block">
-                "AI suggests expanding into the **'Carbon Credits'** taxonomy. Discovery volume for related nodes has spiked by 450% this cycle."
-              </Text>
-            </Card>
-
-            <Card className="glass-card border-none bg-secondary/5 p-8 flex flex-col gap-4">
-              <div className="flex items-center gap-2 text-secondary font-bold text-xs uppercase tracking-widest">
-                <Cpu className="h-4 w-4" /> Compute Vitals
-              </div>
-              <div className="space-y-4 pt-2">
-                <div className="space-y-2">
-                  <div className="flex justify-between text-[9px] font-bold uppercase"><span>Token Efficiency</span><span>92%</span></div>
-                  <Progress value={92} className="h-1 bg-white/5" />
-                </div>
-                <div className="flex justify-between text-[9px] font-bold uppercase text-muted-foreground">
-                  <span>Inference Latency</span>
-                  <span className="text-foreground">420ms</span>
-                </div>
-              </div>
-            </Card>
-          </div>
         </div>
 
-        {/* Sidebar Controls */}
+        {/* AI Control Sidebar */}
         <aside className="lg:col-span-4 space-y-8">
           <Card className="glass-card border-none shadow-xl bg-card/30">
-            <CardHeader>
-              <CardTitle className="text-sm font-bold uppercase tracking-widest flex items-center gap-2">
-                <Target className="h-4 w-4 text-primary" /> Performance Matrix
+            <CardHeader className="pb-4">
+              <CardTitle className="text-sm font-bold uppercase tracking-widest text-primary flex items-center gap-2">
+                <Target className="h-4 w-4" /> Discovery Logic
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               {[
-                { label: 'Fact-Check Precision', value: '99.8%' },
-                { label: 'SEO Authority Alignment', value: '82%' },
-                { label: 'Ingestion Success', value: '100%' },
-                { label: 'Instructional Fidelity', value: '94%' }
-              ].map((stat) => (
-                <div key={stat.label} className="flex justify-between items-center border-b border-white/5 pb-3 last:border-0">
-                  <Text variant="label" className="text-[10px] opacity-50 uppercase font-bold">{stat.label}</Text>
-                  <span className="text-sm font-mono font-bold text-foreground">{stat.value}</span>
+                { label: 'Keyword Gap Analysis', status: 'Running', color: 'text-emerald-500' },
+                { label: 'Sentiment Pulse Crawl', status: 'Active', color: 'text-primary' },
+                { label: 'Competitor Triage', status: 'Standby', color: 'text-muted-foreground' }
+              ].map(job => (
+                <div key={job.label} className="flex justify-between items-center py-2 border-b border-white/5 last:border-0">
+                  <Text variant="bodySmall" weight="bold">{job.label}</Text>
+                  <Badge variant="outline" className={cn("text-[8px] font-bold uppercase", job.color.replace('text-', 'bg-').replace('text-', 'border-').replace('500', '500/10'))}>
+                    {job.status}
+                  </Badge>
                 </div>
               ))}
             </CardContent>
@@ -176,19 +151,19 @@ export default function AIOrchestrationPage() {
             <div className="w-16 h-16 rounded-[1.5rem] bg-secondary/10 flex items-center justify-center text-secondary mx-auto shadow-2xl">
               <RefreshCw className="h-8 w-8" />
             </div>
-            <Text variant="bodySmall" weight="bold">Model Benchmarking</Text>
+            <Text variant="bodySmall" weight="bold">Intelligence Feed Sync</Text>
             <Text variant="caption" className="text-muted-foreground leading-relaxed block">
-              Auditing **Claude 3.5 Sonnet** against institutional ethics nodes. Integrity state is synchronized.
+              Auditing **Claude 3.5 Sonnet** against trailing 24h market wires. Discovery state is nominal.
             </Text>
             <Button variant="outline" className="w-full h-11 rounded-xl border-secondary/20 text-secondary font-bold text-xs uppercase">
-              Switch Provider
+              Force Handshake
             </Button>
           </div>
 
           <Card className="glass-card border-none bg-background/30 p-8 flex items-start gap-4">
             <Info className="h-5 w-5 text-primary shrink-0 mt-0.5" />
             <Text variant="caption" className="text-muted-foreground leading-relaxed italic">
-              "Every AI-generated node is cryptographically signed and archived in the immutable governance ledger."
+              "AI-generated nodes are automatically subjected to human fact-check triage before entering the 'Compliance' status node."
             </Text>
           </Card>
         </aside>

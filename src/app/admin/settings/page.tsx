@@ -6,21 +6,9 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Text } from '@/design-system/typography/text';
 import { 
-  Settings, 
-  ShieldCheck, 
-  Key, 
-  Globe, 
-  Languages, 
-  Zap, 
-  Lock,
-  Save,
-  Loader2,
-  RefreshCw,
-  Activity,
-  Terminal,
-  ChevronRight,
-  Database,
-  DollarSign
+  Settings as SettingsIcon, ShieldCheck, Key, Globe, 
+  Languages, Zap, Lock, Save, Loader2, RefreshCw, 
+  Activity, Terminal, ChevronRight, Database, DollarSign
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
