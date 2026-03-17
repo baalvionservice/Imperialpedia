@@ -9,11 +9,12 @@ import { Text } from '@/design-system/typography/text';
 import { 
   Globe, Languages, Search, Filter, CheckCircle2, 
   XCircle, Clock, ArrowRight, Zap, Info, Layers,
-  Activity, MapPin, RefreshCw, Plus, Trash2, Edit
+  Activity, MapPin, RefreshCw, Plus, Trash2, Edit, ChevronRight
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
 export default function GlobalPublishingHub() {
   const [search, setSearch] = useState('');
@@ -158,9 +159,9 @@ export default function GlobalPublishingHub() {
             Multi-region publishing requires a vertical legal review for any content specific to regulated jurisdictions (e.g., SEBI in India, SEC in USA).
           </Text>
           <Button variant="link" className="p-0 h-auto text-primary font-bold text-[10px] uppercase w-fit group" asChild>
-            <a href="/admin/compliance">
-              Access Compliance Matrix <ChevronRight className="ml-1 h-3 w-3 transition-transform group-hover:translate-x-1" />
-            </a>
+            <Link href="/admin/compliance">
+              Access Compliance Matrix <ChevronRight className="ml-1 h-3 w-3 transition-transform group-hover/link:translate-x-1" />
+            </Link>
           </Button>
         </div>
       </div>
