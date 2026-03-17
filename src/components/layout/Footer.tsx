@@ -3,6 +3,7 @@ import { routes } from '@/config/routes';
 import { platformConfig } from '@/config/platform';
 
 const Footer = () => {
+  const alphabet = ["#", ..."ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("")];
   return (
     <footer className="border-t bg-card/30 py-12">
       <div className="container mx-auto px-4">
@@ -40,6 +41,20 @@ const Footer = () => {
             </ul>
           </div>
         </div>
+
+        <div className="flex w-full justify-start mt-8  flex-wrap gap-11 ">
+          {alphabet.map((letter) => (
+            <Link
+              key={letter}
+              href={`/glossary/${letter === "#" ? "num" : letter.toLowerCase()}`}
+              className="hover:underline"
+            >
+              {letter}
+            </Link>
+          ))}
+        </div>
+
+
         <div className="mt-12 pt-8 border-t text-center text-xs text-muted-foreground">
           © {new Date().getFullYear()} {platformConfig.name}. All rights reserved.
         </div>
