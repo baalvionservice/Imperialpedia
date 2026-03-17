@@ -7,8 +7,9 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { 
   Users, FileText, Brain, DollarSign, TrendingUp, 
-  ArrowUpRight, ArrowDownRight, Loader2, Sparkles,
-  Activity, Zap, ShieldAlert
+  ArrowUpRight, Loader2, Sparkles,
+  Activity, Zap, ShieldAlert, ChevronRight, Info,
+  Globe, BarChart3, Target
 } from 'lucide-react';
 import { 
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
@@ -17,6 +18,7 @@ import {
 import { adminService } from '@/services/mock-api/admin';
 import { PlatformDashboardStats, RevenueMetric } from '@/types/admin';
 import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState<PlatformDashboardStats | null>(null);
@@ -54,21 +56,21 @@ export default function AdminDashboard() {
 
   return (
     <div className="space-y-10 pb-24 animate-in fade-in duration-700">
-      <header className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 px-2">
         <div className="space-y-1">
           <div className="flex items-center gap-2 text-primary">
             <Activity className="h-4 w-4" />
-            <Text variant="label" className="text-[10px] font-bold tracking-widest uppercase">System Orchestration</Text>
+            <Text variant="label" className="text-[10px] font-bold tracking-widest uppercase">Platform Oversight</Text>
           </div>
           <Text variant="h1" className="text-3xl font-bold tracking-tight">Mission Control</Text>
         </div>
         <div className="flex items-center gap-3">
           <Badge variant="outline" className="border-emerald-500/20 bg-emerald-500/5 text-emerald-500 h-10 px-4 gap-2">
             <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            System Normal
+            Kernel Online
           </Badge>
           <Button className="rounded-xl shadow-lg shadow-primary/20 font-bold bg-primary hover:bg-primary/90 h-10 px-6">
-            Run Index Audit
+            Force Re-index
           </Button>
         </div>
       </header>
@@ -129,7 +131,7 @@ export default function AdminDashboard() {
           <Card className="glass-card border-none shadow-xl bg-card/30">
             <CardHeader className="pb-4">
               <CardTitle className="text-sm font-bold uppercase tracking-widest text-primary flex items-center gap-2">
-                <ShieldAlert className="h-4 w-4" /> Priority Triage
+                <ShieldAlert className="h-4 w-4" /> Editorial Triage
               </CardTitle>
             </CardHeader>
             <CardContent className="p-0">
@@ -150,8 +152,8 @@ export default function AdminDashboard() {
                   </div>
                 ))}
               </div>
-              <Button variant="ghost" className="w-full h-12 text-[9px] font-bold uppercase tracking-widest text-muted-foreground hover:text-primary rounded-none border-t border-white/5">
-                View Governance Log
+              <Button variant="ghost" className="w-full h-12 text-[9px] font-bold uppercase tracking-widest text-muted-foreground hover:text-primary rounded-none border-t border-white/5" asChild>
+                <Link href="/admin/content">View Workflow Queue <ChevronRight size={12} className="ml-1" /></Link>
               </Button>
             </CardContent>
           </Card>
@@ -161,14 +163,14 @@ export default function AdminDashboard() {
               <Sparkles className="h-24 w-24 text-primary" />
             </div>
             <div className="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-widest mb-2">
-              <Zap className="h-4 w-4" /> AI Strategy Node
+              <Zap className="h-4 w-4" /> AI Growth Logic
             </div>
             <Text variant="caption" className="text-muted-foreground leading-relaxed italic block">
-              "The current index reach is peaking in the **Fixed Income** taxonomy. Recommend provisioning 3 new automated research drafts for Q2."
+              "The current reach is peaking in the **Fixed Income** hub. AI recommends creating 5 new glossary nodes for 'Yield Spread' to capture rising search intent."
             </Text>
             <Button variant="link" className="p-0 h-auto text-primary text-xs font-bold uppercase group/link" asChild>
               <Link href="/admin/ai">
-                Open AI Content Lab <ArrowUpRight className="ml-1 h-3 w-3 transition-transform group-hover/link:translate-x-1" />
+                Enter AI Content Lab <ArrowUpRight className="ml-1 h-3 w-3 transition-transform group-hover/link:translate-x-1" />
               </Link>
             </Button>
           </div>
