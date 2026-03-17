@@ -1,17 +1,23 @@
 import React from 'react';
 import { AdminSidebar } from '@/components/admin/AdminSidebar';
-import { Container } from '@/design-system/layout/container';
 import { Text } from '@/design-system/typography/text';
 import { Bell, Search, User, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 
+/**
+ * Super Admin Workspace Layout.
+ * Features a locked viewport with independent scroll areas for the sidebar and main hub.
+ */
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex min-h-screen bg-background">
+    <div className="flex h-screen w-full bg-background overflow-hidden">
+      {/* 1. STICKY GOVERNANCE SIDEBAR */}
       <AdminSidebar />
-      <div className="flex-1 flex flex-col min-w-0">
-        <header className="h-16 border-b border-white/5 bg-card/20 backdrop-blur-md sticky top-0 z-40 px-8 flex items-center justify-between">
+      
+      <div className="flex-1 flex flex-col min-w-0 h-full overflow-hidden">
+        {/* 2. COMMAND HEADER */}
+        <header className="h-16 border-b border-white/5 bg-card/20 backdrop-blur-md sticky top-0 z-40 px-8 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-4 flex-1 max-w-xl">
             <div className="relative w-full group">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
@@ -42,8 +48,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </div>
         </header>
 
-        <main className="flex-1 overflow-y-auto p-8">
-          {children}
+        {/* 3. DYNAMIC CONTENT HUD */}
+        <main className="flex-1 overflow-y-auto p-8 no-scrollbar bg-background/50">
+          <div className="max-w-[1600px] mx-auto">
+            {children}
+          </div>
         </main>
       </div>
     </div>

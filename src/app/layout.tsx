@@ -37,12 +37,14 @@ const ptSans = PT_Sans({
 /**
  * Root Layout for Imperialpedia.
  * Optimized for institutional performance and accessibility.
- * Features next/font for zero render-blocking typography.
  */
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   const pathname = usePathname();
+  
+  // Conditionally hide public navigation for administrative nodes
+  const isAdminPath = pathname?.startsWith('/admin');
 
   useEffect(() => {
     trackPageView(pathname);
@@ -54,7 +56,6 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#1C1822" />
         
-        {/* Google Analytics - Loaded after initial discovery */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-IMP-INDEX-42"
           strategy="afterInteractive"
@@ -72,7 +73,6 @@ export default function RootLayout({
       </head>
 
       <body className="font-body bg-background text-foreground antialiased min-h-screen flex flex-col">
-        {/* Skip Link for Keyboard Accessibility */}
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-6 focus:py-3 focus:bg-primary focus:text-white focus:rounded-xl focus:font-bold focus:shadow-2xl transition-all"
@@ -85,12 +85,12 @@ export default function RootLayout({
             <ThemeProvider>
               <ToastProvider>
                 <TooltipProvider>
-                  <Navbar />
+                  {!isAdminPath && <Navbar />}
                   <CookieConsent />
                   <main id="main-content" className="flex-grow outline-none" tabIndex={-1}>
                     {children}
                   </main>
-                  <Footer />
+                  {!isAdminPath && <Footer />}
                   <Toaster />
                 </TooltipProvider>
               </ToastProvider>
