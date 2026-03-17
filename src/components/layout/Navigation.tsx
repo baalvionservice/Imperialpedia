@@ -11,6 +11,7 @@ const navLinks = [
   { label: 'News', href: routes.public.news },
   { label: 'Stocks', href: routes.public.stocks },
   { label: 'Brokers', href: routes.public.brokers },
+  { label: 'Reviews', href: routes.public.reviews },
   { label: 'Community', href: routes.public.community },
   { label: 'AI Tools', href: routes.public.aiTools },
   { label: 'Experts', href: routes.public.creators },
