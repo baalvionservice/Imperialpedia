@@ -9,6 +9,7 @@ export const routes = {
   public: {
     home: "/",
     news: "/news",
+    stocks: "/stocks",
     topics: "/topics",
     articles: "/articles",
     glossary: "/glossary",

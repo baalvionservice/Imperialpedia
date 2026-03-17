@@ -1,0 +1,151 @@
+import FAQ from "@/components/faq/FAQ";
+import { StockPageData, stocksPageData } from "@/lib/data/data.stocks";
+import { buildMetadata } from "@/lib/seo";
+import Image from "next/image";
+import Link from "next/link";
+import { ExploreNewsSection } from "../news/ExploreNewsSection";
+
+export const metadata = buildMetadata({
+    title: "Stocks News and Analysis | Imperial Finance",
+    description:
+        "Stay informed with the latest financial news, market insights, and expert analysis. Our news section covers global markets, economic trends, and investment strategies to help you make informed decisions.",
+});
+
+
+
+function HorizontalArticleCard({ article }: { article: StockPageData["latest"][0] }) {
+    return (
+        <Link
+            href={`/news/${article.slug}`}
+            className="group flex gap-3 items-center py-4 border-b border-gray-100 last:border-none"
+        >
+            <div className="relative flex-shrink-0 w-32 h-full overflow-hidden">
+                <Image
+                    src={article.imageUrl}
+                    alt={article.title}
+                    fill
+                    className="object-cover h-full w-full transition-transform duration-300 group-hover:scale-105"
+                />
+            </div>
+            <div className="flex-1 min-w-0 space-y-1">
+                <p className="text-blue-500 tracking-wider">STOCKS</p>
+                <h3 className="text-sm font-semibold text-gray-900 leading-snug group-hover:underline line-clamp-2">
+                    {article.title}
+                </h3>
+                <div className="text-neutral-400 text-sm">
+                    By <span className="">{article.author.name}</span>
+
+                </div>
+            </div>
+        </Link>
+    );
+}
+
+/** Large hero card — the featured article */
+function FeaturedArticleCard({ article }: { article: StockPageData["featured"] }) {
+    return (
+        <Link href={`/news/${article.slug}`} className="group block">
+            <div className="relative w-full md:mt-6 overflow-hidden aspect-[16/9] lg:aspect-[21/9]">
+                <Image
+                    src={article.imageUrl}
+                    alt={article.title}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    sizes="(max-width: 768px) 100vw, 75vw"
+                    priority
+                />
+                {/* gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+
+
+            </div>
+            {/* text */}
+            <div className="py-5 space-y-3">
+                <p className="text-blue-500 tracking-wider">STOCKS</p>
+                <h2 className="text-black text-2xl md:text-3xl font-bold leading-snug max-w-2xl group-hover:underline group-hover:text-blue-500 underline-offset-4">
+                    {article.title}
+                </h2>
+
+                <p className="text-gray-500 text-xs">
+                    By {article.author.name}
+                </p>
+            </div>
+        </Link>
+    );
+}
+
+
+export default function StockPage() {
+    const featured = stocksPageData.featured;
+    const gridArticles = stocksPageData.latest.filter((a) => !a.featured).slice(3);
+
+    return (
+        <div className='min-h-screen bg-white'>
+            {/* ── Hero header ── */}
+            <div className=" pt-14  pb-5 lg:pt-20 space-y-3 text-center px-4">
+                <p className="text-blue-700 tracking-wide">INVESTING</p>
+                <h1 className="text-4xl lg:text-4xl font-bold tracking-wide">
+                    Stocks
+                </h1>
+                <p className="mt-3 text-gray-800 text-base lg:text-lg max-w-2xl mx-auto">
+                    Stocks represent ownership of a company. Stocks owned either directly or through a mutual fund or ETF, will likely form the majority of most investors’ portfolios.
+                </p>
+            </div>
+
+
+
+            {/* ── Main content ── */}
+            <div className="max-w-7xl mx-auto px-4 py-4 space-y-12">
+
+                {/* ── Top section: featured + sidebar ── */}
+                <section className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+                    {/* Featured (takes 2/3 width) */}
+                    <div className="lg:col-span-2">
+                        <FeaturedArticleCard article={featured} />
+
+                    </div>
+
+                    {/* Sidebar latest */}
+                    <aside className="flex flex-col">
+
+                        {stocksPageData.latest.map((article) => (
+                            <HorizontalArticleCard key={article.id} article={article} />
+                        ))}
+                    </aside>
+
+
+
+                </section>
+
+
+                {/* ── FAQ ── */}
+                <section className="w-full pb-4 md:pb-12">
+                    <FAQ />
+                </section>
+
+
+
+
+                {/* ── Article grid ── */}
+                <section className="pb-4 md:pb-12">
+                    <h2 className="text-sm font-bold uppercase tracking-widest text-gray-400 mb-6 pb-2">
+                        Explore Stocks
+                    </h2>
+
+                    <ExploreNewsSection articles={gridArticles} />
+                </section>
+            </div>
+
+
+
+
+
+
+
+
+
+
+        </div>
+    );
+}
