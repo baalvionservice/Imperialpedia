@@ -7,12 +7,27 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Text } from '@/design-system/typography/text';
 import { 
-  ShieldAlert, ShieldCheck, Scale, History, Search, 
-  Filter, CheckCircle2, XCircle, AlertTriangle, FileText,
-  Lock, ArrowRight, Zap, Info, ChevronRight
+  ShieldAlert, 
+  ShieldCheck, 
+  Scale, 
+  History, 
+  Search, 
+  Filter, 
+  CheckCircle2, 
+  XCircle, 
+  AlertTriangle, 
+  FileText,
+  Lock, 
+  ArrowRight, 
+  Zap, 
+  Info, 
+  ChevronRight,
+  Globe,
+  Clock
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/hooks/use-toast';
+import { cn } from '@/lib/utils';
 
 export default function ComplianceLegalHub() {
   const [search, setSearch] = useState('');
@@ -165,5 +180,3 @@ export default function ComplianceLegalHub() {
     </div>
   );
 }
-
-import { Globe, Clock } from 'lucide-react';

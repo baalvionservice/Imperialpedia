@@ -45,8 +45,8 @@ import { User, UserStatus, Role } from '@/types';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/hooks/use-toast';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { cn } from '@/lib/utils';
 import Link from 'next/link';
+import { cn } from '@/lib/utils';
 
 /**
  * Admin User Management Hub.
@@ -313,9 +313,9 @@ export default function UserControlDashboard() {
             <Text variant="caption" className="text-muted-foreground mt-2 leading-relaxed">
               Use the Activation Hub for at-scale identity state transitions. Multi-factor verification is enforced for all administrative level Persona shifts.
             </Text>
-            <Button variant="link" className="p-0 h-auto text-secondary text-xs font-bold mt-4 group" asChild>
-              <Link href="/admin/control/users/activation">
-                Open Activation Hub <ArrowRight className="ml-1 h-3 w-3 transition-transform group-hover:translate-x-1" />
+            <Button variant="link" className="p-0 h-auto text-secondary text-[10px] font-bold mt-4 group w-fit" asChild>
+              <Link href="/admin/creators/verification">
+                Open Vetting Hub <ChevronRight className="ml-1 h-3 w-3 transition-transform group-hover:translate-x-1" />
               </Link>
             </Button>
           </div>

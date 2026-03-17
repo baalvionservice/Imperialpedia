@@ -6,9 +6,23 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Text } from '@/design-system/typography/text';
 import { 
-  Zap, Brain, Sparkles, Send, Loader2, Search, Filter, 
-  ChevronRight, ArrowRight, Terminal, Globe, Newspaper,
-  TrendingUp, Activity, CheckCircle2, History
+  Zap, 
+  Brain, 
+  Sparkles, 
+  Send, 
+  Loader2, 
+  Search, 
+  Filter, 
+  ChevronRight, 
+  ArrowRight, 
+  Terminal, 
+  Globe, 
+  Newspaper,
+  TrendingUp, 
+  Activity, 
+  CheckCircle2, 
+  History,
+  Clock
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/hooks/use-toast';
@@ -48,7 +62,7 @@ export default function BreakingNewsAISystem() {
           className="rounded-xl shadow-lg shadow-primary/20 font-bold bg-primary hover:bg-primary/90 h-11 px-8 transition-all scale-105 active:scale-95"
         >
           {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
-          Generate Breaking Summary
+          {loading ? 'Synthesizing...' : 'Generate Breaking Summary'}
         </Button>
       </header>
 

@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Text } from '@/design-system/typography/text';
 import { 
   Plus, Search, Filter, Edit, Trash2, Eye, Clock, 
-  ChevronRight, ArrowRight, Layers, User, Loader2
+  ChevronRight, ArrowRight, Layers, User, Loader2, CheckCircle2
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { adminService } from '@/services/mock-api/admin';
@@ -148,7 +148,7 @@ export default function ContentEmpire() {
           <div className="p-3 rounded-2xl bg-secondary/10 w-fit text-secondary"><Clock className="h-6 w-6" /></div>
           <div>
             <Text variant="bodySmall" weight="bold" className="text-secondary flex items-center gap-2">
-              <ArrowRight className="h-4 w-4" /> Global Scheduling
+              <Clock className="h-4 w-4" /> Global Scheduling
             </Text>
             <Text variant="caption" className="text-muted-foreground mt-2 leading-relaxed">
               Manage multi-region release cycles. Target specific discovery peak hours in New York, London, and Singapore clusters.
