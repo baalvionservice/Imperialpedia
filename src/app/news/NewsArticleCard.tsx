@@ -15,6 +15,7 @@ const CATEGORY_COLORS: Record<NewsCategory, string> = {
   "Real Estate": "bg-rose-100 text-rose-700",
   ETFs: "bg-indigo-100 text-indigo-700",
   Bonds: "bg-yellow-100 text-yellow-700",
+  Guides: "bg-gray-100 text-gray-700",
 };
 
 function CategoryBadge({ category }: { category: NewsCategory }) {
@@ -29,7 +30,7 @@ function CategoryBadge({ category }: { category: NewsCategory }) {
 
 export function ArticleCard({ article }: { article: NewsArticle }) {
   return (
-    <Link href={`/news/${article.slug}`} className="group flex flex-col">
+    <Link href={`/${article.slug}`} className="group flex flex-col">
       <div className="relative w-full aspect-[16/9] overflow-hidden rounded-xl mb-3">
         <Image
           src={article.imageUrl}

@@ -1,4 +1,3 @@
-import { RouteConfig } from "@/types";
 
 /**
  * @fileOverview Centralized route definitions for the entire application.
@@ -10,7 +9,7 @@ export const routes = {
     home: "/",
     news: "/news",
     stocks: "/stocks",
-    topics: "/topics",
+    brokers: "/brokers",
     articles: "/articles",
     glossary: "/glossary",
     calculators: "/financial-tools",
