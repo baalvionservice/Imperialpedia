@@ -18,7 +18,6 @@ import {
   DropdownMenuSeparator, 
   DropdownMenuTrigger 
 } from '@/components/ui/dropdown-menu';
-import { Text } from '@/design-system/typography/text';
 
 /**
  * Global application header with logo, navigation, search, and user actions.

@@ -1,21 +1,15 @@
-import FAQ from "@/components/faq/FAQ";
-import { StockPageData, stocksPageData } from "@/lib/data/data.stocks";
-import { buildMetadata } from "@/lib/seo";
+import HeadingSection from "@/components/layout/HeadingSection";
+import { brokerGuides } from "./Components/data.brokers";
 import Image from "next/image";
 import Link from "next/link";
+import { NewsArticle } from "@/lib/data.news";
+import { brokerFAQs } from "./Components/data.faq.brokers";
+import FAQ from "@/components/faq/FAQ";
 import { ExploreNewsSection } from "../news/ExploreNewsSection";
-import HeadingSection from "@/components/layout/HeadingSection";
-import { stockFaqs } from "@/lib/data/data.faq";
-
-export const metadata = buildMetadata({
-    title: "Stocks News and Analysis | Imperial Finance",
-    description:
-        "Stay informed with the latest financial news, market insights, and expert analysis. Our news section covers global markets, economic trends, and investment strategies to help you make informed decisions.",
-});
 
 
-
-function HorizontalArticleCard({ article }: { article: StockPageData["latest"][0] }) {
+/** Horizontal card (image left, text right) — for the sidebar list */
+function HorizontalArticleCard({ article }: { article: NewsArticle }) {
     return (
         <Link
             href={`/${article.slug}`}
@@ -27,10 +21,11 @@ function HorizontalArticleCard({ article }: { article: StockPageData["latest"][0
                     alt={article.title}
                     fill
                     className="object-cover h-full w-full transition-transform duration-300 group-hover:scale-105"
+                    sizes="96px"
                 />
             </div>
             <div className="flex-1 min-w-0 space-y-1">
-                <p className="text-blue-500 tracking-wider">STOCKS</p>
+                <p className="text-blue-500 tracking-wider">BROKERS</p>
                 <h3 className="text-sm font-semibold text-gray-900 leading-snug group-hover:underline line-clamp-2">
                     {article.title}
                 </h3>
@@ -44,7 +39,7 @@ function HorizontalArticleCard({ article }: { article: StockPageData["latest"][0
 }
 
 /** Large hero card — the featured article */
-function FeaturedArticleCard({ article }: { article: StockPageData["featured"] }) {
+function FeaturedArticleCard({ article }: { article: typeof brokerGuides[0] }) {
     return (
         <Link href={`/${article.slug}`} className="group block">
             <div className="relative w-full md:mt-6 overflow-hidden aspect-[16/9] lg:aspect-[21/9]">
@@ -77,14 +72,14 @@ function FeaturedArticleCard({ article }: { article: StockPageData["featured"] }
 }
 
 
-export default function StockPage() {
-    const featured = stocksPageData.featured;
-    const gridArticles = stocksPageData.latest.filter((a) => !a.featured).slice(3);
-
+export default function BrokersPage() {
+    const featured = brokerGuides.find((article) => article.featured);
+    const sidebarArticles = brokerGuides.filter((a) => !a.featured);
     return (
         <div className='min-h-screen bg-white'>
-            {/* ── Hero header ── */}
-            <HeadingSection tag={'INVESTING'} title={"Stocks"} description={"Stocks represent ownership of a company. Stocks owned either directly or through a mutual fund or ETF, will likely form the majority of most investors’ portfolios."} />
+
+            {/* Heading */}
+            <HeadingSection tag={"INVESTING"} title={"Brokers"} description="From beginners to advanced traders looking for options trading, international exposure, and alternative investments, there is a brokerage firm for every investor across all levels of experience, income, and risk tolerance. Learn how the best brokers work and which ones are suited to help you reach your financial goals" />
 
             {/* ── Main content ── */}
             <div className="max-w-7xl mx-auto px-4 py-4 space-y-12">
@@ -94,14 +89,14 @@ export default function StockPage() {
 
                     {/* Featured (takes 2/3 width) */}
                     <div className="lg:col-span-2">
-                        <FeaturedArticleCard article={featured} />
+                        <FeaturedArticleCard article={featured!} />
 
                     </div>
 
                     {/* Sidebar latest */}
                     <aside className="flex flex-col">
 
-                        {stocksPageData.latest.map((article) => (
+                        {sidebarArticles.slice(0,4).map((article) => (
                             <HorizontalArticleCard key={article.id} article={article} />
                         ))}
                     </aside>
@@ -113,7 +108,7 @@ export default function StockPage() {
 
                 {/* ── FAQ ── */}
                 <section className="w-full pb-4 md:pb-12">
-                    <FAQ data={stockFaqs}/>
+                    <FAQ data={brokerFAQs} />
                 </section>
 
 
@@ -122,22 +117,13 @@ export default function StockPage() {
                 {/* ── Article grid ── */}
                 <section className="pb-4 md:pb-12">
                     <h2 className="text-sm font-bold uppercase tracking-widest text-gray-400 mb-6 pb-2">
-                        Explore Stocks
+                        Explore Brokers
                     </h2>
 
-                    <ExploreNewsSection articles={gridArticles} />
+                    <ExploreNewsSection articles={sidebarArticles} />
                 </section>
             </div>
 
-
-
-
-
-
-
-
-
-
         </div>
-    );
+    )
 }

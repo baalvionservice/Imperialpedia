@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { buildMetadata } from '@/lib/seo';
-import { Metadata } from 'next';
 import Link from 'next/link';
 
 import { getTermsByLetter } from "@/lib/data/utils";

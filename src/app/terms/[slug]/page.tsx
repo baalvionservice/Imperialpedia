@@ -1,6 +1,5 @@
 import { getTermBySlug } from "@/lib/data/utils";
 import { buildMetadata } from "@/lib/seo";
-import { Metadata } from "next";
 
 
 export async function generateMetadata({

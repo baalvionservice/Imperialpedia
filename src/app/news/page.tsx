@@ -3,7 +3,6 @@ import { buildMetadata } from "@/lib/seo";
 import Image from "next/image";
 import Link from "next/link";
 import { ExploreNewsSection } from "./ExploreNewsSection";
-import { ArticleCard } from "./NewsArticleCard";
 
 export const metadata = buildMetadata({
     title: "Financial News and Analysis",
@@ -22,6 +21,7 @@ const CATEGORY_COLORS: Record<NewsCategory, string> = {
     "Real Estate": "bg-rose-100 text-rose-700",
     ETFs: "bg-indigo-100 text-indigo-700",
     Bonds: "bg-yellow-100 text-yellow-700",
+    Guides: "bg-gray-100 text-gray-700",
 };
 
 // ─── Sub-components ──────────────────────────────────────────────────────────
@@ -39,7 +39,7 @@ function CategoryBadge({ category }: { category: NewsCategory }) {
 /** Large hero card — the featured article */
 function FeaturedArticleCard({ article }: { article: NewsArticle }) {
     return (
-        <Link href={`/news/${article.slug}`} className="group block">
+        <Link href={`/${article.slug}`} className="group block">
             <div className="relative w-full md:mt-6 overflow-hidden aspect-[16/9] lg:aspect-[21/9]">
                 <Image
                     src={article.imageUrl}
@@ -73,7 +73,7 @@ function FeaturedArticleCard({ article }: { article: NewsArticle }) {
 function HorizontalArticleCard({ article }: { article: NewsArticle }) {
     return (
         <Link
-            href={`/news/${article.slug}`}
+            href={`/${article.slug}`}
             className="group flex gap-3 items-center py-4 border-b border-gray-100 last:border-none"
         >
             <div className="relative flex-shrink-0 w-32 h-full overflow-hidden">
