@@ -33,7 +33,19 @@ export default function MonetizationGovernance() {
   const formatCurrency = (val: number) => 
     new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(val);
 
-  if (loading) return <div className="py-40 flex justify-center"><Loader2 className="h-10 w-10 animate-spin text-primary" /></div>;
+  if (loading) return (
+    <div className="py-40 flex justify-center flex-col items-center gap-4">
+      <Loader2 className="h-10 w-10 animate-spin text-primary" />
+      <Text variant="caption" className="animate-pulse font-bold tracking-widest uppercase">Syncing Monetization Nodes...</Text>
+    </div>
+  );
+
+  const kpis = [
+    { label: 'Monthly Revenue', value: '$168,000', icon: DollarSign, color: 'text-emerald-500', trend: '+12.4%' },
+    { label: 'Active Subs', value: '7,100', icon: CreditCard, color: 'text-primary', trend: '+850' },
+    { label: 'Avg. RPM', value: '$12.45', icon: Activity, color: 'text-secondary', trend: '+4.2%' },
+    { label: 'Ad Yield', value: '92%', icon: Zap, color: 'text-amber-500', trend: 'Stable' }
+  ];
 
   return (
     <div className="space-y-10 pb-24 animate-in fade-in duration-700">
@@ -57,16 +69,11 @@ export default function MonetizationGovernance() {
 
       {/* REVENUE VITALS MATRIX */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {[
-          { label: 'Monthly Revenue', value: '$168,000', icon: DollarSign, color: 'text-emerald-500', trend: '+12.4%' },
-          { label: 'Active Subs', value: '7,100', icon: CreditCard, color: 'text-primary', trend: '+850' },
-          { label: 'Avg. RPM', value: '$12.45', icon: Activity, color: 'text-secondary', trend: '+4.2%' },
-          { label: 'Ad Yield', value: '92%', icon: Zap, color: 'text-amber-500', trend: 'Stable' }
-        ].map((v) => (
+        {kpis.map((v) => (
           <Card key={v.label} className="glass-card border-none shadow-xl group hover:border-emerald-500/20 transition-all">
             <CardContent className="p-6 space-y-4">
               <div className="flex justify-between items-start">
-                <div className={cn("p-2 rounded-xl bg-background/50 border border-white/5", v.color)}>
+                <div className={cn("p-2.5 rounded-xl bg-background/50 border border-white/5 transition-transform group-hover:scale-110", v.color)}>
                   <v.icon size={20} />
                 </div>
                 <Badge variant="outline" className="text-[8px] font-bold uppercase tracking-widest border-white/10 bg-black/20">{v.trend}</Badge>
@@ -81,7 +88,6 @@ export default function MonetizationGovernance() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* REVENUE TRAJECTORY */}
         <Card className="lg:col-span-8 glass-card border-none shadow-2xl overflow-hidden">
           <CardHeader className="bg-card/30 border-b border-white/5 p-8 flex flex-row items-center justify-between">
             <div>
@@ -109,7 +115,6 @@ export default function MonetizationGovernance() {
           </CardContent>
         </Card>
 
-        {/* AD PERFORMANCE SIDEBAR */}
         <div className="lg:col-span-4 space-y-8">
           <Card className="glass-card border-none shadow-xl bg-card/30">
             <CardHeader className="pb-4">

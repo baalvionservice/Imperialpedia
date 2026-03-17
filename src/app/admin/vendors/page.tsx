@@ -19,7 +19,9 @@ import {
   XCircle,
   Database,
   Globe,
-  Plus
+  Plus,
+  ChevronRight,
+  Info
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
@@ -81,7 +83,7 @@ export default function VendorManagementHub() {
         ].map((v) => (
           <Card key={v.label} className="glass-card border-none shadow-xl group">
             <CardContent className="p-6 flex items-center gap-5">
-              <div className={cn("p-3 rounded-2xl bg-background/50 border border-white/5", v.color)}>
+              <div className={cn("p-3 rounded-2xl bg-background/50 border border-white/5 transition-transform group-hover:scale-110", v.color)}>
                 <v.icon className="h-5 w-5" />
               </div>
               <div>
@@ -100,7 +102,7 @@ export default function VendorManagementHub() {
             <CardDescription>Auditing third-party data nodes and service integrations.</CardDescription>
           </div>
           <div className="relative w-full md:w-72">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
             <Input 
               placeholder="Filter by vendor ID or type..." 
               className="pl-10 h-11 bg-background/50 border-white/10 rounded-xl text-xs"
@@ -130,7 +132,7 @@ export default function VendorManagementHub() {
                     </div>
                   </TableCell>
                   <TableCell>
-                    <Badge variant="outline" className="text-[8px] font-bold uppercase border-white/10 bg-black/20">{vendor.type}</Badge>
+                    <Badge variant="outline" className="text-[8px] font-bold uppercase border-white/10 bg-black/20 px-2 h-5">{vendor.type}</Badge>
                   </TableCell>
                   <TableCell>
                     <div className="flex flex-col items-center gap-1">
@@ -175,7 +177,7 @@ export default function VendorManagementHub() {
               All data vendors are benchmarked against the **Institutional Compliance Matrix**. Quarterly audits are enforced for all nodes providing real-time market wires or PII processing.
             </Text>
           </div>
-          <Button variant="outline" className="h-12 px-8 rounded-xl font-bold border-primary/30 hover:bg-primary/5 shrink-0">
+          <Button variant="outline" className="h-12 px-8 rounded-xl font-bold border-primary/30 hover:bg-primary/5 shrink-0" onClick={() => handleAction('Audit Contracts')}>
             Audit All Contracts
           </Button>
         </div>
