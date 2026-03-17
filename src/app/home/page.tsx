@@ -8,6 +8,7 @@ import { LearningHub } from '@/components/home/LearningHub';
 import { GlossarySpotlight } from '@/components/home/GlossarySpotlight';
 import { TrendingTopics } from '@/components/home/TrendingTopics';
 import { FeaturedGrid } from '@/components/home/FeaturedGrid';
+import { AISection } from '@/components/home/AISection';
 import { buildMetadata } from '@/lib/seo';
 
 export const metadata: Metadata = buildMetadata({
@@ -16,33 +17,37 @@ export const metadata: Metadata = buildMetadata({
 });
 
 /**
- * Secondary Content Homepage.
- * Engineered for high-scale discovery, SEO authority, and AdSense compliance.
+ * Primary Institutional Homepage.
+ * Orchestrates high-fidelity financial content delivery and discovery.
+ * Balanced for SEO authority and AdSense readiness.
  */
-export default function SecondaryHomePage() {
+export default function PrimaryHomePage() {
   return (
     <main className="min-h-screen bg-background animate-in fade-in duration-1000">
-      {/* 1. HERO SECTION */}
+      {/* 1. HERO SECTION (Above the fold) */}
       <HeroSearch />
 
-      <Container className="space-y-20 pb-32">
-        {/* 2. MARKET OVERVIEW (Indices & Movers) */}
-        <MarketOverview />
-
-        {/* 3. TRENDING TOPICS */}
-        <TrendingTopics />
-
-        {/* 4. BREAKING NEWS SECTION */}
+      <Container className="space-y-24 py-20">
+        {/* 2. BREAKING NEWS (Live zone) */}
         <NewsGrid />
 
-        {/* 5. GLOSSARY SPOTLIGHT (Term of the Day) */}
+        {/* 3. FEATURED LEARNING HUB */}
+        <LearningHub />
+
+        {/* 4. GLOSSARY SPOTLIGHT */}
         <GlossarySpotlight />
 
-        {/* 6. FEATURED LEARNING HUB */}
-        <LearningHub />
+        {/* 5. MARKET OVERVIEW */}
+        <MarketOverview />
+
+        {/* 6. TRENDING TOPICS (Taxonomy nodes) */}
+        <TrendingTopics />
 
         {/* 7. FEATURED ARTICLES GRID */}
         <FeaturedGrid />
+
+        {/* 8. AI SECTION (Future-ready placeholder) */}
+        <AISection />
       </Container>
     </main>
   );
