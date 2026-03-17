@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -6,78 +7,75 @@ import { Text } from '@/design-system/typography/text';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { 
-  Users, FileText, Brain, DollarSign, TrendingUp, 
-  ArrowUpRight, Loader2, Sparkles,
-  Activity, Zap, ShieldAlert, ChevronRight, Info,
-  Globe, BarChart3, Target
+  Users, 
+  FileText, 
+  Zap, 
+  TrendingUp, 
+  ShieldAlert, 
+  ChevronRight, 
+  Activity, 
+  DollarSign,
+  ArrowUpRight,
+  Loader2,
+  RefreshCw,
+  Sparkles
 } from 'lucide-react';
-import { 
-  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  BarChart, Bar, Cell
-} from 'recharts';
-import { adminService } from '@/services/mock-api/admin';
-import { PlatformDashboardStats, RevenueMetric } from '@/types/admin';
+import { adminKernel } from '@/lib/services/admin-service';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 
-export default function AdminDashboard() {
-  const [stats, setStats] = useState<PlatformDashboardStats | null>(null);
-  const [revenue, setRevenue] = useState<RevenueMetric[]>([]);
+export default function SuperAdminDashboard() {
+  const [stats, setStats] = useState({
+    articles: 0,
+    users: 0,
+    revenue: '$168,400',
+    pending: 5
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function loadData() {
-      const [s, r] = await Promise.all([
-        adminService.getStats(),
-        adminService.getRevenueTrends()
-      ]);
-      setStats(s.data);
-      setRevenue(r.data);
-      setLoading(false);
-    }
-    loadData();
+    const articles = adminKernel.getArticles();
+    const users = adminKernel.getUsers();
+    setStats({
+      articles: articles.length,
+      users: users.length,
+      revenue: '$168,400',
+      pending: articles.filter(a => a.status === 'review').length || 3
+    });
+    setLoading(false);
   }, []);
 
-  if (loading || !stats) {
-    return (
-      <div className="py-40 flex flex-col items-center justify-center space-y-4">
-        <Loader2 className="h-12 w-12 text-primary animate-spin" />
-        <Text variant="bodySmall" className="animate-pulse font-bold tracking-widest uppercase text-muted-foreground">Aggregating platform intelligence...</Text>
-      </div>
-    );
-  }
-
-  const kpis = [
-    { label: 'Total Users', value: stats.totalUsers.toLocaleString(), icon: Users, color: 'text-primary', trend: '+12.4%' },
-    { label: 'Articles', value: stats.articlesPublished.toLocaleString(), icon: FileText, color: 'text-secondary', trend: '+850' },
-    { label: 'AI Generated', value: stats.aiGenerated.toLocaleString(), icon: Brain, color: 'text-emerald-500', trend: '45%' },
-    { label: 'Revenue', value: stats.revenue, icon: DollarSign, color: 'text-amber-500', trend: '+18.2%' },
-  ];
+  if (loading) return <div className="py-40 flex justify-center"><Loader2 className="animate-spin text-primary" /></div>;
 
   return (
     <div className="space-y-10 pb-24 animate-in fade-in duration-700">
-      <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 px-2">
+      <header className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div className="space-y-1">
           <div className="flex items-center gap-2 text-primary">
             <Activity className="h-4 w-4" />
-            <Text variant="label" className="text-[10px] font-bold tracking-widest uppercase">Platform Oversight</Text>
+            <Text variant="label" className="text-[10px] font-bold uppercase tracking-widest">Platform Oversight</Text>
           </div>
-          <Text variant="h1" className="text-3xl font-bold tracking-tight">Mission Control</Text>
+          <Text variant="h1" className="text-3xl font-bold tracking-tight">Governance Mission Control</Text>
         </div>
         <div className="flex items-center gap-3">
           <Badge variant="outline" className="border-emerald-500/20 bg-emerald-500/5 text-emerald-500 h-10 px-4 gap-2">
             <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            Kernel Online
+            Kernel Synchronized
           </Badge>
-          <Button className="rounded-xl shadow-lg shadow-primary/20 font-bold bg-primary hover:bg-primary/90 h-10 px-6">
-            Force Re-index
+          <Button variant="outline" className="rounded-xl h-10 px-6 border-white/10" onClick={() => window.location.reload()}>
+            <RefreshCw className="mr-2 h-4 w-4" /> Re-index
           </Button>
         </div>
       </header>
 
       {/* KPI Matrix */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {kpis.map((kpi) => (
+        {[
+          { label: 'Identity Nodes', value: stats.users.toLocaleString(), icon: Users, color: 'text-primary', trend: '+12%' },
+          { label: 'Intelligence Nodes', value: stats.articles.toLocaleString(), icon: FileText, color: 'text-secondary', trend: '+8' },
+          { label: 'Fiscal Yield', value: stats.revenue, icon: DollarSign, color: 'text-emerald-500', trend: '+18.2%' },
+          { label: 'Triage Queue', value: stats.pending, icon: ShieldAlert, color: 'text-amber-500', trend: 'High' },
+        ].map((kpi) => (
           <Card key={kpi.label} className="glass-card border-none shadow-xl group hover:border-primary/20 transition-all">
             <CardContent className="p-6">
               <div className="flex justify-between items-start mb-4">
@@ -94,86 +92,79 @@ export default function AdminDashboard() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* Momentum Visualization */}
+        {/* Recent Pipeline Activity */}
         <Card className="lg:col-span-8 glass-card border-none shadow-2xl overflow-hidden">
           <CardHeader className="bg-card/30 border-b border-white/5 p-8 flex flex-row items-center justify-between">
             <div>
-              <CardTitle className="text-xl">Revenue Momentum</CardTitle>
-              <CardDescription>Consolidated growth across primary monetization nodes.</CardDescription>
+              <CardTitle className="text-xl">Intelligence Pipeline</CardTitle>
+              <CardDescription>Real-time audit of recent content commitments.</CardDescription>
             </div>
-            <div className="flex gap-4">
-              <div className="flex items-center gap-1.5"><div className="w-2 h-2 rounded-full bg-primary" /><span className="text-[10px] font-bold text-muted-foreground uppercase">Subs</span></div>
-              <div className="flex items-center gap-1.5"><div className="w-2 h-2 rounded-full bg-secondary" /><span className="text-[10px] font-bold text-muted-foreground uppercase">Ads</span></div>
-            </div>
+            <Button variant="ghost" size="sm" asChild className="text-primary font-bold">
+              <Link href="/admin/content">Full Matrix <ChevronRight size={14} /></Link>
+            </Button>
           </CardHeader>
-          <CardContent className="p-8 h-[400px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={revenue}>
-                <defs>
-                  <linearGradient id="colorSubs" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#8272F2" stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor="#8272F2" stopOpacity={0}/>
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#ffffff05" vertical={false} />
-                <XAxis dataKey="date" stroke="#888888" fontSize={10} tickLine={false} axisLine={false} />
-                <YAxis stroke="#888888" fontSize={10} tickLine={false} axisLine={false} tickFormatter={(v) => `$${v/1000}k`} />
-                <Tooltip contentStyle={{ backgroundColor: '#1C1822', border: '1px solid #ffffff10', borderRadius: '12px' }} />
-                <Area type="monotone" dataKey="subscriptions" name="Subscriptions" stroke="#8272F2" fillOpacity={1} fill="url(#colorSubs)" strokeWidth={3} />
-                <Area type="monotone" dataKey="ads" name="Display Ads" stroke="#69B9FF" fill="transparent" strokeWidth={2} strokeDasharray="5 5" />
-              </AreaChart>
-            </ResponsiveContainer>
+          <CardContent className="p-0">
+            <div className="divide-y divide-white/5">
+              {adminKernel.getArticles().slice(0, 5).map(article => (
+                <div key={article.id} className="p-6 flex items-center justify-between hover:bg-white/5 transition-all group">
+                  <div className="flex items-center gap-4">
+                    <div className="p-3 rounded-2xl bg-background/50 border border-white/5 text-primary group-hover:bg-primary group-hover:text-white transition-all">
+                      <FileText size={18} />
+                    </div>
+                    <div>
+                      <Text variant="bodySmall" weight="bold" className="block text-foreground/90 group-hover:text-primary transition-colors">{article.title}</Text>
+                      <Text variant="caption" className="text-muted-foreground uppercase text-[9px] font-bold tracking-widest">{article.category} • {article.status}</Text>
+                    </div>
+                  </div>
+                  <Badge variant="outline" className="text-[10px] opacity-50">{article.updatedAt}</Badge>
+                </div>
+              ))}
+            </div>
           </CardContent>
         </Card>
 
-        {/* Alerts & Triage Sidebar */}
+        {/* AI Growth Logic Sidebar */}
         <div className="lg:col-span-4 space-y-8">
-          <Card className="glass-card border-none shadow-xl bg-card/30">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-sm font-bold uppercase tracking-widest text-primary flex items-center gap-2">
-                <ShieldAlert className="h-4 w-4" /> Editorial Triage
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-0">
-              <div className="divide-y divide-white/5">
-                {[
-                  { title: "Revision Needed: ESG Audit", type: "content", status: "High" },
-                  { title: "New Expert Application", type: "author", status: "Medium" },
-                  { title: "Sitemap Ingestion Error", type: "system", status: "Critical" },
-                ].map((alert, i) => (
-                  <div key={i} className="p-5 flex items-center justify-between hover:bg-white/5 transition-all cursor-pointer group">
-                    <div className="space-y-1">
-                      <Text variant="bodySmall" weight="bold" className="group-hover:text-primary transition-colors">{alert.title}</Text>
-                      <Text variant="caption" className="text-muted-foreground uppercase text-[8px] font-bold">{alert.type}</Text>
-                    </div>
-                    <Badge variant={alert.status === 'Critical' ? 'destructive' : 'outline'} className="text-[8px] font-bold h-5 px-2">
-                      {alert.status}
-                    </Badge>
-                  </div>
-                ))}
-              </div>
-              <Button variant="ghost" className="w-full h-12 text-[9px] font-bold uppercase tracking-widest text-muted-foreground hover:text-primary rounded-none border-t border-white/5" asChild>
-                <Link href="/admin/content">View Workflow Queue <ChevronRight size={12} className="ml-1" /></Link>
-              </Button>
-            </CardContent>
-          </Card>
-
-          <div className="p-8 rounded-[3rem] bg-primary/5 border border-primary/20 space-y-4 relative overflow-hidden group">
+          <Card className="glass-card border-none bg-primary/5 p-8 relative overflow-hidden group">
             <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform duration-1000">
               <Sparkles className="h-24 w-24 text-primary" />
             </div>
-            <div className="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-widest mb-2">
-              <Zap className="h-4 w-4" /> AI Growth Logic
+            <div className="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-widest mb-4">
+              <Zap className="h-4 w-4" /> AI Growth Engine
             </div>
-            <Text variant="caption" className="text-muted-foreground leading-relaxed italic block">
+            <Text variant="caption" className="text-muted-foreground leading-relaxed italic block mb-6">
               "The current reach is peaking in the **Fixed Income** hub. AI recommends creating 5 new glossary nodes for 'Yield Spread' to capture rising search intent."
             </Text>
-            <Button variant="link" className="p-0 h-auto text-primary text-xs font-bold uppercase group/link" asChild>
-              <Link href="/admin/ai">
-                Enter AI Content Lab <ArrowUpRight className="ml-1 h-3 w-3 transition-transform group-hover/link:translate-x-1" />
-              </Link>
+            <Button className="w-full rounded-xl bg-primary hover:bg-primary/90 font-bold" asChild>
+              <Link href="/admin/ai">Enter AI Lab</Link>
             </Button>
-          </div>
+          </Card>
+
+          <Card className="glass-card border-none shadow-xl">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm uppercase tracking-widest text-primary font-bold">System Vitals</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4 pt-4">
+              <div className="space-y-2">
+                <div className="flex justify-between text-[10px] font-bold uppercase">
+                  <span className="text-muted-foreground">Index Health</span>
+                  <span className="text-emerald-500">99.9%</span>
+                </div>
+                <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+                  <div className="bg-emerald-500 h-full w-[99.9%]" />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <div className="flex justify-between text-[10px] font-bold uppercase">
+                  <span className="text-muted-foreground">pSEO Coverage</span>
+                  <span className="text-primary">1.2M Nodes</span>
+                </div>
+                <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+                  <div className="bg-primary h-full w-[85%]" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>

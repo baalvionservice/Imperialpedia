@@ -1,349 +1,116 @@
+
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
+import React, { useState, useEffect } from 'react';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Text } from '@/design-system/typography/text';
 import { 
-  Globe, 
-  TrendingUp, 
-  Search, 
-  ArrowLeft, 
-  ArrowUpRight, 
-  BarChart3, 
-  MousePointer2, 
-  Link as LinkIcon, 
-  Loader2,
-  Calendar,
-  Download,
-  ChevronRight,
-  TrendingDown,
-  Minus,
-  Activity,
-  Zap,
-  Target,
-  FileText,
-  ShieldCheck,
-  SearchX,
-  ExternalLink,
-  Info,
-  Sparkles
+  Search, Globe, Layers, ArrowUpRight, CheckCircle2, Zap, Target, RefreshCw, Loader2, Info
 } from 'lucide-react';
-import Link from 'next/link';
-import { analyticsService } from '@/services/data/analytics-service';
-import { SeoAnalytics, KeywordRankingNode, BacklinkNode } from '@/types/analytics';
-import { 
-  AreaChart, 
-  Area, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
-  ResponsiveContainer,
-  LineChart,
-  Line,
-  Legend
-} from 'recharts';
-import { cn } from '@/lib/utils';
-import { Input } from '@/components/ui/input';
+import { adminKernel } from '@/lib/services/admin-service';
+import { toast } from '@/hooks/use-toast';
 
-/**
- * Super Admin SEO Intelligence System.
- * Specialized terminal for tracking search visibility, keyword rankings, and organic authority growth.
- */
-export default function SeoAuthorityDashboardPage() {
-  const [data, setData] = useState<SeoAnalytics | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [keywordSearch, setKeywordSearch] = useState('');
+export default function SEOEngineHub() {
+  const [articles, setArticles] = useState<any[]>([]);
+  const [linkingActive, setLinkingActive] = useState(false);
 
   useEffect(() => {
-    async function loadData() {
-      try {
-        const response = await analyticsService.getSeoAnalytics();
-        if (response.data) setData(response.data);
-      } catch (e) {
-        console.error('SEO Intelligence Sync Failure', e);
-      } finally {
-        setLoading(false);
-      }
-    }
-    loadData();
+    setArticles(adminKernel.getArticles());
   }, []);
 
-  if (loading || !data) {
-    return (
-      <div className="py-40 flex flex-col items-center justify-center space-y-4">
-        <Loader2 className="h-12 w-12 text-primary animate-spin" />
-        <Text variant="bodySmall" className="text-muted-foreground animate-pulse font-bold uppercase tracking-widest">
-          Syncing Search Engine Intelligence...
-        </Text>
-      </div>
-    );
-  }
-
-  const formatCompact = (val: number) => 
-    new Intl.NumberFormat('en-US', { notation: 'compact' }).format(val);
-
-  const getTrendIcon = (change: string) => {
-    if (change.includes('+')) return <TrendingUp className="h-3 w-3 text-emerald-500" />;
-    if (change.includes('-')) return <TrendingDown className="h-3 w-3 text-destructive" />;
-    return <Minus className="h-3 w-3 text-muted-foreground" />;
+  const handleLinkingCycle = async () => {
+    setLinkingActive(true);
+    toast({ title: "Linking Cycle Initiated", description: "Mapping 1M+ nodes for cross-taxonomic discovery..." });
+    await new Promise(r => setTimeout(r, 2000));
+    setLinkingActive(false);
+    toast({ title: "Handshake Complete", description: "124 new internal links established between Glossary and Articles." });
   };
 
-  const filteredKeywords = data.keywords.filter(k => 
-    k.keyword.toLowerCase().includes(keywordSearch.toLowerCase()) ||
-    k.target_article.toLowerCase().includes(keywordSearch.toLowerCase())
-  );
-
   return (
-    <div className="space-y-10 pb-20 animate-in fade-in duration-700">
-      <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 px-2">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2 text-primary">
+    <div className="space-y-10 pb-24 animate-in fade-in duration-700">
+      <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 px-2">
+        <div>
+          <div className="flex items-center gap-2 text-primary mb-1">
             <Globe className="h-4 w-4" />
             <Text variant="label" className="text-[10px] font-bold tracking-widest uppercase">Organic Authority Index</Text>
           </div>
-          <Text variant="h1" className="text-3xl font-bold tracking-tight">SEO Intelligence Hub</Text>
+          <Text variant="h1" className="text-3xl font-bold tracking-tight">SEO & Linking Engine</Text>
         </div>
-        <div className="flex gap-3">
-          <Button variant="outline" className="rounded-xl border-white/10 bg-card/30 h-11 px-6 font-bold text-xs gap-2">
-            <RefreshCw className="h-4 w-4" /> Force Sitemap Sync
-          </Button>
-          <Button size="sm" className="rounded-xl shadow-lg shadow-primary/20 font-bold bg-primary hover:bg-primary/90 h-11 px-8">
-            <Download className="mr-2 h-4 w-4" /> Export SEO Audit
-          </Button>
-        </div>
+        <Button 
+          onClick={handleLinkingCycle}
+          disabled={linkingActive}
+          className="rounded-xl shadow-lg shadow-primary/20 font-bold bg-primary hover:bg-primary/90 h-11 px-8 transition-all scale-105 active:scale-95"
+        >
+          {linkingActive ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <RefreshCw className="mr-2 h-4 w-4" />}
+          Trigger Linking Cycle
+        </Button>
       </header>
 
-      {/* High-Level Search Metrics Matrix */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-        {[
-          { label: 'Indexed Pages', value: formatCompact(data.indexedPages), icon: Globe, color: 'text-primary' },
-          { label: 'Organic Traffic', value: formatCompact(data.total_organic_traffic), icon: Activity, color: 'text-secondary' },
-          { label: 'Top Keywords', value: formatCompact(data.top_keywords_count), icon: Search, color: 'text-primary' },
-          { label: 'Total Backlinks', value: formatCompact(data.backlinks), icon: LinkIcon, color: 'text-secondary' },
-          { label: 'Avg. Position', value: `#${data.avgPosition}`, icon: Target, color: 'text-emerald-500' },
-        ].map((m) => (
-          <Card key={m.label} className="glass-card border-none shadow-xl group hover:border-primary/20 transition-all">
-            <CardHeader className="pb-2 flex flex-row items-center justify-between space-y-0">
-              <CardTitle className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground">{m.label}</CardTitle>
-              <m.icon className={cn("h-3.5 w-3.5", m.color)} />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold tracking-tighter">{m.value}</div>
-              <div className="flex items-center text-[9px] text-emerald-500 font-bold mt-1 uppercase">
-                <ArrowUpRight className="h-2.5 w-2.5 mr-1" /> Active Scaling
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* Organic Traffic Momentum Visualization */}
         <div className="lg:col-span-8 space-y-8">
           <Card className="glass-card border-none shadow-2xl overflow-hidden">
             <CardHeader className="bg-card/30 border-b border-white/5 p-8 flex flex-row items-center justify-between">
               <div>
-                <CardTitle className="text-xl flex items-center gap-2">
-                  <Activity className="h-5 w-5 text-primary" /> Traffic Trajectory
-                </CardTitle>
-                <CardDescription>Daily organic discovery velocity across the 1M+ node index.</CardDescription>
+                <CardTitle>Discovery Matrix</CardTitle>
+                <CardDescription>Auditing individual intelligence nodes for SEO health.</CardDescription>
               </div>
-              <Badge variant="outline" className="border-primary/20 bg-primary/5 text-primary text-[10px] font-bold h-7 px-4">LIVE PULSE</Badge>
+              <Badge variant="outline" className="border-emerald-500/20 bg-emerald-500/5 text-emerald-500 uppercase text-[9px] font-bold h-7 px-4">Sitemap: 99.8% Healthy</Badge>
             </CardHeader>
-            <CardContent className="p-8 h-[400px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={data.trends}>
-                  <defs>
-                    <linearGradient id="colorOrganic" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#8272F2" stopOpacity={0.3}/>
-                      <stop offset="95%" stopColor="#8272F2" stopOpacity={0}/>
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#ffffff05" vertical={false} />
-                  <XAxis 
-                    dataKey="date" 
-                    stroke="#888888" 
-                    fontSize={10} 
-                    tickLine={false} 
-                    axisLine={false}
-                    tickFormatter={(val) => val.split('-')[2]}
-                  />
-                  <YAxis stroke="#888888" fontSize={10} tickLine={false} axisLine={false} />
-                  <Tooltip 
-                    contentStyle={{ backgroundColor: '#1C1822', border: '1px solid #ffffff10', borderRadius: '12px' }}
-                  />
-                  <Legend verticalAlign="top" height={36} />
-                  <Area 
-                    type="monotone" 
-                    dataKey="organic_traffic" 
-                    name="Organic Traffic"
-                    stroke="#8272F2" 
-                    fillOpacity={1} 
-                    fill="url(#colorOrganic)" 
-                    strokeWidth={3}
-                  />
-                  <Line 
-                    type="monotone" 
-                    dataKey="clicks" 
-                    name="SERP Clicks"
-                    stroke="#69B9FF" 
-                    strokeWidth={2}
-                    dot={false}
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-
-          {/* Keyword Ranking Tracker Matrix */}
-          <Card className="glass-card border-none shadow-2xl overflow-hidden">
-            <CardHeader className="bg-card/30 border-b border-white/5 p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
-              <div>
-                <CardTitle className="text-xl flex items-center gap-2">
-                  <Search className="h-5 w-5 text-secondary" /> Keyword Ranking Tracker
-                </CardTitle>
-                <CardDescription>Auditing high-intent queries and their landing node positions.</CardDescription>
-              </div>
-              <div className="relative w-full md:w-72 group">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
-                <Input 
-                  placeholder="Filter query matrix..." 
-                  className="pl-10 h-10 bg-background/50 border-white/10 rounded-xl text-xs" 
-                  value={keywordSearch}
-                  onChange={(e) => setKeywordSearch(e.target.value)}
-                />
-              </div>
-            </CardHeader>
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow className="bg-muted/20 border-b border-white/5">
-                    <TableHead className="pl-8 font-bold text-[10px] uppercase tracking-widest py-6">Search Query (Keyword)</TableHead>
-                    <TableHead className="font-bold text-[10px] uppercase tracking-widest text-center">Position</TableHead>
-                    <TableHead className="font-bold text-[10px] uppercase tracking-widest text-center">Volume</TableHead>
-                    <TableHead className="font-bold text-[10px] uppercase tracking-widest text-center">Trajectory</TableHead>
-                    <TableHead className="text-right pr-8 font-bold text-[10px] uppercase tracking-widest">Target Node</TableHead>
+            <Table>
+              <TableHeader>
+                <TableRow className="bg-muted/20 border-b border-white/5">
+                  <TableHead className="pl-8 font-bold text-[10px] uppercase tracking-widest py-6">Research Path</TableHead>
+                  <TableHead className="font-bold text-[10px] uppercase tracking-widest text-center">Score</TableHead>
+                  <TableHead className="font-bold text-[10px] uppercase tracking-widest text-right pr-8">Linking Suggestion</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {articles.map(article => (
+                  <TableRow key={article.id} className="hover:bg-white/5 border-b border-white/5">
+                    <TableCell className="py-5 pl-8">
+                      <div className="flex flex-col">
+                        <span className="text-sm font-bold">{article.title}</span>
+                        <span className="text-[9px] text-muted-foreground font-mono mt-1">/{article.slug}</span>
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-center font-mono text-xs font-bold text-emerald-500">94/100</TableCell>
+                    <TableCell className="text-right pr-8">
+                      <Button variant="ghost" size="sm" className="h-8 text-[10px] font-bold uppercase gap-2 text-primary hover:bg-primary/5">
+                        <Zap className="h-3 w-3" /> Add section "Tax Policy"
+                      </Button>
+                    </TableCell>
                   </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredKeywords.map((k) => (
-                    <TableRow key={k.keyword} className="group hover:bg-white/5 transition-colors border-b border-white/5">
-                      <TableCell className="py-5 pl-8">
-                        <div className="flex flex-col">
-                          <span className="text-sm font-bold text-foreground/90">{k.keyword}</span>
-                          <span className="text-[9px] text-muted-foreground uppercase font-bold tracking-widest">{k.category}</span>
-                        </div>
-                      </TableCell>
-                      <TableCell className="text-center font-mono text-xs font-bold text-primary">#{k.ranking_position}</TableCell>
-                      <TableCell className="text-center font-mono text-xs opacity-70">{formatCompact(k.search_volume)}</TableCell>
-                      <TableCell>
-                        <div className="flex items-center justify-center gap-1.5 font-mono text-[10px] font-bold">
-                          {getTrendIcon(k.ranking_change)}
-                          {k.ranking_change === '0' ? 'Stable' : k.ranking_change}
-                        </div>
-                      </TableCell>
-                      <TableCell className="text-right pr-8">
-                        <Link href={`/articles/${k.target_article.toLowerCase().replace(/ /g, '-')}`} className="text-[10px] font-bold text-primary hover:underline uppercase tracking-tighter">
-                          {k.target_article} <ExternalLink className="h-2 w-2 ml-1 inline" />
-                        </Link>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
+                ))}
+              </TableBody>
+            </Table>
           </Card>
         </div>
 
-        {/* Sidebar: Backlinks & Internal Linking */}
         <aside className="lg:col-span-4 space-y-8">
-          {/* Backlink Monitor Panel */}
-          <Card className="glass-card border-none shadow-xl bg-card/30">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-sm font-bold uppercase tracking-widest text-secondary flex items-center gap-2">
-                <LinkIcon className="h-4 w-4" /> Authority Matrix (Backlinks)
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-0">
-              <div className="p-6 grid grid-cols-2 gap-4 border-b border-white/5 bg-secondary/5">
-                <div className="space-y-1">
-                  <Text variant="label" className="text-[8px] opacity-50 font-bold uppercase">Referring Domains</Text>
-                  <div className="text-2xl font-bold tracking-tighter">12.4k</div>
-                </div>
-                <div className="space-y-1 text-right">
-                  <Text variant="label" className="text-[8px] opacity-50 font-bold uppercase">New (30d)</Text>
-                  <div className="text-2xl font-bold tracking-tighter text-emerald-500">+420</div>
-                </div>
-              </div>
-              <div className="divide-y divide-white/5 max-h-[300px] overflow-y-auto no-scrollbar">
-                {data.backlink_sources.map((link, i) => (
-                  <div key={i} className="p-4 flex items-center justify-between hover:bg-white/5 transition-colors">
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 rounded-lg bg-background/50 border border-white/5 text-muted-foreground group-hover:text-secondary">
-                        <Globe className="h-3.5 w-3.5" />
-                      </div>
-                      <div className="space-y-0.5">
-                        <span className="text-xs font-bold block">{link.source}</span>
-                        <span className="text-[8px] text-muted-foreground uppercase font-bold tracking-widest">{link.date}</span>
-                      </div>
-                    </div>
-                    <Badge variant="secondary" className="bg-primary/10 text-primary border-none text-[10px] font-mono h-6 px-3">DA {link.authority}</Badge>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
+          <Card className="glass-card border-none bg-primary/5 p-8 relative overflow-hidden group">
+            <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform duration-1000">
+              <Layers className="h-32 w-32 text-primary rotate-12" />
+            </div>
+            <div className="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-widest mb-4">
+              <Target className="h-4 w-4" /> Internal Linking Logic
+            </div>
+            <Text variant="caption" className="text-muted-foreground leading-relaxed italic block">
+              "The engine automatically matches keywords in articles to the **Glossary Index**. Manual override is allowed for specialized taxonomy nodes."
+            </Text>
           </Card>
 
-          {/* Internal Linking Engine Suggestions */}
-          <div className="space-y-6">
-            <div className="flex items-center gap-3 px-2">
-              <div className="p-2 rounded-xl bg-primary/10 text-primary">
-                <Sparkles className="h-5 w-5" />
+          <Card className="glass-card border-none bg-card/30">
+            <CardHeader className="pb-2"><CardTitle className="text-sm">SEO Directives</CardTitle></CardHeader>
+            <CardContent className="space-y-4 pt-4">
+              <div className="p-4 rounded-xl bg-background/50 border border-white/5 flex items-start gap-3">
+                <Info className="h-4 w-4 text-secondary mt-0.5" />
+                <Text variant="caption" className="leading-relaxed">Redirect loops detected in <strong>/categories/crypto</strong> taxonomy hub.</Text>
               </div>
-              <div>
-                <Text variant="h3" className="font-bold text-sm uppercase tracking-widest">Internal Linking Nodes</Text>
-                <Text variant="caption" className="text-muted-foreground font-bold text-[8px] uppercase">AI Suggested Connectors</Text>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              {data.opportunities.map((opt, i) => (
-                <Card key={i} className="glass-card border-none bg-primary/5 hover:bg-primary/10 transition-all group relative overflow-hidden">
-                  <div className="absolute top-0 left-0 w-1 h-full bg-primary opacity-50" />
-                  <CardContent className="p-5 flex items-start gap-4">
-                    <div className="p-2.5 rounded-xl bg-primary/10 text-primary shrink-0">
-                      <Zap className="h-4 w-4" />
-                    </div>
-                    <div>
-                      <div className="flex justify-between items-center mb-1">
-                        <Text variant="bodySmall" weight="bold" className="text-foreground group-hover:text-primary transition-colors">{opt.title}</Text>
-                        <Badge variant={opt.priority === 'High' ? 'destructive' : 'outline'} className="text-[7px] font-bold h-4 px-1.5 uppercase">{opt.priority}</Badge>
-                      </div>
-                      <Text variant="caption" className="text-muted-foreground leading-relaxed italic block">"{opt.description}"</Text>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-
-          <Card className="glass-card border-none bg-secondary/5 border-secondary/20 p-8 flex flex-col gap-4 relative overflow-hidden group">
-            <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:scale-110 transition-transform">
-              <SearchX className="h-24 w-24 text-secondary rotate-12" />
-            </div>
-            <div className="flex items-center gap-2 text-secondary font-bold text-xs uppercase tracking-widest">
-              <Zap className="h-4 w-4" /> Content Gap Logic
-            </div>
-            <Text variant="caption" className="text-muted-foreground leading-relaxed">
-              We identified a **Ranking Deterioration** in the "Fixed Income" hub. Add section **"How ETFs Are Taxed"** to maintain Q3 authority nodes.
-            </Text>
-            <Button variant="link" className="p-0 h-auto w-fit text-secondary font-bold text-xs group/link">
-              Apply SEO Recommendation <ArrowRight className="ml-1.5 h-3 w-3 transition-transform group-hover/link:translate-x-1" />
-            </Button>
+              <Button variant="outline" className="w-full rounded-xl h-10 font-bold text-xs">Run Global SEO Audit</Button>
+            </CardContent>
           </Card>
         </aside>
       </div>

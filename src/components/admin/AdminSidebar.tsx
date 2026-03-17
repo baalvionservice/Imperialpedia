@@ -1,3 +1,4 @@
+
 'use client';
 
 import React from 'react';
@@ -18,20 +19,21 @@ import {
   ChevronRight,
   ShieldCheck,
   Zap,
-  Layers
+  Layers,
+  ArrowRightLeft
 } from 'lucide-react';
 import { Text } from '@/design-system/typography/text';
 
 const navItems = [
   { label: 'Master Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
   { label: 'Content Empire', href: '/admin/content', icon: FileText },
-  { label: 'Users & Roles', href: '/admin/users', icon: Users },
+  { label: 'User & RBAC', href: '/admin/users', icon: Users },
   { label: 'AI Content Lab', href: '/admin/ai', icon: Brain },
   { label: 'SEO & Linking', href: '/admin/seo', icon: Search },
-  { label: 'Glossary & Graph', href: '/admin/glossary', icon: BookOpen },
-  { label: 'API Hub', href: '/admin/api-hub', icon: Terminal },
+  { label: 'Glossary Hub', href: '/admin/glossary', icon: BookOpen },
+  { label: 'API Integration', href: '/admin/api-hub', icon: Terminal },
   { label: 'Monetization', href: '/admin/monetization', icon: DollarSign },
-  { label: 'Analytics', href: '/admin/analytics', icon: BarChart3 },
+  { label: 'Analytics Hub', href: '/admin/analytics', icon: BarChart3 },
   { label: 'System Settings', href: '/admin/settings', icon: Settings },
 ];
 
@@ -39,7 +41,7 @@ export function AdminSidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="w-64 bg-card/30 border-r border-white/5 h-screen sticky top-0 flex flex-col backdrop-blur-xl">
+    <aside className="w-64 bg-card/30 border-r border-white/5 h-screen sticky top-0 flex flex-col backdrop-blur-xl shrink-0">
       <div className="p-6 border-b border-white/5">
         <Link href="/admin/dashboard" className="flex items-center gap-2 group">
           <div className="w-8 h-8 rounded-xl bg-primary flex items-center justify-center shadow-lg shadow-primary/20 transition-transform group-hover:scale-110">
@@ -47,7 +49,7 @@ export function AdminSidebar() {
           </div>
           <div className="flex flex-col">
             <Text variant="h4" className="font-bold tracking-tight text-sm leading-none">Super Admin</Text>
-            <Text variant="caption" className="text-[8px] uppercase tracking-widest text-muted-foreground mt-1">Control Node</Text>
+            <Text variant="caption" className="text-[8px] uppercase tracking-widest text-muted-foreground mt-1">Control Center</Text>
           </div>
         </Link>
       </div>
@@ -79,10 +81,10 @@ export function AdminSidebar() {
       <div className="p-4 border-t border-white/5">
         <div className="p-4 rounded-2xl bg-primary/5 border border-primary/10">
           <div className="flex items-center gap-2 text-primary font-bold text-[9px] uppercase tracking-widest mb-2">
-            <ShieldCheck size={12} /> Root Authenticated
+            <ShieldCheck size={12} /> Root Handshake Active
           </div>
           <Text variant="bodySmall" weight="bold" className="truncate text-xs">Eleanor Vance</Text>
-          <Text variant="caption" className="text-muted-foreground block text-[9px] mt-1">Sitemap Authority: 1.2M Nodes</Text>
+          <Text variant="caption" className="text-muted-foreground block text-[9px] mt-1">Status: Operational</Text>
         </div>
       </div>
     </aside>
