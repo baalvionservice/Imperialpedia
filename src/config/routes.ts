@@ -10,6 +10,7 @@ export const routes = {
     news: "/news",
     stocks: "/stocks",
     brokers: "/brokers",
+    reviews: "/review-board",
     articles: "/articles",
     glossary: "/glossary",
     calculators: "/financial-tools",

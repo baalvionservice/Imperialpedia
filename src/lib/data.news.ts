@@ -6,6 +6,7 @@ export type NewsCategory =
   | "Personal Finance"
   | "Real Estate"
   | "ETFs"
+  | "Editorial"
   | "Guides"
   | "Bonds";
 
