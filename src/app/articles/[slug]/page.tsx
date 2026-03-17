@@ -13,6 +13,9 @@ import { schemaService } from '@/modules/seo/services/schema-service';
 import { canonicalService } from '@/modules/seo/services/canonical-service';
 import { CommentIntelligenceHub } from '@/modules/content-engine/components/CommentIntelligence/CommentIntelligenceHub';
 import { ArticleConnectionDisplay } from '@/modules/content-engine/components/KnowledgeGraph/ArticleConnectionDisplay';
+import { linkService } from '@/modules/seo/services/link-service';
+import { Text } from '@/design-system/typography/text';
+import { Zap } from 'lucide-react';
 
 interface ArticleRouteProps {
   params: Promise<{ slug: string }>;
@@ -107,6 +110,3 @@ export default async function Page({ params }: ArticleRouteProps) {
     </div>
   );
 }
-
-import { Zap } from 'lucide-react';
-import { Text } from '@/design-system/typography/text';

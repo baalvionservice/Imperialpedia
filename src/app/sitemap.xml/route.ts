@@ -1,13 +1,13 @@
-import { generateSitemap } from "@/lib/utils/generateSitemap";
+import { sitemapService } from "@/modules/seo/services/sitemap-service";
 import { NextResponse } from "next/server";
 
 /**
- * Dynamic Route handler for sitemap.xml
- * Provides search engines with a full list of primary discovery nodes.
+ * Dynamic Route handler for sitemap.xml (Main Index).
+ * Points crawlers to the individual segment sitemaps for at-scale indexing.
  */
 export async function GET() {
   try {
-    const sitemap = generateSitemap();
+    const sitemap = await sitemapService.regenerateSitemap();
 
     return new NextResponse(sitemap, {
       headers: {

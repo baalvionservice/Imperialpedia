@@ -8,13 +8,13 @@ interface MetadataProps {
   keywords?: string[];
   canonical?: string;
   ogImage?: string;
-  ogType?: 'website' | 'article';
+  ogType?: 'website' | 'article' | 'profile';
   noIndex?: boolean;
 }
 
 /**
  * Generates a dynamic Next.js Metadata object by merging custom values with global defaults.
- * This supports the scale of 1,000,000+ pages by providing a consistent interface.
+ * Optimized for high-velocity SEO ingestion and social sharing impact.
  */
 export function buildMetadata({
   title,
@@ -25,26 +25,25 @@ export function buildMetadata({
   ogType = 'website',
   noIndex = false,
 }: MetadataProps = {}): Metadata {
-  const finalTitle = title ? `${title} | ${seoConfig.defaultTitle}` : seoConfig.defaultTitle;
+  const siteName = 'Imperialpedia';
+  const finalTitle = title ? `${title} | ${siteName}` : seoConfig.defaultTitle;
   const finalDescription = description || seoConfig.defaultDescription;
   const finalKeywords = keywords || seoConfig.defaultKeywords;
   
   // Ensure canonical is an absolute URL
-  let finalCanonical = env.siteUrl;
+  const baseUrl = env.siteUrl.endsWith('/') ? env.siteUrl.slice(0, -1) : env.siteUrl;
+  let finalCanonical = baseUrl;
+  
   if (canonical) {
-    if (canonical.startsWith('http')) {
-      finalCanonical = canonical;
-    } else {
-      const baseUrl = env.siteUrl.endsWith('/') ? env.siteUrl.slice(0, -1) : env.siteUrl;
-      const path = canonical.startsWith('/') ? canonical : `/${canonical}`;
-      finalCanonical = `${baseUrl}${path}`;
-    }
+    const cleanPath = canonical.startsWith('/') ? canonical : `/${canonical}`;
+    finalCanonical = canonical.startsWith('http') ? canonical : `${baseUrl}${cleanPath}`;
   }
 
   return {
     title: finalTitle,
     description: finalDescription,
     keywords: finalKeywords,
+    metadataBase: new URL(baseUrl),
     alternates: {
       canonical: finalCanonical,
     },
@@ -52,28 +51,36 @@ export function buildMetadata({
       title: finalTitle,
       description: finalDescription,
       url: finalCanonical,
-      siteName: seoConfig.openGraph.siteName,
+      siteName: siteName,
       images: [
         {
-          url: ogImage || seoConfig.openGraph.images[0].url,
+          url: ogImage || `${baseUrl}/og-image.jpg`,
           width: 1200,
           height: 630,
           alt: finalTitle,
         },
       ],
-      locale: seoConfig.openGraph.locale,
+      locale: 'en_US',
       type: ogType,
     },
     twitter: {
       card: 'summary_large_image',
       title: finalTitle,
       description: finalDescription,
-      images: [ogImage || seoConfig.openGraph.images[0].url],
-      creator: seoConfig.twitter.handle,
+      images: [ogImage || `${baseUrl}/og-image.jpg`],
+      creator: '@imperialpedia',
+      site: '@imperialpedia',
     },
     robots: {
       index: !noIndex,
       follow: !noIndex,
+      googleBot: {
+        index: !noIndex,
+        follow: !noIndex,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
     },
   };
 }
