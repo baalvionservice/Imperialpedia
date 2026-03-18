@@ -1,3 +1,4 @@
+
 export type NewsCategory =
   | "Markets"
   | "Economy"
@@ -20,7 +21,7 @@ export interface NewsArticle {
   id: string;
   title: string;
   excerpt: string;
-  category: NewsCategory;
+  category: NewsCategory ;
   author: NewsAuthor;
   publishedAt: string;
   updatedAt?: string;

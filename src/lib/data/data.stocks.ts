@@ -1,4 +1,5 @@
-import { NewsArticle } from "../data.news";
+import { NewsAuthor, NewsBodyBlock } from "../data.news";
+import { StocksCategory } from "@/app/stocks/components/stocks-tab";
 
 export interface StockItem {
   symbol: string;
@@ -7,11 +8,30 @@ export interface StockItem {
   change: number;
   changePercent: number;
 }
+
+export interface StocksArticle {
+  id: string;
+  title: string;
+  excerpt: string;
+  category: StocksCategory;
+  author: NewsAuthor;
+  publishedAt: string;
+  updatedAt?: string;
+  readTimeMinutes: number;
+  imageUrl: string;
+  imageCaption?: string;
+  slug: string;
+  featured?: boolean;
+  keyTakeaways?: string[];
+  body: NewsBodyBlock[];
+  tags?: string[];
+}
+
 export interface StockPageData {
-  featured: NewsArticle;
-  latest: NewsArticle[];
+  featured: StocksArticle;
+  latest: StocksArticle[];
   trendingStocks: StockItem[];
-  guides: NewsArticle[];
+  guides: StocksArticle[];
   popularTags: string[];
 }
 export const stocksPageData: StockPageData = {
@@ -20,7 +40,7 @@ export const stocksPageData: StockPageData = {
     title: "NVIDIA Leads AI Rally as Chip Stocks Surge to New Highs",
     excerpt:
       "AI demand continues to push semiconductor stocks higher, with NVIDIA and AMD leading the charge.",
-    category: "Stocks",
+    category: "Growth Stocks",
     author: { name: "Lisa Tran", title: "Tech Stocks Reporter" },
     publishedAt: "2026-03-16T10:00:00Z",
     readTimeMinutes: 5,
@@ -47,7 +67,7 @@ export const stocksPageData: StockPageData = {
       id: "stock-1",
       title: "Tesla Shares Jump 6% After Strong Delivery Forecast",
       excerpt: "Tesla stock surged after optimistic production guidance.",
-      category: "Stocks",
+      category: "Trending Stocks",
       author: { name: "Elon Desk" },
       publishedAt: "2026-03-16T08:00:00Z",
       readTimeMinutes: 3,
@@ -65,7 +85,7 @@ export const stocksPageData: StockPageData = {
       id: "stock-2",
       title: "Apple Stock Holds Steady Ahead of Product Launch",
       excerpt: "Investors await Apple's next big reveal event.",
-      category: "Stocks",
+      category: "Value Stocks",
       author: { name: "Market Watcher" },
       publishedAt: "2026-03-16T07:00:00Z",
       readTimeMinutes: 3,
@@ -78,7 +98,7 @@ export const stocksPageData: StockPageData = {
       id: "stock-3",
       title: "Amazon Gains as Cloud Revenue Beats Expectations",
       excerpt: "AWS growth continues to drive Amazon stock.",
-      category: "Stocks",
+      category: "Tech Stocks",
       author: { name: "Cloud Analyst" },
       publishedAt: "2026-03-15T18:00:00Z",
       readTimeMinutes: 4,
@@ -93,7 +113,7 @@ export const stocksPageData: StockPageData = {
       id: "stock-4",
       title: "Google Gains as Cloud Revenue Beats Expectations",
       excerpt: "AWS growth continues to drive Google stock.",
-      category: "Stocks",
+      category: "Tech Stocks",
       author: { name: "Cloud Analyst" },
       publishedAt: "2026-03-15T18:00:00Z",
       readTimeMinutes: 4,
@@ -149,7 +169,7 @@ export const stocksPageData: StockPageData = {
       id: "guide-1",
       title: "How to Start Investing in Stocks for Beginners",
       excerpt: "A simple guide to entering the stock market.",
-      category: "Stocks",
+      category: "Top Stocks",
       author: { name: "Finance Guide" },
       publishedAt: "2026-03-10T10:00:00Z",
       readTimeMinutes: 6,
@@ -167,7 +187,7 @@ export const stocksPageData: StockPageData = {
       id: "guide-2",
       title: "What Is a Stock? Definition and Examples",
       excerpt: "Understand what stocks are and how they work.",
-      category: "Stocks",
+      category: "Growth Stocks",
       author: { name: "Finance Guide" },
       publishedAt: "2026-03-09T10:00:00Z",
       readTimeMinutes: 5,
