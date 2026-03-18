@@ -121,7 +121,7 @@ export default async function SingleNewsPage({
   if (!article) notFound();
 
   return (
-    <div className="bg-background min-h-screen">
+    <div className="bg-background min-h-screen mt-16">
       <div className="max-w-5xl flex flex-col md:flex-row mx-auto px-4 py-10">
         <div className="h-64 aspect-square w-full md:w-80 overflow-hidden rounded-lg mb-6 md:mb-0">
           <Image
