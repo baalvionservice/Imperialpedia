@@ -8,13 +8,12 @@ import { StocksArticle } from "@/lib/data/data.stocks";
 import { StocksCategory } from "./stocks-tab";
 
 const CATEGORY_COLORS: Record<StocksCategory, string> = {
-    "Growth Stocks": "bg-green-100 text-green-700",
-    "Trending Stocks": "bg-blue-100 text-blue-700",
-    "Value Stocks": "bg-yellow-100 text-yellow-700",
-    "Tech Stocks": "bg-purple-100 text-purple-700",
-    "Top Stocks": "bg-gray-100 text-gray-700",
-    "Dividend Stocks": "bg-pink-100 text-pink-700",
-
+  "Growth Stocks": "bg-green-500/10 text-green-600 dark:text-green-400",
+  "Trending Stocks": "bg-blue-500/10 text-blue-600 dark:text-blue-400",
+  "Value Stocks": "bg-yellow-500/10 text-yellow-600 dark:text-yellow-400",
+  "Tech Stocks": "bg-purple-500/10 text-purple-600 dark:text-purple-400",
+  "Top Stocks": "bg-muted text-muted-foreground",
+  "Dividend Stocks": "bg-pink-500/10 text-pink-600 dark:text-pink-400",
 };
 
 function CategoryBadge({ category }: { category: StocksArticle["category"] }) {
@@ -41,15 +40,16 @@ export function StocksArticleCard({ article }: { article: StocksArticle }) {
       </div>
       <div className="flex flex-col flex-1 space-y-2">
         <CategoryBadge category={article.category} />
-        <h3 className="text-base font-bold text-gray-900 leading-snug group-hover:text-blue-600 transition-colors line-clamp-3">
+        <h3 className="text-base font-bold text-foreground leading-snug group-hover:text-primary transition-colors line-clamp-3">
           {article.title}
         </h3>
-        <p className="text-sm text-gray-500 line-clamp-2 flex-1">{article.excerpt}</p>
-        <p className="text-xs text-gray-400">
+        <p className="text-sm text-muted-foreground line-clamp-2 flex-1">
+          {article.excerpt}
+        </p>
+        <p className="text-xs text-muted-foreground">
           By {article.author.name} · {formatDate(article.publishedAt)}
         </p>
       </div>
     </Link>
   );
 }
-
