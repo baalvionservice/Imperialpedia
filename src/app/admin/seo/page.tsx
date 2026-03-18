@@ -221,7 +221,7 @@ export default function SEOEngineHub() {
               </Button>
             </CardContent>
           </Card>
-        </div>
+        </aside>
       </div>
     </div>
   );

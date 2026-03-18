@@ -301,20 +301,22 @@ export function AssetSummaryClient() {
                         <Zap className="h-4 w-4" /> Key Market Catalysts
                       </div>
                       <div className="flex flex-wrap gap-2">
-                        {asset.ai_insights.catalysts.map((cat, i) => (
-                          <div
-                            key={i}
-                            className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-background/50 border border-white/10 group/cat"
-                          >
-                            <div className="w-1 h-1 rounded-full bg-primary" />
-                            <Text
-                              variant="caption"
-                              className="font-bold group-hover/cat:text-primary transition-colors"
+                        {asset.ai_insights.catalysts.map(
+                          (cat: any, i: number) => (
+                            <div
+                              key={i}
+                              className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-background/50 border border-white/10 group/cat"
                             >
-                              {cat}
-                            </Text>
-                          </div>
-                        ))}
+                              <div className="w-1 h-1 rounded-full bg-primary" />
+                              <Text
+                                variant="caption"
+                                className="font-bold group-hover/cat:text-primary transition-colors"
+                              >
+                                {cat}
+                              </Text>
+                            </div>
+                          )
+                        )}
                       </div>
                     </div>
 

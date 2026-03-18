@@ -1,25 +1,28 @@
-import { ID, Slug, Timestamp } from './common';
+import { ID, Slug, Timestamp } from "./common";
 
-export type EntityType = 
-  | 'country' 
-  | 'city' 
-  | 'company' 
-  | 'industry' 
-  | 'technology' 
-  | 'person' 
-  | 'university' 
-  | 'market' 
-  | 'dataset';
+// Re-export ID for use in other modules
+export type { ID } from "./common";
+
+export type EntityType =
+  | "country"
+  | "city"
+  | "company"
+  | "industry"
+  | "technology"
+  | "person"
+  | "university"
+  | "market"
+  | "dataset";
 
 export enum RelationType {
-  COMPANY_INDUSTRY = 'COMPANY_INDUSTRY',
-  COMPANY_COUNTRY = 'COMPANY_COUNTRY',
-  COMPANY_TECHNOLOGY = 'COMPANY_TECHNOLOGY',
-  TECHNOLOGY_INDUSTRY = 'TECHNOLOGY_INDUSTRY',
-  PERSON_COMPANY = 'PERSON_COMPANY',
-  UNIVERSITY_COUNTRY = 'UNIVERSITY_COUNTRY',
-  MARKET_INDUSTRY = 'MARKET_INDUSTRY',
-  COMPETITOR = 'COMPETITOR'
+  COMPANY_INDUSTRY = "COMPANY_INDUSTRY",
+  COMPANY_COUNTRY = "COMPANY_COUNTRY",
+  COMPANY_TECHNOLOGY = "COMPANY_TECHNOLOGY",
+  TECHNOLOGY_INDUSTRY = "TECHNOLOGY_INDUSTRY",
+  PERSON_COMPANY = "PERSON_COMPANY",
+  UNIVERSITY_COUNTRY = "UNIVERSITY_COUNTRY",
+  MARKET_INDUSTRY = "MARKET_INDUSTRY",
+  COMPETITOR = "COMPETITOR",
 }
 
 export interface EntityRelation {
@@ -42,12 +45,12 @@ export interface BaseEntity {
   created_at: Timestamp;
   updated_at: Timestamp;
   // Optional relational fields
-  country?: string; 
-  industry?: string; 
+  country?: string;
+  industry?: string;
 }
 
 export interface CountryEntity extends BaseEntity {
-  type: 'country';
+  type: "country";
   capital: string;
   region: string;
   population: number;
@@ -59,7 +62,7 @@ export interface CountryEntity extends BaseEntity {
 }
 
 export interface CompanyEntity extends BaseEntity {
-  type: 'company';
+  type: "company";
   industry: string;
   country: string;
   founded_year: number;
@@ -71,7 +74,7 @@ export interface CompanyEntity extends BaseEntity {
 }
 
 export interface IndustryEntity extends BaseEntity {
-  type: 'industry';
+  type: "industry";
   sector: string;
   global_market_size: string;
   growth_rate: string;
@@ -81,7 +84,7 @@ export interface IndustryEntity extends BaseEntity {
 }
 
 export interface TechnologyEntity extends BaseEntity {
-  type: 'technology';
+  type: "technology";
   category: string;
   invented_year: number;
   applications: string[];

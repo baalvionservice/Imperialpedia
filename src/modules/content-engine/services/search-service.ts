@@ -1,6 +1,4 @@
-'use client';
-
-import { Article } from '../types';
+import { Article } from "../types";
 
 /**
  * @fileOverview Client-side search service for the Content Engine.
@@ -20,17 +18,18 @@ export function searchArticles(articles: Article[], query: string): Article[] {
   const searchTerms = normalizedQuery.split(/\s+/);
 
   return articles.filter((article) => {
-    const title = (article.title || '').toLowerCase();
-    const description = (article.description || '').toLowerCase();
-    const category = (article.category || '').toLowerCase();
-    const tags = (article.tags || []).map(t => t.toLowerCase());
-    
+    const title = (article.title || "").toLowerCase();
+    const description = (article.description || "").toLowerCase();
+    const category = (article.category || "").toLowerCase();
+    const tags = (article.tags || []).map((t) => t.toLowerCase());
+
     // Check if every search term appears in at least one of the fields
-    return searchTerms.every(term => 
-      title.includes(term) || 
-      description.includes(term) || 
-      category.includes(term) || 
-      tags.some(tag => tag.includes(term))
+    return searchTerms.every(
+      (term) =>
+        title.includes(term) ||
+        description.includes(term) ||
+        category.includes(term) ||
+        tags.some((tag) => tag.includes(term))
     );
   });
 }

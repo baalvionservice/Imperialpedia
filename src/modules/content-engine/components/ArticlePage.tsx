@@ -18,18 +18,31 @@ import { Text } from "@/design-system/typography/text";
 
 interface ArticlePageProps {
   slug: string;
+  article?: Article | null;
 }
 
 /**
  * Main article page component.
  * Handles data fetching, loading states, and orchestrates header/body/TOC rendering.
  */
-export const ArticlePage = ({ slug }: ArticlePageProps) => {
-  const [article, setArticle] = useState<Article | null>(null);
-  const [loading, setLoading] = useState(true);
+export const ArticlePage = ({
+  slug,
+  article: initialArticle,
+}: ArticlePageProps) => {
+  const [article, setArticle] = useState<Article | null>(
+    initialArticle || null
+  );
+  const [loading, setLoading] = useState(!initialArticle);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    // Only fetch if no initial article was provided
+    if (initialArticle) {
+      setArticle(initialArticle);
+      setLoading(false);
+      return;
+    }
+
     async function loadArticle() {
       try {
         setLoading(true);
@@ -48,7 +61,7 @@ export const ArticlePage = ({ slug }: ArticlePageProps) => {
     }
 
     loadArticle();
-  }, [slug]);
+  }, [slug, initialArticle]);
 
   if (loading) {
     return (

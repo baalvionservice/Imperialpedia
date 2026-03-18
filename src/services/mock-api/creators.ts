@@ -346,13 +346,16 @@ export const getTopCreators = async (): Promise<ApiResponse<TopCreator[]>> => {
       name: c.name,
       avatar: c.avatar,
       totalContent: c.contentCount,
+      likes: Math.floor(c.totalViews * 0.05), // Estimate likes as 5% of views
+      comments: Math.floor(c.totalViews * 0.02), // Estimate comments as 2% of views
+      shares: Math.floor(c.totalViews * 0.01), // Estimate shares as 1% of views
       followers: c.followers,
       engagementRate: c.engagementRate,
       revenue: c.totalRevenue,
       verified: c.verified,
       category: c.category,
     }))
-    .sort((a, b) => b.revenue - a.revenue);
+    .sort((a, b) => (b.revenue || 0) - (a.revenue || 0));
 
   return { data, status: 200 };
 };

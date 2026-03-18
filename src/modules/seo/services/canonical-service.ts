@@ -1,44 +1,50 @@
-'use client';
-
-import { env } from '@/config/env';
+import { env } from "@/config/env";
 
 /**
  * @fileOverview Service for generating absolute canonical URLs for programmatic SEO.
  */
 
-export type ContentType = 'article' | 'glossary' | 'tool' | 'category' | 'tag' | 'topic';
+export type ContentType =
+  | "article"
+  | "glossary"
+  | "tool"
+  | "category"
+  | "tag"
+  | "topic";
 
 export const canonicalService = {
   /**
    * Generates an absolute canonical URL for a given slug and content type.
    */
   generateCanonicalURL: (slug: string, type: ContentType): string => {
-    const baseUrl = env.siteUrl.endsWith('/') ? env.siteUrl.slice(0, -1) : env.siteUrl;
-    
-    let path = '';
+    const baseUrl = env.siteUrl.endsWith("/")
+      ? env.siteUrl.slice(0, -1)
+      : env.siteUrl;
+
+    let path = "";
     switch (type) {
-      case 'article':
+      case "article":
         path = `/articles/${slug}`;
         break;
-      case 'glossary':
+      case "glossary":
         path = `/glossary/${slug}`;
         break;
-      case 'tool':
+      case "tool":
         path = `/calculators/${slug}`;
         break;
-      case 'category':
+      case "category":
         path = `/categories/${slug}`;
         break;
-      case 'tag':
+      case "tag":
         path = `/tags/${slug}`;
         break;
-      case 'topic':
+      case "topic":
         path = `/topics/${slug}`;
         break;
       default:
-        path = slug.startsWith('/') ? slug : `/${slug}`;
+        path = slug.startsWith("/") ? slug : `/${slug}`;
     }
-    
+
     return `${baseUrl}${path}`;
   },
 
@@ -47,5 +53,5 @@ export const canonicalService = {
    */
   getCanonicalTag: (slug: string, type: ContentType): string => {
     return canonicalService.generateCanonicalURL(slug, type);
-  }
+  },
 };

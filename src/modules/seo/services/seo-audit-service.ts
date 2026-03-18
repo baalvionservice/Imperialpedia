@@ -91,7 +91,7 @@ export const seoAuditService = {
 
     // 3. Sitemap Inclusion Check (Simplified Logic)
     // In a real app, this would check if the URL exists in the generated XML
-    const sitemap = await sitemapService.generateSitemap();
+    const sitemap = await sitemapService.regenerateSitemap();
     const includedInSitemap = sitemap.includes(slug);
     if (!includedInSitemap) issues.push("Not found in dynamic XML sitemap");
 

@@ -16,6 +16,7 @@ const CATEGORY_COLORS: Record<NewsCategory, string> = {
   ETFs: "bg-indigo-100 text-indigo-700",
   Bonds: "bg-yellow-100 text-yellow-700",
   Guides: "bg-gray-100 text-gray-700",
+  Editorial: "bg-purple-100 text-purple-700",
 };
 
 function CategoryBadge({ category }: { category: NewsCategory }) {
@@ -45,7 +46,9 @@ export function ArticleCard({ article }: { article: NewsArticle }) {
         <h3 className="text-base font-bold text-gray-900 leading-snug group-hover:text-blue-600 transition-colors line-clamp-3">
           {article.title}
         </h3>
-        <p className="text-sm text-gray-500 line-clamp-2 flex-1">{article.excerpt}</p>
+        <p className="text-sm text-gray-500 line-clamp-2 flex-1">
+          {article.excerpt}
+        </p>
         <p className="text-xs text-gray-400">
           By {article.author.name} · {formatDate(article.publishedAt)}
         </p>
@@ -53,4 +56,3 @@ export function ArticleCard({ article }: { article: NewsArticle }) {
     </Link>
   );
 }
-
