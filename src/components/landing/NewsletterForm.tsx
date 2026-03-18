@@ -30,7 +30,7 @@ export const NewsletterForm = () => {
   // TODO: Personalized suggestions based on user research behavior
 
   const validateEmail = (email: string) => {
-    return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email);
+    return /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
