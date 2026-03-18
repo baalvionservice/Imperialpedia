@@ -3,9 +3,9 @@ import { StockPageData, stocksPageData } from "@/lib/data/data.stocks";
 import { buildMetadata } from "@/lib/seo";
 import Image from "next/image";
 import Link from "next/link";
-import { ExploreNewsSection } from "../news/ExploreNewsSection";
 import HeadingSection from "@/components/layout/HeadingSection";
 import { stockFaqs } from "@/lib/data/data.faq";
+import { ExploreStocksSection } from "./components/ExploreStocksSection";
 
 export const metadata = buildMetadata({
     title: "Stocks News and Analysis | Imperial Finance",
@@ -79,7 +79,7 @@ function FeaturedArticleCard({ article }: { article: StockPageData["featured"] }
 
 export default function StockPage() {
     const featured = stocksPageData.featured;
-    const gridArticles = stocksPageData.latest.filter((a) => !a.featured).slice(3);
+    const gridArticles = stocksPageData.latest.filter((a) => !a.featured);
 
     return (
         <div className='min-h-screen bg-white'>
@@ -113,7 +113,7 @@ export default function StockPage() {
 
                 {/* ── FAQ ── */}
                 <section className="w-full pb-4 md:pb-12">
-                    <FAQ data={stockFaqs}/>
+                    <FAQ data={stockFaqs} />
                 </section>
 
 
@@ -125,7 +125,7 @@ export default function StockPage() {
                         Explore Stocks
                     </h2>
 
-                    <ExploreNewsSection articles={gridArticles} />
+                    <ExploreStocksSection articles={gridArticles} />
                 </section>
             </div>
 
