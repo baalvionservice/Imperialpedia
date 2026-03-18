@@ -4,6 +4,7 @@ import React from 'react';
 import { Container } from '@/design-system/layout/container';
 import { Text } from '@/design-system/typography/text';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { SearchX, ArrowLeft, Search, Globe, Layout } from 'lucide-react';
 import Link from 'next/link';
 
@@ -38,7 +39,7 @@ export default function NotFound() {
           <Button variant="outline" className="h-12 rounded-xl font-bold border-white/10 bg-card/30 gap-2" asChild>
             <Link href="/search"><Search className="h-4 w-4" /> Global Search</Link>
           </Button>
-          <Button className="h-12 rounded-xl font-bold bg-primary hover:bg-primary/90 shadow-xl shadow-primary/30" asChild>
+          <Button className="h-12 rounded-xl font-bold bg-primary hover:bg-primary/90 shadow-xl shadow-primary/20" asChild>
             <Link href="/knowledge-map">Open Graph</Link>
           </Button>
         </div>
@@ -50,10 +51,10 @@ export default function NotFound() {
           <Text variant="caption" className="text-muted-foreground italic">
             "Searching for specific alpha? Our AI can help you find related research nodes."
           </Text>
+          {/* TODO: Suggest alternative pages or content dynamically using AI in Phase 2 */}
+          {/* Example: "Looking for companies in a specific country? Click here." */}
         </div>
       </Container>
     </main>
   );
 }
-
-import { Badge } from '@/components/ui/badge';

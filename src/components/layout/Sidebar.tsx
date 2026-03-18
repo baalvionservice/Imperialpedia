@@ -1,87 +1,28 @@
-/**
- * UPDATED SIDEBAR - REFINED KNOWLEDGE GRAPH INTEGRATION
- */
+'use client';
 
-"use client";
-
-import React, { useEffect, useState } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils";
-import {
-  LayoutDashboard,
-  Settings,
-  BarChart3,
-  Users as UsersIcon,
-  Search,
-  PlusSquare,
-  FileEdit,
-  CheckCircle,
-  MessageSquare,
-  Calendar,
-  ImageIcon,
-  Layers,
-  Tags,
-  ShieldAlert,
-  GitPullRequest,
-  Bell,
+import React from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { cn } from '@/lib/utils';
+import { 
+  LayoutDashboard, 
+  Settings, 
+  BarChart3, 
+  Users,
   ShieldCheck,
-  History,
+  FileText,
+  Brain,
   DollarSign,
-  CalendarCheck,
-  UserCog,
-  UserCircle,
-  PenTool,
-  Calculator as CalcIcon,
-  ShieldX,
-  Lock,
-  Megaphone,
-  Activity,
-  Database,
-  RotateCcw,
-  ShieldEllipsis,
-  Bug,
+  Package,
+  MessageSquare,
   Zap,
-  Sparkles,
-  Target,
-  TrendingUp,
-  Heart,
-  FileCode,
-  Shield,
-  Monitor,
-  Palette,
-  TrendingDown,
-  PieChart,
-  Globe,
-  Newspaper,
-  CalendarDays,
-  GitCompare,
-  Activity as ActivityIcon,
-  User,
-  Briefcase,
-  Star,
-  Trophy,
-  Award,
-  CreditCard,
-  FileSearch,
-  Layout,
-  Spline,
-  Fingerprint,
-  Cpu,
-  Network,
-  FlaskConical,
-  Key,
-  Languages,
-  PieChart as PieIcon,
-  Filter,
-  LineChart,
-  ClipboardList,
-  UserCheck,
-  Scale,
-  Share2,
-} from "lucide-react";
-import { Text } from "@/design-system/typography/text";
-import { useAppStore } from "@/lib/state/app-store";
+  ChevronRight,
+  LogOut,
+  Terminal
+} from 'lucide-react';
+import { Text } from '@/design-system/typography/text';
+import { useAppStore } from '@/lib/state/app-store';
+import { Badge } from '@/components/ui/badge';
 
 interface SidebarItemProps {
   icon: React.ElementType;
@@ -101,22 +42,17 @@ const SidebarItem = ({
   <Link
     href={href}
     className={cn(
-      "flex items-center justify-between px-4 py-2.5 rounded-lg transition-all duration-200 group",
-      isActive
-        ? "bg-primary text-primary-foreground shadow-md"
-        : "text-muted-foreground hover:bg-muted hover:text-foreground"
+      'flex items-center justify-between px-4 py-2.5 rounded-lg transition-all duration-200 group',
+      isActive 
+        ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20' 
+        : 'text-muted-foreground hover:bg-muted hover:text-foreground'
     )}
   >
     <div className="flex items-center space-x-3">
-      <Icon
-        className={cn(
-          "h-5 w-5",
-          isActive ? "text-white" : "group-hover:text-primary"
-        )}
-      />
-      <Text variant="bodySmall" weight={isActive ? "bold" : "medium"}>
+      <Icon className={cn('h-4 w-4', isActive ? 'text-white' : 'group-hover:text-primary')} />
+      <span className="text-xs font-bold uppercase tracking-wider">
         {label}
-      </Text>
+      </span>
     </div>
     {badge !== undefined && badge > 0 && (
       <span
@@ -133,607 +69,77 @@ const SidebarItem = ({
 
 const Sidebar = ({ className }: { className?: string }) => {
   const pathname = usePathname();
-  const { currentUser, notifications } = useAppStore();
-  const role = currentUser?.role || "guest";
-
-  const unreadNotifications = notifications.filter((n) => !n.read).length;
-
-  const isAdmin = role === "admin";
-  const isEditor = role === "editor" || role === "admin";
-  const isWriter = role === "writer" || role === "admin";
-
-  const personalItems = [
-    { icon: User, label: "My Dashboard", href: "/dashboard" },
-    {
-      icon: Sparkles,
-      label: "For You (Intel)",
-      href: "/dashboard/recommendations",
-    },
-    {
-      icon: Briefcase,
-      label: "Portfolio & Holdings",
-      href: "/dashboard/portfolio",
-    },
-    { icon: Bell, label: "Alerts & Activity", href: "/dashboard/alerts" },
-    { icon: Search, label: "Market Search", href: "/search" },
-  ];
-
-  const premiumItems = [
-    { icon: CreditCard, label: "Subscription Hub", href: "/premium/subscribe" },
-    { icon: PieIcon, label: "Market Heatmap", href: "/premium/market-heatmap" },
-    { icon: Filter, label: "Asset Screener", href: "/premium/screener" },
-    {
-      icon: History,
-      label: "Backtesting Engine",
-      href: "/premium/backtesting",
-    },
-    {
-      icon: PieIcon,
-      label: "AI Portfolio Deep-Dive",
-      href: "/premium/deep-dive",
-    },
-    { icon: PieIcon, label: "Business Insights", href: "/premium/dashboard" },
-    {
-      icon: FileSearch,
-      label: "Intelligence Reports",
-      href: "/premium/reports",
-    },
-    {
-      icon: LineChart,
-      label: "Advanced Analytics",
-      href: "/premium/analytics",
-    },
-  ];
-
-  const communityItems = [
-    {
-      icon: ActivityIcon,
-      label: "Market Sentiment",
-      href: "/community/sentiment",
-    },
-    {
-      icon: Trophy,
-      label: "Rankings & Leaderboards",
-      href: "/community/rankings",
-    },
-    { icon: Target, label: "Polls & Contests", href: "/community/contests" },
-    {
-      icon: Award,
-      label: "Authority & Badges",
-      href: "/community/leaderboard",
-    },
-    {
-      icon: MessageSquare,
-      label: "Discovery Forums",
-      href: "/community/discussions",
-    },
-  ];
-
-  const adminItems = [
-    {
-      icon: LayoutDashboard,
-      label: "Admin Dashboard",
-      href: "/admin/dashboard",
-    },
-    {
-      icon: BarChart3,
-      label: "Analytics Command Center",
-      href: "/admin/analytics/command-center",
-    },
-    {
-      icon: ShieldCheck,
-      label: "Content Quality Audit",
-      href: "/admin/analytics/content-quality",
-    },
-    {
-      icon: ShieldAlert,
-      label: "AI Moderation Hub",
-      href: "/admin/control/moderation/ai-hub",
-    },
-    {
-      icon: ShieldAlert,
-      label: "Incident Response",
-      href: "/admin/control/incidents",
-    },
-    {
-      icon: Bell,
-      label: "Alerts System",
-      href: "/admin/control/alerts-system",
-    },
-    { icon: Key, label: "Access Orchestration", href: "/admin/control/access" },
-    { icon: UsersIcon, label: "User Management", href: "/admin/control/users" },
-    { icon: Lock, label: "Roles & Permissions", href: "/admin/roles" },
-    {
-      icon: Shield,
-      label: "Security Protocols",
-      href: "/admin/control/security",
-    },
-    {
-      icon: Fingerprint,
-      label: "Security Showcase",
-      href: "/admin/control/security-showcase",
-    },
-    {
-      icon: FlaskConical,
-      label: "Experiment Console",
-      href: "/admin/control/experiments",
-    },
-    {
-      icon: Cpu,
-      label: "Infrastructure & Scale",
-      href: "/admin/control/infrastructure",
-    },
-    {
-      icon: Network,
-      label: "Edge & Multi-Region",
-      href: "/admin/control/edge",
-    },
-    { icon: Globe, label: "CDN & Page Cache", href: "/admin/control/cdn" },
-    { icon: Search, label: "SEO & Sitemaps", href: "/admin/control/seo" },
-    {
-      icon: Languages,
-      label: "Localization Hub",
-      href: "/admin/control/localization",
-    },
-    {
-      icon: Monitor,
-      label: "Active Sessions",
-      href: "/admin/control/sessions",
-    },
-    {
-      icon: Bell,
-      label: "Notification Settings",
-      href: "/admin/control/notifications",
-    },
-    { icon: Zap, label: "Feature Toggles", href: "/admin/control/features" },
-    {
-      icon: Palette,
-      label: "Theme & Branding",
-      href: "/admin/control/branding",
-    },
-    { icon: Megaphone, label: "System Alerts", href: "/admin/control/alerts" },
-    { icon: ShieldX, label: "Content Moderation", href: "/admin/moderation" },
-    {
-      icon: Megaphone,
-      label: "System Notifications",
-      href: "/admin/notifications",
-    },
-    {
-      icon: History,
-      label: "Broadcast Logs",
-      href: "/admin/notification-logs",
-    },
-    { icon: Zap, label: "Feature Gateways", href: "/admin/feature-flags" },
-    {
-      icon: ShieldCheck,
-      label: "Expert Verifications",
-      href: "/admin/creators/verification",
-    },
-    { icon: Calendar, label: "Publisher Scheduler", href: "/admin/scheduler" },
-    { icon: ImageIcon, label: "Media Library", href: "/admin/media" },
-    { icon: Layers, label: "Categories", href: "/admin/categories" },
-    { icon: Tags, label: "Topics & Tags", href: "/admin/tags" },
-    { icon: BarChart3, label: "System Analytics", href: "/admin/analytics" },
-    {
-      icon: Activity,
-      label: "Traffic Trends",
-      href: "/admin/analytics/traffic-trends",
-    },
-    {
-      icon: Sparkles,
-      label: "Network Engagement",
-      href: "/admin/analytics/creator-engagement",
-    },
-    {
-      icon: Heart,
-      label: "Interaction Trends",
-      href: "/admin/analytics/engagement-trends",
-    },
-    {
-      icon: ShieldAlert,
-      label: "Moderation Audit",
-      href: "/admin/analytics/moderation",
-    },
-    { icon: Activity, label: "System Health", href: "/admin/control/health" },
-    { icon: Bug, label: "Error Logs", href: "/admin/errors" },
-    {
-      icon: ShieldCheck,
-      label: "Audit Trail",
-      href: "/admin/control/audit-trail",
-    },
-    {
-      icon: FileCode,
-      label: "Admin Activity Log",
-      href: "/admin/control/activity-log",
-    },
-    { icon: ShieldEllipsis, label: "Access Logs", href: "/admin/access-logs" },
-    { icon: ShieldAlert, label: "pSEO Health", href: "/admin/seo-audit" },
-    {
-      icon: RotateCcw,
-      label: "Backup & Restore",
-      href: "/admin/control/backups",
-    },
-    { icon: Settings, label: "System Settings", href: "/admin/settings" },
-  ];
-
-  const editorItems = [
-    {
-      icon: LayoutDashboard,
-      label: "Editorial Dashboard",
-      href: "/editor/dashboard",
-    },
-    { icon: ClipboardList, label: "Review Queue", href: "/editor/queue" },
-    {
-      icon: UserCheck,
-      label: "Auditor Assignments",
-      href: "/editor/assignments",
-    },
-    { icon: History, label: "Audit Trail", href: "/editor/activity-log" },
-    { icon: CheckCircle, label: "Approved Index", href: "/editor/approved" },
-    {
-      icon: MessageSquare,
-      label: "Auditor Dialogue",
-      href: "/editor/messages",
-    },
-  ];
-
-  const creatorItems = [
-    {
-      icon: LayoutDashboard,
-      label: "Expert Dashboard",
-      href: "/creator/dashboard",
-    },
-    {
-      icon: PlusSquare,
-      label: "Create Insight",
-      href: "/creator/dashboard/editor",
-    },
-    {
-      icon: CalendarCheck,
-      label: "Publishing Schedule",
-      href: "/creator/dashboard/schedule",
-    },
-    { icon: FileEdit, label: "Intelligence Drafts", href: "/writer/drafts" },
-    {
-      icon: BarChart3,
-      label: "Insights Analytics",
-      href: "/creator/dashboard/analytics",
-    },
-    {
-      icon: DollarSign,
-      label: "Monetization",
-      href: "/creator/dashboard/revenue",
-    },
-    {
-      icon: Bell,
-      label: "Activity Feed",
-      href: "/creator/dashboard/notifications",
-      badge: unreadNotifications,
-    },
-    {
-      icon: ShieldCheck,
-      label: "Expert Verification",
-      href: "/creator/dashboard/verification",
-    },
-    {
-      icon: UserCog,
-      label: "Studio Settings",
-      href: "/creator/dashboard/settings",
-    },
-    { icon: UserCircle, label: "Expert Profile", href: "/creators/profile" },
-  ];
-
-  const publishingItems = [
-    { icon: PenTool, label: "Content Engine", href: "/articles" },
-    { icon: Globe, label: "Knowledge Map", href: "/knowledge-map" },
-    {
-      icon: Layout,
-      label: "AI Asset Summary",
-      href: "/ai-analyst/asset-summary",
-    },
-    {
-      icon: Zap,
-      label: "Event Intelligence",
-      href: "/ai-analyst/event-intelligence",
-    },
-    {
-      icon: Newspaper,
-      label: "Daily AI Briefing",
-      href: "/ai-analyst/daily-briefing",
-    },
-    {
-      icon: CalendarDays,
-      label: "Weekly AI Digest",
-      href: "/ai-analyst/weekly-digest",
-    },
-    {
-      icon: History,
-      label: "AI Automated Recap",
-      href: "/ai-analyst/automated-recap",
-    },
-    {
-      icon: Newspaper,
-      label: "AI News Summary",
-      href: "/ai-analyst/news-summary",
-    },
-    {
-      icon: Activity,
-      label: "AI Trend Explainer",
-      href: "/ai-analyst/trend-explanation",
-    },
-    {
-      icon: Spline,
-      label: "AI Scenario Modeler",
-      href: "/ai-analyst/scenario-modeling",
-    },
-    { icon: Sparkles, label: "AI Bull Case", href: "/ai-analyst/bull-case" },
-    {
-      icon: TrendingDown,
-      label: "AI Bear Case",
-      href: "/ai-analyst/bear-case",
-    },
-    {
-      icon: ShieldAlert,
-      label: "AI Risk Scanner",
-      href: "/ai-analyst/risk-detection",
-    },
-    {
-      icon: Zap,
-      label: "AI Catalyst Scanner",
-      href: "/ai-analyst/catalyst-detection",
-    },
-    {
-      icon: GitCompare,
-      label: "AI Asset Compare",
-      href: "/ai-analyst/compare",
-    },
-    {
-      icon: Layers,
-      label: "AI Multi-Compare",
-      href: "/ai-analyst/multi-compare",
-    },
-    {
-      icon: PieChart,
-      label: "AI Earnings Summary",
-      href: "/ai-analyst/earnings-summary",
-    },
-    {
-      icon: Globe,
-      label: "AI Macro Summary",
-      href: "/ai-analyst/macro-summary",
-    },
-    {
-      icon: Layers,
-      label: "AI Sector Overview",
-      href: "/ai-analyst/sector-overview",
-    },
-    {
-      icon: MessageSquare,
-      label: "AI Social Sentiment",
-      href: "/ai-analyst/social-sentiment",
-    },
-    {
-      icon: ActivityIcon,
-      label: "AI Model Integrity",
-      href: "/ai-analyst/model-performance",
-    },
-    { icon: Search, label: "Internal Search", href: "/search" },
-    { icon: UsersIcon, label: "Creator Network", href: "/creators" },
-    { icon: CalcIcon, label: "Financial Tools", href: "/financial-tools" },
-  ];
-
-  const trustItems = [
-    { icon: Scale, label: "Transparency Hub", href: "/transparency" },
-    { icon: ShieldCheck, label: "Trust framework", href: "/creators/trust" },
+  const { currentUser } = useAppStore();
+  
+  const navGroups = [
+    {
+      title: 'Control',
+      items: [
+        { icon: LayoutDashboard, label: 'Overview', href: '/admin/dashboard' },
+        { icon: FileText, label: 'Content', href: '/admin/content' },
+        { icon: Brain, label: 'AI Workspace', href: '/admin/ai' },
+      ]
+    },
+    {
+      title: 'Identity',
+      items: [
+        { icon: Users, label: 'Users', href: '/admin/users' },
+        { icon: Package, label: 'Vendors', href: '/admin/vendors' },
+        { icon: MessageSquare, label: 'Community', href: '/admin/community' },
+      ]
+    },
+    {
+      title: 'Fiscal',
+      items: [
+        { icon: DollarSign, label: 'Finance', href: '/admin/finance' },
+        { icon: BarChart3, label: 'Analytics', href: '/admin/analytics' },
+        { icon: Settings, label: 'Settings', href: '/admin/settings' },
+      ]
+    }
   ];
 
   return (
-    <aside
-      className={cn(
-        "w-64 border-r h-full bg-card/30 flex flex-col p-4",
-        className
-      )}
-    >
-      <div className="mb-8 px-4">
-        <Link
-          href="/"
-          className="text-xl font-headline font-bold text-primary tracking-tight"
-        >
+    <aside className={cn('w-64 border-r h-full bg-card/30 flex flex-col p-4 backdrop-blur-xl sticky top-0', className)}>
+      <div className="mb-10 px-4 py-4 border-b border-white/5">
+        <Link href="/" className="text-2xl font-headline font-bold text-primary tracking-tighter">
           Imperial<span className="text-foreground">pedia</span>
         </Link>
+        <Text variant="label" className="text-[8px] opacity-40 mt-1 uppercase font-bold tracking-[0.3em]">Management Cluster</Text>
       </div>
 
-      <div className="space-y-6 flex-grow overflow-y-auto">
-        {/* Platform Trust Section */}
-        <div>
-          <Text
-            variant="label"
-            className="px-4 mb-3 text-[10px] text-emerald-500 font-bold uppercase tracking-widest"
-          >
-            Platform Trust
-          </Text>
-          <div className="space-y-1">
-            {trustItems.map((item) => (
-              <SidebarItem
-                key={item.href}
-                {...item}
-                isActive={pathname === item.href}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* Personal User Section */}
-        <div className="pt-4 border-t border-white/5">
-          <Text
-            variant="label"
-            className="px-4 mb-3 text-[10px] text-muted-foreground/50 font-bold uppercase tracking-widest"
-          >
-            Personal System
-          </Text>
-          <div className="space-y-1">
-            {personalItems.map((item) => (
-              <SidebarItem
-                key={item.href}
-                {...item}
-                isActive={pathname === item.href}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* Premium Section */}
-        <div className="pt-4 border-t border-white/5">
-          <Text
-            variant="label"
-            className="px-4 mb-3 text-[10px] text-primary/60 font-bold uppercase tracking-widest"
-          >
-            Pro Intelligence
-          </Text>
-          <div className="space-y-1">
-            {premiumItems.map((item) => (
-              <SidebarItem
-                key={item.href}
-                {...item}
-                isActive={pathname === item.href}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* Community Section */}
-        <div className="pt-4 border-t border-white/5">
-          <Text
-            variant="label"
-            className="px-4 mb-3 text-[10px] text-muted-foreground/50 font-bold uppercase tracking-widest"
-          >
-            Community Node
-          </Text>
-          <div className="space-y-1">
-            {communityItems.map((item) => (
-              <SidebarItem
-                key={item.href}
-                {...item}
-                isActive={pathname === item.href}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* Admin Section */}
-        {isAdmin &&
-          (pathname.startsWith("/admin") || pathname === "/admin") && (
-            <div className="pt-4 border-t border-white/5">
-              <Text
-                variant="label"
-                className="px-4 mb-3 text-[10px] text-muted-foreground/50 font-bold uppercase tracking-widest"
-              >
-                Administration
-              </Text>
-              <div className="space-y-1">
-                {adminItems.map((item) => (
-                  <SidebarItem
-                    key={item.href}
-                    {...item}
-                    isActive={pathname === item.href}
-                  />
-                ))}
-              </div>
+      <div className="space-y-8 flex-grow overflow-y-auto no-scrollbar">
+        {navGroups.map((group) => (
+          <div key={group.title} className="space-y-3">
+            <Text variant="label" className="px-4 text-[9px] text-muted-foreground/60 font-bold uppercase tracking-[0.2em]">{group.title}</Text>
+            <div className="space-y-1">
+              {group.items.map((item) => (
+                <SidebarItem
+                  key={item.href}
+                  {...item}
+                  isActive={pathname === item.href}
+                />
+              ))}
             </div>
-          )}
-
-        {/* Editor Section */}
-        {isEditor &&
-          (pathname.startsWith("/editor") || pathname === "/editor") && (
-            <div className="pt-4 border-t border-white/5">
-              <Text
-                variant="label"
-                className="px-4 mb-3 text-[10px] text-muted-foreground/50 font-bold uppercase tracking-widest"
-              >
-                Editorial Hub
-              </Text>
-              <div className="space-y-1">
-                {editorItems.map((item) => (
-                  <SidebarItem
-                    key={item.href}
-                    {...item}
-                    isActive={pathname === item.href}
-                  />
-                ))}
-              </div>
-            </div>
-          )}
-
-        {/* Creator Section */}
-        {(isWriter || isAdmin) &&
-          (pathname.startsWith("/creator") ||
-            pathname.startsWith("/writer") ||
-            pathname === "/creator/dashboard") && (
-            <div className="pt-4 border-t border-white/5">
-              <Text
-                variant="label"
-                className="px-4 mb-3 text-[10px] text-muted-foreground/50 font-bold uppercase tracking-widest"
-              >
-                Creator Studio
-              </Text>
-              <div className="space-y-1">
-                {creatorItems.map((item) => (
-                  <SidebarItem
-                    key={item.href}
-                    {...item}
-                    isActive={pathname === item.href}
-                  />
-                ))}
-              </div>
-            </div>
-          )}
-
-        {/* General Knowledge Context */}
-        {!pathname.startsWith("/admin") &&
-          !pathname.startsWith("/writer") &&
-          !pathname.startsWith("/editor") &&
-          !pathname.startsWith("/creator") &&
-          !pathname.startsWith("/dashboard") &&
-          !pathname.startsWith("/community") &&
-          !pathname.startsWith("/premium") && (
-            <div className="pt-4 border-t border-white/5">
-              <Text
-                variant="label"
-                className="px-4 mb-3 text-[10px] text-muted-foreground/50 font-bold uppercase tracking-widest"
-              >
-                Knowledge Hub
-              </Text>
-              <div className="space-y-1">
-                {publishingItems.map((item) => (
-                  <SidebarItem
-                    key={item.href}
-                    {...item}
-                    isActive={pathname === item.href}
-                  />
-                ))}
-              </div>
-            </div>
-          )}
+          </div>
+        ))}
       </div>
 
-      <div className="pt-4 border-t space-y-1">
-        <div className="px-4 py-3 mb-2 bg-primary/5 rounded-xl border border-primary/10">
-          <Text variant="caption" className="text-primary font-bold block">
-            Logged in as:
-          </Text>
-          <Text variant="bodySmall" className="truncate">
-            {currentUser?.name}
-          </Text>
-          <span className="inline-block px-1.5 py-0.5 rounded bg-primary/20 text-primary text-[10px] font-bold uppercase mt-1">
-            {role}
-          </span>
+      <div className="pt-6 border-t border-white/5 space-y-4">
+        <div className="px-4 py-4 bg-primary/5 rounded-2xl border border-primary/10 relative overflow-hidden group cursor-pointer">
+          <div className="absolute top-0 right-0 p-2 opacity-5 group-hover:rotate-12 transition-transform">
+            <ShieldCheck className="h-8 w-8 text-primary" />
+          </div>
+          <Text variant="caption" className="text-primary font-bold block uppercase text-[8px] tracking-widest mb-1">Authenticated</Text>
+          <Text variant="bodySmall" weight="bold" className="truncate text-foreground/90">{currentUser?.name || 'Administrator'}</Text>
+          <Badge variant="outline" className="mt-2 text-[8px] border-primary/20 text-primary font-bold uppercase tracking-widest h-5">
+            {currentUser?.role || 'Root'}
+          </Badge>
         </div>
-        <SidebarItem
-          icon={Settings}
-          label="Settings"
-          href="/settings"
-          isActive={pathname === "/settings"}
-        />
+        
+        <button className="flex items-center gap-3 px-4 py-2 w-full text-muted-foreground hover:text-destructive transition-colors group outline-none">
+          <Terminal className="h-4 w-4 group-hover:text-destructive" />
+          <span className="text-[10px] font-bold uppercase tracking-widest">Terminate Session</span>
+        </button>
       </div>
     </aside>
   );

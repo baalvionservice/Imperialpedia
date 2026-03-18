@@ -46,18 +46,13 @@ import {
   Twitter,
   Linkedin,
   Monitor,
-} from "lucide-react";
-import { systemService } from "@/services/data/system-service";
-import {
-  SeoManagementData,
-  SeoManagementPage,
-  SitemapEntry,
-  SeoAlertSuggestion,
-} from "@/types/system";
-import { cn } from "@/lib/utils";
-import { toast } from "@/hooks/use-toast";
-import { Input } from "@/components/ui/input";
-import { Progress } from "@/components/ui/progress";
+} from 'lucide-react';
+import { systemService } from '@/services/data/system-service';
+import { SeoManagementData, SeoManagementPage, SitemapEntry, SeoAlertSuggestion } from '@/types/system';
+import { cn } from '@/lib/utils';
+import { toast } from '@/hooks/use-toast';
+import { Input } from '@/components/ui/input';
+import { Progress } from '@/components/ui/progress';
 import {
   Dialog,
   DialogContent,
@@ -138,42 +133,27 @@ export function SeoManagementClient() {
 
   return (
     <div className="space-y-10 pb-24 animate-in fade-in duration-700">
-      <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 px-2">
-        <div>
-          <div className="flex items-center gap-2 text-primary mb-1">
-            <Search className="h-4 w-4" />
-            <Text
-              variant="label"
-              className="text-[10px] font-bold tracking-widest uppercase"
-            >
-              Organic Kernel
-            </Text>
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-10 w-full">
+        <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 px-2">
+          <div>
+            <div className="flex items-center gap-2 text-primary mb-1">
+              <Search className="h-4 w-4" />
+              <Text variant="label" className="text-[10px] font-bold tracking-widest uppercase">Organic Kernel</Text>
+            </div>
+            <Text variant="h1" className="text-3xl font-bold tracking-tight">SEO & Sitemap Management</Text>
           </div>
-          <Text variant="h1" className="text-3xl font-bold tracking-tight">
-            SEO & Sitemap Management
-          </Text>
-        </div>
-        <div className="flex items-center gap-3">
-          <Button
-            onClick={handleRegenerate}
-            disabled={regenerating}
-            className="rounded-xl shadow-lg shadow-primary/20 font-bold bg-primary hover:bg-primary/90 h-11 px-6 transition-all scale-105 active:scale-95"
-          >
-            {regenerating ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-              <RefreshCw className="mr-2 h-4 w-4" />
-            )}
-            Regenerate XML Sitemap
-          </Button>
-        </div>
-      </header>
+          <div className="flex items-center gap-3">
+            <Button 
+              onClick={handleRegenerate}
+              disabled={regenerating}
+              className="rounded-xl shadow-lg shadow-primary/20 font-bold bg-primary hover:bg-primary/90 h-11 px-6 transition-all scale-105 active:scale-95"
+            >
+              {regenerating ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <RefreshCw className="mr-2 h-4 w-4" />}
+              Regenerate XML Sitemap
+            </Button>
+          </div>
+        </header>
 
-      <Tabs
-        value={activeTab}
-        onValueChange={setActiveTab}
-        className="space-y-8"
-      >
         <TabsList className="bg-card/30 border border-white/5 p-1 h-12 rounded-2xl w-full md:w-auto justify-start">
           <TabsTrigger
             value="registry"
@@ -196,10 +176,7 @@ export function SeoManagementClient() {
         </TabsList>
 
         {/* SEO REGISTRY TAB */}
-        <TabsContent
-          value="registry"
-          className="mt-0 space-y-6 animate-in fade-in duration-500"
-        >
+        <TabsContent value="registry" className="mt-0 space-y-6 animate-in fade-in duration-500 outline-none">
           <Card className="glass-card border-none shadow-2xl overflow-hidden">
             <CardHeader className="bg-card/30 border-b border-white/5 p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
               <div className="space-y-1">
@@ -319,10 +296,7 @@ export function SeoManagementClient() {
         </TabsContent>
 
         {/* SITEMAP TAB */}
-        <TabsContent
-          value="sitemap"
-          className="mt-0 space-y-6 animate-in fade-in duration-500"
-        >
+        <TabsContent value="sitemap" className="mt-0 space-y-6 animate-in fade-in duration-500 outline-none">
           <Card className="glass-card border-none shadow-2xl overflow-hidden">
             <CardHeader className="bg-card/30 border-b border-white/5 p-8 flex flex-row items-center justify-between">
               <div>
@@ -416,10 +390,7 @@ export function SeoManagementClient() {
         </TabsContent>
 
         {/* AUDITS TAB */}
-        <TabsContent
-          value="audits"
-          className="mt-0 grid grid-cols-1 lg:grid-cols-12 gap-10 animate-in fade-in duration-500"
-        >
+        <TabsContent value="audits" className="mt-0 grid grid-cols-1 lg:grid-cols-12 gap-10 animate-in fade-in duration-500 outline-none">
           <div className="lg:col-span-7 space-y-6">
             <div className="flex items-center gap-3 px-2">
               <div className="p-2 rounded-xl bg-destructive/10 text-destructive">

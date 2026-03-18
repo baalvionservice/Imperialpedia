@@ -1,0 +1,64 @@
+{
+  "hero": {
+    "badge": "Alpha Index Node Active",
+    "title": "The World’s AI Knowledge Infrastructure",
+    "subtitle": "Research anything instantly with structured global data. Explore 1M+ indexable nodes across countries, companies, industries, and technologies.",
+    "cta": "Join the Waitlist",
+    "secondary_cta": "Early Access"
+  },
+  "nav": {
+    "home": "Home",
+    "features": "Features",
+    "faq": "FAQ",
+    "pricing": "Pricing",
+    "discovery": "Discovery",
+    "waitlist": "Join Waitlist"
+  },
+  "features": {
+    "label": "Core Capabilities",
+    "title": "Why Imperialpedia?",
+    "subtitle": "We provide the architectural foundation for the future of financial intelligence, merging human expertise with machine-scale data processing.",
+    "ai_engine": "AI Knowledge Pages",
+    "ai_engine_desc": "Structured AI-generated knowledge across industries and countries.",
+    "datasets": "Datasets & Insights",
+    "datasets_desc": "Access global datasets for research and business decisions.",
+    "assistant": "AI Research Assistant",
+    "assistant_desc": "Instant AI-powered analysis for companies, startups, and researchers.",
+    "api": "Enterprise API",
+    "api_desc": "Connect our structured knowledge graph directly to your institutional applications."
+  },
+  "faq": {
+    "label": "Information Triage",
+    "title": "Frequently Asked Questions",
+    "subtitle": "Everything you need to know about the world's most scalable intelligence infrastructure.",
+    "support_title": "Still have questions?",
+    "support_desc": "Our AI Research Assistant can provide deeper context on our roadmap.",
+    "support_button": "Query the Analyst Hub"
+  },
+  "pricing": {
+    "label": "Investment Matrix",
+    "title": "Intelligence Plans",
+    "subtitle": "Select the discovery tier that aligns with your research objectives. From retail definitions to institutional audits.",
+    "disclaimer": "Institutional nodes requiring custom SLA handshakes or bulk seat assignments should contact the Governance support cluster directly."
+  },
+  "cta": {
+    "label": "Final Discovery Handshake",
+    "title": "Ready to Audit the Global Economy?",
+    "subtitle": "Join our network of institutional analysts and expert researchers. Secure your node in the Imperialpedia Index today and start your intelligence cycle.",
+    "button": "Secure My Spot"
+  },
+  "waitlist": {
+    "input_placeholder": "Enter institutional email...",
+    "submit_button": "Join Matrix",
+    "caption": "Join 142,000+ analysts receiving high-fidelity intelligence nodes. No spam, only alpha.",
+    "error_required": "Email identity node is required.",
+    "error_invalid": "Invalid email node detected."
+  },
+  "footer": {
+    "description": "The world's most scalable AI-powered financial intelligence engine. Providing deep-dive research across 1,000,000+ programmatic knowledge nodes.",
+    "stay_synced": "Stay Synchronized",
+    "sync_desc": "Subscribe to the Intelligence Wire for real-time market audits and pSEO alerts.",
+    "copyright": "© {{year}} Imperialpedia. AI Knowledge Infrastructure.",
+    "enc_status": "Data Traversal Encrypted"
+  }
+}

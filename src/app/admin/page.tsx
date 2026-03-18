@@ -2,9 +2,9 @@
 import { redirect } from 'next/navigation';
 
 /**
- * Administrative entry point.
- * Redirects to the integrated dashboard summary.
+ * Admin Root Node.
+ * Redirects to the Master Dashboard to initiate the governance cycle.
  */
-export default function AdminRootPage() {
+export default function AdminIndex() {
   redirect('/admin/dashboard');
 }

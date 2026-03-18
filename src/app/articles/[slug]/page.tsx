@@ -1,24 +1,21 @@
-import React from "react";
-import { notFound } from "next/navigation";
-import { Zap } from "lucide-react";
-
-// Prevent prerendering for this page due to complex client components
-export const dynamic = "force-dynamic";
-
-import { ArticlePage } from "@/modules/content-engine/components";
-import { Container } from "@/design-system/layout/container";
-import { Text } from "@/design-system/typography/text";
-import { articlesService } from "@/services/data";
-import { buildMetadata } from "@/lib/seo";
-import { Metadata } from "next";
-import { Breadcrumbs } from "@/modules/seo-engine/components/Breadcrumbs";
-import { breadcrumbService } from "@/modules/seo-engine/services/breadcrumb-service";
-import { Article } from "@/modules/content-engine/types";
-import { JsonLd } from "@/modules/seo-engine/components/JsonLd";
-import { schemaService } from "@/modules/seo/services/schema-service";
-import { canonicalService } from "@/modules/seo/services/canonical-service";
-import { CommentIntelligenceHub } from "@/modules/content-engine/components/CommentIntelligence/CommentIntelligenceHub";
-import { ArticleConnectionDisplay } from "@/modules/content-engine/components/KnowledgeGraph/ArticleConnectionDisplay";
+import React from 'react';
+import { notFound } from 'next/navigation';
+import { ArticlePage } from '@/modules/content-engine/components';
+import { Container } from '@/design-system/layout/container';
+import { articlesService } from '@/services/data';
+import { buildMetadata } from '@/lib/seo';
+import { Metadata } from 'next';
+import { Breadcrumbs } from '@/modules/seo-engine/components/Breadcrumbs';
+import { breadcrumbService } from '@/modules/seo-engine/services/breadcrumb-service';
+import { Article } from '@/modules/content-engine/types';
+import { JsonLd } from '@/modules/seo-engine/components/JsonLd';
+import { schemaService } from '@/modules/seo/services/schema-service';
+import { canonicalService } from '@/modules/seo/services/canonical-service';
+import { CommentIntelligenceHub } from '@/modules/content-engine/components/CommentIntelligence/CommentIntelligenceHub';
+import { ArticleConnectionDisplay } from '@/modules/content-engine/components/KnowledgeGraph/ArticleConnectionDisplay';
+import { linkService } from '@/modules/seo/services/link-service';
+import { Text } from '@/design-system/typography/text';
+import { Zap } from 'lucide-react';
 
 interface ArticleRouteProps {
   params: Promise<{ slug: string }>;

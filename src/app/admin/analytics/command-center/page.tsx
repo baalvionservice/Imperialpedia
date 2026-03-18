@@ -17,11 +17,8 @@ export default function AnalyticsCommandCenterPage() {
   return (
     <main className="min-h-screen bg-background pt-12">
       <Container>
-        <AnalyticsCommandCenterCenterClient />
+        <AnalyticsCommandCenterClient />
       </Container>
     </main>
   );
 }
-
-// Fix for typo in import/render
-import { AnalyticsCommandCenterClient as AnalyticsCommandCenterCenterClient } from './AnalyticsCommandCenterClient';

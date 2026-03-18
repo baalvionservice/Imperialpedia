@@ -1,19 +1,17 @@
-import { sitemapService } from '@/modules/seo/services/sitemap-service';
+import { sitemapService } from "@/modules/seo/services/sitemap-service";
+import { NextResponse } from "next/server";
 
 /**
- * Dynamic Route handler for sitemap.xml
- * Provides search engines with a full list of programmatic pages.
- * Re-generates on every request in development to ensure latest pages are seen.
+ * Dynamic Route handler for sitemap.xml (Main Index).
+ * Points crawlers to the individual segment sitemaps for at-scale indexing.
  */
 export async function GET() {
   try {
-    // Call regenerateSitemap to ensure we have the most current list of mock data pages
     const sitemap = await sitemapService.regenerateSitemap();
 
-    return new Response(sitemap, {
+    return new NextResponse(sitemap, {
       headers: {
         'Content-Type': 'application/xml',
-        // In production, we allow short-term caching, but stale-while-revalidate for freshness
         'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
       },
     });

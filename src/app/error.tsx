@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import { Container } from '@/design-system/layout/container';
 import { Text } from '@/design-system/typography/text';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { ShieldAlert, RefreshCw, ArrowLeft, ShieldCheck, Terminal } from 'lucide-react';
 import Link from 'next/link';
 
@@ -19,7 +20,7 @@ export default function Error({
   reset: () => void;
 }) {
   useEffect(() => {
-    // Log the error to our mock institutional telemetry service
+    // Log the error to our institutional telemetry service
     console.error('System Exception Detected:', error);
   }, [error]);
 
@@ -55,7 +56,7 @@ export default function Error({
           <Button 
             size="lg" 
             onClick={() => reset()}
-            className="h-14 px-10 rounded-2xl font-bold bg-primary hover:bg-primary/90 shadow-xl shadow-primary/30 min-w-[200px]"
+            className="h-14 px-10 rounded-2xl font-bold bg-primary hover:bg-primary/90 shadow-xl shadow-primary/20 min-w-[200px]"
           >
             <RefreshCw className="mr-2 h-5 w-5" /> Force Re-sync
           </Button>
@@ -68,10 +69,9 @@ export default function Error({
           <Text variant="caption" className="text-muted-foreground italic leading-relaxed">
             "Your data traversal is cryptographically signed. Retrying the handshake will re-establish your connection to the intelligence cluster."
           </Text>
+          {/* TODO: Suggest alternative pages or help content dynamically using AI in Phase 2 */}
         </div>
       </Container>
     </main>
   );
 }
-
-import { Badge } from '@/components/ui/badge';

@@ -4,45 +4,33 @@ import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { routes } from '@/config/routes';
-import { Text } from '@/design-system/typography/text';
 
 const navLinks = [
-  { label: 'News', href: routes.public.news },
-  { label: 'Stocks', href: routes.public.stocks },
-  { label: 'Brokers', href: routes.public.brokers },
-  { label: 'Reviews', href: routes.public.reviews },
-  { label: 'Community', href: routes.public.community },
-  { label: 'AI Tools', href: routes.public.aiTools },
-  { label: 'Experts', href: routes.public.creators },
+  { label: 'Home', href: '/' },
+  { label: 'Explore', href: '/explore' },
+  { label: 'Research AI', href: '/research-ai' },
+  { label: 'Datasets', href: '/datasets' },
+  { label: 'Pricing', href: '/pricing' },
+  { label: 'About', href: '/about' },
 ];
 
-/**
- * Primary horizontal navigation links for desktop view.
- * Updated for full platform integration.
- */
 const Navigation = () => {
   const pathname = usePathname();
 
   return (
-    <nav className="hidden lg:flex items-center space-x-8">
+    <nav className="flex items-center space-x-6">
       {navLinks.map((link) => {
-        const isActive = pathname.startsWith(link.href);
+        const isActive = pathname === link.href;
         return (
           <Link
             key={link.href}
             href={link.href}
             className={cn(
-              'transition-colors hover:text-primary relative py-1',
+              'text-sm font-medium transition-colors hover:text-primary',
               isActive ? 'text-primary font-bold' : 'text-muted-foreground'
             )}
           >
-            <Text variant="label" as="span" className="text-[10px] tracking-widest">
-              {link.label}
-            </Text>
-            {isActive && (
-              <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-primary rounded-full animate-in fade-in zoom-in duration-300 shadow-[0_0_8px_rgba(130,114,242,0.5)]" />
-            )}
+            {link.label}
           </Link>
         );
       })}

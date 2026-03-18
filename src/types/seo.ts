@@ -2,23 +2,28 @@
  * @fileOverview SEO and metadata related types.
  */
 
-export interface OpenGraphData {
-  type: string;
-  locale: string;
-  url: string;
-  siteName: string;
-  images: Array<{
-    url: string;
-    width: number;
-    height: number;
-    alt: string;
-  }>;
+export interface IndexSummary {
+  totalPages: number;
+  submittedToSitemap: number;
+  indexedPages: number;
+  nonIndexedPages: number;
+  lastSitemapUpdate: string;
 }
 
-export interface TwitterData {
-  handle: string;
-  site: string;
-  cardType: 'summary' | 'summary_large_image' | 'app' | 'player';
+export type IndexStatus = 'Indexed' | 'Pending' | 'Error';
+
+export interface IndexStatusNode {
+  url: string;
+  status: IndexStatus;
+  lastUpdated: string;
+  priority: number;
+}
+
+export interface SitemapStatus {
+  url: string;
+  lastUpdated: string;
+  totalUrls: number;
+  status: 'Healthy' | 'Error';
 }
 
 export interface SEOData {
@@ -26,20 +31,16 @@ export interface SEOData {
   description: string;
   keywords: string[];
   canonical?: string;
-  og?: OpenGraphData;
-  twitter?: TwitterData;
+  og?: any;
+  twitter?: any;
 }
 
 export interface SEOConfig {
   defaultTitle: string;
   defaultDescription: string;
   defaultKeywords: string[];
-  openGraph: OpenGraphData;
-  twitter: {
-    handle: string;
-    site: string;
-    cardType: string;
-  };
+  openGraph: any;
+  twitter: any;
 }
 
 export interface StructuredData {
@@ -48,9 +49,6 @@ export interface StructuredData {
   [key: string]: any;
 }
 
-/**
- * Result of an SEO audit for a single page.
- */
 export interface SEOAuditResult {
   slug: string;
   type: string;

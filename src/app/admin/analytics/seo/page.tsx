@@ -27,12 +27,12 @@ import {
   FileText,
   ShieldCheck,
   SearchX,
+  ExternalLink,
   Sparkles,
   ArrowRight
 } from 'lucide-react';
 import Link from 'next/link';
 import { analyticsService } from '@/services/data/analytics-service';
-import { SeoAnalytics, KeywordRankingNode, BacklinkNode } from '@/types/analytics';
 import { 
   AreaChart, 
   Area, 
@@ -47,6 +47,8 @@ import {
 } from 'recharts';
 import { cn } from '@/lib/utils';
 import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { SeoAnalytics } from '@/types';
 
 /**
  * SEO Authority & Search Performance Dashboard.
@@ -427,6 +429,3 @@ export default function SeoAuthorityDashboardPage() {
     </div>
   );
 }
-
-import { ExternalLink } from 'lucide-react';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';

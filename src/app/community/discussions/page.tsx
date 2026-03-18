@@ -18,15 +18,22 @@ import {
   Activity,
   Loader2,
   ChevronRight,
-  Target,
-} from "lucide-react";
-import { communityService } from "@/services/data/community-service";
-import { DiscussionNode, TrendingTopic } from "@/types/community";
-import { DiscussionCard } from "@/modules/community/components/DiscussionCard";
-import { DiscussionSidebar } from "@/modules/community/components/DiscussionSidebar";
-import { NewDiscussionForm } from "@/modules/community/components/NewDiscussionForm";
-import { Input } from "@/components/ui/input";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+  Target
+} from 'lucide-react';
+import { communityService } from '@/services/data/community-service';
+import { DiscussionNode, TrendingTopic } from '@/types/community';
+import { DiscussionCard } from '@/modules/community/components/DiscussionCard';
+import { DiscussionSidebar } from '@/modules/community/components/DiscussionSidebar';
+import { NewDiscussionForm } from '@/modules/community/components/NewDiscussionForm';
+import { Input } from '@/components/ui/input';
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogTrigger,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription
+} from '@/components/ui/dialog';
 
 /**
  * Community Trending Discussions Dashboard.
@@ -128,6 +135,12 @@ export default function CommunityDiscussionsPage() {
               </Button>
             </DialogTrigger>
             <DialogContent className="max-w-3xl p-0 border-none bg-transparent shadow-none">
+              <DialogHeader className="sr-only">
+                <DialogTitle>Start a New Intelligence Thread</DialogTitle>
+                <DialogDescription>
+                  Initiate a structured dialogue node with the community.
+                </DialogDescription>
+              </DialogHeader>
               <NewDiscussionForm onCancel={() => {}} />
             </DialogContent>
           </Dialog>
@@ -179,15 +192,9 @@ export default function CommunityDiscussionsPage() {
                   <div className="w-20 h-20 bg-muted/20 rounded-full flex items-center justify-center mx-auto mb-6">
                     <Activity className="h-10 w-10 text-muted-foreground opacity-50" />
                   </div>
-                  <Text variant="h3" className="mb-2">
-                    No active discussions localized
-                  </Text>
-                  <Text
-                    variant="bodySmall"
-                    className="text-muted-foreground max-w-sm mx-auto"
-                  >
-                    Try adjusting your taxonomy filters or search parameters to
-                    discover new intelligence nodes.
+                  <Text variant="h3" className="mb-2">No active discussions localized</Text>
+                  <Text variant="bodySmall" className="text-muted-foreground max-w-sm mx-auto leading-relaxed">
+                    Try adjusting your taxonomy filters or search parameters to discover new intelligence nodes.
                   </Text>
                 </div>
               )}

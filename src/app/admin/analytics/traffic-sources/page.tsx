@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -20,7 +20,9 @@ import {
   ExternalLink,
   Target,
   Zap,
-  Activity
+  Activity,
+  Heart,
+  MessageSquare
 } from 'lucide-react';
 import Link from 'next/link';
 import { analyticsService } from '@/services/data/analytics-service';

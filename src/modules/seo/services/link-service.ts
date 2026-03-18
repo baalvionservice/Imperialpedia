@@ -4,16 +4,46 @@ import { Article } from '@/modules/content-engine/types';
 import { GlossaryTerm } from '../models/glossary-term';
 import { Category } from '@/modules/content-engine/types/category';
 import { Tag } from '@/modules/content-engine/types/tag';
-import { articlesService, glossaryService, calculatorsService } from '@/services/data';
+import { articlesService, glossaryService } from '@/services/data';
 import { getTags } from '@/modules/content-engine/services/tag-service';
 import { getCategories } from '@/modules/content-engine/services/category-service';
 
 /**
  * @fileOverview Centralized service for automating internal linking across the platform.
- * Orchestrates related content discovery for programmatic SEO pages.
+ * Orchestrates related content discovery and programmatic link injection.
  */
 
 export const linkService = {
+  /**
+   * Automatically injects internal links into raw content based on the Glossary.
+   * Rules: Max 5 links per article, unique targets only.
+   */
+  async autoLinkContent(html: string): Promise<string> {
+    const glossaryRes = await glossaryService.getTerms(1, 500);
+    const terms = glossaryRes.data;
+    
+    let linkedHtml = html;
+    let linkCount = 0;
+    const linkedSlugs = new Set<string>();
+
+    // Sort terms by length (descending) to avoid partial matching issues
+    const sortedTerms = [...terms].sort((a, b) => b.term.length - a.term.length);
+
+    for (const term of sortedTerms) {
+      if (linkCount >= 5) break;
+      if (linkedSlugs.has(term.slug)) continue;
+
+      const regex = new RegExp(`\\b(${term.term})\\b`, 'i');
+      if (regex.test(linkedHtml)) {
+        linkedHtml = linkedHtml.replace(regex, `<a href="/glossary/${term.slug}" class="text-primary hover:underline font-bold">${term.term}</a>`);
+        linkedSlugs.add(term.slug);
+        linkCount++;
+      }
+    }
+
+    return linkedHtml;
+  },
+
   /**
    * Fetches articles related to a specific article slug.
    */
@@ -33,8 +63,10 @@ export const linkService = {
     const termResponse = await glossaryService.getTermBySlug(slug);
     const currentTerm = termResponse.data;
     
-    const allTerms = await glossaryService.getTerms(1, 100);
-    return allTerms.data
+    const allTermsRes = await glossaryService.getTerms(1, 100);
+    const allTerms = allTermsRes.data;
+
+    return allTerms
       .filter(t => t.slug !== slug && (!currentTerm || t.category === currentTerm.category))
       .slice(0, 4) as unknown as GlossaryTerm[];
   },

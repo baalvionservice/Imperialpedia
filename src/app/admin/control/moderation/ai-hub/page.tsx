@@ -31,10 +31,11 @@ import {
   History,
   Terminal,
   Scale,
+  Heart,
+  TrendingUp,
   Users,
-  Sparkles,
   ArrowRight,
-  TrendingUp
+  Sparkles
 } from 'lucide-react';
 import Link from 'next/link';
 import { moderationService } from '@/services/data/moderation-service';
@@ -316,12 +317,6 @@ export default function AIModerationHubPage() {
           <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform duration-1000">
             <Sparkles className="h-16 w-16 text-primary rotate-12" />
           </div>
-          <div className="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-widest">
-            <ShieldCheck className="h-4 w-4" /> Integrity Guard
-          </div>
-          <Text variant="caption" className="text-muted-foreground leading-relaxed italic block">
-            "The **Manipulation Detection Engine** is currently benchmarking at 94% precision. Suspicious 'Pump and Dump' narratives are auto-throttled in the discovery feed."
-          </Text>
         </div>
       </div>
 
@@ -399,8 +394,8 @@ export default function AIModerationHubPage() {
               Cross-referencing entity data with the **Global Misinformation Matrix**.
             </DialogDescription>
           </DialogHeader>
-
-          <div className="p-8 space-y-8 max-h-[60vh] overflow-y-auto no-scrollbar">
+          
+          <div className="p-8 space-y-8 max-h-[60vh] overflow-y-auto no-scrollbar bg-background/50">
             {/* Raw Content Payload */}
             <div className="space-y-4">
               <div className="flex items-center gap-2 text-primary font-bold text-[10px] uppercase tracking-widest">
@@ -484,6 +479,3 @@ export default function AIModerationHubPage() {
     </div>
   );
 }
-
-import { Heart } from 'lucide-react';
-

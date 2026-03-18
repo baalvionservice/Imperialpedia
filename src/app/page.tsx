@@ -1,155 +1,143 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
-import {
-  ArrowRight,
-  BookOpen,
-  PenTool,
-  Database,
-  PieChart,
-  ShieldCheck,
-} from "lucide-react";
-import Image from "next/image";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
+'use client';
+
+import React from 'react';
+import dynamic from 'next/dynamic';
+import { HeroSection } from '@/components/landing/HeroSection';
+import { StickyCTA } from '@/components/landing/StickyCTA';
+import { CtaSection } from '@/components/landing/CtaSection';
+import { Text } from '@/design-system/typography/text';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { ArrowRight, BookOpen, Database, PenTool, ShieldCheck, Activity, Zap, Newspaper, Sparkles } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import Link from 'next/link';
+import { JsonLd } from '@/modules/seo-engine/components/JsonLd';
+import { Toaster } from '@/components/ui/toaster';
+
+// Skeleton fallbacks for lazy loading
+import { 
+  FeaturesSectionSkeleton, 
+  TestimonialsSectionSkeleton, 
+  PricingSectionSkeleton,
+  FAQSectionSkeleton,
+  SocialProofSkeleton
+} from '@/components/landing/SectionSkeletons';
+
+// Dynamic imports for performance optimization
+const FeaturesSection = dynamic(() => import('@/components/landing/FeaturesSection').then(mod => mod.FeaturesSection), {
+  loading: () => <FeaturesSectionSkeleton />,
+  ssr: true,
+});
+
+const TestimonialsSection = dynamic(() => import('@/components/landing/TestimonialsSection').then(mod => mod.TestimonialsSection), {
+  loading: () => <TestimonialsSectionSkeleton />,
+  ssr: true,
+});
+
+const PricingSection = dynamic(() => import('@/components/landing/PricingSection').then(mod => mod.PricingSection), {
+  loading: () => <PricingSectionSkeleton />,
+  ssr: true,
+});
+
+const FaqSection = dynamic(() => import('@/components/common/FaqSection'), {
+  loading: () => <FAQSectionSkeleton />,
+  ssr: true,
+});
+
+const SocialProofSection = dynamic(() => import('@/components/common/SocialProofSection'), {
+  loading: () => <SocialProofSkeleton />,
+  ssr: true,
+});
+
+const ScrollPopupCTA = dynamic(() => import('@/components/landing/ScrollPopupCTA').then(mod => mod.ScrollPopupCTA), {
+  ssr: true,
+});
 
 /**
  * The main Home page for Imperialpedia.
- * This file is the authoritative entry point for the root route.
+ * Optimized for institutional-grade performance with dynamic imports and high-priority LCP handling.
  */
 export default function Home() {
-  const heroImg = PlaceHolderImages.find((img) => img.id === "hero-bg");
+  const faqs = [
+    {
+      question: "What is Imperialpedia?",
+      answer: "Imperialpedia is an AI-powered knowledge engine providing structured global data for institutional-grade research and analysis."
+    },
+    {
+      question: "How do I join the early access waitlist?",
+      answer: "Use the 'Join Waitlist' button in the Hero or CTA section to submit your email and secure your spot in our discovery matrix."
+    },
+    {
+      question: "Is the platform free to use?",
+      answer: "Yes, foundational research access is free. Premium plans are available for advanced API throughput, custom datasets, and AI-synthesized deep dives."
+    },
+    {
+      question: "When will the full AI suite be active?",
+      answer: "Phase 2 of the Imperialpedia rollout will introduce the full Generative AI suite, including real-time research synthesis, automated fiscal audits, and predictive catalyst scanning."
+    }
+  ];
+
+  const modules = [
+    { title: 'Content Engine', desc: 'Robust publishing system for financial articles and expert insights.', icon: BookOpen, color: 'text-primary', href: '/articles' },
+    { title: 'pSEO Engine', desc: 'Programmatic infrastructure for 1M+ indexable knowledge nodes.', icon: Database, color: 'text-secondary', href: '/explore' },
+    { title: 'Creator Economy', desc: 'Tools for experts to build audience and intelligence revenue.', icon: PenTool, color: 'text-primary', href: '/creators' },
+    { title: 'Financial Glossary', desc: 'Deep dictionary of 5,000+ market terms and economic definitions.', icon: ShieldCheck, color: 'text-secondary', href: '/glossary' },
+    { title: 'Calculators', desc: 'Precision instruments for everyday planning and wealth modeling.', icon: Zap, color: 'text-primary', href: '/financial-tools' },
+    { title: 'Analytics Hub', desc: 'Real-time platform insights and market trajectory telemetry.', icon: Activity, color: 'text-secondary', href: '/admin/analytics' }
+  ];
 
   return (
-    <div className="flex flex-col">
-      <section className="relative min-h-screen py-24 lg:py-32 text-white overflow-hidden">
-        <div className="container mx-auto px-4 relative z-30">
-          <div className="max-w-3xl">
-            <h1 className="text-3xl lg:text-7xl font-headline font-bold leading-tight mb-6">
-              Imperialpedia — <br />
-              <span className="text-primary">Financial Knowledge Platform</span>
-            </h1>
-            <p className="md:text-xl text-neutral-300 mb-8 font-body max-w-2xl">
-              The world's most scalable financial intelligence engine. Explore
-              over 1,000,000 pages of deep financial insights, creator insights,
-              and programmatic SEO driven knowledge.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button
-                size="lg"
-                className="px-8 font-bold text-base h-14"
-                asChild
-              >
-                <Link href="/outline">
-                  Start Creating <PenTool className="ml-2 h-5 w-5" />
-                </Link>
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="px-8 font-bold text-base text-black h-14"
-                asChild
-              >
-                <Link href="/glossary">
-                  Explore Glossary <BookOpen className="ml-2 h-5 w-5" />
-                </Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-        {/* Background Image */}
-        <div className="absolute inset-0 w-full h-full ">
-          {heroImg && (
-            <Image
-              src={heroImg.imageUrl}
-              alt={heroImg.description}
-              fill
-              className="object-cover"
-              data-ai-hint={heroImg.imageHint}
-            />
-          )}
-        </div>
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent w-full h-full hidden lg:block pointer-events-none z-10"></div>
-        <div className="block md:hidden absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent w-full h-full  lg:block pointer-events-none z-10"></div>
-      </section>
+    <div className="flex flex-col w-full">
+      <JsonLd data={{
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Imperialpedia",
+        "url": "https://imperialpedia.com",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://imperialpedia.com/search?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }} />
 
-      <section className="py-20 bg-card/20 border-y">
+      {/* Above the fold - Priority Loading */}
+      <HeroSection />
+
+      <SocialProofSection />
+
+      {/* Below the fold - Lazy Loaded via dynamic imports */}
+      <FeaturesSection />
+
+      <TestimonialsSection />
+
+      <section className="py-24 bg-card/20 border-y border-white/5">
         <div className="container mx-auto px-4">
-          <div className="mb-12">
-            <h2 className="text-3xl font-headline font-bold mb-4">
-              Modular Ecosystem
-            </h2>
-            <p className="text-muted-foreground">
-              Our platform is built on a scalable, modular architecture.
-            </p>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              {
-                title: "Content Engine",
-                desc: "Robust publishing system for financial articles.",
-                icon: BookOpen,
-                color: "text-primary",
-              },
-              {
-                title: "pSEO Engine",
-                desc: "Programmatic infrastructure for 1M+ pages.",
-                icon: Database,
-                color: "text-secondary",
-              },
-              {
-                title: "Creator Economy",
-                desc: "Tools for experts to build audience and revenue.",
-                icon: PenTool,
-                color: "text-primary",
-              },
-              {
-                title: "Financial Glossary",
-                desc: "Deep dictionary of market terms.",
-                icon: ShieldCheck,
-                color: "text-secondary",
-              },
-              {
-                title: "Calculators",
-                desc: "Precision instruments for everyday planning.",
-                icon: PieChart,
-                color: "text-primary",
-              },
-              {
-                title: "Analytics Hub",
-                desc: "Real-time platform insights.",
-                icon: ArrowRight,
-                color: "text-secondary",
-              },
-            ].map((module, idx) => (
-              <Card
-                key={idx}
-                className="glass-card transition-all hover:translate-y-[-4px]"
-              >
+          <header className="mb-16 max-w-2xl px-2">
+            <Text variant="label" className="text-primary mb-4 uppercase tracking-widest">Structured Ecosystem</Text>
+            <Text variant="h2" className="text-3xl lg:text-5xl font-bold tracking-tight mb-6">Discovery Hubs</Text>
+            <Text variant="body" className="text-muted-foreground leading-relaxed">
+              Audit the world's most scalable intelligence infrastructure. Explore our specialized modules designed for professional-tier research.
+            </Text>
+          </header>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {modules.map((module, idx) => (
+              <Card key={idx} className="glass-card p-4 hover:border-primary/40 transition-all duration-500 group relative overflow-hidden focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-4 focus-within:ring-offset-background outline-none">
+                <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                  <module.icon size={80} aria-hidden="true" />
+                </div>
                 <CardHeader>
-                  <module.icon className={`h-10 w-10 mb-4 ${module.color}`} />
-                  <CardTitle className="font-headline text-xl">
-                    {module.title}
-                  </CardTitle>
-                  <CardDescription className="font-body">
-                    {module.desc}
-                  </CardDescription>
+                  <div className={cn("p-3 rounded-2xl bg-background/50 border border-white/5 w-fit mb-4 group-hover:scale-110 transition-transform", module.color)}>
+                    <module.icon className="h-6 w-6" aria-hidden="true" />
+                  </div>
+                  <CardTitle className="text-xl font-bold group-hover:text-primary transition-colors">{module.title}</CardTitle>
+                  <CardDescription className="text-muted-foreground leading-relaxed">{module.desc}</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <Button
-                    variant="link"
-                    className="p-0 h-auto text-secondary hover:text-secondary/80 font-bold group"
-                    asChild
-                  >
-                    <Link href="#">
-                      Learn more{" "}
-                      <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  <Button variant="link" className="p-0 h-auto text-primary font-bold group/link focus-visible:underline" asChild>
+                    <Link href={module.href}>
+                      Explore Module <ArrowRight className="ml-1 h-4 w-4 transition-all group-hover/link:translate-x-1" aria-hidden="true" />
                     </Link>
                   </Button>
                 </CardContent>
@@ -158,6 +146,38 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <FaqSection faqs={faqs} />
+
+      <section className="py-24 bg-background relative overflow-hidden">
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-3xl mx-auto text-center space-y-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary/10 border border-secondary/20 text-secondary mb-2">
+              <Newspaper className="h-4 w-4" aria-hidden="true" />
+              <span className="text-[10px] font-bold uppercase tracking-widest">Intelligence Wire</span>
+            </div>
+            <Text variant="h2" className="text-3xl lg:text-5xl font-bold tracking-tight">Stay Synchronized with the Hub</Text>
+            <Text variant="body" className="text-muted-foreground text-lg">
+              Receive weekly institutional audits, real-time market sentiment pulses, and exclusive pSEO taxonomy alerts delivered to your node.
+            </Text>
+            <div className="pt-4 flex justify-center">
+              {/* Consolidated Newsletter Hub */}
+              <Link href="/#newsletter" className="inline-block p-4 rounded-3xl bg-card border border-white/5">
+                <Text variant="caption" className="font-bold text-primary">Scroll to Footer for Intelligence Sync</Text>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <PricingSection />
+
+      <CtaSection />
+
+      <Toaster />
+
+      <StickyCTA />
+      <ScrollPopupCTA />
     </div>
   );
 }
