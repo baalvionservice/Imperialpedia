@@ -43,7 +43,7 @@ export function ArticleCard({ article }: { article: NewsArticle }) {
       </div>
       <div className="flex flex-col flex-1 space-y-2">
         <CategoryBadge category={article.category} />
-        <h3 className="text-base font-bold text-gray-900 leading-snug group-hover:text-blue-600 transition-colors line-clamp-3">
+        <h3 className="text-base font-bold text-foreground leading-snug group-hover:text-blue-600 transition-colors line-clamp-3">
           {article.title}
         </h3>
         <p className="text-sm text-gray-500 line-clamp-2 flex-1">

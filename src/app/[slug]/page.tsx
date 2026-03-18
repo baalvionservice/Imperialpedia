@@ -31,33 +31,33 @@ function BodyBlock({ block }: { block: NewsBodyBlock }) {
   switch (block.type) {
     case "paragraph":
       return (
-        <p className="text-gray-700 text-[1.0625rem] leading-[1.85] mb-5">
+        <p className="text-foreground text-[1.0625rem] leading-[1.85] mb-5">
           {block.text}
         </p>
       );
 
     case "heading":
       return (
-        <h2 className="text-gray-900 text-2xl font-bold mt-10 mb-4 leading-snug">
+        <h2 className="text-foreground text-2xl font-bold mt-10 mb-4 leading-snug">
           {block.text}
         </h2>
       );
 
     case "subheading":
       return (
-        <h3 className="text-gray-900 text-lg font-semibold mt-7 mb-3 leading-snug">
+        <h3 className="text-foreground text-lg font-semibold mt-7 mb-3 leading-snug">
           {block.text}
         </h3>
       );
 
     case "quote":
       return (
-        <blockquote className="my-8 pl-6 border-l-4 border-gray-900">
-          <p className="text-gray-900 text-xl font-medium leading-relaxed italic mb-2">
+        <blockquote className="my-8 pl-6 border-l-4 border-foreground">
+          <p className="text-foreground text-xl font-medium leading-relaxed italic mb-2">
             &ldquo;{block.text}&rdquo;
           </p>
           {block.attribution && (
-            <footer className="text-sm text-gray-500 not-italic font-medium">
+            <footer className="text-sm text-muted-foreground not-italic font-medium">
               — {block.attribution}
             </footer>
           )}
@@ -66,8 +66,8 @@ function BodyBlock({ block }: { block: NewsBodyBlock }) {
 
     case "callout":
       return (
-        <div className="my-7 rounded-xl bg-gray-50 border border-gray-200 px-6 py-5">
-          <p className="text-gray-800 text-[0.9375rem] leading-relaxed font-medium">
+        <div className="my-7 rounded-xl bg-muted border border-border px-6 py-5">
+          <p className="text-foreground text-[0.9375rem] leading-relaxed font-medium">
             {block.text}
           </p>
         </div>
@@ -79,9 +79,9 @@ function BodyBlock({ block }: { block: NewsBodyBlock }) {
           {block.items.map((item, i) => (
             <li
               key={i}
-              className="flex gap-3 text-gray-700 text-[1.0625rem] leading-relaxed"
+              className="flex gap-3 text-foreground text-[1.0625rem] leading-relaxed"
             >
-              <span className="mt-[0.4rem] flex-shrink-0 w-1.5 h-1.5 rounded-full bg-gray-400" />
+              <span className="mt-[0.4rem] flex-shrink-0 w-1.5 h-1.5 rounded-full bg-muted-foreground" />
               {item}
             </li>
           ))}
@@ -101,7 +101,7 @@ function BodyBlock({ block }: { block: NewsBodyBlock }) {
             />
           </div>
           {block.caption && (
-            <figcaption className="mt-2 text-xs text-gray-500 text-center leading-relaxed">
+            <figcaption className="mt-2 text-xs text-muted-foreground text-center leading-relaxed">
               {block.caption}
             </figcaption>
           )}
@@ -135,31 +135,31 @@ export default async function SingleNewsPage({
   if (!article) notFound();
 
   return (
-    <div className="bg-white min-h-screen">
+    <div className="bg-background min-h-screen">
       <div className="max-w-7xl mx-auto px-4 py-10">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-12 xl:gap-16">
           {/* ══ LEFT: Article ══════════════════════════════════════════════ */}
           <article className="md:m-16">
             {/* Category + title */}
             <div className="my-2">
-              <h1 className="text-gray-900 text-3xl md:text-5xl font-extrabold leading-4 tracking-wider">
+              <h1 className="text-foreground text-3xl md:text-5xl font-extrabold leading-4 tracking-wider">
                 {article.title}
               </h1>
             </div>
 
             {/* Byline */}
             <div
-              className={`flex flex-wrap items-center gap-x-4 gap-y-2 py-4  mb-2 text-sm text-gray-500`}
+              className={`flex flex-wrap items-center gap-x-4 gap-y-2 py-4  mb-2 text-sm text-muted-foreground`}
             >
               <div className="flex items-center gap-2">
                 <div>
                   By{" "}
-                  <span className="font-semibold text-gray-800 ">
+                  <span className="font-semibold text-foreground ">
                     {article.author.name}
                   </span>
                 </div>
               </div>
-              <span className="text-black">
+              <span className="text-foreground">
                 Published {formatDate(article.publishedAt)}
               </span>
               {article.updatedAt && (
@@ -182,7 +182,7 @@ export default async function SingleNewsPage({
                 />
               </div>
               {article.imageCaption && (
-                <figcaption className="mt-2 text-xs text-gray-400 text-center">
+                <figcaption className="mt-2 text-xs text-muted-foreground text-center">
                   {article.imageCaption}
                 </figcaption>
               )}

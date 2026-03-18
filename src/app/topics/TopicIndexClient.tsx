@@ -364,7 +364,7 @@ export function TopicIndexClient({ initialData }: TopicIndexClientProps) {
                 {initialData.trending_topics.map((topic, idx) => (
                   <div
                     key={topic}
-                    className="p-5 hover:bg-white/5 transition-all group cursor-pointer flex items-center justify-between"
+                    className="p-5 hover:bg-muted transition-all group cursor-pointer flex items-center justify-between"
                   >
                     <div className="flex items-center gap-4">
                       <span className="text-[10px] font-mono font-bold text-muted-foreground opacity-50 w-4">

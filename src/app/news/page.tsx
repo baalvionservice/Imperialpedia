@@ -58,7 +58,7 @@ function FeaturedArticleCard({ article }: { article: NewsArticle }) {
             {/* text */}
             <div className="py-5 space-y-3">
                 <CategoryBadge category={article.category} />
-                <h2 className="text-black text-2xl md:text-3xl font-bold leading-snug max-w-2xl group-hover:underline underline-offset-4">
+                <h2 className="text-foreground text-2xl md:text-3xl font-bold leading-snug max-w-2xl group-hover:underline underline-offset-4">
                     {article.title}
                 </h2>
 
@@ -88,10 +88,10 @@ function HorizontalArticleCard({ article }: { article: NewsArticle }) {
             </div>
             <div className="flex-1 min-w-0 space-y-1">
                 <CategoryBadge category={article.category} />
-                <h3 className="text-sm font-semibold text-gray-900 leading-snug group-hover:underline line-clamp-2">
+                <h3 className="text-sm font-semibold text-foreground leading-snug group-hover:underline line-clamp-2">
                     {article.title}
                 </h3>
-                <div className="text-neutral-400 text-sm">
+                <div className="text-foreground text-sm">
                     By <span className="">{article.author.name}</span>
 
                 </div>
@@ -108,13 +108,13 @@ export default function NewsPage() {
     const gridArticles = newsArticles.filter((a) => !a.featured).slice(3);
 
     return (
-        <div className="bg-white min-h-screen">
+        <div className=" min-h-screen">
             {/* ── Hero header ── */}
             <div className=" pt-14  pb-5 lg:pt-20 text-center px-4">
                 <h1 className="text-3xl lg:text-4xl font-bold tracking-wide">
                     News
                 </h1>
-                <p className="mt-3 text-gray-800 text-base lg:text-lg max-w-2xl mx-auto">
+                <p className="mt-3 text-foreground text-base lg:text-lg max-w-2xl mx-auto">
                     Follow the latest market-moving news and the companies that are making it happen.
                 </p>
             </div>

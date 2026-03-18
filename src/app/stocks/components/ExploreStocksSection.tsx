@@ -14,7 +14,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MAIN_TABS_STOCKS, MORE_CATEGORIES_STOCKS, StocksCategory } from "./stocks-tab";
+import {
+  MAIN_TABS_STOCKS,
+  MORE_CATEGORIES_STOCKS,
+  StocksCategory,
+} from "./stocks-tab";
 import { StocksArticle } from "@/lib/data/data.stocks";
 import { StocksArticleCard } from "./StocksArticleCard";
 
@@ -26,9 +30,10 @@ type ExploreValue =
   | "personal-finance"
   | "more";
 
-
-
-function filterByCategory(articles: StocksArticle[], category: StocksCategory | "All") {
+function filterByCategory(
+  articles: StocksArticle[],
+  category: StocksCategory | "All"
+) {
   if (category === "All") return articles;
   return articles.filter((a) => a.category === category);
 }
@@ -39,7 +44,9 @@ export function ExploreStocksSection({
   articles: StocksArticle[];
 }) {
   const [tab, setTab] = React.useState<ExploreValue>("all");
-  const [selectedCategory, setSelectedCategory] = React.useState<StocksCategory | "All">("All");
+  const [selectedCategory, setSelectedCategory] = React.useState<
+    StocksCategory | "All"
+  >("All");
 
   const filtered = React.useMemo(
     () => filterByCategory(articles, selectedCategory),
@@ -65,7 +72,7 @@ export function ExploreStocksSection({
               <TabsTrigger
                 key={t.value}
                 value={t.value}
-                className=" border bg-white px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-700 shadow-none data-[state=active]:border-gray-900 data-[state=active]:bg-gray-900 data-[state=active]:text-white"
+                className="border bg-card px-4 py-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground shadow-none data-[state=active]:border-primary data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
               >
                 {t.label}
               </TabsTrigger>
@@ -76,7 +83,7 @@ export function ExploreStocksSection({
                 <Button
                   type="button"
                   variant="outline"
-                  className=" border bg-white px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-700 hover:bg-gray-50"
+                  className="border bg-card px-4 py-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground hover:bg-muted"
                   onClick={() => setTab("more")}
                 >
                   More <ChevronDown className="ml-2 h-4 w-4" />
@@ -121,4 +128,3 @@ export function ExploreStocksSection({
     </div>
   );
 }
-
