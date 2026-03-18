@@ -60,9 +60,11 @@
     @apply bg-background text-foreground antialiased selection:bg-primary/30;
     font-family: var(--font-body), sans-serif;
   }
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-headline tracking-tight;
-    font-family: var(--font-headline), serif;
+  h1, h2, h3, h4, h5, h6, p {
+    font-family: var(--font-ui), 'Cabin', sans-serif !important;
+    letter-spacing: 0.055em;
+    line-height: 1.3;
+
   }
   
   :focus-visible {

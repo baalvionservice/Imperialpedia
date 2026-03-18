@@ -5,11 +5,11 @@ import Link from 'next/link';
 import { Container } from '@/design-system/layout/container';
 import { Text } from '@/design-system/typography/text';
 import { Button } from '@/components/ui/button';
-import { 
-  Globe, 
-  Twitter, 
-  Linkedin, 
-  Github, 
+import {
+  Globe,
+  Twitter,
+  Linkedin,
+  Github,
   ChevronRight,
   ShieldCheck
 } from 'lucide-react';
@@ -40,7 +40,7 @@ export default function Footer() {
       { label: 'Terms of Service', href: '/terms-of-service' },
     ]
   };
-
+  const alphabet = ["#", ..."ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("")];
   return (
     <footer className="bg-card/30 border-t border-white/5 pt-20 pb-12 relative overflow-hidden" role="contentinfo">
       <div className="absolute -bottom-24 -left-24 opacity-[0.02] pointer-events-none" aria-hidden="true">
@@ -107,6 +107,18 @@ export default function Footer() {
             </div>
             <Newsletter />
           </div>
+        </div>
+
+        <div className='flex flex-wrap justify-between mb-12' aria-label="Glossary Navigation">
+          {alphabet.map((letter) => (
+            <Link
+              key={letter}
+              href={`/glossary/${letter === "#" ? "num" : letter.toLowerCase()}`}
+              className="hover:underline text-3xl p-3"
+            >
+              {letter}
+            </Link>
+          ))}
         </div>
 
         <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">

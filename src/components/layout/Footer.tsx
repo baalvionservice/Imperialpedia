@@ -65,7 +65,19 @@ const Footer = () => {
             </div>
           ))}
         </div>
-        
+
+        <div className='flex'>
+          {alphabet.map((letter) => (
+            <Link
+              key={letter}
+              href={`/glossary/${letter === "#" ? "num" : letter.toLowerCase()}`}
+              className="hover:underline text-3xl p-5"
+            >
+              {letter}
+            </Link>
+          ))}
+        </div>
+
         <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
           <Text variant="caption" className="text-muted-foreground">
             © {new Date().getFullYear()} Imperialpedia. AI Knowledge Infrastructure.

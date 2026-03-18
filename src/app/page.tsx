@@ -88,7 +88,7 @@ export default function Home() {
   ];
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex max-w-7xl mx-auto flex-col w-full">
       <JsonLd data={{
         "@context": "https://schema.org",
         "@type": "WebSite",

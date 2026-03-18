@@ -32,7 +32,7 @@ const Header = () => {
       <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md">
         <Container className="h-16 flex items-center justify-between gap-4">
           {/* Left: Logo */}
-          <div className="flex items-center gap-8 shrink-0">
+          <div className="flex items-center gap-4 shrink-0">
             <Link href="/" className="text-2xl font-headline font-bold text-primary tracking-tight">
               Imperial<span className="text-foreground">pedia</span>
             </Link>
