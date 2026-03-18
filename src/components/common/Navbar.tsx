@@ -209,6 +209,12 @@ export const Navbar = () => {
   // Company & Legal dropdown
   const companyLinks = [
     {
+      label: t("nav.experts"),
+      href: "/review-board",
+      icon: Users,
+      color: "text-purple-500",
+    },
+    {
       label: t("nav.pricing"),
       href: "/pricing",
       icon: DollarSign,

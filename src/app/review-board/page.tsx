@@ -7,7 +7,7 @@ import Link from "next/link";
 
 export default function ReviewBoardPage() {
   return (
-    <div className="container mx-auto max-w-3xl px-4 py-8">
+    <div className="container mt-16 mx-auto max-w-3xl px-4 py-8">
       <h1 className="text-4xl tracking-wider font-bold mb-6">
         Investopedia Financial Review Board
       </h1>
