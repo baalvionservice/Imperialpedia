@@ -266,7 +266,7 @@ export const Navbar = () => {
         )}
       >
         <Container>
-          <div className="flex items-center justify-between gap-8">
+          <div className="flex items-center justify-between gap-6">
             <Link
               href="/"
               className="shrink-0 group focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4 rounded-lg outline-none"

@@ -21,7 +21,7 @@ export default function Page({ params }: { params: { slug: string } }) {
   if (!term) return <div>Not found</div>;
 
   return (
-    <div className="min-h-48 mx-auto max-w-4xl p-4 mt-8">
+    <div className="min-h-48 mx-auto max-w-4xl p-4 mt-16">
       <h1 className="text-foreground text-3xl md:text-5xl font-extrabold mb-6 leading-4 tracking-wider">
         {term.title}
       </h1>

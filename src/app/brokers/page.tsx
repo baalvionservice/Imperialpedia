@@ -26,7 +26,7 @@ function HorizontalArticleCard({ article }: { article: NewsArticle }) {
             </div>
             <div className="flex-1 min-w-0 space-y-1">
                 <p className="text-blue-500 tracking-wider">BROKERS</p>
-                <h3 className="text-sm font-semibold text-gray-900 leading-snug group-hover:underline line-clamp-2">
+                <h3 className="text-sm font-semibold text-foreground leading-snug group-hover:underline line-clamp-2">
                     {article.title}
                 </h3>
                 <div className="text-neutral-400 text-sm">
@@ -59,7 +59,7 @@ function FeaturedArticleCard({ article }: { article: typeof brokerGuides[0] }) {
             {/* text */}
             <div className="py-5 space-y-3">
                 <p className="text-blue-500 tracking-wider">STOCKS</p>
-                <h2 className="text-black text-2xl md:text-3xl font-bold leading-snug max-w-2xl group-hover:underline group-hover:text-blue-500 underline-offset-4">
+                <h2 className="text-foreground text-2xl md:text-3xl font-bold leading-snug max-w-2xl group-hover:underline group-hover:text-blue-500 underline-offset-4">
                     {article.title}
                 </h2>
 
@@ -76,7 +76,7 @@ export default function BrokersPage() {
     const featured = brokerGuides.find((article) => article.featured);
     const sidebarArticles = brokerGuides.filter((a) => !a.featured);
     return (
-        <div className='min-h-screen bg-white'>
+        <div className='min-h-screen'>
 
             {/* Heading */}
             <HeadingSection tag={"INVESTING"} title={"Brokers"} description="From beginners to advanced traders looking for options trading, international exposure, and alternative investments, there is a brokerage firm for every investor across all levels of experience, income, and risk tolerance. Learn how the best brokers work and which ones are suited to help you reach your financial goals" />
@@ -116,7 +116,7 @@ export default function BrokersPage() {
 
                 {/* ── Article grid ── */}
                 <section className="pb-4 md:pb-12">
-                    <h2 className="text-sm font-bold uppercase tracking-widest text-gray-400 mb-6 pb-2">
+                    <h2 className="text-sm font-bold uppercase tracking-widest text-foreground mb-6 pb-2">
                         Explore Brokers
                     </h2>
 

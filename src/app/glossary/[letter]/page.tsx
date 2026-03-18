@@ -32,7 +32,7 @@ export default function Page({ params }: { params: { letter: string } }) {
   const terms = getTermsByLetter(params.letter);
 
   return (
-    <div className='min-h-48 mx-auto max-w-4xl p-4 mt-8'>
+    <div className='min-h-48 mx-auto max-w-4xl p-4 mt-16'>
       <h1 className='my-8 text-2xl md:text-4xl'>Terms starting with "{params.letter.toUpperCase()}"</h1>
 
       <div className='grid grid-cols-1 md:grid-cols-4 gap-4'>

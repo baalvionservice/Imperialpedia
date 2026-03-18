@@ -28,7 +28,7 @@ export const HeroSection = () => {
     <section 
       role="banner"
       aria-label="Imperialpedia Hero"
-      className="relative pt-20 pb-32 lg:pt-32 lg:pb-48 overflow-hidden bg-gray-50 dark:bg-background"
+      className=" pt-20 pb-32 lg:pt-32 lg:pb-48 overflow-hidden bg-gray-50 dark:bg-background"
     >
       <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none" 
            style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '40px 40px' }} 
