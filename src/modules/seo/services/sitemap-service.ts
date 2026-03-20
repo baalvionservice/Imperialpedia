@@ -40,8 +40,17 @@ export const sitemapService = {
 
     try {
       // 1. Static Core Pages
-      const corePages = ['', '/articles', '/glossary', '/topics', '/financial-tools', '/creators', '/market', '/community'];
-      corePages.forEach(path => {
+      const corePages = [
+        "",
+        "/articles",
+        "/glossary",
+        "/topics",
+        "/financial-tools",
+        "/creators",
+        "/market",
+        "/community",
+      ];
+      corePages.forEach((path) => {
         entries.push({
           loc: `${baseUrl}${path}`,
           lastmod: new Date().toISOString().split("T")[0],
@@ -51,13 +60,14 @@ export const sitemapService = {
       });
 
       // 2. Fetch Dynamic Node IDs in Parallel
-      const [articlesRes, glossaryRes, calcRes, catRes, tagRes] = await Promise.all([
-        articlesService.getArticles(1, 1000),
-        glossaryService.getTerms(1, 1000),
-        calculatorsService.getCalculatorList(),
-        getCategories(),
-        getTags(),
-      ]);
+      const [articlesRes, glossaryRes, calcRes, catRes, tagRes] =
+        await Promise.all([
+          articlesService.getArticles(1, 1000),
+          glossaryService.getTerms(1, 1000),
+          calculatorsService.getCalculatorList(),
+          getCategories(),
+          getTags(),
+        ]);
 
       // 3. Process Articles
       articlesRes.data.forEach((article) => {
@@ -72,9 +82,13 @@ export const sitemapService = {
       });
 
       // 4. Process Glossary Terms & A-Z Hubs
-      glossaryRes.data.forEach(term => {
+      glossaryRes.data.forEach((term) => {
+        // Generate the letter for the new URL structure
+        const firstChar = term.term.charAt(0).toLowerCase();
+        const letter = /^[0-9]/.test(firstChar) ? "num" : firstChar;
+
         entries.push({
-          loc: `${baseUrl}/glossary/${term.slug}`,
+          loc: `${baseUrl}/terms/${letter}/${term.slug}`,
           lastmod: new Date().toISOString().split("T")[0],
           changefreq: "monthly",
           priority: 0.7,
@@ -93,13 +107,13 @@ export const sitemapService = {
       calcRes.data.forEach((calc) => {
         entries.push({
           loc: `${baseUrl}/financial-tools/${calc.slug}`,
-          changefreq: 'monthly',
+          changefreq: "monthly",
           priority: 0.9,
         });
       });
 
       // 6. Process Taxonomy Hubs
-      catRes.data.forEach(cat => {
+      catRes.data.forEach((cat) => {
         entries.push({
           loc: `${baseUrl}/categories/${cat.slug}`,
           changefreq: "weekly",
@@ -117,12 +131,14 @@ export const sitemapService = {
 
       const xml = this.buildXml(entries);
       const duration = Date.now() - start;
-      
-      logger.info(`Sitemap index regenerated in ${duration}ms. Nodes indexed: ${entries.length}`);
-      
+
+      logger.info(
+        `Sitemap index regenerated in ${duration}ms. Nodes indexed: ${entries.length}`
+      );
+
       return xml;
     } catch (error) {
-      logger.error('Failed to regenerate sitemap index', error);
+      logger.error("Failed to regenerate sitemap index", error);
       throw error;
     }
   },

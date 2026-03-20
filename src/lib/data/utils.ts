@@ -6,10 +6,20 @@ export const getTermsByLetter = (letter: string) => {
   }
 
   return terms.filter((t) =>
-    t.title.toLowerCase().startsWith(letter.toLowerCase()),
+    t.title.toLowerCase().startsWith(letter.toLowerCase())
   );
 };
 
 export const getTermBySlug = (slug: string) => {
   return terms.find((t) => t.slug === slug);
+};
+
+export const getTermUrl = (slug: string) => {
+  const term = getTermBySlug(slug);
+  if (!term) return `/terms/${slug}`;
+
+  const firstChar = term.title.charAt(0).toLowerCase();
+  const letter = /^[0-9]/.test(firstChar) ? "num" : firstChar;
+
+  return `/terms/${letter}/${slug}`;
 };
