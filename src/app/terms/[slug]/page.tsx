@@ -1,3 +1,4 @@
+import BodyBlock from "@/components/ui/body-block";
 import { getTermBySlug } from "@/lib/data/utils";
 import { buildMetadata } from "@/lib/seo";
 
@@ -25,7 +26,12 @@ export default function Page({ params }: { params: { slug: string } }) {
       <h1 className="text-foreground text-3xl md:text-5xl font-extrabold mb-6 leading-4 tracking-wider">
         {term.title}
       </h1>
-      <p>{term.content}</p>
+      {/* Article body */}
+      <div className="prose-none">
+        {term.content.map((block, i) => (
+          <BodyBlock key={i} block={block} />
+        ))}
+      </div>
     </div>
   );
 }
