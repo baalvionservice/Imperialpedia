@@ -1,17 +1,17 @@
-export type NewsBodyBlock =
-  | { type: "paragraph"; text: string }
-  | { type: "heading"; text: string }
+export type TermsBodyBlock =
+  | { type: "paragraph"; text: string; id?: string }
+  | { type: "heading"; text: string; id: string }
   | { type: "subheading"; text: string }
-  | { type: "quote"; text: string; attribution?: string }
-  | { type: "callout"; text: string }
-  | { type: "list"; items: string[] }
-  | { type: "image"; url: string; caption?: string };
+  | { type: "quote"; text: string; attribution?: string; id?: string }
+  | { type: "callout"; text: string; id?: string }
+  | { type: "list"; items: string[]; id?: string }
+  | { type: "image"; url: string; caption?: string; id?: string };
 
 export type Term = {
   slug: string;
   title: string;
   description: string;
-  content: NewsBodyBlock[];
+  content: TermsBodyBlock[];
 };
 
 export const terms: Term[] = [
@@ -30,8 +30,13 @@ export const terms: Term[] = [
         url: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800&q=80",
         caption:
           "Blockchain network visualization representing decentralized protocols",
+        id: "0x-protocol-network",
       },
-      { type: "heading", text: "How 0x Protocol Works" },
+      {
+        type: "heading",
+        text: "How 0x Protocol Works",
+        id: "How 0x Protocol Works",
+      },
       {
         type: "paragraph",
         text: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. The protocol uses off-chain order books with on-chain settlement, reducing gas costs while maintaining security.",
@@ -97,6 +102,7 @@ export const terms: Term[] = [
       {
         type: "heading",
         text: "Understanding Absolute vs Comparative Advantage",
+        id: "Absolute vs Comparative Advantage",
       },
       {
         type: "paragraph",
@@ -105,6 +111,33 @@ export const terms: Term[] = [
       {
         type: "callout",
         text: "A country can have absolute advantage in multiple goods but should still specialize based on comparative advantage for optimal trade benefits.",
+      },
+
+      { type: "heading", text: "Components of Aggregate Demand", id: "Components of Aggregate" },
+      {
+        type: "paragraph",
+        text: "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium. While absolute advantage focuses on efficiency, comparative advantage considers opportunity costs.",
+      },
+      {
+        type: "paragraph",
+        text: "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium. While absolute advantage focuses on efficiency, comparative advantage considers opportunity costs.",
+      },
+      {
+        type: "paragraph",
+        text: "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium. While absolute advantage focuses on efficiency, comparative advantage considers opportunity costs.",
+      },
+      {
+        type: "heading",
+        text: "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium. While absolute advantage focuses on efficiency, comparative advantage considers opportunity costs.",
+        id: "Test",
+      },
+      {
+        type: "paragraph",
+        text: "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium. While absolute advantage focuses on efficiency, comparative advantage considers opportunity costs.",
+      },
+      {
+        type: "paragraph",
+        text: "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium. While absolute advantage focuses on efficiency, comparative advantage considers opportunity costs.",
       },
     ],
   },
@@ -147,7 +180,7 @@ export const terms: Term[] = [
         url: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800&q=80",
         caption: "Real estate is a common type of tangible asset",
       },
-      { type: "heading", text: "Types of Assets" },
+      { type: "heading", text: "Types of Assets", id: "Types of Assets" },
       {
         type: "paragraph",
         text: "Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit. Assets can be classified in various ways depending on their characteristics.",
@@ -207,7 +240,11 @@ export const terms: Term[] = [
         type: "paragraph",
         text: "A bond is a fixed-income investment that represents a loan made by an investor to a borrower, typically corporate or governmental. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
       },
-      { type: "heading", text: "Bond Characteristics" },
+      {
+        type: "heading",
+        text: "Bond Characteristics",
+        id: "Bond Characteristics",
+      },
       {
         type: "list",
         items: [
@@ -269,7 +306,7 @@ export const terms: Term[] = [
         type: "paragraph",
         text: "A bull market is characterized by sustained increases in stock prices, typically rising 20% or more from recent lows. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
       },
-      { type: "heading", text: "Bull Market Indicators" },
+      { type: "heading", text: "Bull Market Indicators", id: "Bull" },
       {
         type: "paragraph",
         text: "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium. Bull markets are driven by strong economic fundamentals and investor optimism.",
@@ -334,7 +371,7 @@ export const terms: Term[] = [
         type: "paragraph",
         text: "Capital refers to financial assets or resources that can be used to produce goods, provide services, or generate income. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
       },
-      { type: "heading", text: "Types of Capital" },
+      { type: "heading", text: "Types of Capital", id: "Capital Types" },
       { type: "subheading", text: "Financial Capital" },
       {
         type: "paragraph",
@@ -401,7 +438,7 @@ export const terms: Term[] = [
         caption:
           "Bitcoin was the first successful cryptocurrency, launched in 2009",
       },
-      { type: "heading", text: "Key Characteristics" },
+      { type: "heading", text: "Key Characteristics", id: "Characters" },
       {
         type: "list",
         items: [
@@ -494,7 +531,7 @@ export const terms: Term[] = [
         type: "paragraph",
         text: "A dividend is a payment made by a corporation to its shareholders, usually as a distribution of profits. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
       },
-      { type: "heading", text: "Dividend Policy" },
+      { type: "heading", text: "Dividend Policy", id: "Policy" },
       {
         type: "paragraph",
         text: "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium. Companies with stable cash flows often pay regular dividends to attract income-focused investors.",
@@ -583,7 +620,11 @@ export const terms: Term[] = [
         type: "paragraph",
         text: "An exchange rate is the price of one currency expressed in terms of another currency. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt.",
       },
-      { type: "heading", text: "Factors Affecting Exchange Rates" },
+      {
+        type: "heading",
+        text: "Factors Affecting Exchange Rates",
+        id: "Exchange Rate",
+      },
       {
         type: "list",
         items: [
@@ -674,7 +715,11 @@ export const terms: Term[] = [
         type: "paragraph",
         text: "The foreign exchange market (Forex or FX) is the global marketplace for trading national currencies against one another. At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti.",
       },
-      { type: "heading", text: "Market Characteristics" },
+      {
+        type: "heading",
+        text: "Market Characteristics",
+        id: "Market Characters",
+      },
       {
         type: "list",
         items: [
@@ -813,7 +858,7 @@ export const terms: Term[] = [
         caption:
           "Rising prices affect everyday purchases from groceries to gasoline",
       },
-      { type: "heading", text: "Causes of Inflation" },
+      { type: "heading", text: "Causes of Inflation", id: "Inflation Causes" },
       {
         type: "list",
         items: [
@@ -966,7 +1011,7 @@ export const terms: Term[] = [
         type: "paragraph",
         text: "Leverage involves using borrowed capital to increase the potential return on an investment, though it also amplifies potential losses. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.",
       },
-      { type: "heading", text: "Types of Leverage" },
+      { type: "heading", text: "Types of Leverage", id: "" },
       {
         type: "list",
         items: [
@@ -1003,7 +1048,7 @@ export const terms: Term[] = [
         caption:
           "Rising prices affect everyday purchases from groceries to gasoline",
       },
-      { type: "heading", text: "Causes of Inflation" },
+      { type: "heading", text: "Causes of Inflation", id: "" },
       {
         type: "list",
         items: [
@@ -1156,7 +1201,7 @@ export const terms: Term[] = [
         type: "paragraph",
         text: "Leverage involves using borrowed capital to increase the potential return on an investment, though it also amplifies potential losses. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.",
       },
-      { type: "heading", text: "Types of Leverage" },
+      { type: "heading", text: "Types of Leverage", id: "" },
       {
         type: "list",
         items: [
@@ -1187,7 +1232,7 @@ export const terms: Term[] = [
         type: "paragraph",
         text: "Leverage involves using borrowed capital to increase the potential return on an investment, though it also amplifies potential losses. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.",
       },
-      { type: "heading", text: "Types of Leverage" },
+      { type: "heading", text: "Types of Leverage", id: "" },
       {
         type: "list",
         items: [
@@ -1216,7 +1261,7 @@ export const terms: Term[] = [
         type: "paragraph",
         text: "Leverage involves using borrowed capital to increase the potential return on an investment, though it also amplifies potential losses. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.",
       },
-      { type: "heading", text: "Types of Leverage" },
+      { type: "heading", text: "Types of Leverage", id: "" },
       {
         type: "list",
         items: [
@@ -1247,7 +1292,7 @@ export const terms: Term[] = [
         type: "paragraph",
         text: "Leverage involves using borrowed capital to increase the potential return on an investment, though it also amplifies potential losses. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.",
       },
-      { type: "heading", text: "Types of Leverage" },
+      { type: "heading", text: "Types of Leverage", id: "" },
       {
         type: "list",
         items: [
@@ -1278,7 +1323,7 @@ export const terms: Term[] = [
         type: "paragraph",
         text: "Leverage involves using borrowed capital to increase the potential return on an investment, though it also amplifies potential losses. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.",
       },
-      { type: "heading", text: "Types of Leverage" },
+      { type: "heading", text: "Types of Leverage", id: "" },
       {
         type: "list",
         items: [
@@ -1309,7 +1354,7 @@ export const terms: Term[] = [
         type: "paragraph",
         text: "Leverage involves using borrowed capital to increase the potential return on an investment, though it also amplifies potential losses. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.",
       },
-      { type: "heading", text: "Types of Leverage" },
+      { type: "heading", text: "Types of Leverage", id: "" },
       {
         type: "list",
         items: [
@@ -1338,7 +1383,7 @@ export const terms: Term[] = [
         type: "paragraph",
         text: "Leverage involves using borrowed capital to increase the potential return on an investment, though it also amplifies potential losses. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.",
       },
-      { type: "heading", text: "Types of Leverage" },
+      { type: "heading", text: "Types of Leverage", id: "" },
       {
         type: "list",
         items: [
@@ -1369,7 +1414,7 @@ export const terms: Term[] = [
         type: "paragraph",
         text: "Leverage involves using borrowed capital to increase the potential return on an investment, though it also amplifies potential losses. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.",
       },
-      { type: "heading", text: "Types of Leverage" },
+      { type: "heading", text: "Types of Leverage", id: "" },
       {
         type: "list",
         items: [
@@ -1400,7 +1445,7 @@ export const terms: Term[] = [
         type: "paragraph",
         text: "Leverage involves using borrowed capital to increase the potential return on an investment, though it also amplifies potential losses. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.",
       },
-      { type: "heading", text: "Types of Leverage" },
+      { type: "heading", text: "Types of Leverage", id: "" },
       {
         type: "list",
         items: [
@@ -1429,7 +1474,7 @@ export const terms: Term[] = [
         type: "paragraph",
         text: "Leverage involves using borrowed capital to increase the potential return on an investment, though it also amplifies potential losses. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.",
       },
-      { type: "heading", text: "Types of Leverage" },
+      { type: "heading", text: "Types of Leverage", id: "" },
       {
         type: "list",
         items: [
@@ -1460,7 +1505,7 @@ export const terms: Term[] = [
         type: "paragraph",
         text: "Leverage involves using borrowed capital to increase the potential return on an investment, though it also amplifies potential losses. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.",
       },
-      { type: "heading", text: "Types of Leverage" },
+      { type: "heading", text: "Types of Leverage", id: "" },
       {
         type: "list",
         items: [
@@ -1489,7 +1534,7 @@ export const terms: Term[] = [
         type: "paragraph",
         text: "Leverage involves using borrowed capital to increase the potential return on an investment, though it also amplifies potential losses. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.",
       },
-      { type: "heading", text: "Types of Leverage" },
+      { type: "heading", text: "Types of Leverage", id: "Leverage" },
       {
         type: "list",
         items: [
@@ -1520,7 +1565,7 @@ export const terms: Term[] = [
         type: "paragraph",
         text: "Leverage involves using borrowed capital to increase the potential return on an investment, though it also amplifies potential losses. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.",
       },
-      { type: "heading", text: "Types of Leverage" },
+      { type: "heading", text: "Types of Leverage", id: "" },
       {
         type: "list",
         items: [
@@ -1551,7 +1596,7 @@ export const terms: Term[] = [
         type: "paragraph",
         text: "Leverage involves using borrowed capital to increase the potential return on an investment, though it also amplifies potential losses. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.",
       },
-      { type: "heading", text: "Types of Leverage" },
+      { type: "heading", text: "Types of Leverage", id: "" },
       {
         type: "list",
         items: [
@@ -1582,7 +1627,7 @@ export const terms: Term[] = [
         type: "paragraph",
         text: "Leverage involves using borrowed capital to increase the potential return on an investment, though it also amplifies potential losses. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.",
       },
-      { type: "heading", text: "Types of Leverage" },
+      { type: "heading", text: "Types of Leverage", id: "" },
       {
         type: "list",
         items: [
@@ -1613,7 +1658,7 @@ export const terms: Term[] = [
         type: "paragraph",
         text: "Leverage involves using borrowed capital to increase the potential return on an investment, though it also amplifies potential losses. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.",
       },
-      { type: "heading", text: "Types of Leverage" },
+      { type: "heading", text: "Types of Leverage", id: "" },
       {
         type: "list",
         items: [
@@ -1644,7 +1689,7 @@ export const terms: Term[] = [
         type: "paragraph",
         text: "Leverage involves using borrowed capital to increase the potential return on an investment, though it also amplifies potential losses. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.",
       },
-      { type: "heading", text: "Types of Leverage" },
+      { type: "heading", text: "Types of Leverage", id: "" },
       {
         type: "list",
         items: [
@@ -1675,7 +1720,7 @@ export const terms: Term[] = [
         type: "paragraph",
         text: "Leverage involves using borrowed capital to increase the potential return on an investment, though it also amplifies potential losses. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.",
       },
-      { type: "heading", text: "Types of Leverage" },
+      { type: "heading", text: "Types of Leverage", id: "" },
       {
         type: "list",
         items: [
@@ -1706,7 +1751,7 @@ export const terms: Term[] = [
         type: "paragraph",
         text: "Leverage involves using borrowed capital to increase the potential return on an investment, though it also amplifies potential losses. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.",
       },
-      { type: "heading", text: "Types of Leverage" },
+      { type: "heading", text: "Types of Leverage", id: "" },
       {
         type: "list",
         items: [

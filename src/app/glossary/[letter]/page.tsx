@@ -1,10 +1,9 @@
-import React from 'react';
+import React from "react";
 
-import { buildMetadata } from '@/lib/seo';
-import Link from 'next/link';
+import { buildMetadata } from "@/lib/seo";
+import Link from "next/link";
 
-import { getTermsByLetter } from "@/lib/data/utils";
-
+import { getTermsByLetter, getTermUrl } from "@/lib/data/utils";
 
 export async function generateMetadata({
   params,
@@ -20,9 +19,6 @@ export async function generateMetadata({
   });
 }
 
-
-
-
 /**
  * The main Glossary Index page.
  * Provides a jumping-off point for alphabetical browsing and featured terms.
@@ -32,14 +28,16 @@ export default function Page({ params }: { params: { letter: string } }) {
   const terms = getTermsByLetter(params.letter);
 
   return (
-    <div className='min-h-48 mx-auto max-w-4xl p-4 mt-16'>
-      <h1 className='my-8 text-2xl md:text-4xl'>Terms starting with "{params.letter.toUpperCase()}"</h1>
+    <div className="min-h-48 mx-auto max-w-4xl p-4 mt-16">
+      <h1 className="my-8 text-2xl md:text-4xl">
+        Terms starting with "{params.letter.toUpperCase()}"
+      </h1>
 
-      <div className='grid grid-cols-1 md:grid-cols-4 gap-4'>
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         {terms.map((term) => (
           <div key={term.slug}>
-            <Link href={`/terms/${term.slug}`}>
-              <h2 className='mb-2'>{term.title}</h2>
+            <Link href={getTermUrl(term.slug)}>
+              <h2 className="mb-2">{term.title}</h2>
             </Link>
             {/* <p>{term.description}</p> */}
           </div>
