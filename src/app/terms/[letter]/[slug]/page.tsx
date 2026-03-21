@@ -1,8 +1,9 @@
 import BodyBlock from "@/components/ui/body-block";
-import { getTermBySlug } from "@/lib/data/utils";
+import { getTermBySlug, getRelatedTerms } from "@/lib/data/utils";
 import { buildMetadata } from "@/lib/seo";
 import { terms } from "@/lib/data/terms";
 import TableOfContents from "./components/TableOfContents";
+import RelatedTerms from "./components/RelatedTerms";
 
 export async function generateStaticParams() {
   return terms.map((term) => {
@@ -43,22 +44,30 @@ export default async function Page({
   // Extract headings for table of contents
   const headings = term.content.filter((block) => block.type === "heading");
 
-  return (
-    <div className="min-h-screen flex gap-8 mx-auto max-w-7xl p-4 mt-16">
-      {/* Table of Contents - Left Side */}
-      <TableOfContents headings={headings}  />
+  // Get related terms
+  const relatedTerms = getRelatedTerms(slug, 16);
 
-      {/* Article Content - Right Side */}
-      <div className="flex-1 max-w-3xl">
-        <h1 className="text-foreground text-3xl md:text-5xl font-extrabold mb-8 leading-tight tracking-wide">
-          {term.title}
-        </h1>
-        <div className="prose-none">
-          {term.content.map((block, i) => (
-            <BodyBlock key={i} block={block} />
-          ))}
+  return (
+    <div className="min-h-screen flex flex-col gap-8 mx-auto max-w-7xl p-4 mt-16">
+      {/* Table of Contents - Left Side */}
+      <div className="flex">
+        <TableOfContents headings={headings} />
+
+        {/* Article Content - Right Side */}
+        <div className="flex-1 max-w-3xl">
+          <h1 className="text-foreground text-3xl md:text-5xl font-extrabold mb-8 leading-tight tracking-wide">
+            {term.title}
+          </h1>
+          <div className="prose-none">
+            {term.content.map((block, i) => (
+              <BodyBlock key={i} block={block} />
+            ))}
+          </div>
         </div>
       </div>
+
+      {/* Related Terms Section */}
+      <RelatedTerms terms={relatedTerms} />
     </div>
   );
 }

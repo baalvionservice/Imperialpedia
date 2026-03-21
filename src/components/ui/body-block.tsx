@@ -1,20 +1,71 @@
+import { Accordion } from "@/app/terms/[letter]/[slug]/components/AccordationComponent";
+import { ExpandableText } from "@/app/terms/[letter]/[slug]/components/ExpandableParagraph";
 import { TermsBodyBlock } from "@/lib/data/terms";
 import { slugify } from "@/modules/content-engine/utils/slugify";
+import { Zap } from "lucide-react";
 import Image from "next/image";
 
 export default function BodyBlock({ block }: { block: TermsBodyBlock }) {
   switch (block.type) {
     case "paragraph":
       return (
-        <p className="text-foreground text-[1.0625rem] leading-[1.85] mb-5">
-          {block.text}
-        </p>
+        <div className="text-foreground text-[1.0625rem] leading-[1.85] mb-5">
+          {block.content.map((seg, i) => {
+            switch (seg.type) {
+              case "text":
+                return <span key={i}>{seg.content}</span>;
+              case "link":
+                return (
+                  <a
+                    key={i}
+                    href={seg.href}
+                    className="text-primary underline hover:no-underline"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {seg.content}
+                  </a>
+                );
+              case "list":
+                return (
+                  <ol
+                    key={i}
+                    className="list-decimal list-inside space-y-1 my-2"
+                  >
+                    {seg.content.map((item, itemIndex) => (
+                      <li key={itemIndex}>
+                        {item.type === "text" ? (
+                          item.content
+                        ) : (
+                          <a
+                            href={item.href}
+                            className="text-primary underline hover:no-underline"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {item.content}
+                          </a>
+                        )}
+                      </li>
+                    ))}
+                  </ol>
+                );
+              default:
+                return null;
+            }
+          })}
+        </div>
       );
+    case "accordion":
+      return <Accordion title={block.title} children={block.content} />;
+
+    case "expandable":
+      return <ExpandableText content={block.content} />;
 
     case "heading":
       return (
         <h2
-        id={slugify(block.id)}
+          id={slugify(block.id)}
           className="text-foreground text-2xl font-bold mt-12 mb-4 leading-snug"
         >
           {block.text}
@@ -44,10 +95,59 @@ export default function BodyBlock({ block }: { block: TermsBodyBlock }) {
 
     case "callout":
       return (
-        <div className="my-7 rounded-xl bg-muted border border-border px-6 py-5">
-          <p className="text-foreground text-[0.9375rem] leading-relaxed font-medium">
-            {block.text}
-          </p>
+        <div className="my-7 space-y-3 rounded-md bg-white dark:bg-black border border-border px-6 py-5">
+          <div>
+            <span className="flex gap-3">
+              <Zap fill="yellow" />
+              IMPORTANT
+            </span>
+          </div>
+          <div>
+            {block.content.map((seg, i) => {
+              switch (seg.type) {
+                case "text":
+                  return <span key={i}>{seg.content}</span>;
+                case "link":
+                  return (
+                    <a
+                      key={i}
+                      href={seg.href}
+                      className="text-primary underline hover:no-underline"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {seg.content}
+                    </a>
+                  );
+                case "list":
+                  return (
+                    <ol
+                      key={i}
+                      className="list-decimal list-inside space-y-1 my-2"
+                    >
+                      {seg.content.map((item, itemIndex) => (
+                        <li key={itemIndex}>
+                          {item.type === "text" ? (
+                            item.content
+                          ) : (
+                            <a
+                              href={item.href}
+                              className="text-primary underline hover:no-underline"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {item.content}
+                            </a>
+                          )}
+                        </li>
+                      ))}
+                    </ol>
+                  );
+                default:
+                  return null;
+              }
+            })}
+          </div>
         </div>
       );
 
