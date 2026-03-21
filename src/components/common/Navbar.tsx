@@ -160,43 +160,43 @@ export const Navbar = () => {
   const investingLinks = [
     {
       label: t("nav.stocks"),
-      href: "/investing/stocks",
+      href: "/stocks",
     },
     {
       label: t("nav.bonds"),
-      href: "/investing/bonds",
+      href: "/bonds",
     },
     {
       label: t("nav.etfs"),
-      href: "/investing/etfs",
+      href: "/etfs",
     },
     {
       label: t("nav.mutual_funds"),
-      href: "/investing/mutual-funds",
+      href: "/mutual-funds",
     },
     {
       label: t("nav.options"),
-      href: "/investing/options",
+      href: "/options",
     },
     {
       label: t("nav.commodities"),
-      href: "/investing/commodities",
+      href: "/commodities",
     },
     {
       label: t("nav.cryptocurrency"),
-      href: "/investing/cryptocurrency",
+      href: "/cryptocurrency",
     },
     {
       label: t("nav.real_estate"),
-      href: "/investing/real-estate",
+      href: "/real-estate",
     },
     {
       label: t("nav.retirement_planning"),
-      href: "/investing/retirement",
+      href: "/retirement",
     },
     {
       label: t("nav.portfolio_management"),
-      href: "/investing/portfolio",
+      href: "/portfolio",
     },
     {
       label: t("nav.view_all_investing"),
@@ -207,43 +207,43 @@ export const Navbar = () => {
   const bankingLinks = [
     {
       label: t("nav.savings_accounts"),
-      href: "/banking/savings",
+      href: "/savings",
     },
     {
       label: t("nav.checking_accounts"),
-      href: "/banking/checking",
+      href: "/checking",
     },
     {
       label: t("nav.cd_rates"),
-      href: "/banking/cd-rates",
+      href: "/cd-rates",
     },
     {
       label: t("nav.money_market"),
-      href: "/banking/money-market",
+      href: "/money-market",
     },
     {
       label: t("nav.credit_cards"),
-      href: "/banking/credit-cards",
+      href: "/credit-cards",
     },
     {
       label: t("nav.personal_loans"),
-      href: "/banking/loans",
+      href: "/loans",
     },
     {
       label: t("nav.mortgages"),
-      href: "/banking/mortgages",
+      href: "/mortgages",
     },
     {
       label: t("nav.auto_loans"),
-      href: "/banking/auto-loans",
+      href: "/auto-loans",
     },
     {
       label: t("nav.student_loans"),
-      href: "/banking/student-loans",
+      href: "/student-loans",
     },
     {
       label: t("nav.banking_reviews"),
-      href: "/banking/reviews",
+      href: "/banking-reviews",
     },
     {
       label: t("nav.view_all_banking"),
@@ -254,43 +254,43 @@ export const Navbar = () => {
   const personalFinanceLinks = [
     {
       label: t("nav.budgeting"),
-      href: "/personal-finance/budgeting",
+      href: "/budgeting",
     },
     {
       label: t("nav.debt_management"),
-      href: "/personal-finance/debt",
+      href: "/debt",
     },
     {
       label: t("nav.credit_scores"),
-      href: "/personal-finance/credit",
+      href: "/credit",
     },
     {
       label: t("nav.insurance"),
-      href: "/personal-finance/insurance",
+      href: "/insurance",
     },
     {
       label: t("nav.taxes"),
-      href: "/personal-finance/taxes",
+      href: "/taxes",
     },
     {
       label: t("nav.estate_planning"),
-      href: "/personal-finance/estate-planning",
+      href: "/estate-planning",
     },
     {
       label: t("nav.financial_planning"),
-      href: "/personal-finance/planning",
+      href: "/planning",
     },
     {
       label: t("nav.emergency_fund"),
-      href: "/personal-finance/emergency-fund",
+      href: "/emergency-fund",
     },
     {
       label: t("nav.side_hustles"),
-      href: "/personal-finance/income",
+      href: "/income",
     },
     {
       label: t("nav.financial_calculators"),
-      href: "/personal-finance/calculators",
+      href: "/financial-calculators",
     },
     {
       label: t("nav.view_all_personal_finance"),
@@ -301,43 +301,43 @@ export const Navbar = () => {
   const economyLinks = [
     {
       label: t("nav.economic_indicators"),
-      href: "/economy/indicators",
+      href: "/indicators",
     },
     {
       label: t("nav.federal_reserve"),
-      href: "/economy/fed",
+      href: "/fed",
     },
     {
       label: t("nav.inflation"),
-      href: "/economy/inflation",
+      href: "/inflation",
     },
     {
       label: t("nav.gdp"),
-      href: "/economy/gdp",
+      href: "/gdp",
     },
     {
       label: t("nav.unemployment"),
-      href: "/economy/unemployment",
+      href: "/unemployment",
     },
     {
       label: t("nav.interest_rates"),
-      href: "/economy/interest-rates",
+      href: "/interest-rates",
     },
     {
       label: t("nav.fiscal_policy"),
-      href: "/economy/fiscal-policy",
+      href: "/fiscal-policy",
     },
     {
       label: t("nav.monetary_policy"),
-      href: "/economy/monetary-policy",
+      href: "/monetary-policy",
     },
     {
       label: t("nav.global_economy"),
-      href: "/economy/global",
+      href: "/global",
     },
     {
       label: t("nav.economic_calendar"),
-      href: "/economy/calendar",
+      href: "/calendar",
     },
     {
       label: t("nav.view_all_economy"),
@@ -348,43 +348,43 @@ export const Navbar = () => {
   const reviewLinks = [
     {
       label: t("nav.broker_reviews"),
-      href: "/reviews/brokers",
+      href: "/broker-reviews",
     },
     {
       label: t("nav.robo_advisor_reviews"),
-      href: "/reviews/robo-advisors",
+      href: "/robo-advisors",
     },
     {
       label: t("nav.bank_reviews"),
-      href: "/reviews/banks",
+      href: "/bank-reviews",
     },
     {
       label: t("nav.credit_card_reviews"),
-      href: "/reviews/credit-cards",
+      href: "/credit-card-reviews",
     },
     {
       label: t("nav.insurance_reviews"),
-      href: "/reviews/insurance",
+      href: "/insurance-reviews",
     },
     {
       label: t("nav.loan_reviews"),
-      href: "/reviews/loans",
+      href: "/loan-reviews",
     },
     {
       label: t("nav.investment_app_reviews"),
-      href: "/reviews/apps",
+      href: "/app-reviews",
     },
     {
       label: t("nav.financial_advisor_reviews"),
-      href: "/reviews/advisors",
+      href: "/advisor-reviews",
     },
     {
       label: t("nav.tax_software_reviews"),
-      href: "/reviews/tax-software",
+      href: "/tax-software",
     },
     {
       label: t("nav.budgeting_app_reviews"),
-      href: "/reviews/budgeting-apps",
+      href: "/budgeting-apps",
     },
     {
       label: t("nav.view_all_reviews"),
@@ -581,8 +581,18 @@ export const Navbar = () => {
           />
         )}
         <Container>
-          <div className={cn("flex flex-col items-start justify-start gap-4", isScrolled && "flex-row items-center")}>
-            <div className={cn("flex w-full items-center justify-between", isScrolled && "w-fit")}>
+          <div
+            className={cn(
+              "flex flex-col items-start justify-start gap-4",
+              isScrolled && "flex-row items-center"
+            )}
+          >
+            <div
+              className={cn(
+                "flex w-full items-center justify-between",
+                isScrolled && "w-fit"
+              )}
+            >
               <Link
                 href="/"
                 className="shrink-0 w-fit group focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4 rounded-lg outline-none"
@@ -598,7 +608,12 @@ export const Navbar = () => {
                   </span>
                 </Text>
               </Link>
-              <div className={cn("flex items-center gap-4 shrink-0", isScrolled && "hidden")}>
+              <div
+                className={cn(
+                  "flex items-center gap-4 shrink-0",
+                  isScrolled && "hidden"
+                )}
+              >
                 <div className="w-52 ml-auto">
                   <button
                     onClick={() => setIsSearchOpen(true)}
@@ -671,7 +686,6 @@ export const Navbar = () => {
                     <ChevronDown className="h-3 w-3 transition-transform group-hover:rotate-180" />
                   </Link>
                   <div className="absolute top-full left-0 w-64 bg-background/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 mt-2 p-2">
-                   
                     {newsLinks.map((link) => (
                       <Link
                         key={link.label}
@@ -696,7 +710,6 @@ export const Navbar = () => {
                     <ChevronDown className="h-3 w-3 transition-transform group-hover:rotate-180" />
                   </Link>
                   <div className="absolute top-full left-0 w-64 bg-background/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 mt-2 p-2">
-                   
                     {investingLinks.map((link) => (
                       <Link
                         key={link.label}
@@ -721,7 +734,6 @@ export const Navbar = () => {
                     <ChevronDown className="h-3 w-3 transition-transform group-hover:rotate-180" />
                   </Link>
                   <div className="absolute top-full left-0 w-64 bg-background/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 mt-2 p-2">
-                    
                     {bankingLinks.map((link) => (
                       <Link
                         key={link.label}
@@ -746,7 +758,6 @@ export const Navbar = () => {
                     <ChevronDown className="h-3 w-3 transition-transform group-hover:rotate-180" />
                   </Link>
                   <div className="absolute top-full left-0 w-64 bg-background/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 mt-2 p-2">
-                   
                     {personalFinanceLinks.map((link) => (
                       <Link
                         key={link.label}
@@ -771,7 +782,6 @@ export const Navbar = () => {
                     <ChevronDown className="h-3 w-3 transition-transform group-hover:rotate-180" />
                   </Link>
                   <div className="absolute top-full left-0 w-64 bg-background/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 mt-2 p-2">
-                   
                     {economyLinks.map((link) => (
                       <Link
                         key={link.label}
@@ -796,7 +806,6 @@ export const Navbar = () => {
                     <ChevronDown className="h-3 w-3 transition-transform group-hover:rotate-180" />
                   </Link>
                   <div className="absolute top-full left-0 w-64 bg-background/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 mt-2 p-2">
-                   
                     {reviewLinks.map((link) => (
                       <Link
                         key={link.label}
@@ -813,69 +822,74 @@ export const Navbar = () => {
               </div>
             </div>
 
-            <div className={cn("hidden items-center gap-4 shrink-0", isScrolled && "flex")}>
-                <div className="w-52 ml-auto">
-                  <button
-                    onClick={() => setIsSearchOpen(true)}
-                    className="w-full relative group outline-none"
-                    aria-label="Open global search index"
-                  >
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
-                    <div className="w-full h-10 pl-10 pr-12 rounded-xl bg-background/40 border border-white/5 text-sm text-muted-foreground flex items-center text-left hover:border-primary/20 transition-all">
-                      Search
-                    </div>
-                    <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
-                      <span className="hidden xl:inline text-[9px] font-bold text-muted-foreground bg-background/50 px-1.5 py-0.5 rounded border border-white/5">
-                        ⌘K
-                      </span>
-                      <Badge
-                        variant="outline"
-                        className="text-[8px] font-bold border-primary/20 bg-primary/5 text-primary"
-                      >
-                        AI
-                      </Badge>
-                    </div>
-                  </button>
-                </div>
-                <div className={cn("hidden md:flex items-center gap-3" , isScrolled && "hidden")}>
-                  {isAdmin && (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="h-9 gap-2 rounded-xl border-primary/30 text-primary hover:bg-primary/5 font-bold text-[10px] uppercase tracking-widest"
-                      asChild
-                    >
-                      <Link href="/admin/dashboard">
-                        <LayoutDashboard className="h-3.5 w-3.5" /> Mission
-                        Control
-                      </Link>
-                    </Button>
-                  )}
-                 
-                </div>
-                <Button
-                  onClick={() => setIsOpen(!isOpen)}
-                  variant="ghost"
-                  size="icon"
-                  className="lg:hidden p-2 rounded-xl bg-card/30 border border-white/5 text-muted-foreground hover:text-primary transition-all focus-visible:ring-2 focus-visible:ring-primary outline-none"
-                  aria-label={
-                    isOpen ? "Close navigation menu" : "Open navigation menu"
-                  }
+            <div
+              className={cn(
+                "hidden items-center gap-4 shrink-0",
+                isScrolled && "flex"
+              )}
+            >
+              <div className="w-52 ml-auto">
+                <button
+                  onClick={() => setIsSearchOpen(true)}
+                  className="w-full relative group outline-none"
+                  aria-label="Open global search index"
                 >
-                  {isOpen ? (
-                    <X className="h-6 w-6" />
-                  ) : (
-                    <Menu className="h-6 w-6" />
-                  )}
-                </Button>
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                  <div className="w-full h-10 pl-10 pr-12 rounded-xl bg-background/40 border border-white/5 text-sm text-muted-foreground flex items-center text-left hover:border-primary/20 transition-all">
+                    Search
+                  </div>
+                  <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
+                    <span className="hidden xl:inline text-[9px] font-bold text-muted-foreground bg-background/50 px-1.5 py-0.5 rounded border border-white/5">
+                      ⌘K
+                    </span>
+                    <Badge
+                      variant="outline"
+                      className="text-[8px] font-bold border-primary/20 bg-primary/5 text-primary"
+                    >
+                      AI
+                    </Badge>
+                  </div>
+                </button>
               </div>
+              <div
+                className={cn(
+                  "hidden md:flex items-center gap-3",
+                  isScrolled && "hidden"
+                )}
+              >
+                {isAdmin && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-9 gap-2 rounded-xl border-primary/30 text-primary hover:bg-primary/5 font-bold text-[10px] uppercase tracking-widest"
+                    asChild
+                  >
+                    <Link href="/admin/dashboard">
+                      <LayoutDashboard className="h-3.5 w-3.5" /> Mission
+                      Control
+                    </Link>
+                  </Button>
+                )}
+              </div>
+              <Button
+                onClick={() => setIsOpen(!isOpen)}
+                variant="ghost"
+                size="icon"
+                className="lg:hidden p-2 rounded-xl bg-card/30 border border-white/5 text-muted-foreground hover:text-primary transition-all focus-visible:ring-2 focus-visible:ring-primary outline-none"
+                aria-label={
+                  isOpen ? "Close navigation menu" : "Open navigation menu"
+                }
+              >
+                {isOpen ? (
+                  <X className="h-6 w-6" />
+                ) : (
+                  <Menu className="h-6 w-6" />
+                )}
+              </Button>
+            </div>
           </div>
         </Container>
       </nav>
-
-
-
-
 
       {/* Mobile Menu Overlay */}
       {isOpen && (
