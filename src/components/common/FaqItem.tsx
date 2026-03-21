@@ -2,7 +2,7 @@
 
 import React, { useState, useId } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Minus } from "lucide-react";
+import { Plus, Minus, ChevronUp, ChevronDown } from "lucide-react";
 import { Text } from "@/design-system/typography/text";
 import { cn } from "@/lib/utils";
 import { trackEvent, logEvent } from '@/lib/utils/analytics';
@@ -47,14 +47,14 @@ export default function FaqItem({ question, answer }: FaqItemProps) {
         aria-expanded={isOpen}
         aria-controls={contentId}
       >
-        <Text variant="h4" className="font-bold text-lg group-hover:text-primary transition-colors pr-8">
+        <Text variant="h4" className="font-semibold text-md group-hover:text-primary transition-colors pr-8">
           {question}
         </Text>
         <div className={cn(
           "p-2 rounded-lg bg-primary/10 text-primary transition-all duration-300 shrink-0",
           isOpen && "bg-primary text-white rotate-180"
         )}>
-          {isOpen ? <Minus className="h-4 w-4" aria-hidden="true" /> : <Plus className="h-4 w-4" aria-hidden="true" />}
+          {isOpen ? <ChevronUp className="h-4 w-4" aria-hidden="true" /> : <ChevronDown className="h-4 w-4" aria-hidden="true" />}
         </div>
       </button>
       <AnimatePresence initial={false}>

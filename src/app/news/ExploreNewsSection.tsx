@@ -36,10 +36,10 @@ const MAIN_TABS: Array<{
   { value: "markets", label: "Market News", category: "Markets" },
   { value: "company", label: "Company News", category: "Stocks" },
   { value: "crypto", label: "Cryptocurrency News", category: "Crypto" },
-  { value: "personal-finance", label: "Personal Finance News", category: "Personal Finance" },
+  { value: "personal-finance", label: "Personal Finance News", category: "PersonalFinance" },
 ];
 
-const MORE_CATEGORIES: NewsCategory[] = ["Economy", "Real Estate", "ETFs", "Bonds"];
+const MORE_CATEGORIES: NewsCategory[] = ["Economy", "RealEstate", "ETFs", "Bonds"];
 
 function filterByCategory(articles: NewsArticle[], category: NewsCategory | "All") {
   if (category === "All") return articles;

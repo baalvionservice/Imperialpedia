@@ -4,8 +4,8 @@ export type NewsCategory =
   | "Economy"
   | "Stocks"
   | "Crypto"
-  | "Personal Finance"
-  | "Real Estate"
+  | "PersonalFinance"
+  | "RealEstate"
   | "ETFs"
   | "Editorial"
   | "Guides"
@@ -154,7 +154,7 @@ export const newsArticles: NewsArticle[] = [
     title: "Housing Market Cools as Mortgage Rates Tick Back Above 7%",
     excerpt:
       "Existing home sales fell 3.4% last month as rising mortgage rates squeezed affordability, with first-time buyers bearing the brunt of the slowdown.",
-    category: "Real Estate",
+    category: "RealEstate",
     author: { name: "Marco Delgado", title: "Real Estate Correspondent" },
     publishedAt: "2026-03-14T16:45:00Z",
     readTimeMinutes: 4,
@@ -245,7 +245,7 @@ export const newsArticles: NewsArticle[] = [
     title: "Best High-Yield Savings Accounts of 2026: Rates Top 5%",
     excerpt:
       "With the Fed keeping rates elevated, online banks are competing fiercely for deposits. Here are the top accounts offering the highest APYs right now.",
-    category: "Personal Finance",
+    category: "PersonalFinance",
     author: { name: "Aisha Patel", title: "Personal Finance Editor" },
     publishedAt: "2026-03-13T09:00:00Z",
     readTimeMinutes: 6,

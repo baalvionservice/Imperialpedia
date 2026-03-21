@@ -7,22 +7,22 @@ import type { NewsArticle, NewsCategory } from "@/lib/data.news";
 import { formatDate } from "@/services/format-date";
 
 const CATEGORY_COLORS: Record<NewsCategory, string> = {
-  Markets: "bg-blue-100 text-blue-700",
-  Economy: "bg-green-100 text-green-700",
-  Stocks: "bg-violet-100 text-violet-700",
-  Crypto: "bg-orange-100 text-orange-700",
-  "Personal Finance": "bg-teal-100 text-teal-700",
-  "Real Estate": "bg-rose-100 text-rose-700",
-  ETFs: "bg-indigo-100 text-indigo-700",
-  Bonds: "bg-yellow-100 text-yellow-700",
-  Guides: "bg-gray-100 text-gray-700",
-  Editorial: "bg-purple-100 text-purple-700",
+  Markets: " text-blue-700",
+  Economy: " text-green-700",
+  Stocks: " text-violet-700",
+  Crypto: "text-orange-700",
+  PersonalFinance: "text-teal-700",
+  RealEstate: "text-rose-700",
+  ETFs: " text-indigo-700",
+  Bonds: " text-yellow-700",
+  Guides: "text-gray-700",
+  Editorial: "text-purple-700",
 };
 
-function CategoryBadge({ category }: { category: NewsCategory }) {
+export function CategoryBadge({ category }: { category: NewsCategory }) {
   return (
     <span
-      className={`inline-block  w-fit  text-xs font-semibold uppercase tracking-wide px-2 py-0.5 rounded ${CATEGORY_COLORS[category]}`}
+      className={`inline-block  w-fit  text-xs font-semibold uppercase tracking-wide py-0.5 rounded ${CATEGORY_COLORS[category]}`}
     >
       {category}
     </span>

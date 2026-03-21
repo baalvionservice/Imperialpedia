@@ -2,6 +2,7 @@
 
 import { slugify } from "@/modules/content-engine/utils/slugify";
 import { cn } from "@/lib/utils";
+import { ChevronRight } from "lucide-react";
 
 interface TableContentProps {
   id: string;
@@ -21,7 +22,7 @@ export default function TableContent({
   if (!id) return null;
 
   return (
-    <li key={id}>
+    <li key={id} className={cn(!isActive && "border-l-2 border-border pl-4",)}>
       <a
         href={`#${slug}`}
         className={cn(
@@ -39,7 +40,12 @@ export default function TableContent({
           }
         }}
       >
-        {id}
+        <span className="flex gap-2">
+          {isActive && (
+            <ChevronRight fill="blue" className="shrink-0 h-5 w-5 mt-0.5 -ml-[6px] text-blue-900" />
+          )}
+          {id}
+        </span>
       </a>
     </li>
   );

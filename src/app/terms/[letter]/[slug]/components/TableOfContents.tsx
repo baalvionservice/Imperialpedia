@@ -17,7 +17,7 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
           Table of Contents
         </h3>
         <nav>
-          <ul className="space-y-2 border-l-2 pl-4">
+          <ul className=" pl-4">
             {headings.map((heading) => (
               <TableContent
                 key={heading.id}
