@@ -57,17 +57,40 @@ export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const pathname = usePathname();
   const { t } = useTranslation("common");
   const { currentUser } = useAppStore();
 
+  // Check if current route should show scroll progress
+  const shouldShowScrollProgress = () => {
+    // Match /[slug] pattern (single slug at root)
+    const rootSlugPattern = /^\/[^\/]+$/;
+    // Match /terms/[letter]/[slug] pattern
+    const termsPattern = /^\/terms\/[^\/]+\/[^\/]+$/;
+
+    return rootSlugPattern.test(pathname) || termsPattern.test(pathname);
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
+
+      // Calculate scroll progress only for specific routes
+      if (shouldShowScrollProgress()) {
+        const scrollTop = window.scrollY;
+        const docHeight =
+          document.documentElement.scrollHeight - window.innerHeight;
+        const progress = Math.min(scrollTop / docHeight, 1);
+        setScrollProgress(progress);
+      } else {
+        setScrollProgress(0);
+      }
     };
+
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [pathname]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -259,12 +282,25 @@ export const Navbar = () => {
         role="navigation"
         aria-label="Main Platform Navigation"
         className={cn(
-          "fixed top-0 left-0 w-full z-50 transition-all duration-500 border-b",
+          "fixed top-0 left-0 w-full z-50 transition-all duration-500 border-b ",
           isScrolled
-            ? "bg-background/80 backdrop-blur-xl border-white/10 py-3 shadow-2xl"
+            ? "bg-background/80 backdrop-blur-xl border-white/10 py-3 shadow-2xl "
             : "bg-transparent border-transparent py-5"
         )}
       >
+        {/* Dynamic scroll progress border */}
+        {shouldShowScrollProgress() && (
+          <div
+            className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-primary via-primary/80 to-primary transition-all duration-300 ease-out"
+            style={{
+              width: `${scrollProgress * 100}%`,
+              boxShadow:
+                scrollProgress > 0
+                  ? "0 0 8px rgba(var(--primary), 0.5)"
+                  : "none",
+            }}
+          />
+        )}
         <Container>
           <div className="flex items-center justify-between gap-6">
             <Link
