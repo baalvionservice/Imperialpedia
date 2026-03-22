@@ -32,6 +32,7 @@ import {
   Trash2,
   Save,
   Eye,
+  GripVertical,
 } from "lucide-react";
 import {
   Term,
@@ -172,6 +173,18 @@ export default function TiptapEditor() {
     }));
   };
 
+  const reorderContentBlocks = (fromIndex: number, toIndex: number) => {
+    setFormData((prev) => {
+      const newContent = [...prev.content];
+      const [movedBlock] = newContent.splice(fromIndex, 1);
+      newContent.splice(toIndex, 0, movedBlock);
+      return {
+        ...prev,
+        content: newContent,
+      };
+    });
+  };
+
   const handleSave = () => {
     if (!formData.title || !formData.category || !formData.description) {
       alert("Please fill in all required fields");
@@ -240,7 +253,9 @@ export default function TiptapEditor() {
                   <Input
                     id="slugTitle"
                     value={formData.slugTitle}
-                    onChange={(e) => handleInputChange("slugTitle", e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("slugTitle", e.target.value)
+                    }
                     placeholder="Enter term for slugTitle"
                   />
                 </div>
@@ -390,13 +405,29 @@ export default function TiptapEditor() {
               </CardHeader>
               <CardContent className="space-y-4">
                 {formData.content.map((block, index) => (
-                  <ContentBlockEditor
+                  <div
                     key={index}
-                    block={block}
-                    index={index}
-                    onUpdate={updateContentBlock}
-                    onRemove={removeContentBlock}
-                  />
+                    onDrop={(e) => {
+                      e.preventDefault();
+                      const draggedIndex = parseInt(
+                        e.dataTransfer.getData("text/plain")
+                      );
+                      if (draggedIndex !== index) {
+                        reorderContentBlocks(draggedIndex, index);
+                      }
+                    }}
+                    onDragOver={(e) => {
+                      e.preventDefault();
+                      e.dataTransfer.dropEffect = "move";
+                    }}
+                  >
+                    <ContentBlockEditor
+                      block={block}
+                      index={index}
+                      onUpdate={updateContentBlock}
+                      onRemove={removeContentBlock}
+                    />
+                  </div>
                 ))}
 
                 {formData.content.length === 0 && (
@@ -434,11 +465,19 @@ function ContentBlockEditor({
     onUpdate(index, updatedBlock);
   };
 
+  const handleDragStart = (e: React.DragEvent) => {
+    e.dataTransfer.setData("text/plain", index.toString());
+    e.dataTransfer.effectAllowed = "move";
+  };
+
   return (
-    <Card className="relative">
+    <Card className="relative" draggable onDragStart={handleDragStart}>
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
-          <Badge variant="secondary">{block.type}</Badge>
+          <div className="flex items-center gap-2">
+            <GripVertical className="h-4 w-4 text-muted-foreground cursor-grab active:cursor-grabbing" />
+            <Badge variant="secondary">{block.type}</Badge>
+          </div>
           <Button
             variant="ghost"
             size="sm"
