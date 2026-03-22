@@ -43,6 +43,7 @@ export type TermsBodyBlock =
       id?: string;
     };
 export type Term = {
+  slugTitle:string
   slug: string;
   imageUrl: string;
   author: string;
@@ -55,6 +56,7 @@ export type Term = {
 export const terms: Term[] = [
   {
     slug: "a-b-trust",
+    slugTitle:"A-B trust",
     imageUrl:
       "https://www.investopedia.com/thmb/l6j-EYuTqSWTaXatAeSAuE44A70=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/GettyImages-13341458241-ff69fbb883674c309c1dad18e227d67b.jpg",
     author: "Investopedia Staff",
@@ -63,16 +65,7 @@ export const terms: Term[] = [
     description:
       "An estate planning tool used by married couples to minimize estate taxes through strategic trust splitting.",
     content: [
-      {
-        type: "paragraph",
-        content: [
-          {
-            type: "text",
-            content:
-              "An A-B trust is a joint trust created by a married couple for the purpose of minimizing estate taxes. It splits into two separate trusts upon the death of one spouse.",
-          },
-        ],
-      },
+    
 
       {
         type: "accordion",
@@ -141,7 +134,7 @@ export const terms: Term[] = [
       {
         type: "heading",
         text: "What Is an A-B Trust?",
-        id: "What Is an A-B Trust?",
+        id: "heading-1234567",
       },
 
       {
@@ -168,7 +161,7 @@ export const terms: Term[] = [
       {
         type: "heading",
         text: "Understanding an A-B Trust",
-        id: "Understanding an A-B Trust",
+        id: "heading-1234565",
       },
       {
         type: "paragraph",
@@ -333,6 +326,7 @@ export const terms: Term[] = [
   },
   {
     slug: "estate-tax",
+    slugTitle: "Estate Tax",
     imageUrl:
       "https://www.investopedia.com/thmb/l6j-EYuTqSWTaXatAeSAuE44A70=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/GettyImages-13341458241-ff69fbb883674c309c1dad18e227d67b.jpg",
     author: "Investopedia Staff",
@@ -370,6 +364,7 @@ export const terms: Term[] = [
   },
   {
     slug: "revocable-trust",
+    slugTitle: "Revocable Trust",
     title: "Revocable Trust: Flexibility in Estate Planning",
     imageUrl:
       "https://www.investopedia.com/thmb/l6j-EYuTqSWTaXatAeSAuE44A70=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/GettyImages-13341458241-ff69fbb883674c309c1dad18e227d67b.jpg",
@@ -407,6 +402,7 @@ export const terms: Term[] = [
   },
   {
     slug: "marital-deduction",
+    slugTitle: "Marital Deduction",
     imageUrl:
       "https://www.investopedia.com/thmb/l6j-EYuTqSWTaXatAeSAuE44A70=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/GettyImages-13341458241-ff69fbb883674c309c1dad18e227d67b.jpg",
     author: "Investopedia Staff",
@@ -444,6 +440,7 @@ export const terms: Term[] = [
   },
   {
     slug: "compound-interest",
+    slugTitle: "Compound Interest",
     imageUrl:
       "https://www.investopedia.com/thmb/l6j-EYuTqSWTaXatAeSAuE44A70=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/GettyImages-13341458241-ff69fbb883674c309c1dad18e227d67b.jpg",
     author: "Investopedia Staff",
@@ -481,6 +478,7 @@ export const terms: Term[] = [
   },
   {
     slug: "diversification",
+    slugTitle: "Diversification",
     imageUrl:
       "https://www.investopedia.com/thmb/l6j-EYuTqSWTaXatAeSAuE44A70=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/GettyImages-13341458241-ff69fbb883674c309c1dad18e227d67b.jpg",
     author: "Investopedia Staff",

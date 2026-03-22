@@ -17,14 +17,14 @@ export default function TableContent({
   isActive,
   onActivate,
 }: TableContentProps) {
-  const slug = slugify(id);
+  // const slug = slugify(id);
 
   if (!id) return null;
 
   return (
     <li key={id} className={cn(!isActive && "border-l-2 border-border pl-4",)}>
       <a
-        href={`#${slug}`}
+        href={`#${id}`}
         className={cn(
           "text-muted-foreground hover:text-foreground transition-colors duration-200 text-sm leading-relaxed block py-1",
           isActive && "text-foreground font-medium"
@@ -44,7 +44,7 @@ export default function TableContent({
           {isActive && (
             <ChevronRight fill="blue" className="shrink-0 h-5 w-5 mt-0.5 -ml-[6px] text-blue-900" />
           )}
-          {id}
+          {text}
         </span>
       </a>
     </li>

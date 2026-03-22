@@ -54,10 +54,16 @@ export default async function Page({
         <TableOfContents headings={headings} />
 
         {/* Article Content - Right Side */}
-        <div className="flex-1 max-w-3xl">
+        <div className="flex-1 max-w-3xl ">
           <h1 className="text-foreground text-3xl md:text-5xl font-extrabold mb-8 leading-tight tracking-wide">
             {term.title}
           </h1>
+          <p className=" text-sm text-foreground/70">
+            By{" "}
+            <span className="underlined font-semibold text-foreground decoration-dotted uppercase tracking-wider ">
+              {term.author}
+            </span>
+          </p>
           <div className="prose-none">
             {term.content.map((block, i) => (
               <BodyBlock key={i} block={block} />

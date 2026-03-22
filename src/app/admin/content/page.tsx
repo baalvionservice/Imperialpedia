@@ -86,7 +86,7 @@ export default function ContentEmpireManager() {
           <Table>
             <TableHeader>
               <TableRow className="bg-muted/20 border-b border-white/5">
-                <TableHead className="pl-8 font-bold text-[10px] uppercase tracking-widest py-6">Intelligence Node</TableHead>
+                <TableHead className="pl-8 font-bold text-[10px] uppercase tracking-widest py-6">Pages</TableHead>
                 <TableHead className="font-bold text-[10px] uppercase tracking-widest">Taxonomy Hub</TableHead>
                 <TableHead className="font-bold text-[10px] uppercase tracking-widest text-center">Lifecycle</TableHead>
                 <TableHead className="font-bold text-[10px] uppercase tracking-widest text-right pr-8">Actions</TableHead>
