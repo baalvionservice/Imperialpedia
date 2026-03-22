@@ -32,7 +32,7 @@ const navGroups = [
     label: 'Governance',
     items: [
       { label: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
-      { label: 'Content Empire', href: '/admin/content', icon: FileText },
+      { label: 'Pages Empire', href: '/admin/pages', icon: FileText },
       { label: 'AI Content Lab', href: '/admin/ai', icon: Brain },
       { label: 'User & RBAC', href: '/admin/users', icon: Users },
     ]

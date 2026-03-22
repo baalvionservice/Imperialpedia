@@ -25,35 +25,29 @@ import {
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { adminKernel } from "@/lib/services/admin-service";
-import { NewsArticle } from "@/lib/data.news";
-import { cn } from "@/lib/utils";
-import { toast } from "@/hooks/use-toast";
 import Link from "next/link";
 
-export default function ContentEmpireManager() {
-  const [articles, setArticles] = useState<NewsArticle[]>([]);
+interface Pages {
+  id: string;
+  slug: string;
+  title: string;
+  articlesCount: number;
+}
+
+export default function PagesManager() {
+  const [pages, setPages] = useState<Pages[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    setArticles(adminKernel.getArticles());
+    setPages(adminKernel.getPages());
     setLoading(false);
   }, []);
 
-  const handleDelete = (id: string) => {
-    adminKernel.deleteArticle(id);
-    setArticles(adminKernel.getArticles());
-    toast({
-      title: "Node Purged",
-      description: "Article removed from the index.",
-      variant: "destructive",
-    });
-  };
-
-  const filtered = articles.filter(
-    (a) =>
-      a.title.toLowerCase().includes(search.toLowerCase()) ||
-      a.category.toLowerCase().includes(search.toLowerCase())
+  const filtered = pages.filter(
+    (page) =>
+      page.title.toLowerCase().includes(search.toLowerCase()) ||
+      page.slug.toLowerCase().includes(search.toLowerCase())
   );
 
   if (loading)
@@ -73,11 +67,11 @@ export default function ContentEmpireManager() {
               variant="label"
               className="text-[10px] font-bold tracking-widest uppercase"
             >
-              Intelligence Orchestration
+              Content Management System
             </Text>
           </div>
           <Text variant="h1" className="text-3xl font-bold tracking-tight">
-            Content Empire
+            Pages Overview
           </Text>
         </div>
         <Button
@@ -85,7 +79,7 @@ export default function ContentEmpireManager() {
           asChild
         >
           <Link href="/admin/content/new">
-            <Plus className="mr-2 h-4 w-4" /> Provision New Node
+            <Plus className="mr-2 h-4 w-4" /> Create New Content
           </Link>
         </Button>
       </header>
@@ -95,7 +89,7 @@ export default function ContentEmpireManager() {
         <div className="relative flex-1 w-full group">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
           <Input
-            placeholder="Search the index by title, slug, or expert..."
+            placeholder="Search pages by title or slug..."
             className="pl-12 bg-background/50 h-12 border-white/10 rounded-xl text-sm"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -105,7 +99,7 @@ export default function ContentEmpireManager() {
           variant="outline"
           className="h-12 px-6 rounded-xl border-white/10 bg-background/30 gap-2 font-bold text-xs"
         >
-          <Filter className="h-4 w-4 text-primary" /> Filter Hierarchy
+          <Filter className="h-4 w-4 text-primary" /> Filter Categories
         </Button>
       </div>
 
@@ -115,13 +109,13 @@ export default function ContentEmpireManager() {
             <TableHeader>
               <TableRow className="bg-muted/20 border-b border-white/5">
                 <TableHead className="pl-8 font-bold text-[10px] uppercase tracking-widest py-6">
-                  Pages
+                  Page Title
                 </TableHead>
                 <TableHead className="font-bold text-[10px] uppercase tracking-widest">
-                  Taxonomy Hub
+                  Slug
                 </TableHead>
                 <TableHead className="font-bold text-[10px] uppercase tracking-widest text-center">
-                  Lifecycle
+                  Articles Count
                 </TableHead>
                 <TableHead className="font-bold text-[10px] uppercase tracking-widest text-right pr-8">
                   Actions
@@ -129,40 +123,31 @@ export default function ContentEmpireManager() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filtered.map((article) => (
+              {filtered.map((page) => (
                 <TableRow
-                  key={article.id}
-                  className="group hover:bg-white/5 transition-colors border-b border-white/5"
+                  key={page.id}
+                  className="group hover:bg-white/5 transition-colors border-b border-white/5 cursor-pointer"
+                  onClick={() =>
+                    (window.location.href = `/admin/content/${page.slug}`)
+                  }
                 >
                   <TableCell className="py-5 pl-8">
-                    <div className="flex flex-col">
-                      <span className="text-sm font-bold text-foreground/90 group-hover:text-primary transition-colors truncate max-w-[400px]">
-                        {article.title}
-                      </span>
-                      <span className="text-[9px] text-muted-foreground font-mono uppercase mt-1">
-                        ID: {article.id} • /{article.slug}
-                      </span>
-                    </div>
+                    <span className="text-lg font-bold text-foreground/90 group-hover:text-primary transition-colors truncate max-w-[400px]">
+                      {page.title}
+                    </span>
                   </TableCell>
                   <TableCell>
                     <Badge
                       variant="outline"
                       className="border-primary/20 bg-primary/5 text-primary text-[8px] font-bold uppercase h-5 px-2"
                     >
-                      {article.category}
+                      {page.slug}
                     </Badge>
                   </TableCell>
                   <TableCell>
                     <div className="flex justify-center">
-                      <Badge
-                        className={cn(
-                          "text-[8px] font-bold uppercase border-none px-2 h-5",
-                          article.featured
-                            ? "bg-emerald-500/10 text-emerald-500"
-                            : "bg-muted text-muted-foreground"
-                        )}
-                      >
-                        {article.featured ? "featured" : "standard"}
+                      <Badge variant="secondary" className="text-xs font-bold">
+                        {page.articlesCount}
                       </Badge>
                     </div>
                   </TableCell>
@@ -173,8 +158,9 @@ export default function ContentEmpireManager() {
                         size="icon"
                         className="h-8 w-8 rounded-lg hover:text-primary"
                         asChild
+                        onClick={(e) => e.stopPropagation()}
                       >
-                        <Link href={`/admin/content/${article.slug}`}>
+                        <Link href={`/admin/content/${page.slug}`}>
                           <Edit className="h-3.5 w-3.5" />
                         </Link>
                       </Button>
@@ -182,16 +168,9 @@ export default function ContentEmpireManager() {
                         variant="ghost"
                         size="icon"
                         className="h-8 w-8 rounded-lg hover:text-primary"
+                        onClick={(e) => e.stopPropagation()}
                       >
                         <Eye className="h-3.5 w-3.5" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-8 w-8 rounded-lg hover:text-destructive"
-                        onClick={() => handleDelete(article.id)}
-                      >
-                        <Trash2 className="h-3.5 w-3.5" />
                       </Button>
                     </div>
                   </TableCell>
