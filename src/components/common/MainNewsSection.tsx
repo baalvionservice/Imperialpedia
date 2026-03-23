@@ -90,7 +90,7 @@ function FeaturedArticleCard({
   return (
     <article className="flex flex-col">
       <Link
-        href={`/news/${slug}`}
+        href={`/${slug}`}
         className="relative block w-full aspect-video overflow-hidden bg-gray-100"
       >
         <Image
@@ -104,7 +104,7 @@ function FeaturedArticleCard({
       </Link>
 
       <div className="flex flex-col gap-2 pt-3">
-        <Link href={`/news/${slug}`}>
+        <Link href={`/${slug}`}>
           <h2
             className={`font-serif font-bold leading-snug text-foregound hover:text-blue-700 transition-colors ${
               large ? "text-2xl md:text-[1.55rem]" : "text-xl md:text-[1.3rem]"
