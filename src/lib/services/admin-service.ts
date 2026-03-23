@@ -863,6 +863,7 @@ class AdminService {
             )
         );
       default:
+        // eslint-disable-next-line no-case-declarations
         const slugKeywords = slug.split("-");
         return articles.filter(
           (article) =>
