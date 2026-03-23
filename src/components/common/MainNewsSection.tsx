@@ -223,7 +223,7 @@ export const MainNewsSection = () => {
               </p>
               <ul className="flex flex-col gap-2">
                 {TopPicksForMarch.map((pick) => (
-                  <li key={pick.href} className="flex items-start gap-2">
+                  <li key={pick.label} className="flex items-start gap-2">
                     <span className="mt-[5px] shrink-0 w-[5px] h-[5px] rounded-full bg-gray-800 inline-block" />
                     <Link
                       href={pick.href}
