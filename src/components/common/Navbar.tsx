@@ -614,7 +614,7 @@ export const Navbar = () => {
                   isScrolled && "hidden"
                 )}
               >
-                <div className="w-52 ml-auto">
+                <div className="hidden md:flex w-52 ml-auto">
                   <button
                     onClick={() => setIsSearchOpen(true)}
                     className="w-full relative group outline-none"

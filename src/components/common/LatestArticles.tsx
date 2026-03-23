@@ -73,7 +73,7 @@ function ArticleCard({ article }: { article: NewsArticle }) {
   return (
     <div className="flex-shrink-0 w-[220px] flex flex-col gap-2">
       <Link
-        href={`/news/${article.slug}`}
+        href={`/${article.slug}`}
         className="relative block w-full h-[148px] overflow-hidden bg-gray-100"
       >
         <Image

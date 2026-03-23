@@ -1,4 +1,4 @@
-import { NewsAuthor, NewsBodyBlock } from "../data.news";
+import { NewsAuthor, NewsBodyBlock, RelatedLink } from "../data.news";
 import { StocksCategory } from "@/app/stocks/components/stocks-tab";
 
 export interface StockItem {
@@ -21,6 +21,7 @@ export interface StocksArticle {
   imageUrl: string;
   imageCaption?: string;
   slug: string;
+  related?: RelatedLink[];
   featured?: boolean;
   keyTakeaways?: string[];
   body: NewsBodyBlock[];
@@ -41,6 +42,22 @@ export const stocksPageData: StockPageData = {
     excerpt:
       "AI demand continues to push semiconductor stocks higher, with NVIDIA and AMD leading the charge.",
     category: "Growth Stocks",
+    related: [
+      {
+        label: "All the Ways the Iran War Is Draining Your Wallet",
+        href: "#",
+      },
+      {
+        label:
+          "Forget About A Fed Rate Cut—A Hike Seems More Likely By The Day",
+        href: "#",
+      },
+      {
+        label:
+          "Personal Loans Surge As Consumers Struggle To Keep Up With Inflation",
+        href: "#",
+      },
+    ],
     author: { name: "Lisa Tran", title: "Tech Stocks Reporter" },
     publishedAt: "2026-03-16T10:00:00Z",
     readTimeMinutes: 5,

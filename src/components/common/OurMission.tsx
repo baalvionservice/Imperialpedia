@@ -94,7 +94,7 @@ export function OurMission() {
               {reviewBoardMembers.map((reviewer) => (
                 <Link
                   key={reviewer.name}
-                  href={`/review-board/${reviewer.name}`}
+                  href={`/review-board/${reviewer.slug}`}
                   className="flex items-center gap-3 py-3 group"
                 >
                   {/* Headshot */}
