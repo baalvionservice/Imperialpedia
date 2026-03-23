@@ -149,7 +149,7 @@ export const newsArticles: NewsArticle[] = [
     title: "S&P 500 Climbs to Fresh Record High on Strong Earnings Reports",
     excerpt:
       "The benchmark index surged 1.2% to close at an all-time high as a wave of better-than-expected corporate earnings boosted investor confidence across sectors.",
-    category: "Markets",
+    category: "Economy",
     author: { name: "James Okafor", title: "Markets Reporter" },
     publishedAt: "2026-03-15T12:00:00Z",
     readTimeMinutes: 4,
