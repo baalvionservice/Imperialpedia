@@ -5,6 +5,7 @@ import { formatDate } from "@/services/format-date";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { brokerGuides } from "../brokers/Components/data.brokers";
+import { ArticleCard } from "../news/NewsArticleCard";
 
 // Union type to handle different article types
 type ArticleType = NewsArticle | StocksArticle;
@@ -134,6 +135,10 @@ export default async function SingleNewsPage({
   }
   if (!article) notFound();
 
+  const relatedArticles = newsArticles.filter(
+    (a) => a.category === article.category && a.slug !== slug
+  );
+
   return (
     <div className="bg-background min-h-screen">
       <div className="max-w-7xl mx-auto px-4 py-10">
@@ -196,6 +201,19 @@ export default async function SingleNewsPage({
             </div>
           </article>
         </div>
+
+        {relatedArticles && relatedArticles.length > 0 && (
+          <section className="pb-4 md:pb-12">
+            <h2 className="text-sm font-bold uppercase tracking-widest text-gray-400 mb-6 pb-2">
+              Related Articles
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {relatedArticles.map((article) => (
+                <ArticleCard key={article.id} article={article} />
+              ))}
+            </div>
+          </section>
+        )}
       </div>
     </div>
   );
