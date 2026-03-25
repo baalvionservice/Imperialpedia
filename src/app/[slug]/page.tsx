@@ -146,11 +146,9 @@ export default async function SingleNewsPage({
           {/* ══ LEFT: Article ══════════════════════════════════════════════ */}
           <article className="md:m-16">
             {/* Category + title */}
-            <div className="my-2">
-              <h1 className="text-foreground text-3xl md:text-5xl font-extrabold leading-4 tracking-wider">
+              <h1 className="text-foreground  text-3xl md:text-5xl font-extrabold leading-7 tracking-wider">
                 {article.title}
               </h1>
-            </div>
 
             {/* Byline */}
             <div

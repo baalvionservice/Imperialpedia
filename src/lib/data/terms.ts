@@ -1,3 +1,4 @@
+import { ArticleStatus } from "@/modules/content-engine/types";
 import { NewsCategory } from "../data.news";
 
 export type TextSegment =
@@ -43,30 +44,30 @@ export type TermsBodyBlock =
       id?: string;
     };
 export type Term = {
-  slugTitle:string
   slug: string;
-  imageUrl: string;
-  author: string;
+  featuredImageUrl?: string;
+  author?: string;
   title: string;
-  category: NewsCategory;
-  description: string;
+  categoryNames?: NewsCategory;
+  seoTitle?: string;
+  status?: ArticleStatus;
+  seoDescription?: string;
   content: TermsBodyBlock[];
+  relatedTerms?: string[];
 };
 
 export const terms: Term[] = [
   {
     slug: "a-b-trust",
-    slugTitle:"A-B trust",
-    imageUrl:
+    seoTitle: "A-B trust",
+    featuredImageUrl:
       "https://www.investopedia.com/thmb/l6j-EYuTqSWTaXatAeSAuE44A70=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/GettyImages-13341458241-ff69fbb883674c309c1dad18e227d67b.jpg",
     author: "Investopedia Staff",
-    category: "PersonalFinance",
+    categoryNames: "PersonalFinance",
     title: "A-B Trust: Definition, How It Works, and Tax Benefits",
-    description:
+    seoDescription:
       "An estate planning tool used by married couples to minimize estate taxes through strategic trust splitting.",
     content: [
-    
-
       {
         type: "accordion",
         title: "Complete Guide to Estate Planning",
@@ -326,13 +327,13 @@ export const terms: Term[] = [
   },
   {
     slug: "estate-tax",
-    slugTitle: "Estate Tax",
-    imageUrl:
+    seoTitle: "Estate Tax",
+    featuredImageUrl:
       "https://www.investopedia.com/thmb/l6j-EYuTqSWTaXatAeSAuE44A70=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/GettyImages-13341458241-ff69fbb883674c309c1dad18e227d67b.jpg",
     author: "Investopedia Staff",
-    category: "PersonalFinance",
+    categoryNames: "PersonalFinance",
     title: "Estate Tax: Understanding Federal and State Tax Implications",
-    description:
+    seoDescription:
       "A tax imposed on the transfer of property at death, affecting high-value estates and requiring strategic planning.",
     content: [
       {
@@ -364,13 +365,13 @@ export const terms: Term[] = [
   },
   {
     slug: "revocable-trust",
-    slugTitle: "Revocable Trust",
+    seoTitle: "Revocable Trust",
     title: "Revocable Trust: Flexibility in Estate Planning",
-    imageUrl:
+    featuredImageUrl:
       "https://www.investopedia.com/thmb/l6j-EYuTqSWTaXatAeSAuE44A70=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/GettyImages-13341458241-ff69fbb883674c309c1dad18e227d67b.jpg",
     author: "Investopedia Staff",
-    category: "Economy",
-    description:
+    categoryNames: "Economy",
+    seoDescription:
       "A trust that can be modified or terminated during the grantor's lifetime, offering estate planning benefits while maintaining control.",
     content: [
       {
@@ -402,13 +403,13 @@ export const terms: Term[] = [
   },
   {
     slug: "marital-deduction",
-    slugTitle: "Marital Deduction",
-    imageUrl:
+    seoTitle: "Marital Deduction",
+    featuredImageUrl:
       "https://www.investopedia.com/thmb/l6j-EYuTqSWTaXatAeSAuE44A70=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/GettyImages-13341458241-ff69fbb883674c309c1dad18e227d67b.jpg",
     author: "Investopedia Staff",
-    category: "Economy",
+    categoryNames: "Economy",
     title: "Marital Deduction: Unlimited Tax-Free Transfers Between Spouses",
-    description:
+    seoDescription:
       "A tax provision allowing unlimited transfers of assets between spouses without incurring gift or estate taxes.",
     content: [
       {
@@ -440,13 +441,13 @@ export const terms: Term[] = [
   },
   {
     slug: "compound-interest",
-    slugTitle: "Compound Interest",
-    imageUrl:
+    seoTitle: "Compound Interest",
+    featuredImageUrl:
       "https://www.investopedia.com/thmb/l6j-EYuTqSWTaXatAeSAuE44A70=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/GettyImages-13341458241-ff69fbb883674c309c1dad18e227d67b.jpg",
     author: "Investopedia Staff",
-    category: "PersonalFinance",
+    categoryNames: "PersonalFinance",
     title: "Compound Interest: The Power of Exponential Growth",
-    description:
+    seoDescription:
       "Interest calculated on both the initial principal and accumulated interest, creating exponential growth over time.",
     content: [
       {
@@ -478,13 +479,13 @@ export const terms: Term[] = [
   },
   {
     slug: "diversification",
-    slugTitle: "Diversification",
-    imageUrl:
+    seoTitle: "Diversification",
+    featuredImageUrl:
       "https://www.investopedia.com/thmb/l6j-EYuTqSWTaXatAeSAuE44A70=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/GettyImages-13341458241-ff69fbb883674c309c1dad18e227d67b.jpg",
     author: "Investopedia Staff",
-    category: "Markets",
+    categoryNames: "Markets",
     title: "Diversification: Risk Management Through Asset Allocation",
-    description:
+    seoDescription:
       "An investment strategy that spreads risk across different assets, sectors, and geographic regions to reduce portfolio volatility.",
     content: [
       {

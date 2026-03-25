@@ -18,10 +18,13 @@ export const articlesService = {
       const appError = errorHandler.handleError(error);
       return {
         data: [],
-        status: appError.statusCode,
-        error: appError.message,
+        success: false,
+        statusCode: appError.statusCode,
+        message: appError.message,
+        timestamp: new Date().toISOString(),
+        path: "/api/articles",
         pagination: {
-          currentPage: 1,
+          currentPage: page || 1,
           totalPages: 0,
           pageSize: limit || 10,
           totalItems: 0,
@@ -39,8 +42,11 @@ export const articlesService = {
       const appError = errorHandler.handleError(error);
       return {
         data: null,
-        status: appError.statusCode,
-        error: appError.message,
+        success: false,
+        statusCode: appError.statusCode,
+        message: appError.message,
+        timestamp: new Date().toISOString(),
+        path: `/api/articles/${slug}`,
       };
     }
   },
@@ -52,8 +58,11 @@ export const articlesService = {
       const appError = errorHandler.handleError(error);
       return {
         data: [],
-        status: appError.statusCode,
-        error: appError.message,
+        success: false,
+        statusCode: appError.statusCode,
+        message: appError.message,
+        timestamp: new Date().toISOString(),
+        path: "/api/articles/featured",
       };
     }
   },

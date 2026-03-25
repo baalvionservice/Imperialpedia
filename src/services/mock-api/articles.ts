@@ -82,7 +82,10 @@ export const getArticles = async (
   await new Promise((resolve) => setTimeout(resolve, 300));
   return {
     data: mockArticles,
-    status: 200,
+    success: true,
+    message: "Articles retrieved successfully",
+    statusCode: 200,
+    timestamp: "2024-03-09T15:00:00Z",
     pagination: {
       currentPage: page,
       totalPages: 1,
@@ -99,11 +102,25 @@ export const getArticleBySlug = async (
 ): Promise<ApiResponse<Article | null>> => {
   await new Promise((resolve) => setTimeout(resolve, 300));
   const article = mockArticles.find((a) => a.slug === slug) || null;
-  return {
-    data: article,
-    status: article ? 200 : 404,
-    message: article ? undefined : "Article not found",
-  };
+
+  if (article) {
+    return {
+      data: article,
+      success: true,
+      statusCode: 200,
+      message: "Article retrieved successfully",
+      timestamp: new Date().toISOString(),
+    };
+  } else {
+    return {
+      data: null,
+      success: false,
+      statusCode: 404,
+      message: "Article not found",
+      timestamp: new Date().toISOString(),
+      path: `/api/articles/${slug}`,
+    };
+  }
 };
 
 export const getFeaturedArticles = async (): Promise<
@@ -114,7 +131,10 @@ export const getFeaturedArticles = async (): Promise<
   const featured = mockArticles.slice(0, 1);
   return {
     data: featured,
-    status: 200,
+    success: true,
+    statusCode: 200,
+    message: "Featured articles retrieved successfully",
+    timestamp: new Date().toISOString(),
   };
 };
 

@@ -43,6 +43,8 @@ import {
 import { NewsCategory } from "@/lib/data.news";
 import { RichTextEditor } from "./rich-text-editor";
 import BodyBlock from "../ui/body-block";
+import { ArticleStatus } from "@/modules/content-engine/types";
+import { useAppMutation } from "@/hooks/useAppMutation";
 
 const NEWS_CATEGORIES: NewsCategory[] = [
   "Markets",
@@ -58,27 +60,31 @@ const NEWS_CATEGORIES: NewsCategory[] = [
 ];
 
 interface TermFormData {
-  slugTitle: string;
+  seoTitle: string;
   slug: string;
   title: string;
-  author: string;
-  category: NewsCategory | "";
-  description: string;
-  imageUrl: string;
+  author?: string;
+  status: ArticleStatus;
+  categoryNames?: NewsCategory | "";
+  seoDescription: string;
+  featuredImageUrl: string;
   content: TermsBodyBlock[];
 }
 
 export default function TiptapEditor() {
   const [formData, setFormData] = useState<TermFormData>({
     slug: "",
-    slugTitle: "",
+    seoTitle: "",
     title: "",
+    status: "draft",
     author: "",
-    category: "",
-    description: "",
-    imageUrl: "",
+    categoryNames: "",
+    seoDescription: "",
+    featuredImageUrl: "",
     content: [],
   });
+
+  const { mutate, isPending } = useAppMutation();
 
   const [isPreview, setIsPreview] = useState(false);
 
@@ -105,7 +111,7 @@ export default function TiptapEditor() {
     setFormData((prev) => ({ ...prev, [field]: value }));
 
     // Auto-generate slug from title
-    if (field === "slugTitle" && value) {
+    if (field === "title" && value) {
       const slug = value
         .toLowerCase()
         .replace(/[^a-z0-9\s-]/g, "")
@@ -186,7 +192,7 @@ export default function TiptapEditor() {
   };
 
   const handleSave = () => {
-    if (!formData.title || !formData.category || !formData.description) {
+    if (!formData.title || !formData.content || !formData.slug) {
       alert("Please fill in all required fields");
 
       return;
@@ -194,16 +200,24 @@ export default function TiptapEditor() {
 
     const termData: Term = {
       slug: formData.slug,
-      slugTitle: formData.slugTitle,
+      seoTitle: formData.seoTitle,
       title: formData.title,
       author: formData.author || "Anonymous",
-      category: formData.category as NewsCategory,
-      description: formData.description,
-      imageUrl: formData.imageUrl || "",
+      categoryNames: formData.categoryNames as NewsCategory,
+      seoDescription: formData.seoDescription,
+      featuredImageUrl: formData.featuredImageUrl || "",
       content: formData.content,
     };
 
     console.log("Saving term:", termData);
+
+    const data = mutate({
+      endpoint: "terms/create",
+      method: "post",
+      data: termData,
+    });
+
+    console.log(data, "res");
     // Here you would typically send to your API
     alert("Term saved successfully!");
   };
@@ -248,17 +262,6 @@ export default function TiptapEditor() {
                     placeholder="Enter term title"
                   />
                 </div>
-                <div>
-                  <Label htmlFor="title">Slug Title *</Label>
-                  <Input
-                    id="slugTitle"
-                    value={formData.slugTitle}
-                    onChange={(e) =>
-                      handleInputChange("slugTitle", e.target.value)
-                    }
-                    placeholder="Enter term for slugTitle"
-                  />
-                </div>
 
                 <div>
                   <Label htmlFor="slug">Slug</Label>
@@ -284,15 +287,15 @@ export default function TiptapEditor() {
                 </div>
 
                 <div>
-                  <Label htmlFor="category">Category *</Label>
+                  <Label htmlFor="categoryNames">Category *</Label>
                   <Select
-                    value={formData.category}
+                    value={formData.categoryNames}
                     onValueChange={(value) =>
-                      handleInputChange("category", value)
+                      handleInputChange("categoryNames", value)
                     }
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Select category" />
+                      <SelectValue placeholder="Select categoryNames" />
                     </SelectTrigger>
                     <SelectContent>
                       {NEWS_CATEGORIES.map((cat) => (
@@ -305,26 +308,36 @@ export default function TiptapEditor() {
                 </div>
 
                 <div>
-                  <Label htmlFor="imageUrl">Image URL</Label>
+                  <Label htmlFor="featuredImageUrl">Image URL</Label>
                   <Input
-                    id="imageUrl"
-                    value={formData.imageUrl}
+                    id="featuredImageUrl"
+                    value={formData.featuredImageUrl}
                     onChange={(e) =>
-                      handleInputChange("imageUrl", e.target.value)
+                      handleInputChange("featuredImageUrl", e.target.value)
                     }
                     placeholder="https://example.com/image.jpg"
                   />
                 </div>
-
                 <div>
-                  <Label htmlFor="description">Description *</Label>
-                  <Textarea
-                    id="description"
-                    value={formData.description}
+                  <Label htmlFor="title">Seo Title </Label>
+                  <Input
+                    id="seoTitle"
+                    value={formData.seoTitle}
                     onChange={(e) =>
-                      handleInputChange("description", e.target.value)
+                      handleInputChange("seoTitle", e.target.value)
                     }
-                    placeholder="Brief description of the term"
+                    placeholder="Enter term for seoTitle"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="seoDescription">Description *</Label>
+                  <Textarea
+                    id="seoDescription"
+                    value={formData.seoDescription}
+                    onChange={(e) =>
+                      handleInputChange("seoDescription", e.target.value)
+                    }
+                    placeholder="Brief seoDescription of the term"
                     rows={3}
                   />
                 </div>
@@ -936,7 +949,7 @@ function TermPreview({ term }: { term: Term }) {
           <div>
             <h1 className="text-3xl font-bold">{term.title}</h1>
             <p className="text-muted-foreground">By {term.author}</p>
-            <Badge>{term.category}</Badge>
+            <Badge>{term.categoryNames}</Badge>
           </div>
 
           <div className="prose-none">

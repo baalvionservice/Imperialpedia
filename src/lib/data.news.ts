@@ -1,3 +1,5 @@
+import { ArticleStatus } from "@/modules/content-engine/types";
+
 export type NewsCategory =
   | "Markets"
   | "Economy"
@@ -27,6 +29,7 @@ export interface NewsArticle {
   category: NewsCategory;
   author: NewsAuthor;
   related?: RelatedLink[];
+  status?: ArticleStatus;
   publishedAt: string;
   updatedAt?: string;
   readTimeMinutes: number;

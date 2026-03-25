@@ -27,7 +27,7 @@ export async function generateMetadata({
   if (!term) return {};
   return buildMetadata({
     title: term.title,
-    description: term.description.slice(0, 160), // use first 160 chars of description for SEO
+    description: term?.seoDescription?.slice(0, 160) || "", // use first 160 chars of description for SEO
   });
 }
 
