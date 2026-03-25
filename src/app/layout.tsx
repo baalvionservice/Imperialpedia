@@ -12,6 +12,7 @@ import { Navbar } from "@/components/common/Navbar";
 import Footer from "@/components/common/Footer";
 import { CookieConsent } from "@/components/common/CookieConsent";
 import ToastProvider from "@/components/common/ToastManager";
+import { Toaster as SonnerToaster } from "sonner";
 
 // Providers & Utils
 import { GlobalStoreProvider } from "@/lib/state";
@@ -20,6 +21,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { trackPageView } from "@/lib/utils/analytics";
 import { I18nProvider } from "@/components/i18n/I18nProvider";
 import { cn } from "@/lib/utils";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { queryClient } from "@/services/query-client";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -91,27 +94,33 @@ export default function RootLayout({
           Skip to main content
         </a>
 
-        <I18nProvider>
-          <GlobalStoreProvider>
-            <ThemeProvider>
-              <ToastProvider>
-                <TooltipProvider>
-                  {!isAdminPath && <Navbar />}
-                  <CookieConsent />
-                  <main
-                    id="main-content"
-                    className="flex-grow mt-16 outline-none"
-                    tabIndex={-1}
-                  >
-                    {children}
-                  </main>
-                  {!isAdminPath && <Footer />}
-                  <Toaster />
-                </TooltipProvider>
-              </ToastProvider>
-            </ThemeProvider>
-          </GlobalStoreProvider>
-        </I18nProvider>
+        <QueryClientProvider client={queryClient}>
+          <I18nProvider>
+            <GlobalStoreProvider>
+              <ThemeProvider>
+                <ToastProvider>
+                  <TooltipProvider>
+                    {!isAdminPath && <Navbar />}
+                    <CookieConsent />
+                    <main
+                      id="main-content"
+                      className={cn(
+                        "flex-grow outline-none",
+                        !isAdminPath && "mt-16"
+                      )}
+                      tabIndex={-1}
+                    >
+                      {children}
+                    </main>
+                    {!isAdminPath && <Footer />}
+                    <Toaster />
+                    <SonnerToaster />
+                  </TooltipProvider>
+                </ToastProvider>
+              </ThemeProvider>
+            </GlobalStoreProvider>
+          </I18nProvider>
+        </QueryClientProvider>
       </body>
     </html>
   );

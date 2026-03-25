@@ -12,10 +12,12 @@ export interface PaginationMeta {
 }
 
 export interface ApiResponse<T> {
+  success: boolean;
+  statusCode: number;
+  message: string;
   data: T;
-  message?: string;
-  error?: string;
-  status: number;
+  timestamp: string;
+  path?: string; // Only present in error responses
 }
 
 export interface PaginatedResponse<T> extends ApiResponse<T[]> {
