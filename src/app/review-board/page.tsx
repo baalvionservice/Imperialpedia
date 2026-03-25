@@ -9,10 +9,10 @@ export default function ReviewBoardPage() {
   return (
     <div className="container mt-16 mx-auto max-w-3xl px-4 py-8">
       <h1 className="text-4xl tracking-wider font-bold mb-6">
-        Investopedia Financial Review Board
+        Imperialpedia Financial Review Board
       </h1>
       <p className="text-lg leading-7 tracking-wide text-muted-foreground mb-4">
-        Investopedia's high quality content is written by experts and fact
+        Imperialpedia's high quality content is written by experts and fact
         checked to ensure that our readers are receiving the most accurate and
         timely information. The Financial Review Board takes our commitment to
         accuracy one step further. Composed of professionals with a wide range
@@ -20,7 +20,7 @@ export default function ReviewBoardPage() {
         university professors, certified financial planners, certified public
         accountants, entrepreneurs, analysts, economists, investors, and tax
         experts. Members of the board read, review, and provide updates on our
-        content to our editorial team so that the readers of Investopedia can
+        content to our editorial team so that the readers of Imperialpedia can
         feel empowered to make smarter financial decisions with the most
         accurate information.
       </p>

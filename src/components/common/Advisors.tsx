@@ -24,17 +24,17 @@ const advisorCategories = [
   {
     id: "4",
     title: "Financial Planning",
-    description: "The ins and outs of building a flexible plan that works for your client's needs.",
+    description:
+      "The ins and outs of building a flexible plan that works for your client's needs.",
     href: "#",
   },
 ];
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-export function InvestopediaForAdvisors() {
+export function ImperialpediaForAdvisors() {
   return (
     <section className="relative w-full overflow-hidden bg-[#eef0f8] py-14">
-
       {/* ── Decorative line pattern (SVG background) ── */}
       <div className="pointer-events-none absolute inset-0 opacity-60">
         <svg
@@ -48,7 +48,9 @@ export function InvestopediaForAdvisors() {
           {[0, 18, 36, 54, 72, 90, 108, 126].map((offset, i) => (
             <path
               key={`l${i}`}
-              d={`M${-60 + offset},320 Q${180 + offset},120 ${360 + offset},-20`}
+              d={`M${-60 + offset},320 Q${180 + offset},120 ${
+                360 + offset
+              },-20`}
               stroke="#c5cadf"
               strokeWidth="1"
               fill="none"
@@ -58,7 +60,9 @@ export function InvestopediaForAdvisors() {
           {[0, 18, 36, 54, 72, 90, 108, 126].map((offset, i) => (
             <path
               key={`r${i}`}
-              d={`M${1500 - offset},0 Q${1260 - offset},160 ${1080 - offset},340`}
+              d={`M${1500 - offset},0 Q${1260 - offset},160 ${
+                1080 - offset
+              },340`}
               stroke="#c5cadf"
               strokeWidth="1"
               fill="none"
@@ -69,14 +73,14 @@ export function InvestopediaForAdvisors() {
 
       {/* ── Content ── */}
       <div className="relative z-10 max-w-[1320px] mx-auto px-4 flex flex-col items-center gap-10">
-
         {/* Heading */}
         <div className="text-center">
           <h2 className="font-serif text-[1.9rem] font-bold text-gray-900 mb-2">
-            Investopedia for Advisors
+            Imperialpedia for Advisors
           </h2>
           <p className="text-[14px] text-gray-600">
-            The resources you need to become the best financial advisor you can be.
+            The resources you need to become the best financial advisor you can
+            be.
           </p>
         </div>
 
@@ -108,7 +112,6 @@ export function InvestopediaForAdvisors() {
             </div>
           ))}
         </div>
-
       </div>
     </section>
   );

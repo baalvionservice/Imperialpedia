@@ -22,7 +22,7 @@ interface PodcastEpisode {
 const podcastEpisodes: PodcastEpisode[] = [
   {
     id: "1",
-    show: "The Investopedia Express",
+    show: "The Imperialpedia Express",
     title: "Behind the Bitcoin Breakdown",
     episodeNumber: 285,
     date: "Mar 16, 2026",
@@ -302,7 +302,7 @@ export default function LatestArticles() {
         {/* Left: text content */}
         <div className="flex flex-col gap-5 px-8 py-10 md:py-12 md:w-[42%] shrink-0 z-10">
           <h2 className="font-serif text-[2rem] md:text-[2.4rem] font-bold text-foreground leading-tight">
-            Investopedia Stock Market Simulator
+            Imperialpedia Stock Market Simulator
           </h2>
           <p className="text-[14px] text-foreground/70 leading-relaxed max-w-sm">
             Practice stock trading with virtual money — trusted by over 3
@@ -321,7 +321,7 @@ export default function LatestArticles() {
         <div className="relative w-full md:flex-1 h-[260px] md:h-[320px]">
           <Image
             src="https://www.investopedia.com/thmb/f_WIlOUq4y171OckyrFBjsh4K48=/600x400/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/NumberoftheDay4-73f1a7c977d344c1a00e6eee116b542a.png"
-            alt="Investopedia Stock Market Simulator"
+            alt="Imperialpedia Stock Market Simulator"
             fill
             className="object-contain object-center md:object-left-bottom"
             sizes="60vw"

@@ -40,7 +40,7 @@ import {
 } from "@/components/landing/SectionSkeletons";
 import { MainNewsSection } from "@/components/common/MainNewsSection";
 import LatestArticles from "@/components/common/LatestArticles";
-import { InvestopediaForAdvisors } from "@/components/common/Advisors";
+import { ImperialpediaForAdvisors } from "@/components/common/Advisors";
 import { OurMission } from "@/components/common/OurMission";
 
 // Dynamic imports for performance optimization
@@ -282,7 +282,7 @@ export default function Home() {
         {/* <StickyCTA /> */}
         {/* <ScrollPopupCTA /> */}
       </div>
-      <InvestopediaForAdvisors />
+      <ImperialpediaForAdvisors />
       <div className="flex max-w-7xl mx-auto flex-col w-full">
         <OurMission />
       </div>
