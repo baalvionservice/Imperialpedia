@@ -11,6 +11,8 @@ import { Card, CardContent } from '@/components/ui/card';
 export const metadata: Metadata = buildMetadata({
   title: 'Contact the Hub | Imperialpedia Support',
   description: 'Get in touch with the Imperialpedia governance team. Support for institutional accounts, expert onboarding, and data nodes.',
+  canonical: '/contact',
+  noIndex: false,
 });
 
 /**

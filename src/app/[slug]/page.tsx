@@ -23,6 +23,8 @@ export async function generateMetadata({
   return buildMetadata({
     title: article.title,
     description: article.excerpt,
+    canonical: `/${slug}`,
+    noIndex: false,
   });
 }
 
@@ -146,9 +148,9 @@ export default async function SingleNewsPage({
           {/* ══ LEFT: Article ══════════════════════════════════════════════ */}
           <article className="md:m-16">
             {/* Category + title */}
-              <h1 className="text-foreground  text-3xl md:text-5xl font-extrabold leading-7 tracking-wider">
-                {article.title}
-              </h1>
+            <h1 className="text-foreground  text-3xl md:text-5xl font-extrabold leading-7 tracking-wider">
+              {article.title}
+            </h1>
 
             {/* Byline */}
             <div

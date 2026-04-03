@@ -8,6 +8,10 @@ interface QueryParams {
   queryKey: string[];
   config?: AxiosRequestConfig;
   enabled?: boolean;
+  returnRawData?: boolean;
+  refetchInterval?: number;
+  staleTime?: number;
+  refetchOnWindowFocus?: boolean;
 }
 
 export const useAppQuery = <TResponse>({
@@ -15,16 +19,26 @@ export const useAppQuery = <TResponse>({
   queryKey,
   config,
   enabled = true,
-}: QueryParams): UseQueryResult<ApiResponse<TResponse>, AxiosError> => {
+  returnRawData = false,
+  refetchInterval,
+  staleTime,
+  refetchOnWindowFocus,
+}: QueryParams): UseQueryResult<
+  TResponse | ApiResponse<TResponse>,
+  AxiosError
+> => {
   return useQuery({
     queryKey,
     queryFn: async () => {
-      const response = await apiClient.get<ApiResponse<TResponse>>(
+      const response = await apiClient.get<TResponse | ApiResponse<TResponse>>(
         `/${endpoint}`,
-        config
+        config,
       );
-      return response.data;
+      return returnRawData ? response.data : response.data;
     },
     enabled,
+    ...(refetchInterval !== undefined && { refetchInterval }),
+    ...(staleTime !== undefined && { staleTime }),
+    ...(refetchOnWindowFocus !== undefined && { refetchOnWindowFocus }),
   });
 };

@@ -36,6 +36,12 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'imperialpedia.com',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
 };

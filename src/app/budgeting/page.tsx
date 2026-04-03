@@ -9,6 +9,8 @@ export const metadata = buildMetadata({
   title: "Budgeting and Money Management",
   description:
     "Stay informed with the latest budgeting strategies, money management tips, and financial planning techniques. Our budgeting section covers expense tracking, saving strategies, and financial goals.",
+  canonical: '/budgeting',
+  noIndex: false,
 });
 
 // ─── Page ────────────────────────────────────────────────────────────────────

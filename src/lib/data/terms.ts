@@ -61,7 +61,7 @@ export const terms: Term[] = [
     slug: "a-b-trust",
     seoTitle: "A-B trust",
     featuredImageUrl:
-      "https://www.investopedia.com/thmb/l6j-EYuTqSWTaXatAeSAuE44A70=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/GettyImages-13341458241-ff69fbb883674c309c1dad18e227d67b.jpg",
+      "https://picsum.photos/750/450",
     author: "Imperialpedia Staff",
     categoryNames: "PersonalFinance",
     title: "A-B Trust: Definition, How It Works, and Tax Benefits",
@@ -77,23 +77,23 @@ export const terms: Term[] = [
             answer: [
               {
                 text: "Estate Definition",
-                link: `https://www.investopedia.com/terms/a/a-b-trust.asp`,
+                link: `https://imperialpedia.com/terms/a/a-b-trust.asp`,
               },
               {
                 text: "What Is a Will and Why Do I Need One Now?",
-                link: `https://www.investopedia.com/terms/a/a-b-trust.asp`,
+                link: `https://imperialpedia.com/terms/a/a-b-trust.asp`,
               },
               {
                 text: "16 Things for Estate Planning List",
-                link: `https://www.investopedia.com/terms/a/a-b-trust.asp`,
+                link: `https://imperialpedia.com/terms/a/a-b-trust.asp`,
               },
               {
                 text: "  Using an LLC for Estate Planning",
-                link: `https://www.investopedia.com/terms/a/a-b-trust.asp`,
+                link: `https://imperialpedia.com/terms/a/a-b-trust.asp`,
               },
               {
                 text: "4 Reasons Estate Planning Is so Important",
-                link: `https://www.investopedia.com/terms/a/a-b-trust.asp`,
+                link: `https://imperialpedia.com/terms/a/a-b-trust.asp`,
               },
             ],
           },
@@ -102,23 +102,23 @@ export const terms: Term[] = [
             answer: [
               {
                 text: "Estate Definition",
-                link: `https://www.investopedia.com/terms/a/a-b-trust.asp`,
+                link: `https://imperialpedia.com/terms/a/a-b-trust.asp`,
               },
               {
                 text: "What Is a Will and Why Do I Need One Now?",
-                link: `https://www.investopedia.com/terms/a/a-b-trust.asp`,
+                link: `https://imperialpedia.com/terms/a/a-b-trust.asp`,
               },
               {
                 text: "16 Things for Estate Planning List",
-                link: `https://www.investopedia.com/terms/a/a-b-trust.asp`,
+                link: `https://imperialpedia.com/terms/a/a-b-trust.asp`,
               },
               {
                 text: "  Using an LLC for Estate Planning",
-                link: `https://www.investopedia.com/terms/a/a-b-trust.asp`,
+                link: `https://imperialpedia.com/terms/a/a-b-trust.asp`,
               },
               {
                 text: "4 Reasons Estate Planning Is so Important",
-                link: `https://www.investopedia.com/terms/a/a-b-trust.asp`,
+                link: `https://imperialpedia.com/terms/a/a-b-trust.asp`,
               },
             ],
           },
@@ -127,7 +127,7 @@ export const terms: Term[] = [
 
       {
         type: "image",
-        url: "https://www.investopedia.com/thmb/l6j-EYuTqSWTaXatAeSAuE44A70=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/GettyImages-13341458241-ff69fbb883674c309c1dad18e227d67b.jpg",
+        url: "https://picsum.photos/750/450",
         caption: "Estate planning documents and financial structuring",
         id: "ab-trust-image",
       },
@@ -276,23 +276,23 @@ export const terms: Term[] = [
             answer: [
               {
                 text: "Estate Definition",
-                link: `https://www.investopedia.com/terms/a/a-b-trust.asp`,
+                link: `https://imperialpedia.com/terms/a/a-b-trust.asp`,
               },
               {
                 text: "What Is a Will and Why Do I Need One Now?",
-                link: `https://www.investopedia.com/terms/a/a-b-trust.asp`,
+                link: `https://imperialpedia.com/terms/a/a-b-trust.asp`,
               },
               {
                 text: "16 Things for Estate Planning List",
-                link: `https://www.investopedia.com/terms/a/a-b-trust.asp`,
+                link: `https://imperialpedia.com/terms/a/a-b-trust.asp`,
               },
               {
                 text: "  Using an LLC for Estate Planning",
-                link: `https://www.investopedia.com/terms/a/a-b-trust.asp`,
+                link: `https://imperialpedia.com/terms/a/a-b-trust.asp`,
               },
               {
                 text: "4 Reasons Estate Planning Is so Important",
-                link: `https://www.investopedia.com/terms/a/a-b-trust.asp`,
+                link: `https://imperialpedia.com/terms/a/a-b-trust.asp`,
               },
             ],
           },
@@ -301,23 +301,23 @@ export const terms: Term[] = [
             answer: [
               {
                 text: "Estate Definition",
-                link: `https://www.investopedia.com/terms/a/a-b-trust.asp`,
+                link: `https://imperialpedia.com/terms/a/a-b-trust.asp`,
               },
               {
                 text: "What Is a Will and Why Do I Need One Now?",
-                link: `https://www.investopedia.com/terms/a/a-b-trust.asp`,
+                link: `https://imperialpedia.com/terms/a/a-b-trust.asp`,
               },
               {
                 text: "16 Things for Estate Planning List",
-                link: `https://www.investopedia.com/terms/a/a-b-trust.asp`,
+                link: `https://imperialpedia.com/terms/a/a-b-trust.asp`,
               },
               {
                 text: "  Using an LLC for Estate Planning",
-                link: `https://www.investopedia.com/terms/a/a-b-trust.asp`,
+                link: `https://imperialpedia.com/terms/a/a-b-trust.asp`,
               },
               {
                 text: "4 Reasons Estate Planning Is so Important",
-                link: `https://www.investopedia.com/terms/a/a-b-trust.asp`,
+                link: `https://imperialpedia.com/terms/a/a-b-trust.asp`,
               },
             ],
           },
@@ -329,7 +329,7 @@ export const terms: Term[] = [
     slug: "estate-tax",
     seoTitle: "Estate Tax",
     featuredImageUrl:
-      "https://www.investopedia.com/thmb/l6j-EYuTqSWTaXatAeSAuE44A70=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/GettyImages-13341458241-ff69fbb883674c309c1dad18e227d67b.jpg",
+      "https://picsum.photos/750/450",
     author: "Imperialpedia Staff",
     categoryNames: "PersonalFinance",
     title: "Estate Tax: Understanding Federal and State Tax Implications",
@@ -368,7 +368,7 @@ export const terms: Term[] = [
     seoTitle: "Revocable Trust",
     title: "Revocable Trust: Flexibility in Estate Planning",
     featuredImageUrl:
-      "https://www.investopedia.com/thmb/l6j-EYuTqSWTaXatAeSAuE44A70=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/GettyImages-13341458241-ff69fbb883674c309c1dad18e227d67b.jpg",
+      "https://picsum.photos/750/450",
     author: "Imperialpedia Staff",
     categoryNames: "Economy",
     seoDescription:
@@ -405,7 +405,7 @@ export const terms: Term[] = [
     slug: "marital-deduction",
     seoTitle: "Marital Deduction",
     featuredImageUrl:
-      "https://www.investopedia.com/thmb/l6j-EYuTqSWTaXatAeSAuE44A70=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/GettyImages-13341458241-ff69fbb883674c309c1dad18e227d67b.jpg",
+      "https://picsum.photos/750/450",
     author: "Imperialpedia Staff",
     categoryNames: "Economy",
     title: "Marital Deduction: Unlimited Tax-Free Transfers Between Spouses",
@@ -443,7 +443,7 @@ export const terms: Term[] = [
     slug: "compound-interest",
     seoTitle: "Compound Interest",
     featuredImageUrl:
-      "https://www.investopedia.com/thmb/l6j-EYuTqSWTaXatAeSAuE44A70=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/GettyImages-13341458241-ff69fbb883674c309c1dad18e227d67b.jpg",
+      "https://picsum.photos/750/450",
     author: "Imperialpedia Staff",
     categoryNames: "PersonalFinance",
     title: "Compound Interest: The Power of Exponential Growth",
@@ -481,7 +481,7 @@ export const terms: Term[] = [
     slug: "diversification",
     seoTitle: "Diversification",
     featuredImageUrl:
-      "https://www.investopedia.com/thmb/l6j-EYuTqSWTaXatAeSAuE44A70=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/GettyImages-13341458241-ff69fbb883674c309c1dad18e227d67b.jpg",
+      "https://picsum.photos/750/450",
     author: "Imperialpedia Staff",
     categoryNames: "Markets",
     title: "Diversification: Risk Management Through Asset Allocation",

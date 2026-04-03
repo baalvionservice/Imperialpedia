@@ -32,16 +32,12 @@ export const useAppMutation = <TData, TResponse>(): UseMutationResult<
 
   return useMutation({
     mutationFn: async ({ endpoint, method, data, config, id = "" }) => {
-      try {
-        const response = axios[method](
-          `/${endpoint}${id ? `/${id}` : ""}`,
-          data,
-          config
-        );
-        return response;
-      } catch (error) {
-        throw error;
-      }
+      const response = axios[method](
+        `/${endpoint}${id ? `/${id}` : ""}`,
+        data,
+        config,
+      );
+      return response;
     },
     onError(error, variables) {
       if (error instanceof AxiosError) {

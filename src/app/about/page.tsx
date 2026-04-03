@@ -1,7 +1,15 @@
 import React from 'react';
+import { buildMetadata } from '@/lib/seo';
 import { Container } from '@/design-system/layout/container';
 import { Text } from '@/design-system/typography/text';
 import { Section } from '@/design-system/layout/section';
+
+export const metadata = buildMetadata({
+  title: 'About Imperialpedia',
+  description: 'Learn about Imperialpedia mission, methodology, and vision.',
+  canonical: '/about',
+  noIndex: false,
+});
 
 export default function AboutPage() {
   return (
