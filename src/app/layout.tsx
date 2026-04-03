@@ -1,28 +1,25 @@
-"use client";
-
-import React, { useEffect } from "react";
-import { usePathname } from "next/navigation";
+import "./globals.css";
+import React from "react";
+import { Metadata } from "next";
+import { env } from "@/config/env";
 import Script from "next/script";
 import { Playfair_Display, PT_Sans, Cabin } from "next/font/google";
-import "./globals.css";
-
-// UI & Common Components
-import { Toaster } from "@/components/ui/toaster";
-import { Navbar } from "@/components/common/Navbar";
-import Footer from "@/components/common/Footer";
-import { CookieConsent } from "@/components/common/CookieConsent";
-import ToastProvider from "@/components/common/ToastManager";
-import { Toaster as SonnerToaster } from "sonner";
-
-// Providers & Utils
-import { GlobalStoreProvider } from "@/lib/state";
-import { ThemeProvider } from "@/design-system/themes/theme-provider";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { trackPageView } from "@/lib/utils/analytics";
-import { I18nProvider } from "@/components/i18n/I18nProvider";
 import { cn } from "@/lib/utils";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { queryClient } from "@/services/query-client";
+import RootLayoutClient from "@/components/common/RootLayoutClient";
+
+export const metadata: Metadata = {
+  metadataBase: new URL(env.siteUrl),
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
+};
+
+// (Client-side layout content is now in RootLayoutClient)
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -51,15 +48,6 @@ const ptSans = PT_Sans({
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const pathname = usePathname();
-
-  // Conditionally hide public navigation for administrative nodes
-  const isAdminPath = pathname?.startsWith("/admin");
-
-  useEffect(() => {
-    trackPageView(pathname);
-  }, [pathname]);
-
   return (
     <html
       lang="en"
@@ -94,33 +82,7 @@ export default function RootLayout({
           Skip to main content
         </a>
 
-        <QueryClientProvider client={queryClient}>
-          <I18nProvider>
-            <GlobalStoreProvider>
-              <ThemeProvider>
-                <ToastProvider>
-                  <TooltipProvider>
-                    {!isAdminPath && <Navbar />}
-                    <CookieConsent />
-                    <main
-                      id="main-content"
-                      className={cn(
-                        "flex-grow outline-none",
-                        !isAdminPath && "mt-16"
-                      )}
-                      tabIndex={-1}
-                    >
-                      {children}
-                    </main>
-                    {!isAdminPath && <Footer />}
-                    <Toaster />
-                    <SonnerToaster />
-                  </TooltipProvider>
-                </ToastProvider>
-              </ThemeProvider>
-            </GlobalStoreProvider>
-          </I18nProvider>
-        </QueryClientProvider>
+        <RootLayoutClient>{children}</RootLayoutClient>
       </body>
     </html>
   );

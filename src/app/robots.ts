@@ -13,13 +13,16 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: '*',
       allow: [
         '/',
+        '/about',
+        '/contact',
+        '/budgeting',
         '/articles/',
         '/glossary/',
         '/topics/',
         '/categories/',
         '/tags/',
         '/financial-tools/',
-        '/ai-analyst/'
+        '/ai-analyst/',
       ],
       disallow: [
         '/admin/',
@@ -27,7 +30,6 @@ export default function robots(): MetadataRoute.Robots {
         '/private/',
         '/creator/dashboard/',
         '/dashboard/',
-        '/*?*', // Disallow query parameters to prevent duplicate crawl nodes
       ],
     },
     sitemap: `${baseUrl}/sitemap.xml`,

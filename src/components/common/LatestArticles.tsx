@@ -22,13 +22,13 @@ interface PodcastEpisode {
 const podcastEpisodes: PodcastEpisode[] = [
   {
     id: "1",
-    show: "The Investopedia Express",
+    show: "The Imperialpedia Express",
     title: "Behind the Bitcoin Breakdown",
     episodeNumber: 285,
     date: "Mar 16, 2026",
     slug: "behind-the-bitcoin-breakdown",
     imageUrl:
-      "https://www.investopedia.com/thmb/k76hbw3i32Y1ZyCyIwji2trRJbw=/220x220/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/INV-Express-2026-03-16-a19c132aa7c946b68057cb8c324d9bfb.jpg",
+      "https://picsum.photos/90/90",
   },
   {
     id: "2",
@@ -50,7 +50,7 @@ const podcastEpisodes: PodcastEpisode[] = [
 
 const sentimentData = {
   imageUrl:
-    "https://www.investopedia.com/thmb/iqau9KuvtE_PHvcdU_4t5J_PskM=/600x320/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/Screenshot2026-02-06at4.22.23PM-1b04d05a7a744c0eb0c0e28e1a9b8814.png",
+    "https://picsum.photos/600/320",
   category: "Original Research",
   title: "Quarterly Investor Sentiment Survey",
   excerpt:
@@ -60,7 +60,7 @@ const sentimentData = {
 
 const promoCard = {
   imageUrl:
-    "https://www.investopedia.com/thmb/29yxNXU-baUvm3HU8U0-ASZN5M8=/600x320/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/01_header_recirc-72dd96db34da4ca78da1155d7e788dbc.png",
+    "https://picsum.photos/600/320",
   title: "Invest Like Her: Portfolios That Match Your Life",
   description:
     "Discover how women can build smarter investment portfolios that match their real lives.",
@@ -77,7 +77,7 @@ function ArticleCard({ article }: { article: NewsArticle }) {
         className="relative block w-full h-[148px] overflow-hidden bg-gray-100"
       >
         <Image
-          src={article.imageUrl}
+          src={article.imageUrl || "https://picsum.photos/220/148"}
           alt={article.title}
           fill
           className="object-cover hover:scale-[1.03] transition-transform duration-300"
@@ -101,10 +101,10 @@ function ArticleCard({ article }: { article: NewsArticle }) {
       <p className="text-[12px] text-gray-500 mt-auto">
         {article.publishedAt
           ? new Date(article.publishedAt).toLocaleDateString("en-US", {
-              month: "short",
-              day: "numeric",
-              year: "numeric",
-            })
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+          })
           : ""}
       </p>
     </div>
@@ -302,7 +302,7 @@ export default function LatestArticles() {
         {/* Left: text content */}
         <div className="flex flex-col gap-5 px-8 py-10 md:py-12 md:w-[42%] shrink-0 z-10">
           <h2 className="font-serif text-[2rem] md:text-[2.4rem] font-bold text-foreground leading-tight">
-            Investopedia Stock Market Simulator
+            Imperialpedia Stock Market Simulator
           </h2>
           <p className="text-[14px] text-foreground/70 leading-relaxed max-w-sm">
             Practice stock trading with virtual money — trusted by over 3
@@ -320,8 +320,8 @@ export default function LatestArticles() {
         {/* Right: device mockup image */}
         <div className="relative w-full md:flex-1 h-[260px] md:h-[320px]">
           <Image
-            src="https://www.investopedia.com/thmb/f_WIlOUq4y171OckyrFBjsh4K48=/600x400/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/NumberoftheDay4-73f1a7c977d344c1a00e6eee116b542a.png"
-            alt="Investopedia Stock Market Simulator"
+            src="https://picsum.photos/600/400"
+            alt="Imperialpedia Stock Market Simulator"
             fill
             className="object-contain object-center md:object-left-bottom"
             sizes="60vw"

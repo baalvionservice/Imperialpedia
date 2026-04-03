@@ -42,6 +42,9 @@ export const sitemapService = {
       // 1. Static Core Pages
       const corePages = [
         "",
+        "/about",
+        "/contact",
+        "/budgeting",
         "/articles",
         "/glossary",
         "/topics",

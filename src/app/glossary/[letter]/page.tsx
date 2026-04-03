@@ -4,6 +4,7 @@ import { buildMetadata } from "@/lib/seo";
 import Link from "next/link";
 
 import { getTermsByLetter, getTermUrl } from "@/lib/data/utils";
+import { Term } from "@/lib/data/terms";
 
 export async function generateMetadata({
   params,
@@ -11,8 +12,8 @@ export async function generateMetadata({
   params: Promise<{ letter: string }>;
 }) {
   const { letter } = await params;
-  const term = getTermsByLetter(letter);
-  if (!term) return {};
+  const terms: Term[] = getTermsByLetter(letter);
+  if (!terms || terms.length === 0) return {};
   return buildMetadata({
     title: `Financial Terms Starting with "${letter.toUpperCase()}" | Imperial Finance Glossary`,
     description: `Explore our comprehensive glossary of financial terms starting with "${letter.toUpperCase()}". From A to Z, find clear definitions and expert insights on investment, economics, and market terminology to enhance your financial literacy.`,
@@ -38,7 +39,7 @@ export default async function Page({ params }: { params: Promise<{ letter: strin
         {terms.map((term) => (
           <div key={term.slug}>
             <Link href={getTermUrl(term.slug)}>
-              <h2 className="mb-2 uppercase">{term.slugTitle}</h2>
+              <h2 className="mb-2 uppercase">{term.seoTitle}</h2>
             </Link>
           </div>
         ))}

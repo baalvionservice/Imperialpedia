@@ -30,27 +30,23 @@ export function buildMetadata({
   const finalDescription = description || seoConfig.defaultDescription;
   const finalKeywords = keywords || seoConfig.defaultKeywords;
   
-  // Ensure canonical is an absolute URL
+  // Ensure canonical is an absolute URL and only set when explicitly provided.
   const baseUrl = env.siteUrl.endsWith('/') ? env.siteUrl.slice(0, -1) : env.siteUrl;
-  let finalCanonical = baseUrl;
-  
-  if (canonical) {
-    const cleanPath = canonical.startsWith('/') ? canonical : `/${canonical}`;
-    finalCanonical = canonical.startsWith('http') ? canonical : `${baseUrl}${cleanPath}`;
-  }
+  const absoluteCanonical = canonical
+    ? canonical.startsWith('http')
+      ? canonical
+      : `${baseUrl}${canonical.startsWith('/') ? canonical : `/${canonical}`}`
+    : undefined;
 
-  return {
+  const metadata: Metadata = {
     title: finalTitle,
     description: finalDescription,
     keywords: finalKeywords,
     metadataBase: new URL(baseUrl),
-    alternates: {
-      canonical: finalCanonical,
-    },
     openGraph: {
       title: finalTitle,
       description: finalDescription,
-      url: finalCanonical,
+      url: absoluteCanonical || baseUrl,
       siteName: siteName,
       images: [
         {
@@ -83,4 +79,13 @@ export function buildMetadata({
       },
     },
   };
+
+  if (absoluteCanonical) {
+    metadata.alternates = {
+      canonical: absoluteCanonical,
+    };
+  }
+
+  return metadata;
 }
+

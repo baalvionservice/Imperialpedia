@@ -106,9 +106,8 @@ function FeaturedArticleCard({
       <div className="flex flex-col gap-2 pt-3">
         <Link href={`/${slug}`}>
           <h2
-            className={`font-serif font-bold leading-snug text-foregound hover:text-blue-700 transition-colors ${
-              large ? "text-2xl md:text-[1.55rem]" : "text-xl md:text-[1.3rem]"
-            }`}
+            className={`font-serif font-bold leading-snug text-foregound hover:text-blue-700 transition-colors ${large ? "text-2xl md:text-[1.55rem]" : "text-xl md:text-[1.3rem]"
+              }`}
           >
             {title}
           </h2>
@@ -165,9 +164,9 @@ function OtherTopStoriesSection({ stories }: { stories: OtherStory[] }) {
 
       {/* 2-column grid of story links */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-4">
-        {stories.map((story) => (
+        {stories.map((story,i) => (
           <Link
-            key={story.href + story.title}
+            key={story.href + story.title + i}
             href={story.href}
             className="text-[13.5px] font-semibold text-foreground hover:text-blue-700 leading-snug transition-colors"
           >
@@ -181,7 +180,7 @@ function OtherTopStoriesSection({ stories }: { stories: OtherStory[] }) {
 
 // ─── Main Section ─────────────────────────────────────────────────────────────
 
-export const MainNewsSection = () => {
+export const MainNewsSection =  () => {
   const leftArticle: FeaturedArticleProps = newsArticles.find((a) => a.featured)!;
 
   const rightArticle: FeaturedArticleProps = stocksPageData.featured;

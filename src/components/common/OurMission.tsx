@@ -11,7 +11,6 @@ const stats = [
   { value: "40+", label: "Daily News/Analysis" },
 ];
 
-
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export function OurMission() {
@@ -20,10 +19,8 @@ export function OurMission() {
       <div className="max-w-[1320px] mx-auto px-4">
         {/* Two-column: left content + right sidebar */}
         <div className="flex flex-col md:flex-row gap-0 md:divide-x md:divide-gray-300">
-
           {/* ── Left column ── */}
           <div className="flex-1 md:pr-12">
-
             {/* Heading */}
             <h2 className="font-serif text-[1.6rem] font-bold text-foreground mb-4">
               Our Mission
@@ -31,18 +28,17 @@ export function OurMission() {
 
             {/* Body paragraph */}
             <p className="text-[14.5px] text-foreground/80 leading-relaxed mb-8">
-              Investopedia was founded in 1999 with the mission of helping people
-              improve their financial outcomes. Our readers come to us from all
-              over the world and from all walks of life. Some are learning about
-              money and investing for the first time, while others are experienced
-              investors, business owners, professionals, financial advisors, and
-              executives looking to improve their knowledge and skills. No matter
-              who you are, we are here to help.
+              Imperialpedia was founded in 1999 with the mission of helping
+              people improve their financial outcomes. Our readers come to us
+              from all over the world and from all walks of life. Some are
+              learning about money and investing for the first time, while
+              others are experienced investors, business owners, professionals,
+              financial advisors, and executives looking to improve their
+              knowledge and skills. No matter who you are, we are here to help.
             </p>
 
             {/* Stats + Inclusive Content side by side */}
             <div className="flex flex-col sm:flex-row gap-8">
-
               {/* Stats column */}
               <div className="flex flex-col gap-4 min-w-[160px]">
                 {stats.map((stat) => (
@@ -65,16 +61,18 @@ export function OurMission() {
                 <p className="text-[13.5px] text-foreground/70 leading-relaxed">
                   Financial education needs to serve readers of all backgrounds.
                   We aspire for our content, staff, contributors, and partner
-                  organizations to further the financial empowerment of those from
-                  all ethnicities, genders, generations, sexual orientations,
-                  abilities, and socioeconomic backgrounds, particularly those who
-                  may be disadvantaged.{" "}
-                  <Link href="#" className="text-blue-700 hover:underline font-medium">
+                  organizations to further the financial empowerment of those
+                  from all ethnicities, genders, generations, sexual
+                  orientations, abilities, and socioeconomic backgrounds,
+                  particularly those who may be disadvantaged.{" "}
+                  <Link
+                    href="#"
+                    className="text-blue-700 hover:underline font-medium"
+                  >
                     Read more details
                   </Link>
                 </p>
               </div>
-
             </div>
           </div>
 
@@ -132,7 +130,6 @@ export function OurMission() {
               </Link>
             </p>
           </aside>
-
         </div>
       </div>
     </section>

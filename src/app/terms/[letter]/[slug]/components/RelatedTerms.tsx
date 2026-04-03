@@ -28,7 +28,7 @@ export default function RelatedTerms({ terms }: RelatedTermsProps) {
           >
             <div className=" h-32 w-full aspect-square ">
               <Image
-                src={term.imageUrl}
+                src={term?.featuredImageUrl || "https://picsum.photos/300/300"}
                 alt={term.title}
                 width={200}
                 height={200}
@@ -36,7 +36,7 @@ export default function RelatedTerms({ terms }: RelatedTermsProps) {
               />
             </div>
             <div className="px-4 space-y-2 pb-2">
-              <CategoryBadge category={term.category} />
+              <CategoryBadge category={term.categoryNames!} />
               <h4 className="font-semibold text-foreground group-hover:text-primary transition-colors mb-2 line-clamp-2">
                 {term.title}
               </h4>

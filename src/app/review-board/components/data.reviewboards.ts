@@ -47,7 +47,7 @@ export const reviewBoardProfiles: NewsArticle[] = [
 
     category: "Editorial",
     author: {
-      name: "Investopedia Team",
+      name: "Imperialpedia Team",
       avatarUrl:
         "https://images.unsplash.com/photo-1607746882042-944635dfe10e?w=200&q=80&auto=format",
     },
