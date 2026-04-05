@@ -58,6 +58,45 @@ export type Term = {
 
 export const terms: Term[] = [
   {
+    slug: "0x-protocol",
+    seoTitle: "0x Protocol",
+    featuredImageUrl:
+      "https://picsum.photos/750/450",
+      author: "Imperialpedia Staff",
+    categoryNames: "Crypto",
+    title: "0x Protocol: A Decentralized Exchange Infrastructure for Ethereum",
+    seoDescription:  "An open protocol that enables the peer-to-peer exchange of assets on the Ethereum blockchain, facilitating decentralized trading and liquidity.",
+    content: [
+      {
+        type: "paragraph",
+        content: [
+          {
+            type: "text",
+            content:
+              "The 0x Protocol is an open-source framework that allows developers to build decentralized exchanges (DEXs) on the Ethereum blockchain. It provides a standard set of smart contracts and tools for facilitating peer-to-peer trading of ERC-20 tokens without relying on a centralized intermediary.",
+          },
+        ],
+      },
+      {
+        type: "heading",
+        text: "How 0x Protocol Works",
+        id: "how-0x-protocol-works",
+      },
+      {
+        type: "paragraph",
+        content: [
+          {
+            type: "text",
+            content:
+              "0x Protocol uses off-chain order relay with on-chain settlement. Traders create orders off-chain and broadcast them to relayers, who facilitate order discovery and matching. When a trade is executed, the settlement occurs on-chain through smart contracts, ensuring security and transparency.",
+          },
+        ],
+      },
+    ],
+  },
+
+
+  {
     slug: "a-b-trust",
     seoTitle: "A-B trust",
     featuredImageUrl:
