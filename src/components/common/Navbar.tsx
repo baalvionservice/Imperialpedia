@@ -14,16 +14,13 @@ import {
   ChevronRight,
   Search,
   LayoutDashboard,
-  ShieldCheck,
 } from "lucide-react";
 import { LanguageSelector } from "@/components/i18n/LanguageSelector";
 import { ThemeToggle } from "@/components/common/ThemeToggle";
 import { SearchModal } from "@/components/search/SearchModal";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
-import { logEvent } from "@/lib/utils/analytics";
 import { useAppStore } from "@/lib/state/app-store";
-import { Input } from "../ui/input";
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -37,8 +34,8 @@ export const Navbar = () => {
   const { currentUser } = useAppStore();
 
   const shouldShowScrollProgress = () => {
-    const rootSlugPattern = /^\/[^\/]+$/;
-    const termsPattern = /^\/terms\/[^\/]+\/[^\/]+$/;
+    const rootSlugPattern = /^\/[^/]+$/;
+    const termsPattern = /^\/terms\/[^/]+\/[^/]+$/;
     return rootSlugPattern.test(pathname) || termsPattern.test(pathname);
   };
 
@@ -164,16 +161,15 @@ export const Navbar = () => {
   ];
 
   const reviewLinks = [
-    { label: t("nav.broker_reviews"), href: "/broker-reviews" },
-    { label: t("nav.robo_advisor_reviews"), href: "/robo-advisors" },
-    { label: t("nav.bank_reviews"), href: "/bank-reviews" },
-    { label: t("nav.credit_card_reviews"), href: "/credit-card-reviews" },
-    { label: t("nav.insurance_reviews"), href: "/insurance-reviews" },
-    { label: t("nav.loan_reviews"), href: "/loan-reviews" },
-    { label: t("nav.investment_app_reviews"), href: "/app-reviews" },
-    { label: t("nav.financial_advisor_reviews"), href: "/advisor-reviews" },
-    { label: t("nav.tax_software_reviews"), href: "/tax-software" },
-    { label: t("nav.budgeting_app_reviews"), href: "/budgeting-apps" },
+    { label: t("nav.broker_reviews"), href: "/best-online-brokers" },
+    { label: t("nav.best_crypto_exchange_reviews"), href: "/best-crypto-exchanges" },
+    { label: t("nav.best-cd-rates"), href: "/best-cd-rates" },
+    { label: t("nav.best-savings-rates"), href: "/best-savings-rates" },
+    { label: t("nav.best-life-insurance"), href: "/best-life-insurance" },
+    { label: t("nav.best-mortgage-rates"), href: "/best-mortgage-rates" },
+    { label: t("nav.best-robo-advisers"), href: "/best-robo-advisers" },
+    { label: t("nav.best-personal-loans"), href: "/best-personal-loans" },
+    { label: t("nav.best-debt-relief-companies"), href: "/best-debt-relief-companies" },
     { label: t("nav.view_all_reviews"), href: "/reviews" },
   ];
 

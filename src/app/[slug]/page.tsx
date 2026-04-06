@@ -6,6 +6,33 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { brokerGuides } from "../brokers/Components/data.brokers";
 import { ArticleCard } from "../news/NewsArticleCard";
+import { ReviewArticle } from "@/types/Review";
+import { bestCryptoExchangesReview } from "@/data/reviews/data.reviews.crypto.exchange";
+import { bestOnlineBrokersReview } from "@/data/reviews/data.reviews.online.brokers";
+import { ReviewLayout } from "@/components/layout/ReviewLayout";
+import { bestCdRatesReview } from "@/data/reviews/data.reviews.cd.rates";
+import { bestPersonalLoans } from "@/data/reviews/data.personals.loans";
+import { bestRoboAdvisers } from "@/data/reviews/data.best.robo.advisers";
+import { bestMortgageRates } from "@/data/reviews/data.best.mortgage.rates";
+import { bestLifeInsurance } from "@/data/reviews/data.best.live.insurance";
+import { bestSavingsRates } from "@/data/reviews/data.best.savings.rate";
+import { bestReliefCompanies } from "@/data/reviews/data.best.relief.companies";
+
+// ── Review imports ────────────────────────────────────────────────────────────
+
+// ── Registry: add every new review page here ──────────────────────────────────
+// Key = the slug that appears in the URL (e.g. imperialpedia.com/best-cd-rates)
+const reviewRegistry: Record<string, ReviewArticle> = {
+  "best-cd-rates": bestCdRatesReview,
+  "best-crypto-exchanges": bestCryptoExchangesReview,
+  "best-online-brokers": bestOnlineBrokersReview,
+  "best-personal-loans": bestPersonalLoans,
+  "best-robo-advisers": bestRoboAdvisers,
+  "best-mortgage-rates": bestMortgageRates,
+  "best-life-insurance": bestLifeInsurance,
+  "best-savings-rates": bestSavingsRates,
+  "best-debt-relief-companies": bestReliefCompanies,
+};
 
 // Union type to handle different article types
 type ArticleType = NewsArticle | StocksArticle;
@@ -18,6 +45,19 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+
+  // Review pages get their own metadata
+  const review = reviewRegistry[slug];
+  if (review) {
+    return buildMetadata({
+      title: review.title,
+      description: review.metaDescription,
+      canonical: `/${slug}`,
+      noIndex: false,
+    });
+  }
+
+  // Standard article metadata (unchanged)
   const article = newsArticles.find((a) => a.slug === slug);
   if (!article) return {};
   return buildMetadata({
@@ -28,7 +68,7 @@ export async function generateMetadata({
   });
 }
 
-// ─── Body block renderer ──────────────────────────────────────────────────────
+// ─── Body block renderer (unchanged) ─────────────────────────────────────────
 
 function BodyBlock({ block }: { block: NewsBodyBlock }) {
   switch (block.type) {
@@ -124,6 +164,14 @@ export default async function SingleNewsPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+
+  // ── 1. Check review registry first ──────────────────────────────────────
+  const review = reviewRegistry[slug];
+  if (review) {
+    return <ReviewLayout review={review} />;
+  }
+
+  // ── 2. Fall back to existing article lookup (unchanged) ──────────────────
   let article: ArticleType | undefined = newsArticles.find(
     (a) => a.slug === slug
   );
@@ -148,18 +196,16 @@ export default async function SingleNewsPage({
           {/* ══ LEFT: Article ══════════════════════════════════════════════ */}
           <article className="md:m-16">
             {/* Category + title */}
-            <h1 className="text-foreground  text-3xl md:text-5xl font-extrabold leading-7 tracking-wider">
+            <h1 className="text-foreground text-3xl md:text-5xl font-extrabold leading-7 tracking-wider">
               {article.title}
             </h1>
 
             {/* Byline */}
-            <div
-              className={`flex flex-wrap items-center gap-x-4 gap-y-2 py-4  mb-2 text-sm text-muted-foreground`}
-            >
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 py-4 mb-2 text-sm text-muted-foreground">
               <div className="flex items-center gap-2">
                 <div>
                   By{" "}
-                  <span className="font-semibold text-foreground ">
+                  <span className="font-semibold text-foreground">
                     {article.author.name}
                   </span>
                 </div>
@@ -168,15 +214,13 @@ export default async function SingleNewsPage({
                 Published {formatDate(article.publishedAt)}
               </span>
               {article.updatedAt && (
-                <>
-                  <span>Updated {formatDate(article.updatedAt)}</span>
-                </>
+                <span>Updated {formatDate(article.updatedAt)}</span>
               )}
             </div>
 
             {/* Hero image */}
             <figure className="mb-8">
-              <div className="relative w-full aspect-[16/9]  overflow-hidden shadow-sm">
+              <div className="relative w-full aspect-[16/9] overflow-hidden shadow-sm">
                 <Image
                   src={article.imageUrl}
                   alt={article.title}

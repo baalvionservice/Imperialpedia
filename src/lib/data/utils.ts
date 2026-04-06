@@ -36,14 +36,14 @@ export function getRelatedTerms(
 
   // Extract keywords from title and description for similarity matching
   const currentKeywords = extractKeywords(
-    currentTerm.title + " " + currentTerm.description
+    currentTerm.title + " " + currentTerm.seoDescription
   );
 
   // Score other terms based on keyword overlap
   const scoredTerms = terms
     .filter((term) => term.slug !== currentSlug)
     .map((term) => {
-      const termKeywords = extractKeywords(term.title + " " + term.description);
+      const termKeywords = extractKeywords(term.title + " " + term.seoDescription);
       const score = calculateSimilarityScore(currentKeywords, termKeywords);
       return { term, score };
     })

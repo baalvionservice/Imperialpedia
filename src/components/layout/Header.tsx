@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { SearchBar } from '@/components/search/SearchBar';
 import { SearchModal } from '@/components/search/SearchModal';
 import { Button } from '@/components/ui/button';
 import Navigation from './Navigation';
