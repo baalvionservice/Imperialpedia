@@ -11,7 +11,7 @@ export async function generateMetadata() {
   return buildMetadata({
     title: "Imperialpedia Financial Review Board",
     description: "Meet the experts who fact check and review our content to ensure accuracy and empower our readers to make smarter financial decisions.",
-    canonical: "/review-board",
+    canonical: "/imperialpedia-review-board",
   });
 }
 
@@ -73,7 +73,7 @@ function SingleProfile({ profile }: { profile: ReviewBoardMember }) {
       <div className="flex-1">
         <p className="text-foreground leading-relaxed">{profile.shortBio}</p>
         <Link
-          href={`/review-board/${profile.slug}`}
+          href={`/imperialpedia-review-board/${profile.slug}`}
           className="text-primary mt-4 underline hover:no-underline inline-block"
         >
           Read more

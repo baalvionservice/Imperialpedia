@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { reviewBoardMembers } from "@/app/review-board/components/data.reviewboards";
+import { reviewBoardMembers } from "@/app/imperialpedia-review-board/components/data.reviewboards";
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
@@ -89,10 +89,10 @@ export function OurMission() {
 
             {/* Reviewer list */}
             <div className="flex flex-col divide-y divide-gray-200">
-              {reviewBoardMembers.map((reviewer) => (
+              {reviewBoardMembers.slice(0,3).map((reviewer) => (
                 <Link
                   key={reviewer.name}
-                  href={`/review-board/${reviewer.slug}`}
+                  href={`/imperialpedia-review-board/${reviewer.slug}`}
                   className="flex items-center gap-3 py-3 group"
                 >
                   {/* Headshot */}
@@ -123,7 +123,7 @@ export function OurMission() {
             <p className="mt-4 text-[13px] text-foreground/70">
               Meet the{" "}
               <Link
-                href="/review-board"
+                href="/imperialpedia-review-board"
                 className="text-blue-700 font-medium hover:underline"
               >
                 Financial Review Board →

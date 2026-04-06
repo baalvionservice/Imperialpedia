@@ -1,4 +1,3 @@
-
 /**
  * @fileOverview Centralized route definitions for the entire application.
  * Mapped for full system integration.
@@ -10,7 +9,7 @@ export const routes = {
     news: "/news",
     stocks: "/stocks",
     brokers: "/brokers",
-    reviews: "/review-board",
+    reviews: "/imperialpedia-review-board",
     articles: "/articles",
     glossary: "/glossary",
     calculators: "/financial-tools",
