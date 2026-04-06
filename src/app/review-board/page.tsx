@@ -4,6 +4,16 @@ import {
   reviewBoardMembers,
 } from "./components/data.reviewboards";
 import Link from "next/link";
+import { buildMetadata } from "@/lib/seo";
+
+
+export async function generateMetadata() {
+  return buildMetadata({
+    title: "Imperialpedia Financial Review Board",
+    description: "Meet the experts who fact check and review our content to ensure accuracy and empower our readers to make smarter financial decisions.",
+    canonical: "/review-board",
+  });
+}
 
 export default function ReviewBoardPage() {
   return (
