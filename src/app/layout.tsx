@@ -1,5 +1,5 @@
-import "./globals.css";
 import React from "react";
+import "./globals.css";
 import { Metadata } from "next";
 import { env } from "@/config/env";
 import Script from "next/script";
@@ -57,6 +57,8 @@ export default function RootLayout({
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#1C1822" />
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8968452296456450"
+          crossOrigin="anonymous"></script>
 
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-IMP-INDEX-42"
@@ -72,6 +74,7 @@ export default function RootLayout({
             });
           `}
         </Script>
+
       </head>
 
       <body className="font-ui bg-background text-foreground antialiased min-h-screen flex flex-col">
