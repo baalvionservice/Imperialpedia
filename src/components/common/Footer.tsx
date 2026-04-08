@@ -24,6 +24,7 @@ export default function Footer() {
   const navLinks = {
     platform: [
       { label: 'Home', href: '/' },
+      { label: 'About', href: '/about' },
       { label: 'Features', href: '/#features' },
       { label: 'Pricing', href: '/#pricing' },
       { label: 'FAQ', href: '/#faq' },

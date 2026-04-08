@@ -1,4 +1,4 @@
-import { LatestNewsPage } from "./components/LatestNewsPage.tsx";
+import { LatestNewsPage } from "./components/LatestNewsPage";
 
 export default function LatestPage() {
   return <LatestNewsPage />;
