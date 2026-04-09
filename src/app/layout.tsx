@@ -55,10 +55,18 @@ export default function RootLayout({
       className={cn(playfair.variable, ptSans.variable, cabin.variable)}
     >
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, viewport-fit=cover"
+        />
         <meta name="theme-color" content="#1C1822" />
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8968452296456450"
-          crossOrigin="anonymous"></script>
+        <link rel="preconnect" href="https://images.unsplash.com" />
+        <link rel="preconnect" href="https://pagead2.googlesyndication.com" />
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8968452296456450"
+          crossOrigin="anonymous"
+        ></script>
 
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-IMP-INDEX-42"
@@ -74,7 +82,6 @@ export default function RootLayout({
             });
           `}
         </Script>
-
       </head>
 
       <body className="font-ui bg-background text-foreground antialiased min-h-screen flex flex-col">

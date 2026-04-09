@@ -23,11 +23,16 @@ export function LatestNewsPage() {
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     const now = new Date();
-    const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60));
+    const diffInMinutes = Math.floor(
+      (now.getTime() - date.getTime()) / (1000 * 60)
+    );
     const diffInHours = Math.floor(diffInMinutes / 60);
     if (diffInMinutes < 60) return `${diffInMinutes} MIN AGO`;
-    if (diffInHours < 24) return `${diffInHours} HOUR${diffInHours > 1 ? "S" : ""} AGO`;
-    return date.toLocaleDateString("en-US", { month: "short", day: "numeric" }).toUpperCase();
+    if (diffInHours < 24)
+      return `${diffInHours} HOUR${diffInHours > 1 ? "S" : ""} AGO`;
+    return date
+      .toLocaleDateString("en-US", { month: "short", day: "numeric" })
+      .toUpperCase();
   };
 
   if (loading) {
@@ -58,13 +63,13 @@ export function LatestNewsPage() {
 
   return (
     <div className="min-h-screen bg-white mt-12 w-full overflow-x-hidden">
-      <div className="text-center pt-4 mb-4 border-b-[3px] border-yellow-400 px-3">
-        <h1 className="text-base sm:text-lg font-bold tracking-[0.15em] sm:tracking-[2px] uppercase text-[#0a2756] pb-2">
+      <div className="text-center pt-3 sm:pt-4 mb-3 sm:mb-4 border-b-[3px] border-yellow-400 px-2 sm:px-3">
+        <h1 className="text-sm sm:text-base lg:text-lg font-bold tracking-[0.1em] sm:tracking-[0.15em] lg:tracking-[2px] uppercase text-[#0a2756] pb-2">
           Latest News
         </h1>
       </div>
-      <div className="max-w-3xl mx-auto px-3 sm:px-4 pb-12 w-full">
-        <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-4 md:gap-3 mb-4">
+      <div className="max-w-3xl mx-auto px-2 sm:px-3 lg:px-4 pb-8 sm:pb-12 w-full">
+        <div className="flex flex-col md:grid md:grid-cols-[2fr_1fr] gap-3 sm:gap-4 mb-3 sm:mb-4">
           {heroStory && (
             <div className="min-w-0">
               <Link href={heroStory.url} className="group block">
@@ -76,14 +81,21 @@ export function LatestNewsPage() {
                     className="object-cover"
                     sizes="(max-width: 768px) 100vw, 500px"
                     priority
+                    loading="eager"
                   />
                 </div>
-                <h2 className="text-[15px] sm:text-[17px] font-bold leading-snug text-black group-hover:text-[#1565c0] mt-2 mb-1.5">
+                <h2 className="text-sm sm:text-[15px] lg:text-[17px] font-bold leading-snug text-black group-hover:text-[#1565c0] mt-1.5 sm:mt-2 mb-1 sm:mb-1.5">
                   {heroStory.title}
                 </h2>
               </Link>
-              <span className="text-[11px] font-bold text-[#0a6bb5] mr-1.5">{heroStory.source}</span>
-              <span className="text-[11px] text-gray-500 uppercase">{formatDate(heroStory.publishedAt)}</span>
+              <div className="flex flex-wrap gap-1 sm:gap-1.5">
+                <span className="text-[10px] sm:text-[11px] font-bold text-[#0a6bb5]">
+                  {heroStory.source}
+                </span>
+                <span className="text-[10px] sm:text-[11px] text-gray-500 uppercase">
+                  {formatDate(heroStory.publishedAt)}
+                </span>
+              </div>
             </div>
           )}
 
@@ -109,8 +121,12 @@ export function LatestNewsPage() {
                 </div>
               </Link>
               <div className="mt-1.5">
-                <span className="text-[11px] font-bold text-[#0a6bb5] mr-1.5">{rightStory.source}</span>
-                <span className="text-[11px] text-gray-500 uppercase">{formatDate(rightStory.publishedAt)}</span>
+                <span className="text-[11px] font-bold text-[#0a6bb5] mr-1.5">
+                  {rightStory.source}
+                </span>
+                <span className="text-[11px] text-gray-500 uppercase">
+                  {formatDate(rightStory.publishedAt)}
+                </span>
               </div>
             </div>
           )}
@@ -136,8 +152,12 @@ export function LatestNewsPage() {
                   {article.title}
                 </h3>
               </Link>
-              <span className="text-[10px] font-bold text-[#0a6bb5] mr-1">{article.source}</span>
-              <span className="text-[10px] text-gray-500 uppercase">{formatDate(article.publishedAt)}</span>
+              <span className="text-[10px] font-bold text-[#0a6bb5] mr-1">
+                {article.source}
+              </span>
+              <span className="text-[10px] text-gray-500 uppercase">
+                {formatDate(article.publishedAt)}
+              </span>
             </div>
           ))}
         </div>
@@ -162,7 +182,9 @@ export function LatestNewsPage() {
                   {article.title}
                 </h3>
               </Link>
-              <span className="text-[10px] text-gray-500 uppercase">{formatDate(article.publishedAt)}</span>
+              <span className="text-[10px] text-gray-500 uppercase">
+                {formatDate(article.publishedAt)}
+              </span>
             </div>
           ))}
         </div>
@@ -178,7 +200,9 @@ export function LatestNewsPage() {
                   {article.title}
                 </h3>
               </Link>
-              <span className="text-[10px] text-gray-500 uppercase">{formatDate(article.publishedAt)}</span>
+              <span className="text-[10px] text-gray-500 uppercase">
+                {formatDate(article.publishedAt)}
+              </span>
             </div>
           ))}
         </div>
@@ -229,7 +253,9 @@ export function LatestNewsPage() {
                     {article.title}
                   </h3>
                 </Link>
-                <span className="text-[10px] text-gray-500 uppercase">{formatDate(article.publishedAt)}</span>
+                <span className="text-[10px] text-gray-500 uppercase">
+                  {formatDate(article.publishedAt)}
+                </span>
               </div>
             ))}
           </div>

@@ -36,29 +36,28 @@ export default function WorldPage() {
 
       {/* Main layout: Latest News | Main Content | Markets */}
       <div className="max-w-screen-xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_260px] gap-px bg-gray-200">
+        <div className="flex flex-col lg:grid lg:grid-cols-[1fr_260px] gap-px bg-gray-200">
           {/* CENTER — Main content area */}
-          <main className="bg-white">
+          <main className="bg-white order-1">
             {/* Hero featured stories */}
             <HeroFeatured />
 
             {/* Main body padding */}
-            <div className="">
-              {/* Top Stories horizontal */}
-              {/* <TopStories /> */}
-
+            <div className="px-2 sm:px-4">
               {/* Sectioned news grid */}
-              <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-4">
-                {/* RIGHT SIDEBAR — Markets */}
-                <aside className="bg-white lg:border-l border-gray-200">
+              <div className="flex flex-col lg:grid lg:grid-cols-[260px_1fr] gap-4">
+                {/* Markets Panel - Mobile first */}
+                <aside className="bg-white lg:border-l border-gray-200 order-2 lg:order-1">
                   <MarketsPanel />
                 </aside>
-                <NewsGrid />
+                <div className="order-1 lg:order-2">
+                  <NewsGrid />
+                </div>
               </div>
             </div>
           </main>
-          {/* LEFT SIDEBAR — Latest News */}
-          <aside className="bg-white lg:border-r border-gray-200">
+          {/* Latest News - Hidden on mobile, shown on desktop */}
+          <aside className="bg-white lg:border-r border-gray-200 order-3 lg:order-2 hidden lg:block">
             <LatestNews />
           </aside>
         </div>

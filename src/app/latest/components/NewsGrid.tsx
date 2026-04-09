@@ -88,14 +88,14 @@ export function NewsGrid({ category = "All", searchQuery }: NewsGridProps) {
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {Array.from({ length: 8 }).map((_, i) => (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        {Array.from({ length: 6 }).map((_, i) => (
           <div key={i} className="animate-pulse">
-            <div className="bg-gray-200 dark:bg-gray-700 aspect-[16/9] rounded-lg mb-4"></div>
+            <div className="bg-gray-200 dark:bg-gray-700 aspect-[16/9] rounded-lg mb-3 sm:mb-4"></div>
             <div className="space-y-2">
-              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
-              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
-              <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-1/4"></div>
+              <div className="h-3 sm:h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
+              <div className="h-3 sm:h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
+              <div className="h-2 sm:h-3 bg-gray-200 dark:bg-gray-700 rounded w-1/4"></div>
             </div>
           </div>
         ))}
@@ -139,7 +139,7 @@ export function NewsGrid({ category = "All", searchQuery }: NewsGridProps) {
       )}
 
       {/* News Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {allArticles.slice(1).map((article) => (
           <NewsCard key={article.id} article={article} />
         ))}
@@ -147,14 +147,14 @@ export function NewsGrid({ category = "All", searchQuery }: NewsGridProps) {
 
       {/* Loading More */}
       {isFetchingNextPage && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
-          {Array.from({ length: 4 }).map((_, i) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mt-6">
+          {Array.from({ length: 3 }).map((_, i) => (
             <div key={i} className="animate-pulse">
-              <div className="bg-gray-200 dark:bg-gray-700 aspect-[16/9] rounded-lg mb-4"></div>
+              <div className="bg-gray-200 dark:bg-gray-700 aspect-[16/9] rounded-lg mb-3 sm:mb-4"></div>
               <div className="space-y-2">
-                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
-                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
-                <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-1/4"></div>
+                <div className="h-3 sm:h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
+                <div className="h-3 sm:h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
+                <div className="h-2 sm:h-3 bg-gray-200 dark:bg-gray-700 rounded w-1/4"></div>
               </div>
             </div>
           ))}
