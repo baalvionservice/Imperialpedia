@@ -100,9 +100,9 @@ export default function Footer() {
           </div>
 
           <div className="lg:col-span-3 space-y-6" id="newsletter">
-            <div className="space-y-2">
+            <div className="space-y-2 text-center">
               <Text variant="label" className="text-[10px] font-bold text-foreground/60 tracking-[0.2em] uppercase">Stay Synchronized</Text>
-              <Text variant="caption" className="text-muted-foreground leading-relaxed block max-w-sm">
+              <Text variant="caption" className="text-muted-foreground text-balance leading-relaxed block max-w-sm">
                 Subscribe to the Intelligence Wire for real-time market audits and pSEO alerts.
               </Text>
             </div>
@@ -110,7 +110,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className='flex flex-wrap justify-between mb-12' aria-label="Glossary Navigation">
+        <div className='hidden md:flex flex-wrap justify-between mb-12' aria-label="Glossary Navigation">
           {alphabet.map((letter) => (
             <Link
               key={letter}
@@ -122,7 +122,7 @@ export default function Footer() {
           ))}
         </div>
 
-        <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+        <div className="md:pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
           <Text variant="caption" className="text-muted-foreground font-medium">
             &copy; {new Date().getFullYear()} Imperialpedia. AI Knowledge Infrastructure.
           </Text>
