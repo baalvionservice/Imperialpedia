@@ -113,7 +113,7 @@ export default function Newsletter() {
 
   return (
     <div className="w-full max-w-2xl mx-auto space-y-6">
-      <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-3">
         <div className="relative flex-1 group">
           <Label htmlFor={inputId} className="sr-only">
             Institutional Email
