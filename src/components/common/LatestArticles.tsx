@@ -85,14 +85,14 @@ function ArticleCard({ article }: { article: NewsArticle }) {
         />
       </Link>
 
-      <Link
-        href={`/category/${article.category ?? "news"}`}
+      <div
+        
         className="text-[10px] font-bold tracking-[0.12em] uppercase text-blue-700 hover:underline leading-none"
       >
         {article.category ?? "Personal Finance News"}
-      </Link>
+      </div>
 
-      <Link href={`/news/${article.slug}`}>
+      <Link href={`/${article.slug}`}>
         <h3 className="text-[14px] font-bold text-foreground hover:text-blue-700 leading-snug transition-colors">
           {article.title}
         </h3>
@@ -171,7 +171,7 @@ function PodcastCard() {
       </div>
 
       {/* Featured episode — image left, text right */}
-      <Link href={`/podcast/${featured.slug}`} className="flex gap-3 group">
+      <div className="flex gap-3 group">
         <div className="relative shrink-0 w-[90px] h-[90px] overflow-hidden bg-gray-100">
           <Image
             src={featured.imageUrl!}
@@ -192,14 +192,13 @@ function PodcastCard() {
             Episode #{featured.episodeNumber}&nbsp;|&nbsp;{featured.date}
           </p>
         </div>
-      </Link>
+      </div>
 
       {/* Other episodes — text only with play icon */}
       <div className="flex flex-col gap-3">
         {rest.map((ep) => (
-          <Link
+          <div
             key={ep.id}
-            href={`/podcast/${ep.slug}`}
             className="flex items-start gap-2 group"
           >
             {/* Play icon */}
@@ -221,7 +220,7 @@ function PodcastCard() {
                 Episode #{ep.episodeNumber}&nbsp;|&nbsp;{ep.date}
               </p>
             </div>
-          </Link>
+          </div>
         ))}
       </div>
     </div>

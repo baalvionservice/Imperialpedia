@@ -558,7 +558,7 @@ export const Navbar = () => {
                 {/* Newsletters */}
                 <div className="px-4 py-[14px] border-b border-border">
                   <Link
-                    href="/newsletters"
+                    href="/#"
                     onClick={() => setIsOpen(false)}
                     className="text-[14px] text-foreground/65 hover:text-primary transition-colors"
                   >

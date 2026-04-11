@@ -23,14 +23,22 @@ export const bestOnlineBrokersReview: ReviewArticle = {
   methodologyLink: "#methodology",
   methodology:
     "We evaluated 30+ brokers on commissions and fees, investment selection, platform and tools quality, educational resources, customer service, and account minimums. We opened live accounts and executed real trades on each platform. Scores weight fees (30%), platform quality (25%), investment options (20%), education (15%), and support (10%).",
-  comparisonColumns: ["Stock Trades", "Account Min.", "Options Fee", "Mutual Funds", "Score"],
+  comparisonColumns: [
+    "Stock Trades",
+    "Account Min.",
+    "Options Fee",
+    "Mutual Funds",
+    "Score",
+  ],
   picks: [
     {
       providerId: "fidelity",
       categoryLabel: "Best Overall",
       providerName: "Fidelity Investments",
-      logoUrl: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=80&q=80",
-      summaryBlurb: "No commissions, excellent research, and top-rated service.",
+      logoUrl:
+        "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=80&q=80",
+      summaryBlurb:
+        "No commissions, excellent research, and top-rated service.",
       ctaUrl: "https://www.fidelity.com",
       ctaLabel: "Open an Account",
     },
@@ -38,8 +46,10 @@ export const bestOnlineBrokersReview: ReviewArticle = {
       providerId: "schwab",
       categoryLabel: "Best for Long-Term Investors",
       providerName: "Charles Schwab",
-      logoUrl: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=80&q=80",
-      summaryBlurb: "Full-service investing with fractional shares and strong research.",
+      logoUrl:
+        "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=80&q=80",
+      summaryBlurb:
+        "Full-service investing with fractional shares and strong research.",
       ctaUrl: "https://www.schwab.com",
       ctaLabel: "Open an Account",
     },
@@ -47,7 +57,8 @@ export const bestOnlineBrokersReview: ReviewArticle = {
       providerId: "ibkr",
       categoryLabel: "Best for Active Traders",
       providerName: "Interactive Brokers",
-      logoUrl: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=80&q=80",
+      logoUrl:
+        "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=80&q=80",
       summaryBlurb: "Ultra-low margin rates and professional-grade tools.",
       ctaUrl: "https://www.interactivebrokers.com",
       ctaLabel: "Open an Account",
@@ -56,8 +67,10 @@ export const bestOnlineBrokersReview: ReviewArticle = {
       providerId: "robinhood",
       categoryLabel: "Best for Beginners",
       providerName: "Robinhood",
-      logoUrl: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=80&q=80",
-      summaryBlurb: "Zero commissions with a clean app for first-time investors.",
+      logoUrl:
+        "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=80&q=80",
+      summaryBlurb:
+        "Zero commissions with a clean app for first-time investors.",
       ctaUrl: "https://www.robinhood.com",
       ctaLabel: "Open an Account",
     },
@@ -66,12 +79,21 @@ export const bestOnlineBrokersReview: ReviewArticle = {
     {
       id: "fidelity",
       name: "Fidelity Investments",
-      logoUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Fidelity_Investments_logo.svg/320px-Fidelity_Investments_logo.svg.png",
-      categoryLabels: ["Best Overall", "Best for ETFs", "Best for Low Costs", "Best for Cash Management"],
+      logoUrl: "https://picsum.photos/seed/fidelity/320/120",
+      categoryLabels: [
+        "Best Overall",
+        "Best for ETFs",
+        "Best for Low Costs",
+        "Best for Cash Management",
+      ],
       overallScore: 4.8,
       fastFacts: [
         { label: "Account Minimum", value: "$0" },
-        { label: "Fees", value: "Free online commission trading on stock and ETFs, $0 plus $0.65/contract for options trades" },
+        {
+          label: "Fees",
+          value:
+            "Free online commission trading on stock and ETFs, $0 plus $0.65/contract for options trades",
+        },
       ],
       whyWeChoseIt: [
         {
@@ -113,12 +135,16 @@ export const bestOnlineBrokersReview: ReviewArticle = {
     {
       id: "schwab",
       name: "Charles Schwab",
-      logoUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Charles_Schwab_Corporation_Logo.svg/320px-Charles_Schwab_Corporation_Logo.svg.png",
+      logoUrl: "https://picsum.photos/seed/schwab/320/120",
       categoryLabels: ["Best for Long-Term Investors", "Best IRA Account"],
       overallScore: 4.7,
       fastFacts: [
         { label: "Account Minimum", value: "$0" },
-        { label: "Fees", value: "$0 for online stock and ETF trades, $0.65/contract for options" },
+        {
+          label: "Fees",
+          value:
+            "$0 for online stock and ETF trades, $0.65/contract for options",
+        },
       ],
       whyWeChoseIt: [
         {
@@ -150,12 +176,18 @@ export const bestOnlineBrokersReview: ReviewArticle = {
     {
       id: "ibkr",
       name: "Interactive Brokers",
-      logoUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Interactive_Brokers_logo_%282014%29.svg/320px-Interactive_Brokers_logo_%282014%29.svg.png",
-      categoryLabels: ["Best for Active Traders", "Best for International Trading"],
+      logoUrl: "https://picsum.photos/seed/interactive-brokers/320/120",
+      categoryLabels: [
+        "Best for Active Traders",
+        "Best for International Trading",
+      ],
       overallScore: 4.6,
       fastFacts: [
         { label: "Account Minimum", value: "$0" },
-        { label: "Fees", value: "$0 (IBKR Lite) or $0.005/share with $1 minimum (IBKR Pro)" },
+        {
+          label: "Fees",
+          value: "$0 (IBKR Lite) or $0.005/share with $1 minimum (IBKR Pro)",
+        },
       ],
       whyWeChoseIt: [
         {
@@ -187,12 +219,15 @@ export const bestOnlineBrokersReview: ReviewArticle = {
     {
       id: "robinhood",
       name: "Robinhood",
-      logoUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Robinhood_%28company%29.svg/320px-Robinhood_%28company%29.svg.png",
+      logoUrl: "https://picsum.photos/seed/robinhood/320/120",
       categoryLabels: ["Best for Beginners", "Best Mobile App"],
       overallScore: 4.1,
       fastFacts: [
         { label: "Account Minimum", value: "$0" },
-        { label: "Fees", value: "$0 for stocks, ETFs, options, and crypto trades" },
+        {
+          label: "Fees",
+          value: "$0 for stocks, ETFs, options, and crypto trades",
+        },
       ],
       whyWeChoseIt: [
         {
@@ -226,29 +261,53 @@ export const bestOnlineBrokersReview: ReviewArticle = {
   comparisonRows: [
     {
       providerName: "Fidelity Investments",
-      logoUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Fidelity_Investments_logo.svg/320px-Fidelity_Investments_logo.svg.png",
-      specs: { "Stock Trades": "$0", "Account Min.": "$0", "Options Fee": "$0.65", "Mutual Funds": "10,000+", Score: "4.8/5" },
+      logoUrl: "https://picsum.photos/seed/fidelity/320/120",
+      specs: {
+        "Stock Trades": "$0",
+        "Account Min.": "$0",
+        "Options Fee": "$0.65",
+        "Mutual Funds": "10,000+",
+        Score: "4.8/5",
+      },
       overallScore: 4.8,
       ctaUrl: "https://www.fidelity.com",
     },
     {
       providerName: "Charles Schwab",
-      logoUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Charles_Schwab_Corporation_Logo.svg/320px-Charles_Schwab_Corporation_Logo.svg.png",
-      specs: { "Stock Trades": "$0", "Account Min.": "$0", "Options Fee": "$0.65", "Mutual Funds": "4,000+", Score: "4.7/5" },
+      logoUrl: "https://picsum.photos/seed/schwab/320/120",
+      specs: {
+        "Stock Trades": "$0",
+        "Account Min.": "$0",
+        "Options Fee": "$0.65",
+        "Mutual Funds": "4,000+",
+        Score: "4.7/5",
+      },
       overallScore: 4.7,
       ctaUrl: "https://www.schwab.com",
     },
     {
       providerName: "Interactive Brokers",
-      logoUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Interactive_Brokers_logo_%282014%29.svg/320px-Interactive_Brokers_logo_%282014%29.svg.png",
-      specs: { "Stock Trades": "$0 / $0.005", "Account Min.": "$0", "Options Fee": "$0.65", "Mutual Funds": "Limited", Score: "4.6/5" },
+      logoUrl: "https://picsum.photos/seed/interactive-brokers/320/120",
+      specs: {
+        "Stock Trades": "$0 / $0.005",
+        "Account Min.": "$0",
+        "Options Fee": "$0.65",
+        "Mutual Funds": "Limited",
+        Score: "4.6/5",
+      },
       overallScore: 4.6,
       ctaUrl: "https://www.interactivebrokers.com",
     },
     {
       providerName: "Robinhood",
-      logoUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Robinhood_%28company%29.svg/320px-Robinhood_%28company%29.svg.png",
-      specs: { "Stock Trades": "$0", "Account Min.": "$0", "Options Fee": "$0", "Mutual Funds": "None", Score: "4.1/5" },
+      logoUrl: "https://picsum.photos/seed/robinhood/320/120",
+      specs: {
+        "Stock Trades": "$0",
+        "Account Min.": "$0",
+        "Options Fee": "$0",
+        "Mutual Funds": "None",
+        Score: "4.1/5",
+      },
       overallScore: 4.1,
       ctaUrl: "https://www.robinhood.com",
     },
@@ -270,7 +329,8 @@ export const bestOnlineBrokersReview: ReviewArticle = {
         "Most major US brokers now offer zero-commission trading on US stocks and ETFs. Options still carry a per-contract fee, typically $0.65. Some specialized brokers charge for advanced order types, mutual fund purchases, or access to international markets.",
     },
     {
-      question: "What is the difference between a brokerage account and an IRA?",
+      question:
+        "What is the difference between a brokerage account and an IRA?",
       answer:
         "A standard brokerage account has no contribution limits but no tax advantages. An IRA offers tax advantages — either tax-deductible contributions (Traditional IRA) or tax-free growth and withdrawals (Roth IRA) — but has annual contribution limits ($7,000 in 2026) and early withdrawal restrictions.",
     },
