@@ -42,12 +42,6 @@ const nextConfig: NextConfig = {
         port: "",
         pathname: "/**",
       },
-      {
-        protocol: "https",
-        hostname: "upload.wikimedia.org",
-        port: "",
-        pathname: "/**",
-      },
     ],
     // Mobile performance optimizations
     formats: ["image/webp", "image/avif"],
