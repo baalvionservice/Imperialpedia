@@ -180,7 +180,7 @@ export default function Footer() {
             {/* Logo */}
             <Link
               href="/"
-              className="inline-flex items-center gap-2.5 outline-none w-fit"
+              className="inline-flex items-center mx-auto gap-2.5 outline-none w-fit md:w-full"
               aria-label="Imperialpedia Home"
             >
               <span
@@ -201,7 +201,7 @@ export default function Footer() {
                   <path d="M2 12l10 5 10-5" />
                 </svg>
               </span>
-              <span className="text-xl font-bold tracking-tight text-white font-serif">
+              <span className="text-xl text-center font-bold tracking-tight text-white font-serif">
                 Imperial<span className="text-blue-400">pedia</span>
               </span>
             </Link>
@@ -210,16 +210,16 @@ export default function Footer() {
             <InlineNewsletter />
 
             {/* Social icons */}
-            <div>
-              <p className="text-[10px] font-bold tracking-[0.18em] uppercase text-slate-400/60 mb-3 font-sans">
+            <div className='w-xl mx-auto md:w-full'>
+              <p className="text-[10px] font-bold text-center md:text-start tracking-[0.18em] uppercase text-slate-100/60 mb-3 font-sans">
                 Follow Us
               </p>
-              <nav className="flex items-center gap-4 flex-wrap" aria-label="Social media links">
+              <nav className="flex items-center  gap-4 flex-wrap" aria-label="Social media links">
                 {SOCIAL_LINKS.map((s) => (
                   <a
                     key={s.label}
                     href={s.href}
-                    className="text-slate-400 hover:text-white transition-colors duration-150 grid place-items-center"
+                    className="text-slate-100 hover:text-white transition-colors duration-150 grid place-items-center"
                     aria-label={s.label}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -235,19 +235,17 @@ export default function Footer() {
           {NAV_COLUMNS.map((col) => (
             <nav
               key={col.label}
-              className="flex flex-col gap-5"
+              className=""
               aria-label={`${col.label} links`}
             >
-              <p className="text-[10px] font-bold tracking-[0.18em] uppercase text-slate-400/60 font-sans">
-                {col.label}
-              </p>
-              <ul className="flex flex-col gap-3.5 list-none p-0 m-0">
+
+              <ul className="grid md:flex md:flex-col grid-cols-2 md:w-xl gap-3.5 list-none p-0 m-0">
                 {col.links.map((link) => (
                   <li key={link.label}>
                     <Link
                       href={link.href}
                       className="
-                        text-slate-400 hover:text-white
+                        text-slate-100 hover:text-white
                         text-[13px] font-semibold tracking-wide uppercase
                         font-sans transition-colors duration-150
                         no-underline
@@ -296,31 +294,13 @@ export default function Footer() {
 
         {/* ── Bottom Bar ───────────────────────────────────────────── */}
         <div className="
-          flex flex-col sm:flex-row justify-between items-start sm:items-center
+          flex flex-col sm:flex-row justify-between items-center
           gap-4 pt-7 flex-wrap
         ">
-          <p className="text-slate-500 text-xs font-sans">
+          <p className="text-slate-500 text-center text-xs font-sans">
             &copy; {new Date().getFullYear()} Imperialpedia. AI Knowledge Infrastructure.
           </p>
 
-          <nav
-            className="flex items-center gap-5 sm:gap-7 flex-wrap"
-            aria-label="Legal links"
-          >
-            {LEGAL_LINKS.map((link) => (
-              <Link
-                key={link.label}
-                href={link.href}
-                className="
-                  text-[10px] font-bold tracking-[0.14em] uppercase
-                  text-slate-500 hover:text-slate-300
-                  font-sans transition-colors duration-150 no-underline
-                "
-              >
-                {link.label}
-              </Link>
-            ))}
-          </nav>
         </div>
 
       </Container>
